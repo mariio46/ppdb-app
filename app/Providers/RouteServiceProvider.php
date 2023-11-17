@@ -29,13 +29,11 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+            Route::middleware('api')->prefix('api')->group(base_path('routes/api.php'));
 
-            Route::middleware('web')->group(base_path('routes/web.php')); // Default Route
+            Route::middleware('web')->group(base_path('routes/web.php')); // Student Route
 
-            Route::middleware(['auth'])->prefix('auth')->group(base_path('routes/auth.php'));
+            Route::middleware(['auth'])->prefix('panel')->group(base_path('routes/auth.php')); // Has Role Route
         });
     }
 }

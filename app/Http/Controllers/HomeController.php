@@ -9,6 +9,6 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request): View
     {
-        return view('guest.login');
+        return view('has-role.dashboard.index');
     }
 }
