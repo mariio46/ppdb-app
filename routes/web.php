@@ -9,4 +9,4 @@ Route::view('/landing-page', 'landing-page')->name('home');
 
 Route::view('/dashboard', 'dashboard.index')->name('dashboard');
 
-Route::view('/beranda', 'auth.siswa.dashboard')->name('siswa-dashboard');
+Route::view('/component', 'component')->name('component');
