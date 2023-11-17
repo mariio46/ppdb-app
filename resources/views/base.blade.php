@@ -1,35 +1,61 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ $title ? $title . ' / ' . config('app.name') : config('app.name') }}</title>
+    <title>{{ $title ? $title . ' / ' . config('app.name') : config('app.name') }}</title>
 
-        <!-- Bootstrap CSS CDN -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous">
-        @yield('styles')
-        <!-- Vite Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
+    {{-- Font --}}
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
-    <body>
-        <!-- Page -->
-        @yield('body')
-        <!-- /Page -->
+    {{-- Vendor CSS --}}
+    <link type="text/css" href="/app-assets/vendors/css/vendors.min.css" rel="stylesheet">
 
-        @stack('scripts')
-        <!-- Bootstrap JS CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-        </script>
-        <!-- Bootstrap JS Popper CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
-        </script>
-    </body>
+    {{-- Theme CSS --}}
+    <link type="text/css" href="/app-assets/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/css/bootstrap-extended.min.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/css/colors.min.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/css/components.min.css" rel="stylesheet">
+
+    {{-- Page CSS --}}
+    <link type="text/css" href="/app-assets/css/core/menu/menu-types/vertical-menu.min.css" rel="stylesheet">
+    @yield('styles')
+
+    {{-- Custom CSS --}}
+    <link type="text/css" href="/css/style.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/css/custom-style.css" rel="stylesheet">
+
+    <!-- Vite Scripts -->
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+  </head>
+
+  <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
+    <!-- Page -->
+    @yield('body')
+    <!-- /Page -->
+
+    {{-- Vendor JS --}}
+    <script src="/app-assets/vendors/js/vendors.min.js"></script>
+
+    {{-- Page Vendor JS --}}
+    @yield('vendorScripts')
+
+    {{-- Theme JS --}}
+    <script src="/app-assets/js/core/app-menu.min.js"></script>
+    <script src="/app-assets/js/core/app.min.js"></script>
+
+    @stack('scripts')
+
+    <script>
+      $(window).on('load', function() {
+        if (feather) {
+          feather.replace();
+        }
+      })
+    </script>
+  </body>
 
 </html>
