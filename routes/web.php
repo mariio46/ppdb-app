@@ -9,5 +9,8 @@ Route::view('/landing-page', 'landing-page')->name('home');
 
 Route::view('/dashboard', 'dashboard.index')->name('dashboard');
 
+
+// example
 Route::view('/component', 'component')->name('component');
 Route::view('/new-components', 'new-components')->name('new-components');
+// example
