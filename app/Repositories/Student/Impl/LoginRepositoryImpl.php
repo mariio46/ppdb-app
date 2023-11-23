@@ -21,8 +21,8 @@ class LoginRepositoryImpl implements LoginRepository
 
     if ($authenticate->get('code') == 200) {
       session()->put([
-        'stu_name'  => $authenticate->get("data.name"),
-        'stu_nisn'  => $authenticate->get('data.nisn'),
+        'stu_name'  => data_get($authenticate, 'data.name'),
+        'stu_nisn'  => data_get($authenticate, 'data.nisn'),
         'is_login'  => true
       ]);
 
