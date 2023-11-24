@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Students\DashboardController;
 use App\Http\Controllers\Students\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,9 @@ Route::view('/landing-page', 'landing-page')->name('home');
 Route::get('/masuk', [LoginController::class, 'index'])->name('student-login');
 Route::post('/do-login', [LoginController::class, 'doLogin'])->name('student-do-login');
 
-Route::view('/beranda', 'student.dashboard.index')->name('student-dashboard');
+Route::get('/beranda', [DashboardController::class, 'index'])->name('student-dashboard');
+Route::get('/get-data-pribadi-siswa', [DashboardController::class, 'getDataDashboard']);
+Route::get('/get-data-nilai-siswa', [DashboardController::class, 'getDataNilai']);
 
 
 // example

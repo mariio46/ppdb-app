@@ -1,0 +1,22 @@
+#user-profile .profile-header .profile-img-container .profile-img {
+  width: 10rem;
+  height: 15rem;
+}
+
+#user-profile .profile-header .profile-img-container .profile-img img {
+  object-fit: cover;
+  height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  #user-profile .profile-header .profile-img-container .profile-img {
+    width: 8.92rem;
+    height: 8.92rem;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  #user-profile .profile-header .profile-img-container {
+    bottom: -3.5rem;
+  }
+}
