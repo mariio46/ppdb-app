@@ -346,6 +346,53 @@
               </p>
             </div>
           </div>
+
+          {{-- card lock data --}}
+          <div class="card d-none" id="cardLock">
+            <div class="card-body">
+              <h4 class="card-title">Kunci Data Diri</h4>
+
+              <div class="alert alert-danger p-2">
+                <p class="mb-0">
+                  Kamu hanya dapat melakukan pendaftaran setelah mengunci data diri kamu.
+                </p>
+                <p>
+                  Data yang sudah dikunci tidak dapat dibuka kembali. Maka pastikan bahwa data kamu sudah benar dan sesuai sebelum data dikunci.
+                </p>
+              </div>
+
+              <div class="mt-2">
+                <x-checkbox identifier="lockCheck" label="Saya yakin untuk mengunci data diri saya" variant="danger" />
+
+                <div class="mt-2">
+                  <x-button id="lockCheckBtn" data-bs-toggle="modal" data-bs-target="#lockStudentDataModal" type="button" disabled color="danger">Kunci Data Diri</x-button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade modal-danger text-start" id="lockStudentDataModal" aria-labelledby="lockStudentDataModalLabel" aria-hidden="true" tabindex="-1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Kunci Data Diri</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form id="lockDataForm" action="/lock-student-data" method="post">
+                          @csrf
+                          <div class="alert alert-danger p-1">
+                            Data yang sudah dikunci tidak dapat diubah kembali. Pastikan data kamu sudah benar sebelum mengunci data.
+                          </div>
+
+                          <x-button class="float-end mb-1" type="submit" color="danger" withIcon="true"><x-bi-trash /> Kunci Data</x-button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{-- /card lock data --}}
         </div>
       </div>
     </div>

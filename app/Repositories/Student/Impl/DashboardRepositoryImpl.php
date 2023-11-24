@@ -28,7 +28,7 @@ class DashboardRepositoryImpl implements DashboardRepository
     return response()->json($result);
   }
 
-  public function postFirstTimeLogin(Request $request): Collection|array
+  public function postFirstTimeLogin(Request $request): Collection
   {
     $id     = session()->get('stu_id');
     $email  = $request->post('ftlEmail');
@@ -42,5 +42,14 @@ class DashboardRepositoryImpl implements DashboardRepository
     } else {
       return collect(['success' => false, "code" => 401, "message" => "failed"]);
     }
+  }
+
+  public function postLockStudentData(): Collection
+  {
+    $id = session()->get('stu_id');
+
+    $lock = $this->dashboardModel->postLockStudentData($id);
+
+    return collect($lock);
   }
 }

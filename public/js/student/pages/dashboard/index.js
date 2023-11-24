@@ -5,11 +5,10 @@ $(document).ready(function() {
     method: 'get',
     dataType: 'json',
     success: function(data) {
-      if (data.pertama_login == '1') {
-        // trigger modal?
+      if (data.pertama_login == '0' && data.kunci == '0') {
+        $('#btnEditData, #btnEditScore, #cardLock').removeClass("d-none");
+      } else if (data.pertama_login == '1') {
         $('#firstTimeLoginModal').modal('show');
-      } else {
-        $('#btnEditData, #btnEditScore').removeClass("d-none");
       }
       
       $('#selfNik').text(data.nik); // personal's data
@@ -72,7 +71,9 @@ $(document).ready(function() {
 $(function () {
   'use strict';
 
-  var firstTimeLoginForm = $('#ftlForm');
+  var firstTimeLoginForm = $('#ftlForm'),
+    lockDataCheckbox = $('#lockCheck'),
+    lockDataBtn = $('#lockCheckBtn');
 
   // jQuery Validation
   // --------------------------------------------------------------------
@@ -120,4 +121,14 @@ $(function () {
       }
     });
   }
+
+  // Lock Data
+  // --------------------------------------------------------------------
+  lockDataCheckbox.click(function() {
+    if (lockDataCheckbox.is(":checked")) {
+      lockDataBtn.removeAttr('disabled');
+    } else {
+      lockDataBtn.attr('disabled', true);
+    }
+  });
 });

@@ -34,7 +34,16 @@ class DashboardController extends Controller
     {
         $update = $this->dashboardRepo->postFirstTimeLogin($request);
 
-        $msg = (data_get($update, 'success')) ? ['ftlStatus' => 'success', 'ftlMsg' => 'Data berhasil diperbarui'] : ['ftlStatus' => 'danger', 'ftlMsg' => 'Data gagal diperbarui.'];
+        $msg = (data_get($update, 'success')) ? ['ftlStatus' => 'success', 'ftlMsg' => 'Data berhasil diperbarui.'] : ['ftlStatus' => 'danger', 'ftlMsg' => 'Data gagal diperbarui.'];
+
+        return redirect()->back()->with($msg);
+    }
+
+    public function postLockStudentData()
+    {
+        $lock = $this->dashboardRepo->postLockStudentData();
+
+        $msg = (data_get($lock, 'success')) ? ['ftlStatus' => 'success', 'ftlMsg' => 'Data berhasil dikunci.'] : ['ftlStatus' => 'danger', 'ftlMsg' => 'Data gagal dikunci.'];
 
         return redirect()->back()->with($msg);
     }

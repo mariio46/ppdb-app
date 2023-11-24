@@ -12,5 +12,7 @@ interface DashboardRepository
 
   public function getDataNilai(): JsonResponse;
 
-  public function postFirstTimeLogin(Request $request): Collection|array;
+  public function postFirstTimeLogin(Request $request): Collection;
+
+  public function postLockStudentData(): Collection;
 }

@@ -31,6 +31,7 @@ class DashboardModel
       "nama_wali"     => "Fulanwati binti Fulanwan",
       "nomor_wali"    => "081234567890",
       "pertama_login" => "0", // pertama kali login = 1, sudah pernah login = 0
+      "kunci"         => "0"
     ];
   }
 
@@ -74,6 +75,14 @@ class DashboardModel
    * $id = student ID
    */
   public function postFirstTimeLogin(string $id, string $email, string $phone, string $newPassword): array
+  {
+    $result = [
+      'success' => true
+    ];
+    return $result;
+  }
+
+  public function postLockStudentData(string $id): array
   {
     $result = [
       'success' => true
