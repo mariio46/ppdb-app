@@ -6,6 +6,7 @@
 #user-profile .profile-header .profile-img-container .profile-img img {
   object-fit: cover;
   height: 100%;
+  width: 100%;
 }
 
 @media only screen and (max-width: 768px) {
