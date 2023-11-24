@@ -5,6 +5,13 @@ $(document).ready(function() {
     method: 'get',
     dataType: 'json',
     success: function(data) {
+      if (data.pertama_login == '1') {
+        // trigger modal?
+        $('#firstTimeLoginModal').modal('show');
+      } else {
+        $('#btnEditData, #btnEditScore').removeClass("d-none");
+      }
+      
       $('#selfNik').text(data.nik); // personal's data
       $('#selfFromSchool').text(data.asal_sekolah);
       $('#selfGender').text((data.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');
@@ -60,4 +67,57 @@ $(document).ready(function() {
       $('#smt5Ips').text(score.smt5ips);
     }
   });
+});
+
+$(function () {
+  'use strict';
+
+  var firstTimeLoginForm = $('#ftlForm');
+
+  // jQuery Validation
+  // --------------------------------------------------------------------
+  if (firstTimeLoginForm.length) {
+    firstTimeLoginForm.validate({
+      rules: {
+        'ftlEmail': {
+          required: true,
+          email: true
+        },
+        'ftlPhoneNumber': {
+          required: true,
+          digits: true,
+          rangelength: [10, 13]
+        },
+        'ftlNewPassword': {
+          required: true,
+          minlength: 6
+        },
+        'ftlConfirmPassword': {
+          required: true,
+          minlength: 6,
+          equalTo: "#ftlNewPassword"
+        }
+      },
+      messages: {
+        'ftlEmail': {
+          required: "*Bidang ini harus diisi.",
+          email: "*Mohon masukkan alamat email yang valid."
+        },
+        'ftlPhoneNumber': {
+          required: "*Bidang ini harus diisi.",
+          digits: "*Mohon masukkan nomor telepon yang valid.",
+          rangelength: "*Mohon masukkan nomor telepon yang valid."
+        },
+        'ftlNewPassword': {
+          required: "*Bidang ini harus diisi.",
+          minlength: "*Mohon masukkan minimal 6 karakter."
+        },
+        'ftlConfirmPassword': {
+          required: "*Bidang ini harus diisi.",
+          minlength: "*Mohon masukkan minimal 6 karakter.",
+          equalTo: "*Ulangi kata sandi harus sama dengan kata sandi baru."
+        },
+      }
+    });
+  }
 });

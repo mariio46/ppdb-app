@@ -16,6 +16,7 @@ Route::post('/do-login', [LoginController::class, 'doLogin'])->name('student-do-
 Route::get('/beranda', [DashboardController::class, 'index'])->name('student-dashboard');
 Route::get('/get-data-pribadi-siswa', [DashboardController::class, 'getDataDashboard']);
 Route::get('/get-data-nilai-siswa', [DashboardController::class, 'getDataNilai']);
+Route::post('/first-time-login', [DashboardController::class, 'postFirstTimeLogin']);
 
 
 // example

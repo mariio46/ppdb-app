@@ -30,6 +30,7 @@ class DashboardModel
       "nomor_ayah"    => "081234567890",
       "nama_wali"     => "Fulanwati binti Fulanwan",
       "nomor_wali"    => "081234567890",
+      "pertama_login" => "0", // pertama kali login = 1, sudah pernah login = 0
     ];
   }
 
@@ -62,5 +63,21 @@ class DashboardModel
       'smt5ipa' => '75',
       'smt5ips' => '80',
     ];
+  }
+
+  /**
+   * @param $id
+   * @param $email
+   * @param $phone
+   * @param $newPassword
+   * 
+   * $id = student ID
+   */
+  public function postFirstTimeLogin(string $id, string $email, string $phone, string $newPassword): array
+  {
+    $result = [
+      'success' => true
+    ];
+    return $result;
   }
 }

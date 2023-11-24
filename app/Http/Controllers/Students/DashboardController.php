@@ -29,4 +29,13 @@ class DashboardController extends Controller
     {
         return $this->dashboardRepo->getDataNilai();
     }
+
+    public function postFirstTimeLogin(Request $request)
+    {
+        $update = $this->dashboardRepo->postFirstTimeLogin($request);
+
+        $msg = (data_get($update, 'success')) ? ['ftlStatus' => 'success', 'ftlMsg' => 'Data berhasil diperbarui'] : ['ftlStatus' => 'danger', 'ftlMsg' => 'Data gagal diperbarui.'];
+
+        return redirect()->back()->with($msg);
+    }
 }

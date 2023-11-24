@@ -1,11 +1,69 @@
 @extends('layouts.student.auth')
 
 @section('styles')
+  <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
   <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">
   <link type="text/css" href="/css/student/pages/dashboard/dashboard.css" rel="stylesheet">
 @endsection
 
 @section('content')
+  {{-- first time login --}}
+  @if (session()->get('ftlStatus'))
+    <div class="alert alert-{{ session()->get('ftlStatus') }} p-1">
+      <p class="mb-0 text-center">{{ session()->get('ftlMsg') }}</p>
+    </div>
+  @endif
+
+  <div class="modal fade text-start" id="firstTimeLoginModal" data-bs-backdrop="static" aria-labelledby="ftlLabel" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="ftlLabel">Perbarui Kata Sandi</h4>
+        </div>
+        <form id="ftlForm" action="/first-time-login" method="post">
+          @csrf
+          <div class="modal-body">
+            <div class="alert alert-warning p-1">
+              <p class="mb-0"><strong>Penting!</strong></p>
+              <ul class="mb-0">
+                <li>Perbarui kata sandi berguna untuk menjaga data kamu agar tetap aman.</li>
+                <li>Masukkan email aktif dan nomor telepon yang valid agar dapat tetap terhubung dengan kami.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="modal-body border-top">
+            <div class="mt-1">
+              <x-label for="ftlEmail"><i>Email</i></x-label>
+              <x-input id="ftlEmail" name="ftlEmail" type="text" placeholder="Email" />
+            </div>
+            <div class="mt-1">
+              <x-label for="ftlPhoneNumber">Nomor <i>Handphone</i></x-label>
+              <x-input id="ftlPhoneNumber" name="ftlPhoneNumber" type="text" placeholder="08xx xxxx xxxx" maxlength="13" />
+            </div>
+            <div class="mt-1">
+              <x-label for="ftlNewPassword">Kata Sandi Baru</x-label>
+              <div class="input-group input-group-merge form-password-toggle">
+                <x-input id="ftlNewPassword" name="ftlNewPassword" type="password" placeholder="············" />
+                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+              </div>
+            </div>
+            <div class="mt-1">
+              <x-label for="ftlConfirmPassword">Ulangi Kata Sandi Baru</x-label>
+              <div class="input-group input-group-merge form-password-toggle">
+                <x-input id="ftlConfirmPassword" name="ftlConfirmPassword" type="password" placeholder="············" />
+                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+              </div>
+            </div>
+            <div class="mt-2 mb-2 text-end">
+              <x-button type="submit">Simpan Perubahan</x-button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {{-- /first time login --}}
+
   <div class="content-body">
     <div id="user-profile">
       <div class="row">
@@ -24,11 +82,11 @@
               </div>
             </div>
 
-            <div class="profile-header-nav">
+            <div class="profile-header-nav" style="min-height: 3rem;">
               <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                 <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0">
                   {{-- edit button  --}}
-                  <x-button color="success" withIcon="true">
+                  <x-button class="d-none" id="btnEditData" color="success" withIcon="true">
                     <x-bi-pencil />
                     <span class="fw-bold">Edit Data</span>
                   </x-button>
@@ -218,7 +276,7 @@
               <div class="d-flex align-items-end mb-1">
                 <h4 class="text-title mb-0">Data Nilai Rapor</h4>
 
-                <a class="ms-auto btn btn-success" href=""><x-bi-pencil /> Edit Nilai</a>
+                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href=""><x-bi-pencil /> Edit Nilai</a>
               </div>
 
               <small class="text-subtitle">Data nilai rapor adalah data <strong>nilai pengetahuan</strong> mata pelajaran Bahasa Indonesia, Bahasa Inggris, Matematika, Ilmu Pengetahuan Alam
@@ -292,6 +350,10 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('vendorScripts')
+  <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
 @endsection
 
 @push('scripts')
