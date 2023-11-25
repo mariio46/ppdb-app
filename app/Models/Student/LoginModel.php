@@ -13,9 +13,10 @@ class LoginModel
         "code" => 200,
         "msg"  => "login success",
         "data" => [
-          "id"   => '1',
-          "name" => "Freya Jayawardana",
-          "nisn" => "0123456789"
+          "id"      => '1',
+          "name"    => "Freya Jayawardana",
+          "nisn"    => "0123456789",
+          "school"  => "SMP Negeri 2 Sukamaju"
         ]
       ];
     } else if ($nisn == '0123456789' && $password == 'server') {
