@@ -26,6 +26,7 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(OriginSchoolController::class)->group(function () {
     Route::get('sekolah-asal', 'index')->name('sekolah-asal.index');
+    Route::get('seskolah-asal/create', 'create')->name('sekolah-asal.create');
     Route::get('seskolah-asal/{id}', 'show')->name('sekolah-asal.show');
     Route::get('seskolah-asal/{id}/edit', 'edit')->name('sekolah-asal.edit');
 });

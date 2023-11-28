@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class OriginSchoolController extends Controller
@@ -13,6 +12,11 @@ class OriginSchoolController extends Controller
         return view('has-role.origin-school.index', [
             'collections' => $this->getSchools(),
         ]);
+    }
+
+    public function create(): View
+    {
+        return view('has-role.origin-school.create');
     }
 
     public function show($id): View

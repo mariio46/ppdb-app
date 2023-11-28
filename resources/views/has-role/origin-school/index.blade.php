@@ -24,7 +24,7 @@
                         <x-input id="search" name="search" placeholder="Cari sekolah..." />
                     </div>
                     <div class="col-sm-3 text-end">
-                        <a class="btn btn-success" href="{{ route('users.create') }}">
+                        <a class="btn btn-success" href="{{ route('sekolah-asal.create') }}">
                             <x-tabler-plus style="width: 16px; height: 16px;" />
                             Tambah Sekolah
                         </a>
