@@ -434,7 +434,6 @@
                                         <br />
                                         <x-button variant="flat" color="success">
                                             <x-icons data-feather="check" />
-                                            <x-bi-house class="me-25 feather" style="color: #555; width: 20px; height: 20px" />
                                             <span>Outline</span>
                                         </x-button>
                                     </div>
@@ -1896,7 +1895,7 @@
                                     <select class="select2 form-select" id="select2-basic" multiple>
                                         <optgroup label="Alaskan/Hawaiian Time Zone">
                                             <option value="AK">Alaska</option>
-                                            <option value="HI">Hawaii</option>
+                                            <option value="HI">Hawaiibi-</option>
                                         </optgroup>
                                         <optgroup label="Pacific Time Zone">
                                             <option value="CA">California</option>
