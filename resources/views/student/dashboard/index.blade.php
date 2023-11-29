@@ -86,15 +86,16 @@
               <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                 <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0">
                   {{-- edit button  --}}
-                  <x-button class="d-none" id="btnEditData" color="success" withIcon="true">
+                  <a class="btn btn-success btn-icon d-none" id="btnEditData" href="/beranda/data-pribadi">
                     <x-bi-pencil />
                     <span class="fw-bold">Edit Data</span>
-                  </x-button>
+                  </a>
                 </div>
               </nav>
             </div>
           </div>
 
+          {{-- personal data --}}
           <div class="card">
             {{-- data diri --}}
             <div class="card-body">
@@ -270,7 +271,9 @@
             </div>
             {{-- /data wali --}}
           </div>
+          {{-- /personal data --}}
 
+          {{-- score data --}}
           <div class="card">
             <div class="card-body">
               <div class="d-flex align-items-end mb-1">
@@ -346,6 +349,7 @@
               </p>
             </div>
           </div>
+          {{-- /score data --}}
 
           {{-- card lock data --}}
           <div class="card d-none" id="cardLock">

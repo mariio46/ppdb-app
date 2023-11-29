@@ -13,11 +13,22 @@ Route::view('/landing-page', 'landing-page')->name('home');
 Route::get('/masuk', [LoginController::class, 'index'])->name('student-login');
 Route::post('/do-login', [LoginController::class, 'doLogin'])->name('student-do-login');
 
-Route::get('/beranda', [DashboardController::class, 'index'])->name('student-dashboard');
-Route::get('/get-data-pribadi-siswa', [DashboardController::class, 'getDataDashboard']);
-Route::get('/get-data-nilai-siswa', [DashboardController::class, 'getDataNilai']);
-Route::post('/first-time-login', [DashboardController::class, 'postFirstTimeLogin']);
-Route::post('/lock-student-data', [DashboardController::class, 'postLockStudentData']);
+// Dashboard
+Route::controller(DashboardController::class)->group(function () {
+  Route::get('/beranda', 'index');
+  Route::get('/beranda/data-pribadi', 'viewEditPersonalData');
+
+  Route::get('/get-data-pribadi-siswa', 'getDataDashboard');
+  Route::get('/get-data-nilai-siswa', 'getDataNilai');
+  Route::post('/first-time-login', 'postFirstTimeLogin');
+  Route::post('/personal-data/update-data', 'postUpdateStudentData');
+  Route::post('/lock-student-data', 'postLockStudentData');
+
+  Route::get('/provinces', 'getProvinceLists');
+  Route::get('/cities/{code}', 'getCityLists');
+  Route::get('/districts/{code}', 'getDistrictLists');
+  Route::get('/villages/{code}', 'getVillageLists');
+});
 
 
 // example
