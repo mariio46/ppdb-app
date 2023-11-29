@@ -78,7 +78,7 @@ class DashboardController extends Controller
         $update = $this->dashboardRepo->postUpdateStudentData($request);
 
         if (data_get($update, 'success')) {
-            return redirect()->to('/beranda')->with(['ftlStatus' => 'success', 'ftlMsg' => 'Data berhasil diperbarui.']);
+            return redirect()->to('/data-diri')->with(['ftlStatus' => 'success', 'ftlMsg' => 'Data berhasil diperbarui.']);
         } else {
             return redirect()->back()->with(['updStatus' => 'danger', 'updMsg' => 'Data gagal diperbarui. Coba lagi nanti.']);
         }

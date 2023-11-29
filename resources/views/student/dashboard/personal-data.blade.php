@@ -10,11 +10,11 @@
     <div class="content-header-left col-md-9 col-12 mb-2">
       <div class="row breadcrumbs-top">
         <div class="col-12">
-          <h2 class="content-header-title float-start mb-0">Beranda</h2>
+          <h2 class="content-header-title float-start mb-0">Data Diri</h2>
           <div class="breadcrumb-wrapper">
             <ol class="breadcrumb breadcrumb-slash">
               <li class="breadcrumb-item">
-                <a href="/beranda">Beranda</a>
+                <a href="/data-diri">Data Diri</a>
               </li>
               <li class="breadcrumb-item active">
                 Edit Data
@@ -219,7 +219,7 @@
 
         <div class="card-body py2 my-25 border-top">
           <x-button class="me-1" type="submit" color="success">Simpan Perubahan</x-button>
-          <a class="btn btn-outline-secondary" href="/beranda">Batalkan</a>
+          <a class="btn btn-outline-secondary" href="/data-diri">Batalkan</a>
         </div>
       </form>
     </div>

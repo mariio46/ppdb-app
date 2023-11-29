@@ -15,8 +15,8 @@ Route::post('/do-login', [LoginController::class, 'doLogin'])->name('student-do-
 
 // Dashboard
 Route::controller(DashboardController::class)->group(function () {
-  Route::get('/beranda', 'index');
-  Route::get('/beranda/data-pribadi', 'viewEditPersonalData');
+  Route::get('/data-diri', 'index');
+  Route::get('/data-diri/data-pribadi', 'viewEditPersonalData');
 
   Route::get('/get-data-pribadi-siswa', 'getDataDashboard');
   Route::get('/get-data-nilai-siswa', 'getDataNilai');

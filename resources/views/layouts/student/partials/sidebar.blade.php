@@ -57,10 +57,10 @@
         $path3 = $path[2] ?? null;
       @endphp
 
-      <li class="@if ($path1 == 'beranda') active @endif nav-item">
-        <a class="d-flex align-items-center" href="/beranda">
+      <li class="@if ($path1 == 'data-diri') active @endif nav-item">
+        <a class="d-flex align-items-center" href="/data-diri">
           <i data-feather='user'></i>
-          <span class="menu-title text-truncate">Beranda</span>
+          <span class="menu-title text-truncate">Data Diri</span>
         </a>
       </li>
       <li class="@if ($path1 == 'pendaftaran') active @endif nav-item">
@@ -96,9 +96,9 @@
 <nav class="bottom-navbar navbar navbar-expand navbar-shadow fixed-bottom bg-white d-xl-none">
   <ul class="nav nav-justified w-100">
     <li class="nav-item">
-      <a class="nav-link @if ($path1 == 'beranda') active @endif" href="/beranda">
+      <a class="nav-link @if ($path1 == 'data-diri') active @endif" href="/data-diri">
         <i class="bottom-navbar-icon" data-feather="user"></i>
-        <span class="bottom-navbar-label">Beranda</span>
+        <span class="bottom-navbar-label">Data Diri</span>
       </a>
     </li>
     <li class="nav-item">

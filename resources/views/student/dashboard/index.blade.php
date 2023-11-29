@@ -86,7 +86,7 @@
               <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                 <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0">
                   {{-- edit button  --}}
-                  <a class="btn btn-success btn-icon d-none" id="btnEditData" href="/beranda/data-pribadi">
+                  <a class="btn btn-success btn-icon d-none" id="btnEditData" href="/data-diri/data-pribadi">
                     <x-bi-pencil />
                     <span class="fw-bold">Edit Data</span>
                   </a>
