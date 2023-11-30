@@ -22,10 +22,15 @@ class DashboardRepositoryImpl implements DashboardRepository
     return response()->json($result);
   }
 
-  public function getDataNilai(): JsonResponse
+  public function getDataScore(): JsonResponse
   {
-    $result = $this->dashboardModel->getDataNilaiAll(session()->get('stu_id'));
+    $result = $this->dashboardModel->getDataScoreAll(session()->get('stu_id'));
+    return response()->json($result);
+  }
 
+  public function getScoreBySemester(int $semester): JsonResponse
+  {
+    $result = $this->dashboardModel->getDataScoreBySemester(session()->get('stu_id'), $semester);
     return response()->json($result);
   }
 
@@ -98,6 +103,17 @@ class DashboardRepositoryImpl implements DashboardRepository
       return collect(['success' => true, "code" => 200, "message" => "success"]);
     } else {
       return collect(['success' => false, "code" => 400, "message" => "failed"]);
+    }
+  }
+
+  public function postUpdateStudentScore(int $semester, Request $request): Collection|array
+  {
+    $update = $this->dashboardModel->postUpdateStudentScore($semester, $request);
+
+    if ($update['success']) {
+      return collect(['success' => true, "code" => 200, "message" => ['scoreStatus' => 'success', 'scoreMsg' => 'Data berhasil diperbarui.']]);
+    } else {
+      return collect(['success' => false, "code" => 400, "message" => ['scoreStatus' => 'danger', 'scoreMsg' => 'Data gagal diperbarui.']]);
     }
   }
 

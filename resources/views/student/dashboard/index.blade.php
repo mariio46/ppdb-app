@@ -279,7 +279,7 @@
               <div class="d-flex align-items-end mb-1">
                 <h4 class="text-title mb-0">Data Nilai Rapor</h4>
 
-                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href=""><x-bi-pencil /> Edit Nilai</a>
+                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href="/data-diri/edit-nilai/semester-1"><x-bi-pencil /> Edit Nilai</a>
               </div>
 
               <small class="text-subtitle">Data nilai rapor adalah data <strong>nilai pengetahuan</strong> mata pelajaran Bahasa Indonesia, Bahasa Inggris, Matematika, Ilmu Pengetahuan Alam

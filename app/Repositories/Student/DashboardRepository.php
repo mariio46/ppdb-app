@@ -10,7 +10,9 @@ interface DashboardRepository
 {
   public function getDataStudent(): JsonResponse;
 
-  public function getDataNilai(): JsonResponse;
+  public function getDataScore(): JsonResponse;
+
+  public function getScoreBySemester(int $semester): JsonResponse;
 
   public function postFirstTimeLogin(Request $request): Collection;
 
@@ -25,6 +27,8 @@ interface DashboardRepository
   public function postUpdateStudentData(Request $request): Collection;
 
   public function postUpdateStudentProfile(Request $request): Collection|array;
+
+  public function postUpdateStudentScore(int $semester, Request $request): Collection|array;
 
   public function postLockStudentData(): Collection;
 }

@@ -40,7 +40,7 @@ class DashboardModel
     ];
   }
 
-  public function getDataNilaiAll(string $id): array
+  public function getDataScoreAll(string $id): array
   {
     return [
       'smt1bid' => '87',
@@ -69,6 +69,60 @@ class DashboardModel
       'smt5ipa' => '75',
       'smt5ips' => '80',
     ];
+  }
+
+  public function getDataScoreBySemester(string $id, int $semester): array
+  {
+    $score = [];
+
+    if ($semester == 1) {
+      $score = [
+        'bid' => '87',
+        'big' => '88',
+        'mtk' => '80',
+        'ipa' => '71',
+        'ips' => '93',
+        'smt' => $semester
+      ];
+    } else if ($semester == 2) {
+      $score = [
+        'bid' => '88',
+        'big' => '87',
+        'mtk' => '98',
+        'ipa' => '73',
+        'ips' => '70',
+        'smt' => $semester
+      ];
+    } else if ($semester == 3) {
+      $score =  [
+        'bid' => '92',
+        'big' => '75',
+        'mtk' => '70',
+        'ipa' => '83',
+        'ips' => '99',
+        'smt' => $semester
+      ];
+    } else if ($semester == 4) {
+      $score = [
+        'bid' => '97',
+        'big' => '92',
+        'mtk' => '79',
+        'ipa' => '84',
+        'ips' => '99',
+        'smt' => $semester
+      ];
+    } else if ($semester == 5) {
+      $score = [
+        'bid' => '98',
+        'big' => '96',
+        'mtk' => '86',
+        'ipa' => '75',
+        'ips' => '80',
+        'smt' => $semester
+      ];
+    }
+
+    return $score;
   }
 
   /**
@@ -134,6 +188,16 @@ class DashboardModel
     $result = [
       'success' => true,
       'image' => $image
+    ];
+
+    return $result;
+  }
+
+  public function postUpdateStudentScore(int $semester, Request $request): array
+  {
+    $result = [
+      'success' => true,
+      'semester' => $semester
     ];
 
     return $result;

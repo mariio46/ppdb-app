@@ -25,15 +25,29 @@ class DashboardController extends Controller
         return response()->view('student.dashboard.personal-data');
     }
 
+    public function viewEditStudentScore(string $semester): Response
+    {
+        $data = [
+            'semester' => str_replace("semester-", "", $semester),
+        ];
+
+        return response()->view('student.dashboard.score', $data);
+    }
+
     // -------------------- FUNCTIONS
     public function getDataDashboard()
     {
         return $this->dashboardRepo->getDataStudent();
     }
 
-    public function getDataNilai()
+    public function getDataScore()
     {
-        return $this->dashboardRepo->getDataNilai();
+        return $this->dashboardRepo->getDataScore();
+    }
+
+    public function getDataScoreBySemester(int $semester): JsonResponse
+    {
+        return $this->dashboardRepo->getScoreBySemester($semester);
     }
 
     public function postFirstTimeLogin(Request $request)
@@ -93,6 +107,13 @@ class DashboardController extends Controller
         } else {
             return redirect()->back()->with(['imgStatus' => 'danger', 'imgMsg' => 'Data gagal diperbarui. Coba lagi nanti.']);
         }
+    }
+
+    public function postUpdateStudentScore(int $semester, Request $request)
+    {
+        $update = $this->dashboardRepo->postUpdateStudentScore($semester, $request);
+
+        return redirect()->back()->with(data_get($update, 'message'));
     }
 
     public function postLockStudentData()

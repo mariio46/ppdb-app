@@ -17,12 +17,15 @@ Route::post('/do-login', [LoginController::class, 'doLogin'])->name('student-do-
 Route::controller(DashboardController::class)->group(function () {
   Route::get('/data-diri', 'index');
   Route::get('/data-diri/data-pribadi', 'viewEditPersonalData');
+  Route::get('/data-diri/edit-nilai/{semester}', 'viewEditStudentScore');
 
   Route::get('/get-data-pribadi-siswa', 'getDataDashboard');
-  Route::get('/get-data-nilai-siswa', 'getDataNilai');
+  Route::get('/get-data-nilai-siswa', 'getDataScore');
   Route::post('/first-time-login', 'postFirstTimeLogin');
   Route::post('/personal-data/update-data', 'postUpdateStudentData');
   Route::post('/personal-data/update-profile-picture', 'postUpdateStudentProfileImage');
+  Route::get('/personal-data/get-student-score/{semester}', 'getDataScoreBySemester');
+  Route::post('/personal-data/{semester}/update-score', 'postUpdateStudentScore');
   Route::post('/lock-student-data', 'postLockStudentData');
 
   Route::get('/provinces', 'getProvinceLists');
