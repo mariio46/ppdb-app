@@ -24,5 +24,7 @@ interface DashboardRepository
 
   public function postUpdateStudentData(Request $request): Collection;
 
+  public function postUpdateStudentProfile(Request $request): Collection|array;
+
   public function postLockStudentData(): Collection;
 }

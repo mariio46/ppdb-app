@@ -90,6 +90,17 @@ class DashboardRepositoryImpl implements DashboardRepository
     }
   }
 
+  public function postUpdateStudentProfile(Request $request): Collection|array
+  {
+    $update = $this->dashboardModel->postUpdateStudentProfile($request);
+
+    if ($update['success']) {
+      return collect(['success' => true, "code" => 200, "message" => "success"]);
+    } else {
+      return collect(['success' => false, "code" => 400, "message" => "failed"]);
+    }
+  }
+
   public function postLockStudentData(): Collection
   {
     $id = session()->get('stu_id');

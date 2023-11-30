@@ -22,6 +22,7 @@ Route::controller(DashboardController::class)->group(function () {
   Route::get('/get-data-nilai-siswa', 'getDataNilai');
   Route::post('/first-time-login', 'postFirstTimeLogin');
   Route::post('/personal-data/update-data', 'postUpdateStudentData');
+  Route::post('/personal-data/update-profile-picture', 'postUpdateStudentProfileImage');
   Route::post('/lock-student-data', 'postLockStudentData');
 
   Route::get('/provinces', 'getProvinceLists');

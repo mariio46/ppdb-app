@@ -127,6 +127,18 @@ class DashboardModel
     return $result;
   }
 
+  public function postUpdateStudentProfile(Request $request): array
+  {
+    $image = $request->file('profilePictureInput');
+
+    $result = [
+      'success' => true,
+      'image' => $image
+    ];
+
+    return $result;
+  }
+
   public function postLockStudentData(string $id): array
   {
     $result = [

@@ -2,10 +2,13 @@ $(function() {
   ('use strict');
 
   var select2 = $('.select2'),
+    profilePictureInput = $('#profilePictureInput'),
+    profilePicturePreview = $('#profilePicturePrev'),
     nik = $('#nik'),
     associations = $('#associations'),
     phone = $('.phone-mask'),
     formEditData = $('#formEditData'),
+    formEditProfile = $('#formEditProfile'),
     provinceElement = $('#province'),
     cityElement = $('#city'),
     districtElement = $('#district'),
@@ -199,6 +202,36 @@ $(function() {
     });
   }
 
+  if (formEditProfile.length) {
+    formEditProfile.validate({
+      ignore: [],
+      rules: {
+        profilePictureInput: {
+          required: true,
+          extension: "jpg|jpeg|png",
+          filesize: 500 * 1024,
+        }
+      },
+      messages: {
+        profilePictureInput: {
+          required: "*Gambar harus diisi.",
+          extension: "*Hanya menerima file gambar dengan format jpg, jpeg atau png.",
+          filesize: "*Ukuran gambar tidak boleh lebih dari 500 KB."
+        }
+      },
+      errorPlacement: function(error, element) {
+        console.log(error);
+        console.log(element);
+        $('#profilePictureErrorMsg').html('<p class="text-center mb-0"><small>' + error.text() + '</small></p>');
+        $('#profilePictureErrorMsg').show();
+      },
+    });
+  }
+  
+  $.validator.addMethod('filesize', function (value, element, param) {
+    return this.optional(element) || (element.files[0].size <= param);
+  }, 'File size must be less than {0}');
+
   // provinces
   // --------------------------------------------------------------------
   generateSelectProvince();
@@ -321,5 +354,33 @@ $(function() {
       $('#guardsName').val(studentData.nama_wali);
       $('#guardsPhone').val(studentData.nomor_wali.substring(0, 4) + ' ' + studentData.nomor_wali.substring(4, 8) + ' ' + studentData.nomor_wali.substring(8));
     }
+  });
+
+  // when profile picture is selected
+  // --------------------------------------------------------------------
+  profilePictureInput.change(function() {
+    previewProfilePict();
+  });
+
+  function previewProfilePict() {
+    let input = profilePictureInput[0],
+      preview = profilePicturePreview[0];
+      
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+      };
+      
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  // when modal dismiss
+  $("#uploadProfilePictureModal").on("hidden.bs.modal", function () {
+    profilePictureInput.val('');
+    profilePicturePreview.attr("src", profilePicture ? profilePicture : "/app-assets/images/profile.jpg");
+    $('#profilePictureErrorMsg').css("display", "none");
   });
 });

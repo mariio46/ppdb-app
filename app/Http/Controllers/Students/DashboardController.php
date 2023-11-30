@@ -84,6 +84,17 @@ class DashboardController extends Controller
         }
     }
 
+    public function postUpdateStudentProfileImage(Request $request)
+    {
+        $update = $this->dashboardRepo->postUpdateStudentProfile($request);
+
+        if (data_get($update, 'success')) {
+            return redirect()->back()->with(['imgStatus' => 'success', 'imgMsg' => 'Data berhasil diperbarui.']);
+        } else {
+            return redirect()->back()->with(['imgStatus' => 'danger', 'imgMsg' => 'Data gagal diperbarui. Coba lagi nanti.']);
+        }
+    }
+
     public function postLockStudentData()
     {
         $lock = $this->dashboardRepo->postLockStudentData();

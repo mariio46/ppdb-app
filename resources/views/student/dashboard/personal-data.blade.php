@@ -33,16 +33,65 @@
       </div>
 
       <div class="card-body py-2 my-25">
-        <div class="d-flex">
-          <a class="me-25" href="#">
-            <img class="uploadedAvatar rounded me-50 object-fit-cover ratio ratio-4x3" id="account-upload-img" src="/app-assets/images/profile.jpg" alt="profile image" height="150" />
-          </a>
-          <div class="d-flex align-items-end mt-75 ms-1">
+
+        @if (session()->get('imgStatus'))
+          <div>
+            <div class="alert alert-{{ session()->get('imgStatus') }} alert-dismissible fade show" role="alert">
+              <div class="alert-body">
+                <p class="mb-0 text-center">{{ session()->get('imgMsg') }}</p>
+              </div>
+              <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
+            </div>
+          </div>
+        @endif
+
+        <div class="d-md-flex align-items-end">
+          <div class="d-flex justify-content-center mb-1">
+            <div style="min-width: 100px;">
+              <img class="rounded object-fit-cover ratio ratio-4x3" id="profilePreview" src="/app-assets/images/profile.jpg" alt="profile image" height="150">
+            </div>
+          </div>
+          <div class="ms-md-1">
             <div>
-              <label class="btn btn-sm btn-primary mb-75 me-75" for="account-upload">Upload Foto</label>
-              <input id="account-upload" type="file" hidden accept="image/*" />
-              <button class="btn btn-sm btn-outline-secondary mb-75" id="account-reset" type="button">Hapus Foto</button>
-              <p class="mb-0">Unggah foto ukuran 3x4 dengan format JPG, JPEG atau PNG, Ukuran maksimal 500KB</p>
+              <div class="d-flex justify-content-center justify-content-md-start">
+
+                <x-button class="btn-sm" data-bs-toggle="modal" data-bs-target="#uploadProfilePictureModal" type="button" color="primary">Unggah Foto</x-button>
+
+                {{-- modal upload profile picture --}}
+                <div class="modal fade text-start" id="uploadProfilePictureModal" aria-labelledby="modalLabel" aria-hidden="true" tabindex="-1">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="modalLabel">Upload Pas Foto</h4>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body mb-2">
+                        <div class="d-flex justify-content-center mb-1">
+                          <div style="min-width: 100px;">
+                            <img class="rounded object-fit-cover ratio ratio-4x3" id="profilePicturePrev" src="/app-assets/images/profile.jpg" alt="profile image" height="150">
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                          <form id="formEditProfile" action="/personal-data/update-profile-picture" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="alert alert-danger p-1 w-100" id="profilePictureErrorMsg" style="display: none;"></div>
+
+                            <div class="d-flex justify-content-center">
+                              <label class="btn btn-sm btn-outline-primary" for="profilePictureInput">Pilih Foto</label>
+                              {{-- <input id="profilePictureInput" name="profilePictureInput" type="file" hidden accept="image/png, image/jpg, image/jpeg" required> --}}
+                              <input id="profilePictureInput" name="profilePictureInput" type="file" hidden required>
+
+                              <x-button class="btn-sm ms-1" type="submit" color="primary">Simpan</x-button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{-- .modal upload profile picture --}}
+              </div>
+              <p class="my-1">*Unggah foto ukuran 3x4 dengan format JPG, JPEG atau PNG, Ukuran maksimal 500KB</p>
             </div>
           </div>
         </div>
@@ -218,8 +267,14 @@
         </div>
 
         <div class="card-body py2 my-25 border-top">
-          <x-button class="me-1" type="submit" color="success">Simpan Perubahan</x-button>
-          <a class="btn btn-outline-secondary" href="/data-diri">Batalkan</a>
+          <div class="row">
+            <div class="d-grid col-lg-3 col-md-6 col-sm-12">
+              <x-button class="mb-1" type="submit" color="success">Simpan Perubahan</x-button>
+            </div>
+            <div class="d-grid col-lg-3 col-md-6 col-sm-12">
+              <a class="btn btn-outline-secondary mb-1" href="/data-diri" role="button">Batalkan</a>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -230,8 +285,12 @@
   <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
   <script src="/app-assets/vendors/js/forms/cleave/cleave.min.js"></script>
   <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
+  <script src="/app-assets/vendors/js/forms/validation/additional-methods.min.js"></script>
 @endsection
 
 @push('scripts')
-  <script src="/js/student/pages/dashboard/personal-data-v1.0.0.js"></script>
+  <script>
+    var profilePicture = "{{ session()->get('stu-picture') }}";
+  </script>
+  <script src="/js/student/pages/dashboard/personal-data-v1.1.0.js"></script>
 @endpush
