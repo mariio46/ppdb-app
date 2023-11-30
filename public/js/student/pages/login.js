@@ -1,9 +1,3 @@
-$(document).ready(function() {
-    // set Pages to login view
-    $('body').addClass('blank-page');
-    $('body').attr('data-col', 'blank-page');
-});
-
 $(function () {
   'use strict';
 

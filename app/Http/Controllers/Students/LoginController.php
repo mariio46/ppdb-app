@@ -29,6 +29,6 @@ class LoginController extends Controller
             return redirect()->back()->withErrors(['errorMsg' => $authenticate->get('message')])->withInput();
         }
 
-        return redirect()->to('/beranda');
+        return redirect()->to('/data-diri');
     }
 }
