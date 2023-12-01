@@ -171,6 +171,7 @@ return [
 
         App\Providers\Student\LoginServiceProvider::class,
         App\Providers\Student\DashboardServiceProvider::class,
+        App\Providers\Student\RegistrationServiceProvider::class,
     ])->toArray(),
 
     /*

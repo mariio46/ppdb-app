@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Students\DashboardController;
 use App\Http\Controllers\Students\LoginController;
+use App\Http\Controllers\Students\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -32,6 +33,13 @@ Route::controller(DashboardController::class)->group(function () {
   Route::get('/cities/{code}', 'getCityLists');
   Route::get('/districts/{code}', 'getDistrictLists');
   Route::get('/villages/{code}', 'getVillageLists');
+});
+
+// Registration as Pendaftaran
+Route::controller(RegistrationController::class)->group(function () {
+  Route::get('/pendaftaran', 'index');
+
+  Route::get('/registration/get-schedules', 'getSchedules');
 });
 
 
