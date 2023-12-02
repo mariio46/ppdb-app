@@ -65,5 +65,5 @@
   <script>
     var code = '{{ $phase_code ?? 0 }}';
   </script>
-  <script src="/js/student/pages/registration/phase.js"></script>
+  <script src="/js/student/pages/registration/phase-v1.1.0.js"></script>
 @endpush

@@ -102,20 +102,21 @@ $(function() {
 
   function isCurrentTimeInRange(startTime, endTime) {
     var currentTime = new Date();
-    var currentHours = currentTime.getHours();
-    var currentMinutes = currentTime.getMinutes();
-
+  
     var startHours = parseInt(startTime.split(":")[0]);
     var startMinutes = parseInt(startTime.split(":")[1]);
-
+  
     var endHours = parseInt(endTime.split(":")[0]);
     var endMinutes = parseInt(endTime.split(":")[1]);
-
-    var startDate = new Date(2000, 0, 1, startHours, startMinutes);
-    var endDate = new Date(2000, 0, 1, endHours, endMinutes);
-
+  
+    var startDate = new Date();
+    startDate.setHours(startHours, startMinutes);
+  
+    var endDate = new Date();
+    endDate.setHours(endHours, endMinutes);
+  
     return currentTime >= startDate && currentTime <= endDate;
-  }
+  }  
 
   function generateTabListHtml(n, abb, code, track) {
     return `

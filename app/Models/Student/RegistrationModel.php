@@ -121,7 +121,7 @@ class RegistrationModel
       [
         'code'  => '5eb0e33ccbe50bb2777ed6937cb6b440d125dfffcea3df3434b7f529199422e3',
         'start' => "2023-12-01",
-        'end'   => "2023-12-07",
+        'end'   => "2023-12-31",
         'sma'   => [
           ['jalur' => 'Boarding School']
         ],
@@ -136,8 +136,8 @@ class RegistrationModel
       ],
       [
         'code'  => "a6a69cc6839f539d6ee8c237ba52784b4abd0a327462a10717222d0288c64986",
-        'start' => "2023-12-08",
-        'end'   => "2023-12-14",
+        'start' => "2023-12-01",
+        'end'   => "2023-12-31",
         'sma'   => [
           ['jalur' => 'Afirmasi'],
           ['jalur' => 'Perpindahan Tugas Orang Tua'],
@@ -151,8 +151,8 @@ class RegistrationModel
       ],
       [
         'code'  => "cbb6824fda925fca4165cba41ffdb38b9fbc6808c761c2a7b77a0e22f48ef8ca",
-        'start' => "2023-12-15",
-        'end'   => "2023-12-21",
+        'start' => "2023-12-01",
+        'end'   => "2023-12-31",
         'sma'   => [
           ['jalur' => 'Zonasi']
         ],
@@ -168,7 +168,7 @@ class RegistrationModel
       $data = [
         'phase' => '1',
         'start' => "2023-12-01",
-        'end'   => "2023-12-07",
+        'end'   => "2023-12-31",
         'sma'   => [
           [
             'slug'  => '129a6140e8b4198c8d0d54098ff29fdfaff8b17169c051de5728beccfa15972f',
@@ -219,8 +219,8 @@ class RegistrationModel
     } elseif ($code == 'a6a69cc6839f539d6ee8c237ba52784b4abd0a327462a10717222d0288c64986') {
       $data = [
         'phase' => '2',
-        'start' => "2023-12-08",
-        'end'   => "2023-12-14",
+        'start' => "2023-12-01",
+        'end'   => "2023-12-31",
         'sma'   => [
           [
             'slug'  => '3a49138015e4c0df7d4125be81e7c6b916fdbc84bcbb093098043bbf0f33651c',
@@ -265,8 +265,8 @@ class RegistrationModel
     } elseif ($code == 'cbb6824fda925fca4165cba41ffdb38b9fbc6808c761c2a7b77a0e22f48ef8ca') {
       $data = [
         'phase' => '3',
-        'start' => "2023-12-15",
-        'end'   => "2023-12-21",
+        'start' => "2023-12-01",
+        'end'   => "2023-12-31",
         'sma'   => [
           [
             'slug' => '32bc4b1af00d5c18d13eca61c77b0e62c04f46797444b7d51f36a4b1798e6843',
@@ -279,8 +279,8 @@ class RegistrationModel
       ];
     }
 
-    $data['time_start'] = '07:00'; // format tt:mm
-    $data['time_end'] = '18:00';
+    $data['time_start'] = '00:00'; // format tt:mm
+    $data['time_end'] = '23:59';
 
     return $data;
   }
