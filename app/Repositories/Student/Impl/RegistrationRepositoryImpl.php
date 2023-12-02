@@ -16,4 +16,9 @@ class RegistrationRepositoryImpl implements RegistrationRepository
     $get = $this->registrationModel->getSchedules();
     return $get;
   }
+
+  public function getScheduleByPhaseCode(string $code): array
+  {
+    return $this->registrationModel->getScheduleByPhaseCode($code);
+  }
 }

@@ -38,8 +38,10 @@ Route::controller(DashboardController::class)->group(function () {
 // Registration as Pendaftaran
 Route::controller(RegistrationController::class)->group(function () {
   Route::get('/pendaftaran', 'index');
+  Route::get('/pendaftaran/tahap/{code}', 'phase');
 
   Route::get('/registration/get-schedules', 'getSchedules');
+  Route::get('/registration/get-schedule-by-phase-code/{code}', 'getScheduleByPhaseCode');
 });
 
 

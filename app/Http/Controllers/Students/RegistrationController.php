@@ -19,10 +19,25 @@ class RegistrationController extends Controller
     return response()->view('student.registration.index');
   }
 
+  public function phase(string $code): Response
+  {
+    $data = [
+      'phase_code' => $code
+    ];
+
+    return response()->view('student.registration.phase', $data);
+  }
+
   // FUNCTIONS
   public function getSchedules(): JsonResponse
   {
-    $update = $this->registrationRepo->getSchedules();
-    return response()->json($update);
+    $get = $this->registrationRepo->getSchedules();
+    return response()->json($get);
+  }
+
+  public function getScheduleByPhaseCode(string $code): JsonResponse
+  {
+    $get = $this->registrationRepo->getScheduleByPhaseCode($code);
+    return response()->json($get);
   }
 }
