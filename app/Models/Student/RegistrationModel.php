@@ -284,4 +284,12 @@ class RegistrationModel
 
     return $data;
   }
+
+  public function saveRegistration(array $data): array
+  {
+    $result = [
+      'success' => true,
+    ];
+    return $result;
+  }
 }

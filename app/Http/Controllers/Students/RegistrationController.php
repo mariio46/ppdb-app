@@ -7,6 +7,9 @@ use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use PhpParser\Node\Stmt\Break_;
+
+use function PHPUnit\Framework\returnSelf;
 
 class RegistrationController extends Controller
 {
@@ -26,6 +29,22 @@ class RegistrationController extends Controller
     ];
 
     return response()->view('student.registration.phase', $data);
+  }
+
+  public function track(string $code, string $phaseCode): Response
+  {
+    $data = [
+      'code' => $code,
+      'phaseCode' => $phaseCode
+    ];
+
+    return response()->view('student.registration.track', $data);
+  }
+
+  public function postSchoolRegistration(string $trackCode, Request $request)
+  {
+    $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
+    return redirect()->to('/pendaftaran')->with('msgSuccess', $save['success']);
   }
 
   // FUNCTIONS
