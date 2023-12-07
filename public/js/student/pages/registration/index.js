@@ -1,5 +1,5 @@
 $(function() {
-  'use stricts';
+  'use strict';
 
   var cardContainer = $('#cardContainer'),
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
@@ -20,8 +20,6 @@ $(function() {
   });
 
   function displayDataInCards(schedules) {
-    let n = 1;
-
     schedules.forEach(schedule => {
       let start = new Date(schedule.start);
       let end = new Date(schedule.end);
@@ -30,15 +28,15 @@ $(function() {
 
       switch (checkDateRange(schedule.start, schedule.end)) {
         case 'pre':
-          btnHtml = `<button class="btn btn-outline-secondary disabled" disabled>Tahap ${n} Belum Dibuka</button>`;
+          btnHtml = `<button class="btn btn-outline-secondary disabled" disabled>Tahap ${schedule.phase} Belum Dibuka</button>`;
           cdr = 'pre';
           break;
         case 'now':
-          btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.code}">Lihat Tahap ${n}</a>`;
+          btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.code}">Lihat Tahap ${schedule.phase}</a>`;
           cdr = 'now';
           break;
         case 'post':
-          btnHtml = `<button class="btn btn-outline-secondary disabled">Tahap ${n} Sudah Ditutup</button>`;
+          btnHtml = `<button class="btn btn-outline-secondary disabled">Tahap ${schedule.phase} Sudah Ditutup</button>`;
           cdr = 'post';
           break;
         default:
@@ -50,11 +48,11 @@ $(function() {
         <div class="card border border-1 ${cdr == 'now' ? 'border-primary' : ''} shadow-lg" style="border-width: ${cdr == 'now' ? '2px !important' : '1px'} ;">
           <div class="card-header d-flex align-items-center flex-column border-bottom">
             <div class="d-flex align-items-center">
-              <div class="bg-light-${colors[n]} rounded p-1">
+              <div class="bg-light-${colors[schedule.phase]} rounded p-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil-minus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /><path d="M16 19h6" /></svg>
               </div>
               <div class="ms-1">
-                <h3 class="mb-0">Pendaftaran Tahap ${n}</h3>
+                <h3 class="mb-0">Pendaftaran Tahap ${schedule.phase}</h3>
               </div>
             </div>
             <p class="text-warning mt-3">Jadwal: ${start.getDate()} ${months[start.getMonth()]} - ${end.getDate()} ${months[end.getMonth()]} ${end.getFullYear()}</p>
@@ -75,8 +73,6 @@ $(function() {
       </div>`;
 
       cardContainer.append(cardHtml);
-
-      n++;
     });
   }
 

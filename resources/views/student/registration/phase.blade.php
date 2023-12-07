@@ -12,7 +12,7 @@
                 <a href="/pendaftaran">Pendaftaran</a>
               </li>
               <li class="breadcrumb-item active">
-                Pendaftaran Tahap <span id="bcTahap"></span>
+                Pendaftaran Tahap {{ $phase }}
               </li>
             </ol>
           </div>

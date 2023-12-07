@@ -17,10 +17,10 @@
                 <a href="/pendaftaran">Pendaftaran</a>
               </li>
               <li class="breadcrumb-item">
-                <a href="/pendaftaran/tahap/{{ $phaseCode }}">Pendaftaran Tahap <span id="bcTahap">0</span></a>
+                <a href="/pendaftaran/tahap/{{ $phaseCode }}">Pendaftaran Tahap {{ $phase }}</a>
               </li>
               <li class="breadcrumb-item active">
-                Pendaftaran Jalur <span id="bcJalur"></span>
+                Pendaftaran Jalur {{ $track }}
               </li>
             </ol>
           </div>

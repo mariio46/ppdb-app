@@ -2,6 +2,8 @@
 
 namespace App\Models\Student;
 
+use Illuminate\Support\Facades\Crypt;
+
 class RegistrationModel
 {
   /** 
@@ -119,7 +121,8 @@ class RegistrationModel
   {
     return [
       [
-        'code'  => '5eb0e33ccbe50bb2777ed6937cb6b440d125dfffcea3df3434b7f529199422e3',
+        'code'  => Crypt::encryptString('1'),
+        'phase' => '1',
         'start' => "2023-12-01",
         'end'   => "2023-12-31",
         'sma'   => [
@@ -135,7 +138,8 @@ class RegistrationModel
         ]
       ],
       [
-        'code'  => "a6a69cc6839f539d6ee8c237ba52784b4abd0a327462a10717222d0288c64986",
+        'code'  => Crypt::encryptString('2'),
+        'phase' => '2',
         'start' => "2023-12-01",
         'end'   => "2023-12-31",
         'sma'   => [
@@ -150,7 +154,8 @@ class RegistrationModel
         ]
       ],
       [
-        'code'  => "cbb6824fda925fca4165cba41ffdb38b9fbc6808c761c2a7b77a0e22f48ef8ca",
+        'code'  => Crypt::encryptString('3'),
+        'phase' => '3',
         'start' => "2023-12-01",
         'end'   => "2023-12-31",
         'sma'   => [
@@ -164,7 +169,7 @@ class RegistrationModel
   public function getScheduleByPhaseCode(string $code): array
   {
     $data = [];
-    if ($code == '5eb0e33ccbe50bb2777ed6937cb6b440d125dfffcea3df3434b7f529199422e3') {
+    if (Crypt::decryptString($code) == '1') {
       $data = [
         'phase' => '1',
         'start' => "2023-12-01",
@@ -216,7 +221,7 @@ class RegistrationModel
           ]
         ]
       ];
-    } elseif ($code == 'a6a69cc6839f539d6ee8c237ba52784b4abd0a327462a10717222d0288c64986') {
+    } elseif (Crypt::decryptString($code) == '2') {
       $data = [
         'phase' => '2',
         'start' => "2023-12-01",
@@ -262,7 +267,7 @@ class RegistrationModel
           ],
         ]
       ];
-    } elseif ($code == 'cbb6824fda925fca4165cba41ffdb38b9fbc6808c761c2a7b77a0e22f48ef8ca') {
+    } elseif (Crypt::decryptString($code) == '3') {
       $data = [
         'phase' => '3',
         'start' => "2023-12-01",

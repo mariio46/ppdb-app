@@ -7,12 +7,27 @@ use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use PhpParser\Node\Stmt\Break_;
-
-use function PHPUnit\Framework\returnSelf;
+use Illuminate\Support\Facades\Crypt;
 
 class RegistrationController extends Controller
 {
+  private $tracks = [
+    'AA'  => 'Afirmasi',
+    'AB'  => 'Perpindahan Tugas Orang Tua',
+    'AC'  => 'Anak Guru',
+    'AD'  => 'Prestasi Akademik',
+    'AE'  => 'Prestasi Non Akademik',
+    'AF'  => 'Zonasi',
+    'AG'  => 'Boarding School',
+    'KA'  => 'Afirmasi',
+    'KB'  => 'Perpindahan Tugas Orang Tua',
+    'KC'  => 'Anak Guru',
+    'KD'  => 'Prestasi Akademik',
+    'KE'  => 'Prestasi Non Akademik',
+    'KF'  => 'Domisili Terdekat',
+    'KG'  => 'Anak DUDI'
+  ];
+
   public function __construct(protected RegistrationRepository $registrationRepo)
   {
   }
@@ -25,7 +40,8 @@ class RegistrationController extends Controller
   public function phase(string $code): Response
   {
     $data = [
-      'phase_code' => $code
+      'phase_code'  => $code,
+      'phase'       => Crypt::decryptString($code)
     ];
 
     return response()->view('student.registration.phase', $data);
@@ -34,8 +50,10 @@ class RegistrationController extends Controller
   public function track(string $code, string $phaseCode): Response
   {
     $data = [
-      'code' => $code,
-      'phaseCode' => $phaseCode
+      'code'      => $code,
+      'track'     => $this->tracks[$code],
+      'phaseCode' => $phaseCode,
+      'phase'     => Crypt::decryptString($phaseCode)
     ];
 
     return response()->view('student.registration.track', $data);
