@@ -3,6 +3,8 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Students\DashboardController;
 use App\Http\Controllers\Students\LoginController;
+use App\Http\Controllers\Students\RegistrationController;
+use App\Http\Controllers\Students\SchoolController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -32,6 +34,25 @@ Route::controller(DashboardController::class)->group(function () {
   Route::get('/cities/{code}', 'getCityLists');
   Route::get('/districts/{code}', 'getDistrictLists');
   Route::get('/villages/{code}', 'getVillageLists');
+});
+
+// Registration as Pendaftaran
+Route::controller(RegistrationController::class)->group(function () {
+  Route::get('/pendaftaran', 'index');
+  Route::get('/pendaftaran/tahap/{code}', 'phase');
+  Route::get('/pendaftaran/jalur/{code}/{phase}', 'track');
+
+  Route::get('/registration/get-schedules', 'getSchedules');
+  Route::get('/registration/get-schedule-by-phase-code/{code}', 'getScheduleByPhaseCode');
+  Route::post('/registration/{trackCode}/register', 'postSchoolRegistration');
+});
+
+// School
+Route::controller(SchoolController::class)->group(function () {
+  Route::get('/schools/by-city/{cityCode}/{schoolType}', 'getSchoolByCity');
+  Route::get('/schools/by-zone', 'getSchoolByZone');
+  Route::get('/schools/boarding-school', 'getBoardingSchool');
+  Route::get('/schools/department/{schoolId}', 'getDepartmentBySchool');
 });
 
 
