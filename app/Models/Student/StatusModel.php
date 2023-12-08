@@ -36,18 +36,14 @@ class StatusModel
 
   public function getStudentStatus(string $studentId): array
   {
-    $accepted = $this->templateArray(p: '4', c: 'KA', t: 'Afirmasi', as: 'SMKN 1 Sukamaju', ad: 'Pariwisata', status: 'accepted');
-    $registered = $this->templateArray(status: 'registered');
-    $verified = $this->templateArray(p: '2', status: 'verified');
-    $declined = $this->templateArray(p: '3', status: 'declined');
-    $completed = $this->templateArray(p: '5', c: 'KA', t: 'Afirmasi', as: 'SMKN 1 Sukamaju', ad: 'Pariwisata', status: 'completed');
+    $phase1 = $this->templateArray(s: "2023-11-15", e: "2023-11-30", status: 'declined');
+    $phase2 = $this->templateArray(p: '2', status: 'registered');
+    $phase3 = $this->templateArray(p: '3', status: '', s: "2023-12-15", e: "2023-12-31");
 
     return [
-      $registered,
-      $verified,
-      $declined,
-      $accepted,
-      $completed
+      $phase1,
+      $phase2,
+      $phase3,
     ];
   }
 }

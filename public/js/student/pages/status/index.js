@@ -32,7 +32,7 @@ $(function() {
             break;
         }
 
-        cardSection.append(generateCard(s.phase, stat, getTimeStatus(s.start, s.end) == 'now' ? true : false));
+        cardSection.append(generateCard(s.phase, stat, getTimeStatus(s.start, s.end) != 'pre' ? true : false, getTimeStatus(s.start, s.end) == 'now' ? true : false));
       });
     },
     error: function(xhr, status, error) {
@@ -47,14 +47,14 @@ $(function() {
    * @param {boolean} isCollapse - collapsed card or no
    * @returns string
    */
-  function generateCard(n, stat, isCollapse = false) {
+  function generateCard(n, stat, inTime = false, isCollapse = false) {
     return `
     <div class="card">
       <div class="card-body px-0">
         <div class="d-flex align-items-center px-2">
-          <h4 class="mb-0">Status Pendaftaran Tahap ${n}</h4>
+          <h4 class="mb-0 ${!inTime ? 'text-secondary' : ''}">${inTime ? 'Status pendaftaran tahap ' + n : 'Pendaftaran tahap ' + n + ' belum dibuka'}</h4>
 
-          <button class="btn btn-primary ms-auto me-1 ${isCollapse ? 'collapsed' : ''}" data-bs-toggle="collapse" data-bs-target="#colStatus${n}" type="button" aria-expanded="${isCollapse ? 'true' : 'false'}" aria-controls="colStatus${n}">
+          <button class="btn btn-primary ms-auto me-1 ${!inTime ? 'disabled' : ''} ${isCollapse ? 'collapsed' : ''}" data-bs-toggle="collapse" data-bs-target="#colStatus${n}" type="button" aria-expanded="${isCollapse ? 'true' : 'false'}" aria-controls="colStatus${n}">
             Lihat Status
           </button>
         </div>
