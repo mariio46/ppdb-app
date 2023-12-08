@@ -5,6 +5,7 @@ use App\Http\Controllers\Students\DashboardController;
 use App\Http\Controllers\Students\LoginController;
 use App\Http\Controllers\Students\RegistrationController;
 use App\Http\Controllers\Students\SchoolController;
+use App\Http\Controllers\Students\StatusController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -45,6 +46,13 @@ Route::controller(RegistrationController::class)->group(function () {
   Route::get('/registration/get-schedules', 'getSchedules');
   Route::get('/registration/get-schedule-by-phase-code/{code}', 'getScheduleByPhaseCode');
   Route::post('/registration/{trackCode}/register', 'postSchoolRegistration');
+});
+
+// Status
+Route::controller(StatusController::class)->group(function () {
+  Route::get('/status', 'index');
+
+  Route::get('/status/get-status', 'getStatus');
 });
 
 // School
