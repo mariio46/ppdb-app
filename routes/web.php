@@ -57,6 +57,9 @@ Route::controller(StatusController::class)->group(function () {
 
 // School
 Route::controller(SchoolController::class)->group(function () {
+  Route::get('/sekolah', 'index');
+
+  Route::get('/schools/get-list', 'getSchools');
   Route::get('/schools/by-city/{cityCode}/{schoolType}', 'getSchoolByCity');
   Route::get('/schools/by-zone', 'getSchoolByZone');
   Route::get('/schools/boarding-school', 'getBoardingSchool');
