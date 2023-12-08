@@ -11,6 +11,11 @@ class SchoolRepositoryImpl implements SchoolRepository
   {
   }
 
+  public function getSchools(?string $schoolType, ?string $cityCode): array
+  {
+    return $this->schoolModel->getSchools(type: $schoolType ?? '', city: $cityCode ?? '');
+  }
+
   public function getSchoolByCity(string $schoolType, string $cityCode): array
   {
     return $this->schoolModel->getSchoolByCity($schoolType, $cityCode);
