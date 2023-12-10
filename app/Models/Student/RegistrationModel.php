@@ -297,4 +297,28 @@ class RegistrationModel
     ];
     return $result;
   }
+
+  public function getRegistrationDataByPhase(string $phase): array
+  {
+    $studentId = session()->get('stu_id');
+
+    // get student registration data (using student id) by phase
+    // case AA
+    $case = 'KA';
+
+    $get = [ // case AB
+      'phase'         => '1',
+      'track'         => $case,
+      'school1'       => 'SMA Negeri 1 Makassar',
+      'department1'   => 'Teknik Komputer dan Jaringan (TKJ)',
+      'school2'       => 'SMA Negeri 2 Makassar',
+      'department2'   => 'Otomotif',
+      'school3'       => 'SMA Negeri 1 Selayar',
+      'department3'   => 'Tata Boga',
+      'school_verif'  => 'SMA Negeri 1 Makassar',
+      'end_verif'     => '2023-12-31'
+    ];
+
+    return $get;
+  }
 }

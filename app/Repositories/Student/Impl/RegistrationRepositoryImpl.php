@@ -8,14 +8,20 @@ use Illuminate\Http\Request;
 
 class RegistrationRepositoryImpl implements RegistrationRepository
 {
-  public function __construct(public RegistrationModel $registrationModel)
-  {
+  public function __construct(
+    public RegistrationModel $registrationModel
+  ) {
   }
 
   public function getSchedules(): array
   {
     $get = $this->registrationModel->getSchedules();
     return $get;
+  }
+
+  public function getRegistrationDataByPhase(string $phase): array
+  {
+    return $this->registrationModel->getRegistrationDataByPhase($phase);
   }
 
   public function getScheduleByPhaseCode(string $code): array

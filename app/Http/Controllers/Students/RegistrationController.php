@@ -28,10 +28,13 @@ class RegistrationController extends Controller
     'KG'  => 'Anak DUDI'
   ];
 
-  public function __construct(protected RegistrationRepository $registrationRepo)
-  {
+  public function __construct(
+    protected RegistrationRepository $registrationRepo
+  ) {
   }
 
+  // --------------------------------------------------
+  // VIEWS
   public function index(): Response
   {
     return response()->view('student.registration.index');
@@ -59,13 +62,30 @@ class RegistrationController extends Controller
     return response()->view('student.registration.track', $data);
   }
 
+  public function proof(string $code): Response
+  {
+    $data = [
+      'phaseCode' => $code,
+      'phase'     => Crypt::decryptString($code)
+    ];
+
+    return response()->view('student.registration.proof', $data);
+  }
+
+  // --------------------------------------------------
+  // FUNCTIONS
   public function postSchoolRegistration(string $trackCode, Request $request)
   {
     $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
-    return redirect()->to('/pendaftaran')->with('msgSuccess', $save['success']);
+
+    if ($save['success']) {
+      $code = Crypt::encryptString($request->get('phaseCode'));
+      return redirect()->to("/pendaftaran/bukti/$code");
+    } else {
+      return redirect()->back();
+    }
   }
 
-  // FUNCTIONS
   public function getSchedules(): JsonResponse
   {
     $get = $this->registrationRepo->getSchedules();
@@ -75,6 +95,12 @@ class RegistrationController extends Controller
   public function getScheduleByPhaseCode(string $code): JsonResponse
   {
     $get = $this->registrationRepo->getScheduleByPhaseCode($code);
+    return response()->json($get);
+  }
+
+  public function getDataByPhase(string $phase)
+  {
+    $get = $this->registrationRepo->getRegistrationDataByPhase($phase);
     return response()->json($get);
   }
 }
