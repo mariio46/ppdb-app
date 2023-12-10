@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Students\DashboardController;
+use App\Http\Controllers\Students\FaqController;
 use App\Http\Controllers\Students\LoginController;
 use App\Http\Controllers\Students\RegistrationController;
 use App\Http\Controllers\Students\SchoolController;
@@ -64,6 +65,13 @@ Route::controller(SchoolController::class)->group(function () {
   Route::get('/schools/by-zone', 'getSchoolByZone');
   Route::get('/schools/boarding-school', 'getBoardingSchool');
   Route::get('/schools/department/{schoolId}', 'getDepartmentBySchool');
+});
+
+// faq
+Route::controller(FaqController::class)->group(function () {
+  Route::get('/faq', 'index');
+
+  Route::get('/faq/get-data', 'getFaqData');
 });
 
 
