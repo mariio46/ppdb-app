@@ -169,8 +169,10 @@ class RegistrationModel
   public function getScheduleByPhaseCode(string $code): array
   {
     $data = [];
-    if (Crypt::decryptString($code) == '1') {
-      $data = [
+    $phase = Crypt::decryptString($code);
+
+    if ($phase == '1') {
+      $get = [
         'phase' => '1',
         'start' => "2023-12-01",
         'end'   => "2023-12-31",
@@ -221,8 +223,8 @@ class RegistrationModel
           ]
         ]
       ];
-    } elseif (Crypt::decryptString($code) == '2') {
-      $data = [
+    } elseif ($phase == '2') {
+      $get = [
         'phase' => '2',
         'start' => "2023-12-01",
         'end'   => "2023-12-31",
@@ -267,8 +269,8 @@ class RegistrationModel
           ],
         ]
       ];
-    } elseif (Crypt::decryptString($code) == '3') {
-      $data = [
+    } elseif ($phase == '3') {
+      $get = [
         'phase' => '3',
         'start' => "2023-12-01",
         'end'   => "2023-12-31",
@@ -284,8 +286,35 @@ class RegistrationModel
       ];
     }
 
-    $data['time_start'] = '00:00'; // format tt:mm
-    $data['time_end'] = '23:59';
+    $get['time_start'] = '00:00'; // format tt:mm
+    $get['time_end'] = '23:59';
+
+    // 
+    $data = [
+      'phase'       => $get['phase'],
+      'start'       => $get['start'],
+      'end'         => $get['end'],
+      'time_start'  => $get['time_start'],
+      'time_end'    => $get['time_end'],
+    ];
+
+    foreach ($get['sma'] as $sma) {
+      $data['sma'][] = [
+        'slug'  => Crypt::encryptString(json_encode(['phase' => $get['phase'], 'track' => $sma['code']])),
+        'code'  => $sma['code'],
+        'track' => $sma['jalur'],
+        'info'  => $sma['info']
+      ];
+    }
+
+    foreach ($get['smk'] as $smk) {
+      $data['smk'][] = [
+        'slug'  => Crypt::encryptString(json_encode(['phase' => $get['phase'], 'track' => $smk['code']])),
+        'code'  => $smk['code'],
+        'track' => $smk['jalur'],
+        'info'  => $smk['info']
+      ];
+    }
 
     return $data;
   }
@@ -304,7 +333,7 @@ class RegistrationModel
 
     // get student registration data (using student id) by phase
     // case AA
-    $case = 'KA';
+    $case = 'AG';
 
     $get = [ // case AB
       'phase'         => '1',

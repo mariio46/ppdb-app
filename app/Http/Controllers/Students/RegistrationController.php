@@ -50,13 +50,14 @@ class RegistrationController extends Controller
     return response()->view('student.registration.phase', $data);
   }
 
-  public function track(string $code, string $phaseCode): Response
+  public function track(string $code): Response
   {
+    $decCode = json_decode(Crypt::decryptString($code));
     $data = [
-      'code'      => $code,
-      'track'     => $this->tracks[$code],
-      'phaseCode' => $phaseCode,
-      'phase'     => Crypt::decryptString($phaseCode)
+      'code'      => $decCode->track,
+      'track'     => $this->tracks[$decCode->track],
+      'phaseCode' => Crypt::encryptString($decCode->phase),
+      'phase'     => $decCode->phase
     ];
 
     return response()->view('student.registration.track', $data);
@@ -64,9 +65,12 @@ class RegistrationController extends Controller
 
   public function proof(string $code): Response
   {
+    $decCode = json_decode(Crypt::decryptString($code));
     $data = [
-      'phaseCode' => $code,
-      'phase'     => Crypt::decryptString($code)
+      'code'      => $decCode->track,
+      'track'     => $this->tracks[$decCode->track],
+      'phaseCode' => Crypt::encryptString($decCode->phase),
+      'phase'     => $decCode->phase
     ];
 
     return response()->view('student.registration.proof', $data);
@@ -79,7 +83,7 @@ class RegistrationController extends Controller
     $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
 
     if ($save['success']) {
-      $code = Crypt::encryptString($request->get('phaseCode'));
+      $code = Crypt::encryptString(json_encode(['phase' => $request->get('phaseCode'), 'track' => $trackCode]));
       return redirect()->to("/pendaftaran/bukti/$code");
     } else {
       return redirect()->back();

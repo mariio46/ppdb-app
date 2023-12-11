@@ -42,7 +42,7 @@ Route::controller(DashboardController::class)->group(function () {
 Route::controller(RegistrationController::class)->group(function () {
   Route::get('/pendaftaran', 'index');
   Route::get('/pendaftaran/tahap/{code}', 'phase');
-  Route::get('/pendaftaran/jalur/{code}/{phase}', 'track');
+  Route::get('/pendaftaran/jalur/{code}', 'track');
   Route::get('/pendaftaran/bukti/{code}', 'proof');
 
   Route::get('/registration/get-schedules', 'getSchedules');

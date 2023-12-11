@@ -1,6 +1,6 @@
 <form id="formSchoolRegister" action="/registration/{{ $code }}/register" method="post" enctype="multipart/form-data">
   @csrf
-  <input id="phaseCode" name="phaseCode" type="hidden" value="{{ $phaseCode }}" />
+  <input id="phaseCode" name="phaseCode" type="hidden" value="{{ $phase }}" />
   <div class="card">
     <div class="card-header border-bottom">
       <h4 class="card-title">Pendaftaran <span id="schoolType">{{ $typeSchool }}</span> Jalur <span id="trackType">{{ $track }}</span></h4>

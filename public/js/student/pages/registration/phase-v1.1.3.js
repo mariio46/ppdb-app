@@ -73,10 +73,10 @@ $(function() {
         tabList.append('<h4>SMA</h4>');
       }
       data.sma.forEach(sma => {
-        let abb = 'sma' + sma.jalur.replace(/ +/g, "");
+        let abb = 'sma' + sma.track.replace(/ +/g, "");
 
-        var smaTab = generateTabListHtml(n == 0, abb, sma.code, sma.jalur);
-        var tab = generateTabContentHtml(n == 0, abb, sma.jalur, sma.code, sma.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, code);
+        var smaTab = generateTabListHtml(n == 0, abb, sma.code, sma.track);
+        var tab = generateTabContentHtml(n == 0, abb, sma.track, sma.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, sma.slug);
 
         tabList.append(smaTab);
         tabContent.append(tab);
@@ -87,10 +87,10 @@ $(function() {
         tabList.append('<h4 class="mt-2">SMK</h4>');
       }
       data.smk.forEach(smk => {
-        let abb = 'smk' + smk.jalur.replace(/ +/g, "");
+        let abb = 'smk' + smk.track.replace(/ +/g, "");
 
-        var smkTab = generateTabListHtml(n == 0, abb, smk.code, smk.jalur);
-        var tab = generateTabContentHtml(n == 0, abb, smk.jalur, smk.code, smk.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, code);
+        var smkTab = generateTabListHtml(n == 0, abb, smk.code, smk.track);
+        var tab = generateTabContentHtml(n == 0, abb, smk.track, smk.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, smk.slug);
 
         tabList.append(smkTab);
         tabContent.append(tab);
@@ -98,7 +98,7 @@ $(function() {
       });
     },
     error: function(xhr, status, error) {
-      console.error('Gagal mengambil data:', status, error);
+      console.error('Failed to get data.', status, error);
     }
   });
 
@@ -130,8 +130,7 @@ $(function() {
     </li>`;
   }
 
-  function generateTabContentHtml(n, abb, track, code, body, sdate, smonth, edate, emonth, eyear, isNotExpired, slug) {
-    // slug = phase slug
+  function generateTabContentHtml(n, abb, track, body, sdate, smonth, edate, emonth, eyear, isNotExpired, slug) {
     return `
     <div class="tab-pane ${n ? 'active' : ''}" id="reg${abb}" role="tabpanel" aria-labelledby="${abb}" aria-expanded="${n ? 'true' : ''}">
       <div class="card">
@@ -144,7 +143,7 @@ $(function() {
           <div class="d-flex align-items-center">
             <p class="text-warning mb-0 me-auto">Jadwal: ${sdate} ${months[smonth]} - ${edate} ${months[emonth]} ${eyear}</p>
             
-            ${isNotExpired ? `<a href="/pendaftaran/jalur/${code}/${slug}" class="btn btn-success">Daftar jalur ini</a>` : `<button class="btn btn-outline-secondary disabled">Daftar jalur ini</button>`}
+            ${isNotExpired ? `<a href="/pendaftaran/jalur/${slug}" class="btn btn-success">Daftar jalur ini</a>` : `<button class="btn btn-outline-secondary disabled">Daftar jalur ini</button>`}
           </div>
         </div>
       </div>
