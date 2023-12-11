@@ -408,5 +408,5 @@
 @endsection
 
 @push('scripts')
-  <script src="/js/student/pages/dashboard/index.js"></script>
+  <script src="/js/student/pages/dashboard/index-v1.0.1.js"></script>
 @endpush

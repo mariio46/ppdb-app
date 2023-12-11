@@ -42,9 +42,11 @@ Route::controller(DashboardController::class)->group(function () {
 Route::controller(RegistrationController::class)->group(function () {
   Route::get('/pendaftaran', 'index');
   Route::get('/pendaftaran/tahap/{code}', 'phase');
-  Route::get('/pendaftaran/jalur/{code}/{phase}', 'track');
+  Route::get('/pendaftaran/jalur/{code}', 'track');
+  Route::get('/pendaftaran/bukti/{phaseCode}', 'proof');
 
   Route::get('/registration/get-schedules', 'getSchedules');
+  Route::get('/registration/get-data/{phase}', 'getDataByPhase');
   Route::get('/registration/get-schedule-by-phase-code/{code}', 'getScheduleByPhaseCode');
   Route::post('/registration/{trackCode}/register', 'postSchoolRegistration');
 });

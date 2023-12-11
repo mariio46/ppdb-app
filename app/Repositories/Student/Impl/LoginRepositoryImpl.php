@@ -16,7 +16,6 @@ class LoginRepositoryImpl implements LoginRepository
   {
     $result = [];
 
-    // authenticating: DUMMY DATA
     $authenticate = $this->loginModel->login($nisn, $password);
 
     if ($authenticate->get('code') == 200) {
@@ -26,6 +25,7 @@ class LoginRepositoryImpl implements LoginRepository
         'stu_nisn'          => data_get($authenticate, 'data.nisn'),
         'stu_school'        => data_get($authenticate, 'data.school'),
         'stu_status_regis'  => data_get($authenticate, 'data.regis_status' == 'n' ? false : true),
+        'stu_is_locked'     => data_get($authenticate, 'data.locked' == 'n' ? false : true),
         'is_login'          => true
       ]);
 

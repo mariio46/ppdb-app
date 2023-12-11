@@ -17,7 +17,8 @@ class LoginModel
           "name"          => "Freya Jayawardana",
           "nisn"          => "0123456789",
           "school"        => "SMP Negeri 2 Sukamaju",
-          "regis_status"  => 'n'
+          "regis_status"  => 'n',
+          "locked"        => 'n'
         ]
       ];
     } else if ($nisn == '0123456789' && $password == 'server') {

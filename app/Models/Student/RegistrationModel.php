@@ -117,14 +117,18 @@ class RegistrationModel
       . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
   ];
 
+  private $p1 = ['start' => '2023-11-01', 'end' => '2023-11-30'];
+  private $p2 = ['start' => '2023-12-01', 'end' => '2023-12-30'];
+  private $p3 = ['start' => '2024-01-01', 'end' => '2024-01-30'];
+
   public function getSchedules(): array
   {
     return [
       [
-        'code'  => Crypt::encryptString('1'),
+        'code'  => Crypt::encryptString(json_encode(['phase' => '1'])),
         'phase' => '1',
-        'start' => "2023-12-01",
-        'end'   => "2023-12-31",
+        'start' => $this->p1['start'],
+        'end'   => $this->p1['end'],
         'sma'   => [
           ['jalur' => 'Boarding School']
         ],
@@ -138,10 +142,10 @@ class RegistrationModel
         ]
       ],
       [
-        'code'  => Crypt::encryptString('2'),
+        'code'  => Crypt::encryptString(json_encode(['phase' => '2'])),
         'phase' => '2',
-        'start' => "2023-12-01",
-        'end'   => "2023-12-31",
+        'start' => $this->p2['start'],
+        'end'   => $this->p2['end'],
         'sma'   => [
           ['jalur' => 'Afirmasi'],
           ['jalur' => 'Perpindahan Tugas Orang Tua'],
@@ -154,10 +158,10 @@ class RegistrationModel
         ]
       ],
       [
-        'code'  => Crypt::encryptString('3'),
+        'code'  => Crypt::encryptString(json_encode(['phase' => '3'])),
         'phase' => '3',
-        'start' => "2023-12-01",
-        'end'   => "2023-12-31",
+        'start' => $this->p3['start'],
+        'end'   => $this->p3['end'],
         'sma'   => [
           ['jalur' => 'Zonasi']
         ],
@@ -169,11 +173,13 @@ class RegistrationModel
   public function getScheduleByPhaseCode(string $code): array
   {
     $data = [];
-    if (Crypt::decryptString($code) == '1') {
-      $data = [
+    $phase = json_decode(Crypt::decryptString($code))->phase;
+
+    if ($phase == '1') {
+      $get = [
         'phase' => '1',
-        'start' => "2023-12-01",
-        'end'   => "2023-12-31",
+        'start' => $this->p1['start'],
+        'end'   => $this->p1['end'],
         'sma'   => [
           [
             'slug'  => '129a6140e8b4198c8d0d54098ff29fdfaff8b17169c051de5728beccfa15972f',
@@ -221,11 +227,11 @@ class RegistrationModel
           ]
         ]
       ];
-    } elseif (Crypt::decryptString($code) == '2') {
-      $data = [
+    } elseif ($phase == '2') {
+      $get = [
         'phase' => '2',
-        'start' => "2023-12-01",
-        'end'   => "2023-12-31",
+        'start' => $this->p2['start'],
+        'end'   => $this->p2['end'],
         'sma'   => [
           [
             'slug'  => '3a49138015e4c0df7d4125be81e7c6b916fdbc84bcbb093098043bbf0f33651c',
@@ -267,11 +273,11 @@ class RegistrationModel
           ],
         ]
       ];
-    } elseif (Crypt::decryptString($code) == '3') {
-      $data = [
+    } elseif ($phase == '3') {
+      $get = [
         'phase' => '3',
-        'start' => "2023-12-01",
-        'end'   => "2023-12-31",
+        'start' => $this->p3['start'],
+        'end'   => $this->p3['end'],
         'sma'   => [
           [
             'slug' => '32bc4b1af00d5c18d13eca61c77b0e62c04f46797444b7d51f36a4b1798e6843',
@@ -284,8 +290,35 @@ class RegistrationModel
       ];
     }
 
-    $data['time_start'] = '00:00'; // format tt:mm
-    $data['time_end'] = '23:59';
+    $get['time_start'] = '00:00'; // format tt:mm
+    $get['time_end'] = '23:59';
+
+    // 
+    $data = [
+      'phase'       => $get['phase'],
+      'start'       => $get['start'],
+      'end'         => $get['end'],
+      'time_start'  => $get['time_start'],
+      'time_end'    => $get['time_end'],
+    ];
+
+    foreach ($get['sma'] as $sma) {
+      $data['sma'][] = [
+        'slug'  => Crypt::encryptString(json_encode(['phase' => $get['phase'], 'track' => $sma['code']])),
+        'code'  => $sma['code'],
+        'track' => $sma['jalur'],
+        'info'  => $sma['info']
+      ];
+    }
+
+    foreach ($get['smk'] as $smk) {
+      $data['smk'][] = [
+        'slug'  => Crypt::encryptString(json_encode(['phase' => $get['phase'], 'track' => $smk['code']])),
+        'code'  => $smk['code'],
+        'track' => $smk['jalur'],
+        'info'  => $smk['info']
+      ];
+    }
 
     return $data;
   }
@@ -296,5 +329,29 @@ class RegistrationModel
       'success' => true,
     ];
     return $result;
+  }
+
+  public function getRegistrationDataByPhase(string $phase): array
+  {
+    $studentId = session()->get('stu_id');
+
+    // get student registration data (using student id) by phase
+    // case AA
+    $case = 'AG';
+
+    $get = [ // case AB
+      'phase'         => '1',
+      'track'         => $case,
+      'school1'       => 'SMA Negeri 1 Makassar',
+      'department1'   => 'Teknik Komputer dan Jaringan (TKJ)',
+      'school2'       => 'SMA Negeri 2 Makassar',
+      'department2'   => 'Otomotif',
+      'school3'       => 'SMA Negeri 1 Selayar',
+      'department3'   => 'Tata Boga',
+      'school_verif'  => 'SMA Negeri 1 Makassar',
+      'end_verif'     => '2023-12-31'
+    ];
+
+    return $get;
   }
 }
