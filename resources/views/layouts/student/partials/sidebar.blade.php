@@ -120,9 +120,9 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link @if ($path1 == 'profil') active @endif" href="/profil">
+      <a class="nav-link @if ($path1 == 'faq') active @endif" href="/faq">
         <i class="bottom-navbar-icon" data-feather="file"></i>
-        <span class="bottom-navbar-label">Profil</span>
+        <span class="bottom-navbar-label">FAQ</span>
       </a>
     </li>
   </ul>
