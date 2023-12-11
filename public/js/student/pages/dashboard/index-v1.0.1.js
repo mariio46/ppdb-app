@@ -23,7 +23,7 @@ $(document).ready(function() {
       $('#selfSubDistrict').text(data.kecamatan);
       $('#selfVillage').text(data.desa);
       $('#selfHamlet').text(data.dusun);
-      $('#selfRtRw').text(data.rt + ' / ' + data.rw);
+      $('#selfRtRw').text(data.rtrw);
       $('#selfAddress').text(data.alamat_jalan);
       $('#selfMothersName').text(data.nama_ibu); // parent's data
       $('#selfMothersPhone').text(data.nomor_ibu);
