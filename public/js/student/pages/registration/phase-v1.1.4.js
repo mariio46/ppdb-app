@@ -131,6 +131,16 @@ $(function() {
   }
 
   function generateTabContentHtml(n, abb, track, body, sdate, smonth, edate, emonth, eyear, isNotExpired, slug) {
+    let btn = '';
+
+    if (isRegis === 'n') {
+      if (isNotExpired) {
+        btn = `<a href="/pendaftaran/jalur/${slug}" class="btn btn-success">Daftar jalur ini</a>`;
+      } else {
+        btn = `<button class="btn btn-outline-secondary disabled">Daftar jalur ini</button>`;
+      }
+    }
+
     return `
     <div class="tab-pane ${n ? 'active' : ''}" id="reg${abb}" role="tabpanel" aria-labelledby="${abb}" aria-expanded="${n ? 'true' : ''}">
       <div class="card">
@@ -143,7 +153,7 @@ $(function() {
           <div class="d-flex align-items-center">
             <p class="text-warning mb-0 me-auto">Jadwal: ${sdate} ${months[smonth]} - ${edate} ${months[emonth]} ${eyear}</p>
             
-            ${isNotExpired ? `<a href="/pendaftaran/jalur/${slug}" class="btn btn-success">Daftar jalur ini</a>` : `<button class="btn btn-outline-secondary disabled">Daftar jalur ini</button>`}
+            ${btn}
           </div>
         </div>
       </div>

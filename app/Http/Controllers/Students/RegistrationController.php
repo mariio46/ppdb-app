@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Students;
 use App\Http\Controllers\Controller;
 use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Crypt;
@@ -40,36 +41,48 @@ class RegistrationController extends Controller
     return response()->view('student.registration.index');
   }
 
+  /**
+   * This page contains a list of phase tracks based on the phase code.
+   */
   public function phase(string $code): Response
   {
     $data = [
       'phase_code'  => $code,
-      'phase'       => Crypt::decryptString($code)
+      'phase'       => json_decode(Crypt::decryptString($code))->phase
     ];
 
     return response()->view('student.registration.phase', $data);
   }
 
-  public function track(string $code): Response
+  public function track(string $code): Response|RedirectResponse
   {
     $decCode = json_decode(Crypt::decryptString($code));
-    $data = [
-      'code'      => $decCode->track,
-      'track'     => $this->tracks[$decCode->track],
-      'phaseCode' => Crypt::encryptString($decCode->phase),
-      'phase'     => $decCode->phase
-    ];
+    $phaseCode = Crypt::encryptString(json_encode(['phase' => $decCode->phase]));
 
-    return response()->view('student.registration.track', $data);
+    if (session()->get('stu_status_regis')) {
+      return redirect()->to('/pendaftaran/tahap/' . $phaseCode);
+    } else {
+      $data = [
+        'code'      => $decCode->track,
+        'track'     => $this->tracks[$decCode->track],
+        'phaseCode' => $phaseCode,
+        'phase'     => $decCode->phase
+      ];
+
+      return response()->view('student.registration.track', $data);
+    }
   }
 
-  public function proof(string $code): Response
+  /**
+   * untuk kebutuhan data disini, data yang diperlukan adalah data tahap dan id siswa.
+   * ketika halaman bukti pendaftaran di akses, maka yang diminta sebenarnya adalah data pendaftaran
+   * siswa berdasarkan tahap ke berapa yang aktif.
+   */
+  public function proof(string $phaseCode): Response
   {
-    $decCode = json_decode(Crypt::decryptString($code));
+    $decCode = json_decode(Crypt::decryptString($phaseCode));
     $data = [
-      'code'      => $decCode->track,
-      'track'     => $this->tracks[$decCode->track],
-      'phaseCode' => Crypt::encryptString($decCode->phase),
+      'phaseCode' => $phaseCode,
       'phase'     => $decCode->phase
     ];
 
@@ -80,13 +93,18 @@ class RegistrationController extends Controller
   // FUNCTIONS
   public function postSchoolRegistration(string $trackCode, Request $request)
   {
-    $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
+    $code = Crypt::encryptString(json_encode(['phase' => $request->get('phaseCode')]));
 
-    if ($save['success']) {
-      $code = Crypt::encryptString(json_encode(['phase' => $request->get('phaseCode'), 'track' => $trackCode]));
-      return redirect()->to("/pendaftaran/bukti/$code");
+    if (session()->get('stu_status_regis')) {
+      return redirect()->to("/pendaftaran");
     } else {
-      return redirect()->back();
+      $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
+
+      if ($save['success']) {
+        return redirect()->to("/pendaftaran/bukti/$code");
+      } else {
+        return redirect()->back();
+      }
     }
   }
 

@@ -2,6 +2,7 @@ $(function() {
   'use strict';
 
   var cardContainer = $('#cardContainer'),
+    regisProofBtn = $('#registrationProofButton'),
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
     colors = ['primary', 'success', 'warning', 'info', 'danger'];
 
@@ -10,8 +11,6 @@ $(function() {
     method: 'get',
     dataType: 'json',
     success: function(schedules) {
-      console.log(schedules);
-
       displayDataInCards(schedules);
     },
     error: function(xhr, status, error) {
@@ -34,6 +33,7 @@ $(function() {
         case 'now':
           btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.code}">Lihat Tahap ${schedule.phase}</a>`;
           cdr = 'now';
+          regisProofBtn.attr('href', `/pendaftaran/bukti/${schedule.code}`);
           break;
         case 'post':
           btnHtml = `<button class="btn btn-outline-secondary disabled">Tahap ${schedule.phase} Sudah Ditutup</button>`;
