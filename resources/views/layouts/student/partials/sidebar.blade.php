@@ -56,6 +56,12 @@
           <span class="menu-title text-truncate">FAQ</span>
         </a>
       </li>
+      <li class="nav-item my-1">
+        <a class="d-flex align-items-center text-danger" href="/keluar">
+          <i data-feather="log-out"></i>
+          <span class="menu-title text-truncate">Keluar</span>
+        </a>
+      </li>
     </ul>
   </div>
 </div>

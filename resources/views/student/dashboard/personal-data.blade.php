@@ -5,6 +5,22 @@
   <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
 @endsection
 
+@section('styles')
+  <style>
+    .custom-aspect-ratio {
+      position: relative;
+      width: 120px;
+      height: 160px;
+    }
+
+    .custom-aspect-ratio img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+@endsection
+
 @section('content')
   <div class="content-header row">
     <div class="content-header-left col-md-9 col-12 mb-2">
@@ -47,8 +63,8 @@
 
         <div class="d-md-flex align-items-end">
           <div class="d-flex justify-content-center mb-1">
-            <div style="min-width: 100px;">
-              <img class="rounded object-fit-cover ratio ratio-4x3" id="profilePreview" src="/app-assets/images/profile.jpg" alt="profile image" height="150">
+            <div class="custom-aspect-ratio">
+              <img class="rounded" id="profilePreview" src="/app-assets/images/base-profile.png" alt="profile image" height="150">
             </div>
           </div>
           <div class="ms-md-1">
@@ -67,8 +83,8 @@
                       </div>
                       <div class="modal-body mb-2">
                         <div class="d-flex justify-content-center mb-1">
-                          <div style="min-width: 100px;">
-                            <img class="rounded object-fit-cover ratio ratio-4x3" id="profilePicturePrev" src="/app-assets/images/profile.jpg" alt="profile image" height="150">
+                          <div class="custom-aspect-ratio">
+                            <img class="rounded" id="profilePicturePrev" src="/app-assets/images/base-profile.png" alt="profile image">
                           </div>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -79,7 +95,7 @@
                             <div class="d-flex justify-content-center">
                               <label class="btn btn-sm btn-outline-primary" for="profilePictureInput">Pilih Foto</label>
                               {{-- <input id="profilePictureInput" name="profilePictureInput" type="file" hidden accept="image/png, image/jpg, image/jpeg" required> --}}
-                              <input id="profilePictureInput" name="profilePictureInput" type="file" hidden required>
+                              <input id="profilePictureInput" name="profilePictureInput" type="file" accept="image/png, image/jpg, image/jpeg" hidden required>
 
                               <x-button class="btn-sm ms-1" type="submit" color="primary">Simpan</x-button>
                             </div>
@@ -292,5 +308,5 @@
   <script>
     var profilePicture = "{{ session()->get('stu-picture') }}";
   </script>
-  <script src="/js/student/pages/dashboard/personal-data-v1.1.0.js"></script>
+  <script src="/js/student/pages/dashboard/personal-data-v1.1.1.js"></script>
 @endpush
