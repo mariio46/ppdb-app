@@ -35,6 +35,8 @@ class DashboardModel
       "nomor_ayah"      => "081234567890",
       "nama_wali"       => "Fulanwati binti Fulanwan",
       "nomor_wali"      => "081234567890",
+      "pas_foto"        => "/app-assets/images/profile.png",
+      // "pas_foto"        => "",
       "pertama_login"   => "0", // pertama kali login = 1, sudah pernah login = 0
       "kunci"           => "0"
     ];
@@ -187,7 +189,10 @@ class DashboardModel
 
     $result = [
       'success' => true,
-      'image' => $image
+      'image' => $image,
+      'data' => [
+        'profile' => '/app-assets/images/profile.png'
+      ]
     ];
 
     return $result;

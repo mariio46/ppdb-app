@@ -24,6 +24,8 @@ class LoginRepositoryImpl implements LoginRepository
         'stu_name'          => data_get($authenticate, 'data.name'),
         'stu_nisn'          => data_get($authenticate, 'data.nisn'),
         'stu_school'        => data_get($authenticate, 'data.school'),
+        'stu_gender'        => data_get($authenticate, 'data.gender'),
+        'stu_profile_img'   => data_get($authenticate, 'data.photo'),
         'stu_status_regis'  => data_get($authenticate, 'data.regis_status' == 'n' ? false : true),
         'stu_is_locked'     => data_get($authenticate, 'data.locked' == 'n' ? false : true),
         'is_login'          => true

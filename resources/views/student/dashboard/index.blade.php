@@ -77,7 +77,7 @@
               {{-- profile picture  --}}
               <div class="profile-img-container d-flex align-items-center">
                 <div class="profile-img">
-                  <img class="rounded img-fluid" src="/app-assets/images/profile.jpg" alt="Card image" />
+                  <img class="rounded img-fluid" id="profileImage" src="" alt="Profile image" />
                 </div>
               </div>
             </div>
@@ -408,5 +408,5 @@
 @endsection
 
 @push('scripts')
-  <script src="/js/student/pages/dashboard/index-v1.0.1.js"></script>
+  <script src="/js/student/pages/dashboard/index-v1.0.2.js"></script>
 @endpush

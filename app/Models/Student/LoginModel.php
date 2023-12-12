@@ -17,6 +17,8 @@ class LoginModel
           "name"          => "Freya Jayawardana",
           "nisn"          => "0123456789",
           "school"        => "SMP Negeri 2 Sukamaju",
+          "gender"        => 'p',
+          "photo"         => "/app-assets/images/profile.png",
           "regis_status"  => 'n',
           "locked"        => 'n'
         ]

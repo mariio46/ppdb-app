@@ -330,6 +330,8 @@ $(function() {
     success: function(studentData) {
       date = new Date(studentData.tanggal_lahir);
 
+      $('#profilePreview, #profilePicturePrev').attr('src', studentData.pas_foto || '/app-assets/images/base-profile.png');
+
       $('#nik').val(studentData.nik);
       $('#gender').val(studentData.jenis_kelamin).change();
       $('#birthPlace').val(studentData.tempat_lahir);
@@ -380,7 +382,7 @@ $(function() {
   // when modal dismiss
   $("#uploadProfilePictureModal").on("hidden.bs.modal", function () {
     profilePictureInput.val('');
-    profilePicturePreview.attr("src", profilePicture ? profilePicture : "/app-assets/images/profile.jpg");
+    profilePicturePreview.attr("src", profilePicture ? profilePicture : "/app-assets/images/base-profile.png");
     $('#profilePictureErrorMsg').css("display", "none");
   });
 });

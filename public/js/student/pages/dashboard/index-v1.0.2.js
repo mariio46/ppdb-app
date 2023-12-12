@@ -11,6 +11,7 @@ $(document).ready(function() {
         $('#firstTimeLoginModal').modal('show');
       }
       
+      $('#profileImage').attr('src', data.pas_foto || '/app-assets/images/base-profile.png'); // profile image
       $('#selfNik').text(data.nik); // personal's data
       $('#selfFromSchool').text(data.asal_sekolah);
       $('#selfGender').text((data.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');

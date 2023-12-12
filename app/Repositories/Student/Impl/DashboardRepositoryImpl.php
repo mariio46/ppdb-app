@@ -100,6 +100,7 @@ class DashboardRepositoryImpl implements DashboardRepository
     $update = $this->dashboardModel->postUpdateStudentProfile($request);
 
     if ($update['success']) {
+      session()->put('stu_profile_img', $update['data']['profile']);
       return collect(['success' => true, "code" => 200, "message" => "success"]);
     } else {
       return collect(['success' => false, "code" => 400, "message" => "failed"]);
