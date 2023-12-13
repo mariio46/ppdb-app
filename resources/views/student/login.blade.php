@@ -73,7 +73,7 @@
                 {{-- /register link --}}
 
                 <div class="d-flex justify-content-end align-items-center fixed-bottom me-2 mb-1">
-                  <p class="mb-0"><a href="https://labkraf.id/" target="_blank">labkraf.id</a> _-heart-fill class="text-danger" /> v-2.0.0</p>
+                  <p class="mb-0"><a href="https://labkraf.id/" target="_blank">labkraf.id</a> <x-tabler-heart-filled class="text-danger" /> v-2.0.0</p>
                 </div>
               </div>
             </div>

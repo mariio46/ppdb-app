@@ -3,6 +3,7 @@ $(function() {
 
   var schoolType = $('#schoolType'),
     chosenTrack = $('#chosenTrack'),
+    addDataSect = $('#additionalDataSect'),
     chosenSchoolSect = $('#chosenSchoolSect'),
     schoolVerif = $('#schoolVerif'),
     endVerif = $('#endVerif'),
@@ -49,6 +50,27 @@ $(function() {
       schoolType.text(j === 'A' ? 'SMA' : 'SMK');
       chosenTrack.text(tracks[t]);
 
+      if (t == 'AA' || t == 'KA') { // if the track is sma or smk affirmation
+        let a = [{"label" : "Jenis Afirmasi", "value" : data.affirmation_type}];
+
+        if (data.affirmation_type == 'pkh') {
+          a.push({"label" : "Nomor PKH", "value" : data.affirmation_number});
+        }
+
+        addDataSect.append(addDataHtml(a));
+      }
+
+      if (t == 'AE' || t == 'KE') {
+        let a = [
+          {"label" : "Jenis Prestasi", "value" : data.achievement_type},
+          {"label" : "Tingkatan Prestasi", "value" : data.achievement_level},
+          {"label" : "Juara", "value" : data.achievement_champ},
+          {"label" : "Nama Prestasi", "value" : data.achievement_name}
+        ];
+
+        addDataSect.append(addDataHtml(a));
+      }
+
       chosenSchoolSect.html('');
       if (j == 'A') { // if the type of school is high school (SMA)
         if (t == 'AC' || t == 'AG') { // if the track is teacher's child or boarding school
@@ -71,6 +93,29 @@ $(function() {
       console.error('Failed to get data.', status, error);
     }
   });
+
+  function addDataHtml(arrayData) {
+    let data = '';
+    arrayData.forEach(d => {
+      data +=  `
+      <div class="col-md-6 col-12">
+        <div class="d-flex align-items-center mb-1">
+          <div style="width: 35%;">${d.label}</div>
+          <div class="mx-1">:</div>
+          <div style="width: 60%;">${d.value}</div>
+        </div>
+      </div>`;
+    });
+
+    return `
+    <div class="card-body border-top">
+      <h5 class="mb-2">Data Penunjang</h5>
+      <div class="row">
+        ${data}
+      </div>
+    </div>
+    `;
+  }
 
   function chosenSchoolHtml(schoolName, n = '', withDept = 'n', deptName = '') {
     let dept = (withDept == 'y') ?

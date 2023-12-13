@@ -66,6 +66,12 @@
             </div>
           </div>
 
+          <div id="additionalDataSect"></div>
+          {{-- <div class="card-body border-top">
+            <h5>Data Berkas</h5>
+
+          </div> --}}
+
           <div class="card-body border-top">
             <h4 class="mb-2">Sekolah Pilihan</h4>
 
@@ -106,5 +112,5 @@
   <script>
     var phase = '{{ $phase }}';
   </script>
-  <script src="/js/student/pages/registration/proof-v1.0.0.js"></script>
+  <script src="/js/student/pages/registration/proof-v1.0.1.js"></script>
 @endpush
