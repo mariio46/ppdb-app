@@ -19,6 +19,7 @@ class LoginModel
           "school"        => "SMP Negeri 2 Sukamaju",
           "gender"        => 'p',
           "photo"         => "/app-assets/images/profile.png",
+          "token"         => "token_here",
           "regis_status"  => 'n',
           "locked"        => 'n'
         ]

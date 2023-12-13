@@ -29,7 +29,7 @@
     {{-- icon and header --}}
     <div class="d-flex align-items-center">
       <div class="avatar avatar-tag bg-light-primary me-1" style="width: 3.5rem; height: 3.5rem;">
-        <x-bi-pen />
+        <x-tabler-pencil-minus />
       </div>
       <div>
         <h4 class="mb-0"><span class="d-none d-md-block">Frequently Asked Questions</span><span class="d-sm-none">FAQ</span></h4>

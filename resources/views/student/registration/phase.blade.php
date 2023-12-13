@@ -66,5 +66,5 @@
     var code = '{{ $phase_code ?? 0 }}',
       isRegis = "{{ session()->get('stu_status_regis') ? 'y' : 'n' }}";
   </script>
-  <script src="/js/student/pages/registration/phase-v1.1.4.js"></script>
+  <script src="/js/student/pages/registration/phase-v1.1.5.js"></script>
 @endpush

@@ -27,7 +27,7 @@
 
         {{-- Custom CSS --}}
         <link type="text/css" href="/css/style.css" rel="stylesheet">
-        <link type="text/css" href="/app-assets/css/custom-style.css" rel="stylesheet">
+        <link type="text/css" href="/css/student/style.css" rel="stylesheet">
 
         <!-- Vite Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -47,6 +47,7 @@
         {{-- Theme JS --}}
         <script src="/app-assets/js/core/app-menu.min.js"></script>
         <script src="/app-assets/js/core/app.min.js"></script>
+        <script src="/js/student/global.js"></script>
 
         @stack('scripts')
 
