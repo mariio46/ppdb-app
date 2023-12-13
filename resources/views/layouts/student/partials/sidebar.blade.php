@@ -6,7 +6,7 @@
                     {{-- <span class="brand-logo"> --}}
                     {{-- disini logo --}}
                     {{-- </span> --}}
-                    <img class="img-fluid h-80" src="/app-assets/images/logo-ppdb-sulsel-full.png" alt="Logo PPDB">
+                    <img class="img-fluid h-80" src="/img/logo-ppdb-sulsel-full.png" alt="Logo PPDB">
                     {{-- <h2 class="brand-text">{{ config('app.name') }}</h2> --}}
                 </a>
             </li>
@@ -14,7 +14,7 @@
     </div>
     <div class="shadow-bottom"></div>
     {{-- with background --}}
-    <div class="main-menu-content" style="background-image: url('/app-assets/images/banner02.png'); background-repeat: no-repeat; background-position: bottom center; background-size: contain;">
+    <div class="main-menu-content" style="background-image: url('/img/banner02.png'); background-repeat: no-repeat; background-position: bottom center; background-size: contain;">
         {{-- with no background --}}
         {{-- <div class="main-menu-content"> --}}
         <ul class="navigation navigation-main mt-2" id="main-menu-navigation" data-menu="menu-navigation">
