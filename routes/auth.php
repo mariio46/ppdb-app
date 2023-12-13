@@ -40,6 +40,7 @@ Route::controller(StudentController::class)->group(function () {
 
 Route::controller(SchoolController::class)->group(function () {
     Route::get('sekolah', 'index')->name('sekolah.index');
+    Route::get('sekolah/create', 'create')->name('sekolah.create');
 });
 
 Route::controller(OperatorController::class)->group(function () {
