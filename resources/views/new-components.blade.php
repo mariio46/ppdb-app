@@ -63,15 +63,12 @@
                             {{-- buttons with text & icon --}}
                             <div class="demo-inline-spacing">
                                 <x-button class="d-flex align-items-center" variant="default" color="primary">
-                                    <x-bi-house style="margin-right: 5px" />
                                     Primary
                                 </x-button>
                                 <x-button variant="outline" color="secondary">
-                                    <x-bi-house style="margin-bottom: 5px" />
                                     Secondary
                                 </x-button>
                                 <x-button variant="flat" color="success">
-                                    <x-bi-house style="margin-bottom: 5px" />
                                     Success
                                 </x-button>
                             </div>
@@ -79,13 +76,10 @@
                             {{-- buttons with only icon --}}
                             <div class="demo-inline-spacing">
                                 <x-button variant="default" color="primary" withIcon>
-                                    <x-bi-house />
                                 </x-button>
                                 <x-button class="rounded-circle" variant="outline" color="secondary" withIcon>
-                                    <x-bi-house />
                                 </x-button>
                                 <x-button variant="flat" color="success" withIcon>
-                                    <x-bi-house />
                                 </x-button>
                             </div>
                         </div>
@@ -128,31 +122,24 @@
                             {{-- badges with text & icon --}}
                             <div class="demo-inline-spacing">
                                 <x-badge variant="default" color="primary">
-                                    <x-bi-house class="me-25" />
                                     Primary
                                 </x-badge>
                                 <x-badge variant="default" color="secondary">
-                                    <x-bi-house class="me-25" />
                                     Secondary
                                 </x-badge>
                                 <x-badge variant="default" color="success">
-                                    <x-bi-house class="me-25" />
                                     Success
                                 </x-badge>
                                 <x-badge variant="light" color="danger">
-                                    <x-bi-house class="me-25" />
                                     Danger
                                 </x-badge>
                                 <x-badge variant="light" color="warning">
-                                    <x-bi-house class="me-25" />
                                     Warning
                                 </x-badge>
                                 <x-badge variant="light" color="info">
-                                    <x-bi-house class="me-25" />
                                     Info
                                 </x-badge>
                                 <x-badge variant="default" color="dark">
-                                    <x-bi-house class="me-25" />
                                     Dark
                                 </x-badge>
                             </div>
@@ -202,6 +189,60 @@
                                     </optgroup>
                                 </x-select>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modals-variant">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <p class="card-title">Modals</p>
+                        </div>
+                        <div class="card-body">
+                            <x-button data-bs-toggle="modal" data-bs-target="#default" type="button" variant="default" color="primary">Default Modal</x-button>
+
+                            {{-- <x-modal>
+                                <x-modal.header>
+                                    <h4 class="modal-title" id="myModalLabel1">Hello this is modal</h4>
+                                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                                </x-modal.header>
+                                <x-modal.body>
+                                    <h5 class="text-center">This modal is from component</h5>
+                                    <p>
+                                        Oat cake ice cream candy chocolate cake chocolate cake cotton candy dragée apple pie. Brownie
+                                        carrot cake candy canes bonbon fruitcake topping halvah. Cake sweet roll cake cheesecake cookie
+                                        chocolate cake liquorice.
+                                    </p>
+                                </x-modal.body>
+                                <x-modal.footer>
+                                    <x-button data-bs-dismiss="modal" type="button">Save</x-button>
+                                </x-modal.footer>
+                            </x-modal>
+                            <div class="modal fade" id="default" aria-labelledby="myModalLabel1" aria-hidden="true" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel1">Basic Modal</h4>
+                                            <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5>Check First Paragraph</h5>
+                                            <p>
+                                                Oat cake ice cream candy chocolate cake chocolate cake cotton candy dragée apple pie. Brownie
+                                                carrot cake candy canes bonbon fruitcake topping halvah. Cake sweet roll cake cheesecake cookie
+                                                chocolate cake liquorice.
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" data-bs-dismiss="modal" type="button">Accept</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

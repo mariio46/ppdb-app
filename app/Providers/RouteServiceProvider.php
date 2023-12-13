@@ -33,7 +33,8 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')->group(base_path('routes/web.php')); // Student Route
 
-            Route::middleware(['auth'])->prefix('panel')->group(base_path('routes/auth.php')); // Has Role Route
+            Route::middleware(['web'])->prefix('panel')->group(base_path('routes/auth.php')); // Has Role Route
+            // , 'auth'
         });
     }
 }
