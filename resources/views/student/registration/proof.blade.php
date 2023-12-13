@@ -54,7 +54,7 @@
                   <tr>
                     <td class="col-auto px-0" style="width: 35%;">Jenis Kelamin</td>
                     <td class="col-auto">:</td>
-                    <td class="col-auto px-0" style="width: 60%;">?</td>
+                    <td class="col-auto px-0" style="width: 60%;">{{ session()->get('stu_gender') == 'l' ? 'Laki-laki' : 'Perempuan' }}</td>
                   </tr>
                   <tr>
                     <td class="col-auto px-0">Asal Sekolah</td>
