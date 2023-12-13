@@ -8,6 +8,8 @@ use App\Http\Controllers\Students\RegistrationController;
 use App\Http\Controllers\Students\SchoolController;
 use App\Http\Controllers\Students\StatusController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HasRole\LoginController;
 
 Route::get('/', HomeController::class)->name('home');
 
@@ -88,7 +90,7 @@ Route::group(['middleware' => 'student.auth'], function () {
   });
 });
 
-
+Route::get('login', [LoginController::class, 'index'])->name('login');
 // example
 Route::view('/component', 'component')->name('component');
 Route::view('/new-components', 'new-components')->name('new-components');
