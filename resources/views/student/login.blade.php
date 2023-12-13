@@ -34,7 +34,7 @@
                 @if ($errors->get('errorMsg') != null)
                   <div class="alert alert-danger alert-dismissible">
                     <div class="alert-body d-flex align-items-center">
-                      <x-bi-exclamation-triangle-fill class="me-50" />
+                      <x-tabler-alert-triangle-filled class="me-50" />
                       <span>{{ $errors->first() }}</span>
                     </div>
                     <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
@@ -73,7 +73,7 @@
                 {{-- /register link --}}
 
                 <div class="d-flex justify-content-end align-items-center fixed-bottom me-2 mb-1">
-                  <p class="mb-0"><a href="https://labkraf.id/" target="_blank">labkraf.id</a> <x-bi-heart-fill class="text-danger" /> v-2.0.0</p>
+                  <p class="mb-0"><a href="https://labkraf.id/" target="_blank">labkraf.id</a> _-heart-fill class="text-danger" /> v-2.0.0</p>
                 </div>
               </div>
             </div>

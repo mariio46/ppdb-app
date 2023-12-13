@@ -94,7 +94,7 @@
           </div>
 
           <div class="card-body border-top">
-            <x-button color="success" withIcon="true"><x-bi-printer /><span class="ms-1">Cetak Bukti Pendaftaran</span></x-button>
+            <x-button color="success" withIcon="true"><x-tabler-printer /><span class="ms-1">Cetak Bukti Pendaftaran</span></x-button>
           </div>
         </div>
       </div>

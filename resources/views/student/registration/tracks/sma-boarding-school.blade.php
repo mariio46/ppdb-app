@@ -9,67 +9,6 @@
     <input id="school1Name" name="school1Name" type="hidden">
   </div>
 
-  {{-- Modal --}}
-  {{-- <div class="modal fade modal-primary text-start" id="verifySchoolModal" aria-hidden="true" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Pilihan Sekolah</h5>
-          <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <h5>Data Diri</h5>
-          <table class="table table-borderless">
-            <tr>
-              <td class="col-auto px-0" style="width: 40%;">Nama Lengkap</td>
-              <td class="col-auto">:</td>
-              <td class="col auto px-0 fw-bold">{{ session()->get('stu_name') }}</td>
-            </tr>
-            <tr>
-              <td class="col-auto px-0">NISN</td>
-              <td class="col-auto">:</td>
-              <td class="col auto px-0 fw-bold">{{ session()->get('stu_nisn') }}</td>
-            </tr>
-            <tr>
-              <td class="col-auto px-0">Asal Sekolah</td>
-              <td class="col-auto">:</td>
-              <td class="col auto px-0 fw-bold">{{ session()->get('stu_school') }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="modal-body border-top">
-          <h5>Pendaftaran</h5>
-          <table class="table table-borderless">
-            <tr>
-              <td class="col-auto px-0" style="width: 40%;">Jenjang Pendidikan</td>
-              <td class="col-auto">:</td>
-              <td class="col auto px-0 fw-bold">SMA</td>
-            </tr>
-            <tr>
-              <td class="col-auto px-0">Jalur</td>
-              <td class="col-auto">:</td>
-              <td class="col auto px-0 fw-bold"><i>Boarding School</i></td>
-            </tr>
-          </table>
-        </div>
-        <div class="modal-body border-top">
-          <h5>Sekolah Pilihan</h5>
-          <table class="table table-borderless">
-            <tr>
-              <td class="col-auto px-0" style="width: 40%;">Pilihan</td>
-              <td class="col-auto">:</td>
-              <td class="col auto px-0 fw-bold"><span id="school1Show"></span></td>
-            </tr>
-          </table>
-
-        </div>
-        <div class="modal-footer">
-          <x-button class="float-end mb-1" id="btnSendRegistration" type="button" color="success" withIcon="true"><x-bi-check /> Kirim Pendaftaran</x-button>
-        </div>
-      </div>
-    </div>
-  </div> --}}
-
   <x-student.registration-modal modalLevel="SMA" modalTrack="Boarding School" multiSchool="false" withSchoolVerif="false"></x-student.registration-modal>
 @endsection
 

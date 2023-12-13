@@ -23,30 +23,30 @@
         <div class="card-body">
           <h5>Filter</h5>
           <div class="row">
-            <div class="col-md-5 col-10 mb-1 pe-1">
+            <div class="col-md-5 col-9 mb-1 pe-1">
               <x-select class="form-select select2 w-100" id="eduType" data-placeholder="Satuan Pendidikan" data-minimum-results-for-search="-1">
                 <option value=""></option>
                 <option value="SMA">SMA</option>
                 <option value="SMK">SMK</option>
               </x-select>
             </div>
-            <div class="col-md-1 col-2 ps-0">
-              <x-button class="w-100 btn-md" id="btnResetTypeFilter" type="button" style="padding: .7rem;" variant="outline" color="secondary">
+            <div class="col-md-1 col-3 ps-0">
+              <x-button class="w-100 btn-md" id="btnResetTypeFilter" type="button" variant="outline" color="secondary">
                 <span class="d-lg-block d-none">Reset</span>
-                <span class="d-lg-none"><x-bi-x /></span>
+                <span class="d-lg-none">&#10005;</span>
               </x-button>
             </div>
 
-            <div class="col-md-5 col-10 mb-1 pe-1">
+            <div class="col-md-5 col-9 mb-1 pe-1">
               <x-select class="form-select select2 w-100" id="city" data-placeholder="Kabupaten/Kota">
                 <option value=""></option>
               </x-select>
             </div>
 
-            <div class="col-md-1 col-2 ps-0">
-              <x-button class="w-100" id="btnResetCityFilter" type="button" style="padding: .7rem;" variant="outline" color="secondary">
+            <div class="col-md-1 col-3 ps-0">
+              <x-button class="w-100" id="btnResetCityFilter" type="button" variant="outline" color="secondary">
                 <span class="d-lg-block d-none">Reset</span>
-                <span class="d-lg-none"><x-bi-x /></span>
+                <span class="d-lg-none">&#10005;</span>
               </x-button>
             </div>
           </div>

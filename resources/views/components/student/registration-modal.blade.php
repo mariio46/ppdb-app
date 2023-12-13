@@ -105,7 +105,7 @@
         </div>
       @endif
       <div class="modal-footer">
-        <x-button class="float-end mb-1" id="btnSendRegistration" type="button" color="success" withIcon="true"><x-bi-check /> Kirim Pendaftaran</x-button>
+        <x-button class="float-end mb-1" id="btnSendRegistration" type="button" color="success" withIcon="true"><x-tabler-check /> Kirim Pendaftaran</x-button>
       </div>
     </div>
   </div>

@@ -5,7 +5,7 @@
     <div class="col-12">
       @if (!session()->get('stu_is_locked'))
         <div class="alert alert-danger p-1">
-          <p class="text-center"><x-bi-shield-lock /></p>
+          <p class="text-center"><x-tabler-shield-lock /></p>
           <p class="mb-0 text-center">Kamu belum mengunci data pribadi. Lakukan penguncian data terlebih dahulu untuk melakukan pendaftaran jalur.</p>
         </div>
       @else
@@ -31,5 +31,5 @@
 @endsection
 
 @push('scripts')
-  <script src="/js/student/pages/registration/index-v1.0.0.js"></script>
+  <script src="/js/student/pages/registration/index-v1.0.1.js"></script>
 @endpush

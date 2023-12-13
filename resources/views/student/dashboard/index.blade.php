@@ -87,7 +87,7 @@
                 <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0">
                   {{-- edit button  --}}
                   <a class="btn btn-success btn-icon d-none" id="btnEditData" href="/data-diri/data-pribadi">
-                    <x-bi-pencil />
+                    <x-tabler-pencil />
                     <span class="fw-bold">Edit Data</span>
                   </a>
                 </div>
@@ -279,7 +279,7 @@
               <div class="d-flex align-items-end mb-1">
                 <h4 class="text-title mb-0">Data Nilai Rapor</h4>
 
-                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href="/data-diri/edit-nilai/semester-1"><x-bi-pencil /> Edit Nilai</a>
+                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href="/data-diri/edit-nilai/semester-1"><x-tabler-pencil /> Edit Nilai</a>
               </div>
 
               <small class="text-subtitle">Data nilai rapor adalah data <strong>nilai pengetahuan</strong> mata pelajaran Bahasa Indonesia, Bahasa Inggris, Matematika, Ilmu Pengetahuan Alam
@@ -387,7 +387,7 @@
                             Data yang sudah dikunci tidak dapat diubah kembali. Pastikan data kamu sudah benar sebelum mengunci data.
                           </div>
 
-                          <x-button class="float-end mb-1" type="submit" color="danger" withIcon="true"><x-bi-trash /> Kunci Data</x-button>
+                          <x-button class="float-end mb-1" type="submit" color="danger" withIcon="true"><x-tabler-lock-access /> Kunci Data</x-button>
                         </form>
                       </div>
                     </div>

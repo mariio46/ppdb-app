@@ -28,37 +28,37 @@
 
       <li class="@if ($path1 == 'data-diri') active @endif nav-item my-1">
         <a class="d-flex align-items-center" href="/data-diri">
-          <i data-feather='user'></i>
+          <x-tabler-dashboard style="width: 24px; height: 24px;" />
           <span class="menu-title text-truncate">Data Diri</span>
         </a>
       </li>
       <li class="@if ($path1 == 'pendaftaran') active @endif nav-item my-1">
         <a class="d-flex align-items-center" href="/pendaftaran">
-          <i data-feather='edit-3'></i>
+          <x-tabler-pencil-minus style="width: 24px; height: 24px;" />
           <span class="menu-title text-truncate">Pendaftaran</span>
         </a>
       </li>
       <li class="@if ($path1 == 'status') active @endif nav-item my-1">
         <a class="d-flex align-items-center" href="/status">
-          <i data-feather='send'></i>
+          <x-tabler-send style="width: 24px; height: 24px;" />
           <span class="menu-title text-truncate">Status</span>
         </a>
       </li>
       <li class="@if ($path1 == 'sekolah') active @endif nav-item my-1">
         <a class="d-flex align-items-center" href="/sekolah">
-          <i data-feather='home'></i>
+          <x-tabler-home-search style="width: 24px; height: 24px;" />
           <span class="menu-title text-truncate">Sekolah</span>
         </a>
       </li>
       <li class="@if ($path1 == 'faq') active @endif nav-item my-1">
         <a class="d-flex align-items-center" href="/faq">
-          <i data-feather='file'></i>
+          <x-tabler-file-dots style="width: 24px; height: 24px;" />
           <span class="menu-title text-truncate">FAQ</span>
         </a>
       </li>
       <li class="nav-item my-1">
         <a class="d-flex align-items-center text-danger" href="/keluar">
-          <i data-feather="log-out"></i>
+          <x-tabler-logout-2 style="width: 24px; height: 24px;" />
           <span class="menu-title text-truncate">Keluar</span>
         </a>
       </li>
@@ -72,7 +72,7 @@
   <ul class="nav nav-justified w-100">
     <li class="nav-item">
       <a class="nav-link @if ($path1 == 'data-diri') active @endif" href="/data-diri">
-        <i class="bottom-navbar-icon" data-feather="user"></i>
+        <x-tabler-dashboard class="bottom-navbar-icon" />
         <span class="bottom-navbar-label">Data Diri</span>
       </a>
     </li>
