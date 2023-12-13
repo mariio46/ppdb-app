@@ -33,6 +33,9 @@ Route::controller(OriginSchoolController::class)->group(function () {
 
 Route::controller(StudentController::class)->group(function () {
     Route::get('siswa', 'index')->name('siswa.index');
+    Route::get('siswa/create', 'create')->name('siswa.create');
+    Route::get('siswa/{username}', 'show')->name('siswa.show');
+    Route::get('siswa/{username}/edit', 'edit')->name('siswa.edit');
 });
 
 Route::controller(SchoolController::class)->group(function () {

@@ -1,5 +1,14 @@
 @extends('layouts.has-role.auth', ['title' => $user->name])
 
+@section('vendorStyles')
+    <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
+@endsection
+
+@push('scripts')
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="/app-assets/js/scripts/forms/form-select2.js"></script>
+@endpush
+
 @section('content')
     {{-- @dd($user) --}}
     <div class="content-body">
@@ -9,33 +18,61 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
-                        <x-label>Nama</x-label>
-                        <x-input value="{{ $user->name }}" />
+                    <div class="col-sm-6">
+                        <div class="mb-2">
+                            <x-label>Nama</x-label>
+                            <x-input value="{{ $user->name }}" />
+                        </div>
+                        <div class="mb-2">
+                            <x-label>Username</x-label>
+                            <x-input value="{{ $user->username }}" />
+                        </div>
+                        <div class="mb-2">
+                            <x-label>Status</x-label>
+                            <x-select class="select2 form-select">
+                                <option disabled selected>Status</option>
+                                <option value="aktif" selected>Aktif</option>
+                                <option value="tidak_aktif">Tidak Aktif</option>
+                            </x-select>
+                        </div>
                     </div>
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
-                        <x-label>User</x-label>
-                        <x-input value="{{ $user->role }}" />
-                    </div>
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
-                        <x-label>Username</x-label>
-                        <x-input value="{{ $user->username }}" />
-                    </div>
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
-                        <x-label>Wilayah Cabang Dinas</x-label>
-                        <x-input value="Wilayah 3" />
-                    </div>
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
-                        <x-label>Status</x-label>
-                        <x-input value="{{ $user->status == 1 ? 'Aktif' : 'Tidak Aktif' }}" />
+                    <div class="col-sm-6">
+                        <div class="mb-2">
+                            <x-label>User</x-label>
+                            <x-select class="select2 form-select">
+                                <option disabled selected>Role</option>
+                                <option value="superadmin">Super Admin</option>
+                                <option value="adm_provinsi">Admin Provinsi</option>
+                                <option value="op_provinsi" selected>Op. Cabang Dinas</option>
+                                <option value="op_sekolah_tujuan">Op. Sekolah Tujuan</option>
+                                <option value="op_sekolah_asal">Op. Sekolah Asal</option>
+                                <option value="adm_sekolah_asal">Admin Sekolah Asal</option>
+                                <option value="adm_cabang_dinas">Admin Cabang Dinas</option>
+                            </x-select>
+                        </div>
+                        <div class="mb-2">
+                            <x-label>Wilayah Cabang Dinas</x-label>
+                            <x-select class="select2 form-select">
+                                <option disabled selected>Pilih Wilayah</option>
+                                <option value="wilayah_1">Wilayah 1</option>
+                                <option value="wilayah_2">Wilayah 2</option>
+                                <option value="wilayah_3" selected>Wilayah 3</option>
+                                <option value="wilayah_4">Wilayah 4</option>
+                                <option value="wilayah_5">Wilayah 5</option>
+                                <option value="wilayah_6">Wilayah 6</option>
+                            </x-select>
+                        </div>
                     </div>
                 </div>
-                <div class="clearfix border-bottom my-2"></div>
 
-                <div class="col-sm-6 col-12 mb-1 mb-sm-0">
-                    <x-label for="password">Konfirmasi Password</x-label>
-                    <x-input class="mb-2" id="password" name="password" placeholder="Password anda" />
-                    <a class="text-warning fw-bold" href="{{ route('users.lupa-password', $user->id) }}">Lupa Password?</a>
+                <x-separator marginY="2" />
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <x-label for="password">Konfirmasi Password</x-label>
+                        <x-input class="mb-2" id="password" name="password" placeholder="Password anda" />
+                        <a class="text-warning fw-bold" href="{{ route('users.lupa-password', $user->id) }}">Lupa Password?</a>
+                    </div>
                 </div>
                 <div class="alert alert-primary alert-dismissible fade show my-2" role="alert">
                     <div class="alert-body p-2">

@@ -18,7 +18,7 @@
                         <x-button class="w-100" color="dark" disabled>Reset Filter</x-button>
                     </div>
                 </div>
-                <div class="clearfix border-bottom my-2"></div>
+                <x-separator marginY="2" />
                 <div class="row d-flex justify-content-between align-items-center">
                     <div class="col-sm-3">
                         <x-input id="search" name="search" placeholder="Cari sekolah..." />
@@ -30,7 +30,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="clearfix border-bottom my-2"></div>
+                <x-separator marginY="2" />
                 <div>
                     <table class="table">
                         <thead>

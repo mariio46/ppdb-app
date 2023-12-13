@@ -2201,7 +2201,8 @@
 @push('scripts')
     {{-- Select2 --}}
     <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-    <script src="/app-assets/js/scripts/forms/form-select2.js"></script> {{-- init select2 script --}}
+    <script src="/app-assets/js/scripts/forms/form-select2.js"></script>
+    {{-- init select2 script --}}
 
     {{-- DataTable --}}
     {{-- <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>

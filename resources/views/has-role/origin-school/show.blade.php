@@ -55,19 +55,13 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
-            <a class="btn btn-primary mb-2" href="#">
-                <x-tabler-home />
-                Info Sekolah
-            </a>
-        </div>
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title" style="margin-left: 2rem; margin-top: 1.5rem">Informasi detail sekolah {{ $school->name }}</h4>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
+                    <div class="col-sm-6">
                         <table class="table table-borderless">
                             <tr>
                                 <td>Nama Kepala Sekolah</td>
@@ -96,7 +90,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
+                    <div class="col-sm-6">
                         <table class="table table-borderless">
                             <tr>
                                 <td>Kabupaten / Kota</td>

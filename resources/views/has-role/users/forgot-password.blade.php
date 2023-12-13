@@ -8,13 +8,17 @@
             </div>
             <div class="card-body">
                 <div class="row my-2">
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
+                    <div class="col-sm-6">
                         <x-label for="password">Password Baru</x-label>
-                        <x-input id="password" name="password" type="password" />
+                        <x-input-password>
+                            <x-input id="password" name="password" type="password" />
+                        </x-input-password>
                     </div>
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
+                    <div class="col-sm-6">
                         <x-label for="password_confirmation">Konfirmasi Password Baru</x-label>
-                        <x-input id="password_confirmation" name="password_confirmation" type="password" />
+                        <x-input-password>
+                            <x-input id="password_confirmation" name="password_confirmation" type="password" />
+                        </x-input-password>
                     </div>
                 </div>
 

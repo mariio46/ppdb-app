@@ -25,10 +25,10 @@
                     <!--/ upload and reset button -->
                 </div>
 
-                <div class="clearfix border-bottom my-2"></div>
+                <x-separator marginY="2" />
 
                 <div class="row">
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
+                    <div class="col-sm-6">
                         <div class="mb-2">
                             <x-label>Nama Sekolah</x-label>
                             <x-input id="nama_sekolah" name="nama_sekolah" />
@@ -54,7 +54,7 @@
                             <x-input id="nip_ketua_ppdb" name="nip_ketua_ppdb" />
                         </div>
                     </div>
-                    <div class="col-sm-6 col-12 mb-1 mb-sm-2">
+                    <div class="col-sm-6">
                         <div class="mb-2">
                             <x-label>Alamat Jalan</x-label>
                             <x-input id="alamat_sekolah" name="alamat_sekolah" />
