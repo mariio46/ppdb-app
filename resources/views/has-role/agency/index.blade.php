@@ -84,7 +84,7 @@
                         {
                             data: "slug",
                             render: function(data, type, row) {
-                                return `<a href="/panel/cabang-dinas/${data}" class="btn btn-primary">Lihat Detail</a>`;
+                                return `<a href="/panel/cabang-dinas/d/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         }
                     ],

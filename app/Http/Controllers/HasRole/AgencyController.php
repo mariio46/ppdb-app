@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -19,15 +20,46 @@ class AgencyController extends Controller
         return view('has-role.agency.create');
     }
 
-    // --------------------------------------------------
-    public function postNewData(Request $request)
+    public function detail(string $slugAgency): View
     {
         $data = [
-            'name'          => $request->get('name'),
-            'phone'         => $request->get('phone'),
-            'service_area'  => $request->get('serviceArea'),
-            'position'      => $request->get('position'),
-            'address'       => $request->get('address'),
+            'slug' => $slugAgency
+        ];
+
+        return view('has-role.agency.detail', $data);
+    }
+
+    // --------------------------------------------------
+    public function postNewData(Request $request): RedirectResponse
+    {
+        $data = [
+            'name'          => $request->post('name'),
+            'phone'         => $request->post('phone'),
+            'service_area'  => $request->post('serviceArea'),
+            'position'      => $request->post('position'),
+            'address'       => $request->post('address'),
+        ];
+
+        return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
+    }
+
+    public function postUpdateData(Request $request): RedirectResponse
+    {
+        $data = [
+            'name'          => $request->post('name'),
+            'phone'         => $request->post('phone'),
+            'service_area'  => $request->post('serviceArea'),
+            'position'      => $request->post('position'),
+            'address'       => $request->post('address'),
+        ];
+
+        return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
+    }
+
+    public function postRemoveData(Request $request): RedirectResponse
+    {
+        $data = [
+            'id' => $request->post('agencyId')
         ];
 
         return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
@@ -223,6 +255,22 @@ class AgencyController extends Controller
                 "code" => "73.73",
                 "name" => "Kota Palopo",
             ]
+        ];
+
+        return response()->json($data);
+    }
+
+    protected function getAgencyBySlug(string $slug): JsonResponse
+    {
+        $data = [
+            'id'            => 'aksjdaksjdkasdlask',
+            'slug'          => 'wilayah1',
+            'name'          => 'Wilayah I',
+            'phone'         => '08123456789',
+            'service_area'  => ["73.09|Kab. Maros", "73.71|Kota Makassar"],
+            'position'      => "73.71|Kota Makassar",
+            // 'position'      => "",
+            'address'       => "jl. Perintis Kemerdekaan No. 29"
         ];
 
         return response()->json($data);
