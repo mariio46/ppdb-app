@@ -54,6 +54,8 @@ Route::controller(VerificationController::class)->group(function () {
 
 Route::controller(AgencyController::class)->group(function () {
     Route::get('cabang-dinas', 'index')->name('cabang-dinas.index');
+
+    Route::get('cabang-dinas/get-cabang-dinas', 'getAgency');
 });
 
 Route::controller(KeyController::class)->group(function () {
