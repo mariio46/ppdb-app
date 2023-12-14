@@ -54,8 +54,11 @@ Route::controller(VerificationController::class)->group(function () {
 
 Route::controller(AgencyController::class)->group(function () {
     Route::get('cabang-dinas', 'index')->name('cabang-dinas.index');
+    Route::get('cabang-dinas/create', 'create')->name('cabang-dinas.create');
 
     Route::get('cabang-dinas/get-cabang-dinas', 'getAgency');
+    Route::get('cabang-dinas/get-city', 'getCity');
+    Route::post('cabang-dinas/create', 'postNewData');
 });
 
 Route::controller(KeyController::class)->group(function () {

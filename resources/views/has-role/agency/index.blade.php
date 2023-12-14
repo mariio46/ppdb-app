@@ -27,6 +27,12 @@
 @section('content')
     <div class="row">
         <div class="col-12">
+            @if (session()->get('postMsg'))
+                <div class="alert alert-success p-1">
+                    <p class="text-center">{{ session()->get('postMsg') }}</p>
+                </div>
+            @endif
+
             <div class="card">
                 <div class="card-body px-0 border-top">
                     <table class="table table-agency border-bottom">
@@ -78,7 +84,7 @@
                         {
                             data: "slug",
                             render: function(data, type, row) {
-                                return `<a href="/panel/cabang-dinas/d/${data}" class="btn btn-primary">Lihat Detail</a>`;
+                                return `<a href="/panel/cabang-dinas/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         }
                     ],
@@ -116,7 +122,7 @@
                     }
                 });
 
-                $("div.add-button, div.add-button-sm").html('<a href="" class="btn btn-success">+ Tambah Wilayah</a>');
+                $("div.add-button, div.add-button-sm").html('<a href="/panel/cabang-dinas/create" class="btn btn-success">+ Tambah Wilayah</a>');
                 $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
                 $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
             }
