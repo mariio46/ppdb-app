@@ -36,6 +36,10 @@ Route::controller(StudentController::class)->group(function () {
     Route::get('siswa/create', 'create')->name('siswa.create');
     Route::get('siswa/{username}', 'show')->name('siswa.show');
     Route::get('siswa/{username}/edit', 'edit')->name('siswa.edit');
+    Route::get('siswa/{username}/score/{semester}', 'score')->name('siswa.score');
+    Route::post('siswa/{username}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
+
+    Route::get('siswa/get-scores/{username}/{semester}', 'getScores');
 });
 
 Route::controller(SchoolController::class)->group(function () {
