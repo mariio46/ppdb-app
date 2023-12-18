@@ -234,13 +234,12 @@ $(function() {
 
   // provinces
   // --------------------------------------------------------------------
-  generateSelectProvince();
-
   function generateSelectProvince(selected = null) {
     $.ajax({
       url: '/provinces',
       method: 'get',
       dataType: 'json',
+      async: false,
       success: function(provinces) {
         provinceElement.empty().append('<option value></value>');
 
@@ -268,6 +267,7 @@ $(function() {
       url: '/cities/' + code[0],
       method: 'get',
       dataType: 'json',
+      async: false,
       success: function(cities) {
         cities.forEach(city => {
           let v = city.code + '|' + city.name;
@@ -291,6 +291,7 @@ $(function() {
       url: '/districts/' + code[0],
       method: 'get',
       dataType: 'json',
+      async: false,
       success: function(districts) {
         districts.forEach(district => {
           let v = district.code + '|' + district.name;
@@ -313,6 +314,7 @@ $(function() {
       url: '/villages/' + code[0],
       method: 'get',
       dataType: 'json',
+      async: false,
       success: function(villages) {
         villages.forEach(village => {
           let v = village.code + '|' + village.name;
@@ -328,33 +330,38 @@ $(function() {
     method: 'get',
     dataType: 'json',
     success: function(studentData) {
-      date = new Date(studentData.tanggal_lahir);
+      let d = studentData.data;
+      date = new Date(d.tanggal_lahir);
 
-      $('#profilePreview, #profilePicturePrev').attr('src', studentData.pas_foto || '/img/base-profile.png');
+      $('#profilePreview, #profilePicturePrev').attr('src', d.pas_foto || '/img/base-profile.png');
 
-      $('#nik').val(studentData.nik);
-      $('#gender').val(studentData.jenis_kelamin).change();
-      $('#birthPlace').val(studentData.tempat_lahir);
+      $('#nik').val(d.nik);
+      $('#gender').val(d.jenis_kelamin).change();
+      $('#birthPlace').val(d.tempat_lahir);
       $('#birthDay').val(date.getDate()).change();
       $('#birthMonth').val(date.getMonth() + 1).change(); // month start from 0 to 11
       $('#birthYear').val(date.getFullYear()).change();
-      $('#phone').val(studentData.nomor_hp.substring(0, 4) + ' ' + studentData.nomor_hp.substring(4, 8) + ' ' + studentData.nomor_hp.substring(8));
-      $('#email').val(studentData.email);
+      $('#phone').val(d.telepon.substring(0, 4) + ' ' + d.telepon.substring(4, 8) + ' ' + d.telepon.substring(8));
+      $('#email').val(d.email);
       
-      generateSelectProvince(studentData.kode_provinsi + '|' + studentData.provinsi);
-      generateSelectCity(studentData.kode_provinsi + '|' + studentData.provinsi, studentData.kode_kabupaten + '|' + studentData.kabupaten);
-      generateSelectDistrict(studentData.kode_kabupaten + '|' + studentData.kabupaten, studentData.kode_kecamatan + '|' + studentData.kecamatan);
-      generateSelectVillage(studentData.kode_kecamatan + '|' + studentData.kecamatan, studentData.kode_desa + '|' + studentData.desa);
-      $('#hamlet').val(studentData.dusun);
-      $('#associations').val(studentData.rtrw);
-      $('#address').val(studentData.alamat_jalan);
+      if (d.kode_provinsi) {
+        generateSelectProvince(d.kode_provinsi + '|' + d.provinsi);
+      } else {
+        generateSelectProvince();
+      }
+      generateSelectCity(d.kode_provinsi + '|' + d.provinsi, d.kode_kabupaten + '|' + d.kabupaten);
+      generateSelectDistrict(d.kode_kabupaten + '|' + d.kabupaten, d.kode_kecamatan + '|' + d.kecamatan);
+      generateSelectVillage(d.kode_kecamatan + '|' + d.kecamatan, d.kode_desa + '|' + d.desa);
+      $('#hamlet').val(d.dusun);
+      $('#associations').val(d.rtrw);
+      $('#address').val(d.alamat_jalan);
 
-      $('#mothersName').val(studentData.nama_ibu);
-      $('#mothersPhone').val(studentData.nomor_ibu.substring(0, 4) + ' ' + studentData.nomor_ibu.substring(4, 8) + ' ' + studentData.nomor_ibu.substring(8));
-      $('#fathersName').val(studentData.nama_ayah);
-      $('#fathersPhone').val(studentData.nomor_ayah.substring(0, 4) + ' ' + studentData.nomor_ayah.substring(4, 8) + ' ' + studentData.nomor_ayah.substring(8));
-      $('#guardsName').val(studentData.nama_wali);
-      $('#guardsPhone').val(studentData.nomor_wali.substring(0, 4) + ' ' + studentData.nomor_wali.substring(4, 8) + ' ' + studentData.nomor_wali.substring(8));
+      $('#mothersName').val(d.nama_ibu);
+      $('#mothersPhone').val(d.telepon_ibu.substring(0, 4) + ' ' + d.telepon_ibu.substring(4, 8) + ' ' + d.telepon_ibu.substring(8));
+      $('#fathersName').val(d.nama_ayah);
+      $('#fathersPhone').val(d.telepon_ayah.substring(0, 4) + ' ' + d.telepon_ayah.substring(4, 8) + ' ' + d.telepon_ayah.substring(8));
+      $('#guardsName').val(d.nama_wali);
+      $('#guardsPhone').val(d.telepon_wali.substring(0, 4) + ' ' + d.telepon_wali.substring(4, 8) + ' ' + d.telepon_wali.substring(8));
     }
   });
 

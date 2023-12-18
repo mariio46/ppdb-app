@@ -16,11 +16,13 @@ class RegionRepositoryImpl implements RegionRepository
   {
     $lists = $this->regionModel->getListProvince();
 
+    // dd($lists);
+
     $data = array_map(function ($p) {
       return ['code' => $p['kode'], 'name' => $p['nama']];
-    }, $lists['data']);
+    }, $lists['response']['data']);
 
-    return $data;
+    return ['status_code' => $lists['status_code'], 'data' => $data];
   }
 
   public function getListCity(string $provinceCode): array
@@ -29,9 +31,9 @@ class RegionRepositoryImpl implements RegionRepository
 
     $data = array_map(function ($c) {
       return ['code' => $c['kode'], 'name' => $c['nama']];
-    }, $lists['data']);
+    }, $lists['response']['data']);
 
-    return $data;
+    return ['status_code' => $lists['status_code'], 'data' => $data];
   }
 
   public function getListDistrict(string $cityCode): array
@@ -40,9 +42,9 @@ class RegionRepositoryImpl implements RegionRepository
 
     $data = array_map(function ($d) {
       return ['code' => $d['kode'], 'name' => $d['nama']];
-    }, $lists['data']);
+    }, $lists['response']['data']);
 
-    return $data;
+    return ['status_code' => $lists['status_code'], 'data' => $data];
   }
 
   public function getListVillage(string $districtCode): array
@@ -51,8 +53,8 @@ class RegionRepositoryImpl implements RegionRepository
 
     $data = array_map(function ($v) {
       return ['code' => $v['kode'], 'name' => $v['nama']];
-    }, $lists['data']);
+    }, $lists['response']['data']);
 
-    return $data;
+    return ['status_code' => $lists['status_code'], 'data' => $data];
   }
 }

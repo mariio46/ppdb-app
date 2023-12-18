@@ -11,7 +11,7 @@ class BaseModel
   protected function get(string $endpoint): array
   {
     $response = Http::withHeaders([
-      "waktu" => 1,
+      "waktu" => 5,
       "sw-code" => session()->get('stu_token')
     ])->get($this->domain . $endpoint);
 

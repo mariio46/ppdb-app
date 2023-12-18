@@ -48,6 +48,8 @@ class LoginRepositoryImpl implements LoginRepository
       $result = ['success' => true, 'code' => 200, 'message' => "login berhasil."];
     } else {
       if ($authenticate['statusCode'] == 401) {
+        $result = ['success' => false, 'code' => 401, 'message' => "Kamu sedang login di perangkat lain."];
+      } elseif ($authenticate['statusCode'] == 400) {
         $result = ['success' => false, 'code' => 401, 'message' => "NISN atau kata sandi salah."];
       } else {
         $result = ['success' => false, 'code' => 500, 'message' => "Oops, Server sibuk. Coba lagi nanti."];

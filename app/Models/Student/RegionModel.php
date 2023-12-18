@@ -7,7 +7,7 @@ class RegionModel extends BaseModel
   public function getListProvince(): array
   {
     $get = $this->get('wilayah/all/provinsi');
-    return $get['response'];
+    return $get;
     // return collect([
     //   ['code' => '72', 'name' => 'Sulawesi Tengah'],
     //   ['code' => '73', 'name' => 'Sulawesi Selatan'],
@@ -17,7 +17,7 @@ class RegionModel extends BaseModel
   public function getListCity(string $code): array
   {
     $get = $this->get('wilayah/all/kota?kode=' . $code);
-    return $get['response'];
+    return $get;
 
     // return collect([
     //   ['code' => '72.01', 'name' => 'Kabupaten Banggai'],
@@ -30,7 +30,7 @@ class RegionModel extends BaseModel
   public function getListDistrict(string $code): array
   {
     $get = $this->get('wilayah/kota/kecamatan?kode=' . $code);
-    return $get('response');
+    return $get;
     // return collect([
     //   ['code' => '72.01.01', 'name' => 'Kecamatan Batui'],
     //   ['code' => '72.01.02', 'name' => 'Kecamatan Bunta'],
@@ -49,7 +49,7 @@ class RegionModel extends BaseModel
   public function getListVillage(string $code): array
   {
     $get = $this->get('wilayah/kota/desa?kode=' . $code);
-    return $get('response');
+    return $get;
     // return collect([
     //   ['code' => '72.01.01.2002', 'name' => 'Desa Nonong'],
     //   ['code' => '72.01.01.1006', 'name' => 'Kelurahan Bugis'],

@@ -6,7 +6,7 @@ class LoginModel extends BaseModel
 {
   public function login(string $nisn, string $password): array
   {
-    $data = $this->postWoToken('siswa/login', ['nisn' => $nisn, 'kata_sandi' => $password, 'waktu' => 5]);
+    $data = $this->postWoToken('siswa/login', ['nisn' => $nisn, 'kata_sandi' => $password, 'waktu' => 15]);
 
     // if ($nisn == '0123456789' && $password == 'sayang') {
     //   $data = [

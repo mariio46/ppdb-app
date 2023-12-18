@@ -9,6 +9,7 @@ use App\Http\Controllers\Students\SchoolController;
 use App\Http\Controllers\Students\StatusController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HasRole\LoginController;
+use App\Http\Controllers\Students\RegionController;
 
 Route::get('/', HomeController::class)->name('home');
 
