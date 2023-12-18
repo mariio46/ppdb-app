@@ -53,6 +53,8 @@ Route::controller(OperatorController::class)->group(function () {
 
 Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual', 'manual')->name('verifikasi.manual');
+    Route::get('verifikasi-manual/get-data', 'manualGetData');
+
     Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar.ulang');
 });
 
