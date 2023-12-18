@@ -8,7 +8,7 @@ class BaseModel
 {
   private $domain = "https://ppdbv2.infaltech.com/";
 
-  protected function get(string $endpoint)
+  protected function get(string $endpoint): array
   {
     $response = Http::withHeaders([
       "waktu" => 1,
@@ -25,11 +25,25 @@ class BaseModel
     ];
   }
 
-  protected function post(string $endpoint, array $data)
+  protected function postWoToken(string $endpoint, array $data): array
   {
     $response = Http::post($this->domain . $endpoint, $data);
 
-    // dd($response);
+    $status = $response->status();
+    $json = $response->json();
+
+    return [
+      'status_code' => $status,
+      'response'    => $json
+    ];
+  }
+
+  protected function post(string $endpoint, array $data): array
+  {
+    $response = Http::withHeaders([
+      "waktu"   => 1,
+      "sw-code" => session()->get('stu_token'),
+    ])->post($this->domain . $endpoint, $data);
 
     $status = $response->status();
     $json = $response->json();

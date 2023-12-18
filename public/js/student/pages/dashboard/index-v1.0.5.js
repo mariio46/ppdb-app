@@ -7,7 +7,7 @@ $(document).ready(function() {
     success: function(data) {
       let d = data.data;
 
-      if (d.pertama_login == 'n' && d.kunci == '0') {
+      if (d.pertama_login == 't' && d.kunci == '0') {
         $('#btnEditData, #btnEditScore, #cardLock').removeClass("d-none");
       } else if (d.pertama_login == 'y') {
         $('#firstTimeLoginModal').modal('show');
@@ -15,11 +15,11 @@ $(document).ready(function() {
       
       $('#profileImage').attr('src', d.pas_foto || '/img/base-profile.png'); // profile image
       $('#selfNik').text(d.nik); // personal's data
-      $('#selfFromSchool').text(d.asal_sekolah);
+      $('#selfFromSchool').text(d.sekolah_asal);
       $('#selfGender').text((d.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');
       $('#selfBirthPlace').text(d.tempat_lahir);
       $('#selfBirthDay').text(d.tanggal_lahir);
-      $('#selfPhoneNumber').text(d.nomor_hp);
+      $('#selfPhoneNumber').text(d.telepon);
       $('#selfEmail').text(d.email);
       $('#selfProvince').text(d.provinsi); // address's data
       $('#selfCity').text(d.kabupaten);
@@ -29,11 +29,11 @@ $(document).ready(function() {
       $('#selfRtRw').text(d.rtrw);
       $('#selfAddress').text(d.alamat_jalan);
       $('#selfMothersName').text(d.nama_ibu); // parent's data
-      $('#selfMothersPhone').text(d.nomor_ibu);
+      $('#selfMothersPhone').text(d.telepon_ibu);
       $('#selfFathersName').text(d.nama_ayah);
-      $('#selfFathersPhone').text(d.nomor_ayah);
+      $('#selfFathersPhone').text(d.telepon_ayah);
       $('#selfGuardsName').text(d.nama_wali);
-      $('#selfGuardsPhone').text(d.nomor_wali);
+      $('#selfGuardsPhone').text(d.telepon_wali);
     }
   });
 

@@ -141,9 +141,14 @@ class DashboardModel extends BaseModel
    */
   public function postFirstTimeLogin(string $id, string $email, string $phone, string $newPassword): array
   {
-    $result = [
-      'success' => true
+    $data = [
+      'kata_sandi'  => $newPassword,
+      'telepon'     => $phone,
+      'email'       => $email,
+      'id'          => $id
     ];
+
+    $result = $this->post('siswa/pertama/login', $data);
     return $result;
   }
 
