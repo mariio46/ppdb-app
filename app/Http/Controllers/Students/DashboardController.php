@@ -59,34 +59,6 @@ class DashboardController extends Controller
         return redirect()->back()->with($msg);
     }
 
-    public function getProvinceLists(): JsonResponse
-    {
-        $data = $this->dashboardRepo->getListProvince();
-
-        return response()->json($data);
-    }
-
-    public function getCityLists(string $code): JsonResponse
-    {
-        $data = $this->dashboardRepo->getListCity($code);
-
-        return response()->json($data);
-    }
-
-    public function getDistrictLists(string $code): JsonResponse
-    {
-        $data = $this->dashboardRepo->getListDistrict($code);
-
-        return response()->json($data);
-    }
-
-    public function getVillageLists(string $code): JsonResponse
-    {
-        $data = $this->dashboardRepo->getListVillage($code);
-
-        return response()->json($data);
-    }
-
     public function postUpdateStudentData(Request $request)
     {
         $update = $this->dashboardRepo->postUpdateStudentData($request);

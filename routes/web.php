@@ -37,11 +37,6 @@ Route::group(['middleware' => 'student.auth'], function () {
     Route::get('/personal-data/get-student-score/{semester}', 'getDataScoreBySemester');
     Route::post('/personal-data/{semester}/update-score', 'postUpdateStudentScore');
     Route::post('/lock-student-data', 'postLockStudentData');
-
-    Route::get('/provinces', 'getProvinceLists');
-    Route::get('/cities/{code}', 'getCityLists');
-    Route::get('/districts/{code}', 'getDistrictLists');
-    Route::get('/villages/{code}', 'getVillageLists');
   });
 
   // Registration as Pendaftaran
@@ -80,6 +75,13 @@ Route::group(['middleware' => 'student.auth'], function () {
     Route::get('/faq', 'index');
 
     Route::get('/faq/get-data', 'getFaqData');
+  });
+
+  Route::controller(RegionController::class)->group(function () {
+    Route::get('/provinces', 'getProvinceLists');
+    Route::get('/cities/{code}', 'getCityLists');
+    Route::get('/districts/{code}', 'getDistrictLists');
+    Route::get('/villages/{code}', 'getVillageLists');
   });
 
   // logout

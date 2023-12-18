@@ -19,7 +19,7 @@ class DashboardRepositoryImpl implements DashboardRepository
   {
     $result = $this->dashboardModel->getDataStudentById(session()->get('stu_id'));
 
-    return response()->json($result);
+    return response()->json($result['response'], $result['status_code']);
   }
 
   public function getDataScore(): JsonResponse
@@ -48,40 +48,6 @@ class DashboardRepositoryImpl implements DashboardRepository
     } else {
       return collect(['success' => false, "code" => 401, "message" => "failed"]);
     }
-  }
-
-  public function getListProvince(): Collection|array
-  {
-    $lists = $this->regionModel->getListProvince()->all();
-
-    return $lists;
-  }
-
-  public function getListCity(string $provinceCode): Collection|array
-  {
-    $lists = $this->regionModel->getListCity()->where(function ($value, $key) use ($provinceCode) {
-      return str_starts_with($value['code'], $provinceCode);
-    });
-
-    return $lists->values()->all();
-  }
-
-  public function getListDistrict(string $cityCode): Collection|array
-  {
-    $lists = $this->regionModel->getListDistrict()->where(function ($value, $key) use ($cityCode) {
-      return str_starts_with($value['code'], $cityCode);
-    });
-
-    return $lists->values()->all();
-  }
-
-  public function getListVillage(string $districtCode): Collection|array
-  {
-    $lists = $this->regionModel->getListVillage()->where(function ($value, $key) use ($districtCode) {
-      return str_starts_with($value['code'], $districtCode);
-    });
-
-    return $lists->values()->all();
   }
 
   public function postUpdateStudentData(Request $request): Collection

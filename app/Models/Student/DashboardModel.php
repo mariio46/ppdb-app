@@ -4,42 +4,46 @@ namespace App\Models\Student;
 
 use Illuminate\Http\Request;
 
-class DashboardModel
+class DashboardModel extends BaseModel
 {
   public function getDataStudentById(string $id): array
   {
-    return [
-      "id"              => "1",
-      "nisn"            => "0123456789",
-      "nik"             => "7272012345678909",
-      "asal_sekolah"    => "SMP Negeri 2 Sukamaju",
-      "jenis_kelamin"   => "p",
-      "tempat_lahir"    => "Tangerang",
-      "tanggal_lahir"   => "2006-02-13",
-      "nomor_hp"        => "081234567890",
-      "email"           => "freya.jayawardana@gmail.com",
-      "kode_provinsi"   => "73",
-      "provinsi"        => "Sulawesi Selatan",
-      "kode_kabupaten"  => "73.71",
-      "kabupaten"       => "Kota Makassar",
-      "kode_kecamatan"  => "73.71.02",
-      "kecamatan"       => "Kecamatan Mamajang",
-      "kode_desa"       => "73.71.02.1001",
-      "desa"            => "Kelurahan Sambung Jawa",
-      "dusun"           => "Purwosari",
-      "rtrw"            => "001/000",
-      "alamat_jalan"    => "Lorong 5 A, Nomor 1",
-      "nama_ibu"        => "Fulanah binti Fulan",
-      "nomor_ibu"       => "081234567890",
-      "nama_ayah"       => "Fulan bin Fulan",
-      "nomor_ayah"      => "081234567890",
-      "nama_wali"       => "Fulanwati binti Fulanwan",
-      "nomor_wali"      => "081234567890",
-      "pas_foto"        => "/app-assets/images/profile.png",
-      // "pas_foto"        => "",
-      "pertama_login"   => "0", // pertama kali login = 1, sudah pernah login = 0
-      "kunci"           => "0"
-    ];
+    $get = $this->get('siswa/byid?id=' . $id);
+
+    return $get;
+
+    // return [
+    //   "id"              => "1",
+    //   "nisn"            => "0123456789",
+    //   "nik"             => "7272012345678909",
+    //   "asal_sekolah"    => "SMP Negeri 2 Sukamaju",
+    //   "jenis_kelamin"   => "p",
+    //   "tempat_lahir"    => "Tangerang",
+    //   "tanggal_lahir"   => "2006-02-13",
+    //   "nomor_hp"        => "081234567890",
+    //   "email"           => "freya.jayawardana@gmail.com",
+    //   "kode_provinsi"   => "73",
+    //   "provinsi"        => "Sulawesi Selatan",
+    //   "kode_kabupaten"  => "73.71",
+    //   "kabupaten"       => "Kota Makassar",
+    //   "kode_kecamatan"  => "73.71.02",
+    //   "kecamatan"       => "Kecamatan Mamajang",
+    //   "kode_desa"       => "73.71.02.1001",
+    //   "desa"            => "Kelurahan Sambung Jawa",
+    //   "dusun"           => "Purwosari",
+    //   "rtrw"            => "001/000",
+    //   "alamat_jalan"    => "Lorong 5 A, Nomor 1",
+    //   "nama_ibu"        => "Fulanah binti Fulan",
+    //   "nomor_ibu"       => "081234567890",
+    //   "nama_ayah"       => "Fulan bin Fulan",
+    //   "nomor_ayah"      => "081234567890",
+    //   "nama_wali"       => "Fulanwati binti Fulanwan",
+    //   "nomor_wali"      => "081234567890",
+    //   "pas_foto"        => "/app-assets/images/profile.png",
+    //   // "pas_foto"        => "",
+    //   "pertama_login"   => "0", // pertama kali login = 1, sudah pernah login = 0
+    //   "kunci"           => "0"
+    // ];
   }
 
   public function getDataScoreAll(string $id): array
