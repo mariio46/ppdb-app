@@ -12,24 +12,23 @@
                 <div class="card-body">
                     <h4>Filter</h4>
 
-                    <div class="d-flex justify-content-between gx-1">
-                        <div class="col-lg-6 col-12 row">
-                            <div class="col-8 mb-1">
+                    <div class="row">
+                        <div class="col-lg-5 col-12">
+                            <div class="mb-1">
                                 <x-select class="form-select select2" id="filterStatus" name="filterStatus" data-placeholder="Status" data-minimum-results-for-search="-1">
                                     <option value=""></option>
+                                    <option value="All">Semua</option>
                                     <option value="Belum diverifikasi">Belum Diverifikasi</option>
                                     <option value="Sudah diverifikasi">Sudah Diverifikasi</option>
                                     <option value="Verifikasi ditolak">Verifikasi Ditolak</option>
                                 </x-select>
                             </div>
-                            <div class="col-4 mb-1">
-                                <x-button id="filterReset" variant="outline" color="secondary">Reset</x-button>
-                            </div>
                         </div>
-                        <div class="col-lg-6 col-12 row">
-                            <div class="mb-1 col-8">
+                        <div class="col-lg-5 col-12">
+                            <div class="mb-1">
                                 <x-select class="form-select select2" id="filterTrack" name="filterTrack" data-placeholder="Jalur Pendaftaran" data-minimum-results-for-search="-1">
                                     <option value=""></option>
+                                    <option value="All">Semua</option>
                                     <option value="Afirmasi">Afirmasi</option>
                                     <option value="Perpindahan Tugas Orang Tua">Perpindahan Tugas Orang Tua</option>
                                     <option value="Anak Guru">Anak Guru</option>
@@ -39,9 +38,9 @@
                                     <option value="Boarding School">Boarding School</option>
                                 </x-select>
                             </div>
-                            <div class="mb-1 col-4">
-                                <x-button id="filterReset" variant="outline" color="secondary">Reset</x-button>
-                            </div>
+                        </div>
+                        <div class="mb-1 col-2">
+                            <x-button id="filterReset" variant="outline" color="secondary">Reset</x-button>
                         </div>
                     </div>
                 </div>

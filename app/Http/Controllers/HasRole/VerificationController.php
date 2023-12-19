@@ -64,6 +64,11 @@ class VerificationController extends Controller
         return response()->json($data);
     }
 
+    public function manualDetail(): View
+    {
+        return view('has-role.verifications.manual-detail');
+    }
+
     // ------------------------------------------------------------
 
     public function reregistration(): View
