@@ -58,7 +58,9 @@ Route::controller(OperatorController::class)->group(function () {
 
 Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual', 'manual')->name('verifikasi.manual');
-    Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar.ulang');
+
+    Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar-ulang');
+    Route::get('verifikasi-daftar-ulang/{nisn}', 'reregistrationShow')->name('verifikasi.daftar-ulang.show');
 });
 
 Route::controller(AgencyController::class)->group(function () {

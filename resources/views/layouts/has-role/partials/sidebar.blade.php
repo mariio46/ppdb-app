@@ -62,8 +62,8 @@
                     <span class="menu-title text-truncate">Verifikasi Manual</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('verifikasi.daftar.ulang') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('verifikasi.daftar.ulang') }}">
+            <li class="nav-item {{ request()->routeIs('verifikasi.daftar-ulang') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('verifikasi.daftar-ulang') }}">
                     <x-tabler-file-plus />
                     <span class="menu-title text-truncate">Daftar Ulang</span>
                 </a>
