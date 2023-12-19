@@ -89,6 +89,15 @@ class VerificationController extends Controller
         return view('has-role.verifications.manual-score', $data);
     }
 
+    public function manualMap(string $id): View
+    {
+        $data = [
+            'id' => $id
+        ];
+
+        return view('has-role.verifications.manual-map', $data);
+    }
+
     // ------------------------------------------------------------
 
     public function reregistration(): View

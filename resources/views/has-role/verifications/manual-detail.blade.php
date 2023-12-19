@@ -399,7 +399,7 @@
                         </div>
                     </div>
 
-                    <a class="btn btn-primary ms-2" href=""><x-tabler-map-pin-filled style="width: 16px; height: 16px;" /> Masukkan Titik Rumah</a>
+                    <a class="btn btn-primary ms-2" href="{{ route('verifikasi.manual.map', [$id]) }}"><x-tabler-map-pin-filled style="width: 16px; height: 16px;" /> Masukkan Titik Rumah</a>
                 </div>
             </div>
 
