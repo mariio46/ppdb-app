@@ -57,6 +57,8 @@ Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual/d/{id}', 'manualDetail')->name('verifikasi.manual.detail');
     Route::get('verifikasi-manual/d/{id}/edit-nilai', 'manualScore')->name('verifikasi.manual.score');
     Route::get('verifikasi-manual/d/{id}/edit-titik-rumah', 'manualMap')->name('verifikasi.manual.map');
+    Route::post('verifikasi-manual/d/{id}/accept-verication', 'manualAcceptVerification')->name('verifikasi.manual.accept');
+    Route::post('verifikasi-manual/d/{id}/decline-verication', 'manualDeclineVerification')->name('verifikasi.manual.decline');
 
     Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar.ulang');
 });

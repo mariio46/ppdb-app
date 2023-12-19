@@ -98,6 +98,18 @@ class VerificationController extends Controller
         return view('has-role.verifications.manual-map', $data);
     }
 
+    public function manualAcceptVerification(string $id)
+    {
+        return redirect()->back();
+    }
+
+    public function manualDeclineVerification(string $id, Request $request)
+    {
+        $reason = $request->post('declineMsg');
+
+        return redirect()->back();
+    }
+
     // ------------------------------------------------------------
 
     public function reregistration(): View

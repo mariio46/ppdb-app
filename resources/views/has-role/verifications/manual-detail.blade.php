@@ -1,6 +1,10 @@
 @extends('layouts.has-role.auth', ['title' => 'Detail Verifikasi Manual'])
 
 @section('styles')
+    <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
+@endsection
+
+@section('styles')
     <style>
         .w-35 {
             width: 35%;
@@ -422,11 +426,95 @@
                     </div>
 
                     <div class="d-flex">
-                        <x-button class="me-1" color="success">Verifikasi Data Siswa</x-button>
-                        <x-button class="" color="danger">Tolak Data</x-button>
+                        <x-button class="me-1" data-bs-toggle="modal" data-bs-target="#verifModal" color="success">Verifikasi Data Siswa</x-button>
+                        {{-- modal --}}
+                        <div class="modal fade text-start" id="verifModal" role="dialog" aria-modal="true" tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-white">
+                                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4 class="text-center">Verifikasi Data Siswa</h4>
+
+                                        <p class="px-5 py-2">Apakah Anda yakin ingin memverifikasi data siswa ini? Data yang sudah diverifkasi tidak dapat diubah kembali.</p>
+
+                                        <div class="d-flex justify-content-center mb-3">
+                                            <form id="acceptForm" action="{{ route('verifikasi.manual.accept', [$id]) }}" method="post">
+                                                @csrf
+
+                                                <x-button class="me-1" type="submit" color="success">Ya, Verifikasi</x-button>
+                                            </form>
+
+                                            <x-button data-bs-dismiss="modal" type="button" variant="flat" color="secondary">Batalkan</x-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <x-button data-bs-toggle="modal" data-bs-target="#declineModal" color="danger">Tolak Data</x-button>
+                        {{-- modal --}}
+                        <div class="modal fade text-start" id="declineModal" role="dialog" aria-modal="true" tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-white">
+                                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body px-5">
+                                        <h4 class="text-center">Tolak Verifikasi Data Siswa</h4>
+
+                                        <p class="py-2">Apakah Anda yakin ingin menolak verifikasi data ini? Data yang sudah di tolak tidak bisa di kembalikan kembali.</p>
+
+                                        <form id="declineForm" action="{{ route('verifikasi.manual.decline', [$id]) }}" method="post">
+                                            @csrf
+                                            <div class="mb-2">
+                                                <x-label for="declineMsg">Alasan Tolak Verifikasi</x-label>
+                                                <x-input id="declineMsg" name="declineMsg" placeholder="Masukkan alasan tolak.." />
+                                            </div>
+
+                                            <div class="d-flex justify-content-center mb-2">
+                                                <x-button class="me-1" type="submit" color="danger">Tolak</x-button>
+                                                <x-button data-bs-dismiss="modal" type="button" color="secondary" variant="flat">Batalkan</x-button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
+@endsection
+
+@push('scripts')
+    <script>
+        $(function() {
+            'use strict';
+
+            var declineForm = $('#declineForm'),
+                reasonInput = $('#declineMsg');
+
+            if (declineForm.length) {
+                declineForm.validate({
+                    rules: {
+                        declineMsg: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        declineMsg: {
+                            required: "*Alasan Harus diisi."
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+@endpush
