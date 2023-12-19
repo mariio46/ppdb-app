@@ -15,6 +15,142 @@ class SchoolController extends Controller
         ]);
     }
 
+    public function edit(): View
+    {
+        return view('has-role.school.edit',);
+    }
+
+    public function schoolMajorQuota($npsn): View
+    {
+        return view('has-role.school.major', [
+            'school' => $this->getSingleSchool($npsn),
+            'quotas' => $this->getSchoolMajorQuota(),
+        ]);
+    }
+
+    public function schoolDetail($npsn): View
+    {
+        return view('has-role.school.detail', [
+            'school' => $this->getSingleSchool($npsn)
+        ]);
+    }
+
+    public function schoolQuota($npsn): View
+    {
+        return view('has-role.school.quota', [
+            'school' => $this->getSingleSchool($npsn),
+            'quotas' => $this->getSchoolQuota(),
+        ]);
+    }
+
+    public function schoolZone($npsn)
+    {
+        return view('has-role.school.zone', [
+            'school' => $this->getSingleSchool($npsn),
+            'zones' => $this->getSchoolZone(),
+        ]);
+    }
+
+    protected function getSchoolZone()
+    {
+        return collect([
+            (object)[
+                'id' => 1,
+                'province' => 'Sulawesi Selatan',
+                'city' => 'Parepare',
+                'subdistrict' => 'Bacukiki',
+            ],
+            (object)[
+                'id' => 2,
+                'province' => 'Sulawesi Selatan',
+                'city' => 'Parepare',
+                'subdistrict' => 'Soreang',
+            ],
+        ]);
+    }
+
+    protected function getSchoolMajorQuota()
+    {
+        return collect([
+            (object)[
+                'id' => 1,
+                'major_name' => 'Teknik Komputer dan Jaringan',
+                'major_quota' => '150 Orang',
+            ],
+            (object)[
+                'id' => 2,
+                'major_name' => 'Teknik Kendaraan Ringan',
+                'major_quota' => '75 Orang',
+            ],
+            (object)[
+                'id' => 3,
+                'major_name' => 'Pemodelan dan Informasi Bangunan',
+                'major_quota' => '100 Orang',
+            ],
+            (object)[
+                'id' => 4,
+                'major_name' => 'Administrasi Perkantoran',
+                'major_quota' => '200 Orang',
+            ],
+            (object)[
+                'id' => 5,
+                'major_name' => 'Tata Rias dan Kecantikan',
+                'major_quota' => '250 Orang',
+            ],
+            (object)[
+                'id' => 6,
+                'major_name' => 'Perbankan dan Keuangan Syariah',
+                'major_quota' => '50 Orang',
+            ],
+        ]);
+    }
+
+    protected function getSchoolQuota()
+    {
+        return collect([
+            (object)[
+                'id' => 1,
+                'registration_path' => 'Jalur Afirmasi',
+                'total_quota' => '150 Orang',
+            ],
+            (object)[
+                'id' => 2,
+                'registration_path' => 'Jalur Perpindahan Tugas Orang Tua',
+                'total_quota' => '75 Orang',
+            ],
+            (object)[
+                'id' => 3,
+                'registration_path' => 'Jalur Anak Guru',
+                'total_quota' => '100 Orang',
+            ],
+            (object)[
+                'id' => 4,
+                'registration_path' => 'Jalur Prestasi Non Akademik',
+                'total_quota' => '200 Orang',
+            ],
+            (object)[
+                'id' => 5,
+                'registration_path' => 'Jalur Domisili Terdekat',
+                'total_quota' => '250 Orang',
+            ],
+            (object)[
+                'id' => 6,
+                'registration_path' => 'Jalur Prestasi Akademik',
+                'total_quota' => '50 Orang',
+            ],
+        ]);
+    }
+
+    protected function getSingleSchool($npsn)
+    {
+        $schools = $this->getSchools()->where('npsn', $npsn);
+        $data = json_decode($schools, true);
+        foreach ($data as $key => $item) {
+            $school = (object) $item;
+        }
+        return $school;
+    }
+
     protected function getSchools()
     {
         return collect([

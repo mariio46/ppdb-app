@@ -45,6 +45,11 @@ Route::controller(StudentController::class)->group(function () {
 Route::controller(SchoolController::class)->group(function () {
     Route::get('sekolah', 'index')->name('sekolah.index');
     Route::get('sekolah/create', 'create')->name('sekolah.create');
+    Route::get('sekolah/{npsn}/edit', 'edit')->name('sekolah.edit');
+    Route::get('sekolah/{npsn}/info-sekolah', 'schoolDetail')->name('sekolah.detail');
+    Route::get('sekolah/{npsn}/kuota-sekolah', 'schoolQuota')->name('sekolah.quota');
+    Route::get('sekolah/{npsn}/wilayah-zonasi', 'schoolZone')->name('sekolah.zone');
+    Route::get('sekolah/{npsn}/jurusan-dan-kuota', 'schoolMajorQuota')->name('sekolah.major-quota');
 });
 
 Route::controller(OperatorController::class)->group(function () {
