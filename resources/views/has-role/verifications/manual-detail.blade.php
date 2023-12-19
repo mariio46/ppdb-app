@@ -211,24 +211,25 @@
                 <div class="card-body px-0">
                     <div class="d-flex align-items-center mb-2 px-2">
                         <h4 class="text-primary mb-0 ms-2">Data Nilai Rapor</h4>
-                        <a class="btn btn-success ms-auto" href=""><x-tabler-pencil-minus style="width: 16px; height: 16px;" /> Edit Nilai</a>
+                        <a class="btn btn-success ms-auto" href="{{ route('verifikasi.manual.score', ['id' => $id, 'semester' => '1']) }}"><x-tabler-pencil-minus style="width: 16px; height: 16px;" />
+                            Edit Nilai</a>
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table border-bottom">
+                        <table class="table table-striped border-bottom">
                             <thead>
                                 <tr>
-                                    <th>Mata Pelajaran</th>
-                                    <th class="text-center">Semester 1</th>
-                                    <th class="text-center">Semester 2</th>
-                                    <th class="text-center">Semester 3</th>
-                                    <th class="text-center">Semester 4</th>
-                                    <th class="text-center">Semester 5</th>
+                                    <th class="py-2">Mata Pelajaran</th>
+                                    <th class="text-center align-middle">Semester 1</th>
+                                    <th class="text-center align-middle">Semester 2</th>
+                                    <th class="text-center align-middle">Semester 3</th>
+                                    <th class="text-center align-middle">Semester 4</th>
+                                    <th class="text-center align-middle">Semester 5</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Bahasa Indonesia</td>
+                                    <td class="py-2">Bahasa Indonesia</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
@@ -236,7 +237,7 @@
                                     <td class="text-center">0</td>
                                 </tr>
                                 <tr>
-                                    <td>Bahasa Inggris</td>
+                                    <td class="py-2">Bahasa Inggris</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
@@ -244,7 +245,7 @@
                                     <td class="text-center">0</td>
                                 </tr>
                                 <tr>
-                                    <td>Matematika</td>
+                                    <td class="py-2">Matematika</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
@@ -252,7 +253,7 @@
                                     <td class="text-center">0</td>
                                 </tr>
                                 <tr>
-                                    <td>IPA</td>
+                                    <td class="py-2">IPA</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
@@ -260,7 +261,7 @@
                                     <td class="text-center">0</td>
                                 </tr>
                                 <tr>
-                                    <td>IPS</td>
+                                    <td class="py-2">IPS</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>
                                     <td class="text-center">0</td>

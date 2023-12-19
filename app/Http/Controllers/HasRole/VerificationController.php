@@ -64,9 +64,29 @@ class VerificationController extends Controller
         return response()->json($data);
     }
 
-    public function manualDetail(): View
+    public function manualDetail(string $id): View
     {
-        return view('has-role.verifications.manual-detail');
+        $data = [
+            'id' => $id
+        ];
+
+        return view('has-role.verifications.manual-detail', $data);
+    }
+
+    public function manualScore(string $id, Request $request): View
+    {
+        $semester = $request->get('semester');
+
+        if ($semester < 1 || $semester > 5) {
+            $semester = 1;
+        }
+
+        $data = [
+            'id' => $id,
+            'semester' => $semester
+        ];
+
+        return view('has-role.verifications.manual-score', $data);
     }
 
     // ------------------------------------------------------------
