@@ -34,7 +34,7 @@
         <div class="card">
             <div class="card-header border-bottom">
                 <h4 class="card-title">Edit Data Diri</h4>
-                {{ session()->get('stu_token') }}
+                {{ session()->get('stu_profile_img') }}
             </div>
 
             <div class="card-body py-2 my-25">
@@ -297,5 +297,5 @@
     <script>
         var profilePicture = "{{ session()->get('stu-picture') }}";
     </script>
-    <script src="/js/student/pages/dashboard/personal-data-v1.1.3.js"></script>
+    <script src="/js/student/pages/dashboard/personal-data-v1.1.5.js"></script>
 @endpush

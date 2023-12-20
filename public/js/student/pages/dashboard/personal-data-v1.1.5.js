@@ -333,7 +333,9 @@ $(function() {
       let d = studentData.data;
       date = new Date(d.tanggal_lahir);
 
-      $('#profilePreview, #profilePicturePrev').attr('src', d.pas_foto || '/img/base-profile.png');
+      console.log(d.pasfoto);
+
+      $('#profilePreview, #profilePicturePrev').attr('src', d.pasfoto || '/img/base-profile.png');
 
       $('#nik').val(d.nik);
       $('#gender').val(d.jenis_kelamin).change();

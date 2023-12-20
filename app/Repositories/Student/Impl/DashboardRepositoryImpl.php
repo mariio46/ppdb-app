@@ -54,10 +54,10 @@ class DashboardRepositoryImpl implements DashboardRepository
   {
     $update = $this->dashboardModel->postUpdateStudentData($request);
 
-    if ($update['success']) {
+    if ($update['status_code'] == 200) {
       return collect(['success' => true, "code" => 200, "message" => "success"]);
     } else {
-      return collect(['success' => false, "code" => 400, "message" => "failed"]);
+      return collect(['success' => false, "code" => $update['status_code'], "message" => "failed"]);
     }
   }
 
@@ -65,11 +65,11 @@ class DashboardRepositoryImpl implements DashboardRepository
   {
     $update = $this->dashboardModel->postUpdateStudentProfile($request);
 
-    if ($update['success']) {
-      session()->put('stu_profile_img', $update['data']['profile']);
+    if ($update['status_code'] == 200) {
+      // session()->put('stu_profile_img', $update['data']['profile']);
       return collect(['success' => true, "code" => 200, "message" => "success"]);
     } else {
-      return collect(['success' => false, "code" => 400, "message" => "failed"]);
+      return collect(['success' => false, "code" => $update['status_code'], "message" => "failed"]);
     }
   }
 

@@ -13,7 +13,7 @@ $(document).ready(function() {
         $('#firstTimeLoginModal').modal('show');
       }
       
-      $('#profileImage').attr('src', d.pas_foto || '/img/base-profile.png'); // profile image
+      $('#profileImage').attr('src', d.pasfoto || '/img/base-profile.png'); // profile image
       $('#selfNik').text(d.nik); // personal's data
       $('#selfFromSchool').text(d.sekolah_asal);
       $('#selfGender').text((d.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');

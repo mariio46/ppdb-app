@@ -3,6 +3,7 @@
 namespace App\Models\Student;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class DashboardModel extends BaseModel
 {
@@ -160,13 +161,19 @@ class DashboardModel extends BaseModel
     $village = explode('|', $request->post('village'));
 
     $data = [
-      'id'              => session()->get('stu_id'),
       'nik'             => $request->post('nik'),
-      'jenis_kelamin'   => $request->post('gender'),
-      'tempat_lahir'    => $request->post('birthPlace'),
       'tanggal_lahir'   => $request->post('birthYear') . '-' . $request->post('birthMonth') . '-' . $request->post('birthDay'),
-      'nomor_telepon'   => $request->post('phone'),
+      'tempat_lahir'    => $request->post('birthPlace'),
+      'jenis_kelamin'   => $request->post('gender'),
       'email'           => $request->post('email'),
+      'telepon'         => $request->post('phone'),
+      'rtrw'            => $request->post('associations'),
+      'nama_ayah'       => $request->post('fathersName'),
+      'telepon_ayah'    => $request->post('fathersPhone'),
+      'nama_ibu'        => $request->post('mothersName'),
+      'telepon_ibu'     => $request->post('mothersPhone'),
+      'nama_wali'       => $request->post('guardsName'),
+      'telepon_wali'    => $request->post('guardsPhone'),
       'kode_provinsi'   => $province[0],
       'provinsi'        => $province[1],
       'kode_kabupaten'  => $city[0],
@@ -176,35 +183,29 @@ class DashboardModel extends BaseModel
       'kode_desa'       => $village[0],
       'desa'            => $village[1],
       'dusun'           => $request->post('hamlet'),
-      'rtrw'            => $request->post('associations'),
       'alamat_jalan'    => $request->post('address'),
-      'nama_ibu'        => $request->post('mothersName'),
-      'nomor_ibu'       => $request->post('mothersPhone'),
-      'nama_ayah'       => $request->post('fathersName'),
-      'nomor_ayah'      => $request->post('fathersPhone'),
-      'nama_wali'       => $request->post('guardsName'),
-      'nomor_wali'      => $request->post('guardsPhone'),
+      'kode_wilayah'    => $district[0],
+      // 'wilayah_id'      => ?
+      'id'              => session()->get('stu_id')
     ];
 
-    $result = [
-      'success' => true
-    ];
+    $result = $this->post('siswa/update', $data);
     return $result;
   }
 
   public function postUpdateStudentProfile(Request $request): array
   {
-    $image = $request->file('profilePictureInput');
+    $file = $request->file('profilePictureInput');
+    $data = ['id' => session()->get('stu_id')];
 
-    $result = [
-      'success' => true,
-      'image' => $image,
-      'data' => [
-        'profile' => '/app-assets/images/profile.png'
-      ]
+    $response = Http::withHeaders(["waktu" => 1, "sw-code" => session()->get('stu_token')])
+      ->attach('pasfoto', file_get_contents($file->path()), $file->getClientOriginalName())
+      ->post($this->domain . 'siswa/update/profil', $data);
+
+    return [
+      'status_code' => $response->status(),
+      'response'    => $response->json()
     ];
-
-    return $result;
   }
 
   public function postUpdateStudentScore(int $semester, Request $request): array

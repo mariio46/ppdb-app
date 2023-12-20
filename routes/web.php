@@ -86,10 +86,7 @@ Route::group(['middleware' => 'student.auth'], function () {
   });
 
   // logout
-  Route::get('/keluar', function () {
-    session()->flush();
-    return redirect('/masuk')->withErrors(['errorMsg' => 'Kamu sudah logout.']);
-  });
+  Route::get('/keluar', [LoginController::class, 'logout'])->name('logout');
 });
 
 Route::get('login', [LoginController::class, 'index'])->name('login');

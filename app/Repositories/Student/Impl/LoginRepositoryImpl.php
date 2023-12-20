@@ -60,4 +60,18 @@ class LoginRepositoryImpl implements LoginRepository
 
     return collect($result);
   }
+
+  public function logout(): array
+  {
+    $logout = $this->loginModel->logout(session()->get('stu_id'));
+
+    $result = [];
+    if ($logout['status_code'] == 200) {
+      $result = ['success' => true, 'code' => 200, 'message' => "Kamu berhasil logout."];
+    } else {
+      $result = ['success' => false, 'code' => $logout['status_code'], 'message' => "failed."];
+    }
+
+    return $result;
+  }
 }

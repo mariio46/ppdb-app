@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Http;
 
 class BaseModel
 {
-  private $domain = "https://ppdbv2.infaltech.com/";
+  // private $domain = "https://ppdbv2.infaltech.com/";
+  protected $domain = "http://ppdbv2.test/";
 
   protected function get(string $endpoint): array
   {
