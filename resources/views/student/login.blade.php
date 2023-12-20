@@ -14,7 +14,7 @@
             <div class="content-body">
                 <div class="auth-wrapper auth-cover">
                     <div class="auth-inner row m-0">
-                        <a class="brand-logo" href="/masuk">
+                        <a class="brand-logo" href="{{ route('student.login') }}">
                             <img class="img-fluid" src="/img/logo-ppdb-sulsel-full.png" alt="logo" width="200">
                         </a>
                         {{-- Left section --}}
@@ -42,7 +42,7 @@
                                 @endif
 
                                 {{-- form --}}
-                                <form class="mt-2" id="login-form" action="/do-login" method="post">
+                                <form class="mt-2" id="login-form" action="{{ route('student.login') }}" method="post">
                                     @csrf
                                     <div class="mb-1">
                                         <x-label for="nisn">NISN</x-label>
@@ -73,7 +73,8 @@
                                 {{-- /register link --}}
 
                                 <div class="d-flex justify-content-end align-items-center fixed-bottom me-2 mb-1">
-                                    <p class="mb-0"><a href="https://labkraf.id/" target="_blank">labkraf.id</a> <x-tabler-heart-filled class="text-danger" /> v-2.0.0</p>
+                                    <p class="mb-0"><a href="https://labkraf.id/" target="_blank">labkraf.id</a> <x-tabler-heart-filled class="text-danger" style="width: 16px; height: 16px;" /> v-2.0.0
+                                    </p>
                                 </div>
                             </div>
                         </div>

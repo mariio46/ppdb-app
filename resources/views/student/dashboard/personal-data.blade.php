@@ -18,7 +18,7 @@
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb breadcrumb-slash">
                             <li class="breadcrumb-item">
-                                <a href="/data-diri">Data Diri</a>
+                                <a href="{{ route('student.personal') }}">Data Diri</a>
                             </li>
                             <li class="breadcrumb-item active">
                                 Edit Data
@@ -34,7 +34,6 @@
         <div class="card">
             <div class="card-header border-bottom">
                 <h4 class="card-title">Edit Data Diri</h4>
-                {{ session()->get('stu_profile_img') }}
             </div>
 
             <div class="card-body py-2 my-25">
@@ -77,13 +76,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-center">
-                                                    <form id="formEditProfile" action="/personal-data/update-profile-picture" method="post" enctype="multipart/form-data">
+                                                    <form id="formEditProfile" action="{{ route('student.personal.update-photo') }}" method="post" enctype="multipart/form-data">
                                                         @csrf
                                                         <div class="alert alert-danger p-1 w-100" id="profilePictureErrorMsg" style="display: none;"></div>
 
                                                         <div class="d-flex justify-content-center">
                                                             <label class="btn btn-sm btn-outline-primary" for="profilePictureInput">Pilih Foto</label>
-                                                            {{-- <input id="profilePictureInput" name="profilePictureInput" type="file" hidden accept="image/png, image/jpg, image/jpeg" required> --}}
                                                             <input id="profilePictureInput" name="profilePictureInput" type="file" accept="image/png, image/jpg, image/jpeg" hidden required>
 
                                                             <x-button class="btn-sm ms-1" type="submit" color="primary">Simpan</x-button>
@@ -102,7 +100,7 @@
                 </div>
             </div>
 
-            <form id="formEditData" action="/personal-data/update-data" method="post">
+            <form id="formEditData" action="{{ route('student.personal.update-data') }}" method="post">
                 @csrf
                 <div class="card-body py-2 my-25 border-top row">
 

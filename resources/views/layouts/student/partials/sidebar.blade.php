@@ -27,37 +27,37 @@
             @endphp
 
             <li class="@if ($path1 == 'data-diri') active @endif nav-item my-1">
-                <a class="d-flex align-items-center" href="/data-diri">
+                <a class="d-flex align-items-center" href="{{ route('student.personal') }}">
                     <x-tabler-dashboard style="width: 24px; height: 24px;" />
                     <span class="menu-title text-truncate">Data Diri</span>
                 </a>
             </li>
             <li class="@if ($path1 == 'pendaftaran') active @endif nav-item my-1">
-                <a class="d-flex align-items-center" href="/pendaftaran">
+                <a class="d-flex align-items-center" href="{{ route('student.regis') }}">
                     <x-tabler-pencil-minus style="width: 24px; height: 24px;" />
                     <span class="menu-title text-truncate">Pendaftaran</span>
                 </a>
             </li>
             <li class="@if ($path1 == 'status') active @endif nav-item my-1">
-                <a class="d-flex align-items-center" href="/status">
+                <a class="d-flex align-items-center" href="{{ route('student.status') }}">
                     <x-tabler-send style="width: 24px; height: 24px;" />
                     <span class="menu-title text-truncate">Status</span>
                 </a>
             </li>
             <li class="@if ($path1 == 'sekolah') active @endif nav-item my-1">
-                <a class="d-flex align-items-center" href="/sekolah">
+                <a class="d-flex align-items-center" href="{{ route('student.school') }}">
                     <x-tabler-home-search style="width: 24px; height: 24px;" />
                     <span class="menu-title text-truncate">Sekolah</span>
                 </a>
             </li>
             <li class="@if ($path1 == 'faq') active @endif nav-item my-1">
-                <a class="d-flex align-items-center" href="/faq">
+                <a class="d-flex align-items-center" href="{{ route('student.faq') }}">
                     <x-tabler-file-dots style="width: 24px; height: 24px;" />
                     <span class="menu-title text-truncate">FAQ</span>
                 </a>
             </li>
             <li class="nav-item my-1">
-                <a class="d-flex align-items-center text-danger" href="/keluar">
+                <a class="d-flex align-items-center text-danger" href="{{ route('student.logout') }}">
                     <x-tabler-logout-2 style="width: 24px; height: 24px;" />
                     <span class="menu-title text-truncate">Keluar</span>
                 </a>
@@ -71,25 +71,25 @@
 <nav class="bottom-navbar navbar navbar-expand navbar-shadow fixed-bottom bg-white d-xl-none">
     <ul class="nav nav-justified w-100">
         <li class="nav-item">
-            <a class="nav-link @if ($path1 == 'data-diri') active @endif" href="/data-diri">
+            <a class="nav-link @if ($path1 == 'data-diri') active @endif" href="{{ route('student.personal') }}">
                 <x-tabler-dashboard class="bottom-navbar-icon" />
                 <span class="bottom-navbar-label">Data Diri</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @if ($path1 == 'pendaftaran') active @endif" href="/pendaftaran">
+            <a class="nav-link @if ($path1 == 'pendaftaran') active @endif" href="{{ route('student.regis') }}">
                 <x-tabler-pencil-minus class="bottom-navbar-icon" />
                 <span class="bottom-navbar-label">Pendaftaran</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @if ($path1 == 'status') active @endif" href="/status">
+            <a class="nav-link @if ($path1 == 'status') active @endif" href="{{ route('student.status') }}">
                 <x-tabler-send class="bottom-navbar-icon" />
                 <span class="bottom-navbar-label">Status</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link @if ($path1 == 'sekolah') active @endif" href="/sekolah">
+            <a class="nav-link @if ($path1 == 'sekolah') active @endif" href="{{ route('student.school') }}">
                 <x-tabler-home-search class="bottom-navbar-icon" />
                 <span class="bottom-navbar-label">Sekolah</span>
             </a>
@@ -104,7 +104,7 @@
 </nav>
 <div class="fixed-bottom-right" id="fixedBottomRight">
     <div class="bg-white list-group">
-        <a class="list-group-item list-group-item-action @if ($path1 == 'faq') active @endif" href="/faq"><x-tabler-file-dots /> FAQ</a>
-        <a class="list-group-item list-group-item-action text-danger" href="keluar"><x-tabler-logout-2 /> Keluar</a>
+        <a class="list-group-item list-group-item-action @if ($path1 == 'faq') active @endif" href="{{ route('student.faq') }}"><x-tabler-file-dots /> FAQ</a>
+        <a class="list-group-item list-group-item-action text-danger" href="{{ route('student.logout') }}"><x-tabler-logout-2 /> Keluar</a>
     </div>
 </div>

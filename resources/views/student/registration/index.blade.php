@@ -5,7 +5,7 @@
         <div class="col-12">
             @if (!session()->get('stu_is_locked'))
                 <div class="alert alert-danger p-1">
-                    <p class="text-center"><x-tabler-shield-lock /></p>
+                    <p class="text-center"><x-tabler-shield-lock style="width: 36px; height: 36px;" /></p>
                     <p class="mb-0 text-center">Kamu belum mengunci data pribadi. Lakukan penguncian data terlebih dahulu untuk melakukan pendaftaran jalur.</p>
                 </div>
             @else

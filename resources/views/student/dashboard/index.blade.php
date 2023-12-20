@@ -20,7 +20,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title" id="ftlLabel">Perbarui Kata Sandi</h4>
                 </div>
-                <form id="ftlForm" action="/first-time-login" method="post">
+                <form id="ftlForm" action="{{ route('student.personal.first-login') }}" method="post">
                     @csrf
                     <div class="modal-body">
                         <div class="alert alert-warning p-1">
@@ -86,8 +86,8 @@
                             <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                                 <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0">
                                     {{-- edit button  --}}
-                                    <a class="btn btn-success btn-icon d-none" id="btnEditData" href="/data-diri/data-pribadi">
-                                        <x-tabler-pencil />
+                                    <a class="btn btn-success btn-icon d-none" id="btnEditData" href="{{ route('student.personal.data') }}">
+                                        <x-tabler-pencil style="width: 16px; height: 16px;" />
                                         <span class="fw-bold">Edit Data</span>
                                     </a>
                                 </div>
@@ -279,7 +279,8 @@
                             <div class="d-flex align-items-end mb-1">
                                 <h4 class="text-title mb-0">Data Nilai Rapor</h4>
 
-                                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href="/data-diri/edit-nilai/semester-1"><x-tabler-pencil /> Edit Nilai</a>
+                                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href="{{ route('student.personal.score', ['semester-1']) }}"><x-tabler-pencil
+                                        style="width: 16px; height: 16px;" /> Edit Nilai</a>
                             </div>
 
                             <small class="text-subtitle">Data nilai rapor adalah data <strong>nilai pengetahuan</strong> mata pelajaran Bahasa Indonesia, Bahasa Inggris, Matematika, Ilmu Pengetahuan Alam
@@ -381,13 +382,15 @@
                                                 <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form id="lockDataForm" action="/lock-student-data" method="post">
+                                                <form id="lockDataForm" action="{{ route('student.personal.lock-data') }}" method="post">
                                                     @csrf
                                                     <div class="alert alert-danger p-1">
                                                         Data yang sudah dikunci tidak dapat diubah kembali. Pastikan data kamu sudah benar sebelum mengunci data.
                                                     </div>
 
-                                                    <x-button class="float-end mb-1" type="submit" color="danger" withIcon="true"><x-tabler-lock-access /> Kunci Data</x-button>
+                                                    <x-button class="float-end mb-1" type="submit" color="danger" withIcon="true"><x-tabler-lock-access style="width: 16px; height: 16px;" />
+                                                        Kunci Data
+                                                    </x-button>
                                                 </form>
                                             </div>
                                         </div>
