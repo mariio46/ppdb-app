@@ -57,7 +57,7 @@
                     <span class="menu-title text-truncate">Pengajuan Operator</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('verifikasi.manual') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('verifikasi.manual*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('verifikasi.manual') }}">
                     <x-tabler-file-text />
                     <span class="menu-title text-truncate">Verifikasi Manual</span>
