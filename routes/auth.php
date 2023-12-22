@@ -36,6 +36,10 @@ Route::controller(StudentController::class)->group(function () {
     Route::get('siswa/create', 'create')->name('siswa.create');
     Route::get('siswa/{username}', 'show')->name('siswa.show');
     Route::get('siswa/{username}/edit', 'edit')->name('siswa.edit');
+    Route::get('siswa/{username}/score/{semester}', 'score')->name('siswa.score');
+    Route::post('siswa/{username}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
+
+    Route::get('siswa/get-scores/{username}/{semester}', 'getScores');
 });
 
 Route::controller(SchoolController::class)->group(function () {
@@ -49,11 +53,28 @@ Route::controller(OperatorController::class)->group(function () {
 
 Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual', 'manual')->name('verifikasi.manual');
+    Route::get('verifikasi-manual/get-data', 'manualGetData');
+    Route::get('verifikasi-manual/d/{id}', 'manualDetail')->name('verifikasi.manual.detail');
+    Route::get('verifikasi-manual/d/{id}/get-data-detail', 'manualgetDetailData')->name('verifikasi.manual.getdetail');
+    Route::get('verifikasi-manual/d/{id}/edit-nilai', 'manualScore')->name('verifikasi.manual.score');
+    Route::get('verifikasi-manual/d/{id}/edit-titik-rumah', 'manualMap')->name('verifikasi.manual.map');
+    Route::post('verifikasi-manual/d/{id}/accept-verication', 'manualAcceptVerification')->name('verifikasi.manual.accept');
+    Route::post('verifikasi-manual/d/{id}/decline-verication', 'manualDeclineVerification')->name('verifikasi.manual.decline');
+
     Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar.ulang');
 });
 
 Route::controller(AgencyController::class)->group(function () {
     Route::get('cabang-dinas', 'index')->name('cabang-dinas.index');
+    Route::get('cabang-dinas/create', 'create')->name('cabang-dinas.create');
+    Route::get('cabang-dinas/d/{slug}', 'detail')->name('cabang-dinas.detail');
+
+    Route::get('cabang-dinas/get-cabang-dinas', 'getAgency');
+    Route::get('cabang-dinas/get-city', 'getCity');
+    Route::get('cabang-dinas/get-cabang-dinas-by-slug/{slug}', 'getAgencyBySlug');
+    Route::post('cabang-dinas/create', 'postNewData');
+    Route::post('cabang-dinas/update', 'postUpdateData');
+    Route::post('cabang-dinas/remove', 'postRemoveData');
 });
 
 Route::controller(KeyController::class)->group(function () {

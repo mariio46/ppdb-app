@@ -1,20 +1,21 @@
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
-    <div class="navbar-header">
+    <div class="navbar-header h-auto">
         <ul class="nav navbar-nav flex-row">
             <li class="nav-item me-auto">
                 <div class="navbar-brand">
-                    <a class="brand-logo" href="#">
-                        <x-application-logo />
-                    </a>
+                    {{-- <a class="brand-logo" href="#"> --}}
+                    {{-- <x-application-logo /> --}}
+                    <img class="img-fluid h-80" src="/img/logo-ppdb-sulsel-full.png" alt="Logo PPDB">
+                    {{-- </a> --}}
 
                 </div>
             </li>
-            <li class="nav-item nav-toggle">
+            {{-- <li class="nav-item nav-toggle">
                 <a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse">
                     <i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i>
                     <i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
     <div class="shadow-bottom"></div>
@@ -56,7 +57,7 @@
                     <span class="menu-title text-truncate">Pengajuan Operator</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('verifikasi.manual') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('verifikasi.manual*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('verifikasi.manual') }}">
                     <x-tabler-file-text />
                     <span class="menu-title text-truncate">Verifikasi Manual</span>

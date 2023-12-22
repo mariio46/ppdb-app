@@ -230,7 +230,7 @@
                 <section id="data-nilai-rapor">
                     <div class="d-flex align-items-center justify-content-between" style="margin-left: 2rem; margin-top: 1.5rem; margin-bottom: 1.5rem">
                         <h4 class="text-primary">Data Nilai Rapor</h4>
-                        <a class="btn btn-success" href="#">
+                        <a class="btn btn-success" href="{{ route('siswa.score', [$student->username, 'semester-1']) }}">
                             Edit Nilai
                         </a>
                     </div>

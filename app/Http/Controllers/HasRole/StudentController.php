@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -38,6 +39,31 @@ class StudentController extends Controller
             'months' => $this->getMoths(),
             'years' => $this->getYears(),
         ]);
+    }
+
+    public function score(string $username, string $semester): View
+    {
+        $data = [
+            'username'  => $username,
+            'semester'  => str_replace('semester-', '', $semester) // return only number
+        ];
+
+        return view('has-role.student.score', $data);
+    }
+
+    public function updateScore(string $username, string $semester, Request $request)
+    {
+        $data = [
+            'username'      => $username,
+            'semester'      => str_replace('semester-', '', $semester),
+            'indonesian'    => $request->post('indonesian'),
+            'english'       => $request->post('english'),
+            'math'          => $request->post('math'),
+            'science'       => $request->post('science'),
+            'social'        => $request->post('social'),
+        ];
+
+        return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => json_encode($data)]);
     }
 
     protected function getSingleStudent($username)
@@ -264,5 +290,67 @@ class StudentController extends Controller
                 'semester_5' => '71',
             ],
         ]);
+    }
+
+    protected function getScores(string $username, string $semester): JsonResponse
+    {
+        switch ($semester) {
+            case '1':
+                $data = [
+                    'bid'   => '90',
+                    'big'   => '87',
+                    'mtk'   => '70',
+                    'ipa'   => '78',
+                    'ips'   => '95'
+                ];
+                break;
+            case '2':
+                $data = [
+                    'bid'   => '98',
+                    'big'   => '78',
+                    'mtk'   => '99',
+                    'ipa'   => '89',
+                    'ips'   => '76'
+                ];
+                break;
+            case '3':
+                $data = [
+                    'bid'   => '87',
+                    'big'   => '79',
+                    'mtk'   => '76',
+                    'ipa'   => '90',
+                    'ips'   => '87'
+                ];
+                break;
+            case '4':
+                $data = [
+                    'bid'   => '98',
+                    'big'   => '76',
+                    'mtk'   => '98',
+                    'ipa'   => '85',
+                    'ips'   => '93'
+                ];
+                break;
+            case '5':
+                $data = [
+                    'bid'   => '94',
+                    'big'   => '87',
+                    'mtk'   => '98',
+                    'ipa'   => '90',
+                    'ips'   => '71'
+                ];
+                break;
+            default:
+                $data = [
+                    'bid'   => '0',
+                    'big'   => '0',
+                    'mtk'   => '0',
+                    'ipa'   => '0',
+                    'ips'   => '0'
+                ];
+                break;
+        }
+
+        return response()->json($data);
     }
 }
