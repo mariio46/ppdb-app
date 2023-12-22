@@ -37,7 +37,7 @@
                             <tr class="table-light">
                                 <th scope="col">NAMA</th>
                                 <th scope="col">NPSN</th>
-                                <th scope="col">SATUAN UNIT</th>
+                                <th scope="col">SATUAN PENDIDIKAN</th>
                                 <th scope="col">ALAMAT</th>
                                 <th scope="col">DETAIL</th>
                             </tr>

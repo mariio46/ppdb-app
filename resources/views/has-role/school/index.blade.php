@@ -68,7 +68,7 @@
                                     <td>{{ $item->unit }}</td>
                                     <td>{{ $item->address }}</td>
                                     <td>
-                                        <a class="btn btn-primary" href="{{ route('siswa.show', $item->npsn) }}">Lihat Detail</a>
+                                        <a class="btn btn-primary" href="{{ route('sekolah.detail', $item->npsn) }}">Lihat Detail</a>
                                     </td>
                                 </tr>
                             @endforeach
