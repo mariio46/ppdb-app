@@ -5,33 +5,35 @@ $(document).ready(function() {
     method: 'get',
     dataType: 'json',
     success: function(data) {
-      if (data.pertama_login == '0' && data.kunci == '0') {
+      let d = data.data;
+
+      if (d.pertama_login == 't' && d.kunci == '0') {
         $('#btnEditData, #btnEditScore, #cardLock').removeClass("d-none");
-      } else if (data.pertama_login == '1') {
+      } else if (d.pertama_login == 'y') {
         $('#firstTimeLoginModal').modal('show');
       }
       
-      $('#profileImage').attr('src', data.pas_foto || '/img/base-profile.png'); // profile image
-      $('#selfNik').text(data.nik); // personal's data
-      $('#selfFromSchool').text(data.asal_sekolah);
-      $('#selfGender').text((data.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');
-      $('#selfBirthPlace').text(data.tempat_lahir);
-      $('#selfBirthDay').text(data.tanggal_lahir);
-      $('#selfPhoneNumber').text(data.nomor_hp);
-      $('#selfEmail').text(data.email);
-      $('#selfProvince').text(data.provinsi); // address's data
-      $('#selfCity').text(data.kabupaten);
-      $('#selfSubDistrict').text(data.kecamatan);
-      $('#selfVillage').text(data.desa);
-      $('#selfHamlet').text(data.dusun);
-      $('#selfRtRw').text(data.rtrw);
-      $('#selfAddress').text(data.alamat_jalan);
-      $('#selfMothersName').text(data.nama_ibu); // parent's data
-      $('#selfMothersPhone').text(data.nomor_ibu);
-      $('#selfFathersName').text(data.nama_ayah);
-      $('#selfFathersPhone').text(data.nomor_ayah);
-      $('#selfGuardsName').text(data.nama_wali);
-      $('#selfGuardsPhone').text(data.nomor_wali);
+      $('#profileImage').attr('src', d.pasfoto || '/img/base-profile.png'); // profile image
+      $('#selfNik').text(d.nik); // personal's data
+      $('#selfFromSchool').text(d.sekolah_asal);
+      $('#selfGender').text((d.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');
+      $('#selfBirthPlace').text(d.tempat_lahir);
+      $('#selfBirthDay').text(d.tanggal_lahir);
+      $('#selfPhoneNumber').text(d.telepon);
+      $('#selfEmail').text(d.email);
+      $('#selfProvince').text(d.provinsi); // address's data
+      $('#selfCity').text(d.kabupaten);
+      $('#selfSubDistrict').text(d.kecamatan);
+      $('#selfVillage').text(d.desa);
+      $('#selfHamlet').text(d.dusun);
+      $('#selfRtRw').text(d.rtrw);
+      $('#selfAddress').text(d.alamat_jalan);
+      $('#selfMothersName').text(d.nama_ibu); // parent's data
+      $('#selfMothersPhone').text(d.telepon_ibu);
+      $('#selfFathersName').text(d.nama_ayah);
+      $('#selfFathersPhone').text(d.telepon_ayah);
+      $('#selfGuardsName').text(d.nama_wali);
+      $('#selfGuardsPhone').text(d.telepon_wali);
     }
   });
 
