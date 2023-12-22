@@ -9,7 +9,7 @@
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb breadcrumb-slash">
                             <li class="breadcrumb-item">
-                                <a href="/pendaftaran">Pendaftaran</a>
+                                <a href="{{ route('student.regis') }}">Pendaftaran</a>
                             </li>
                             <li class="breadcrumb-item active">
                                 Pendaftaran Tahap {{ $phase }}
@@ -39,22 +39,6 @@
             </div>
             <div class="col-lg-8 col-md-8 col-sm-12">
                 <div class="tab-content" id="tabContent">
-                    {{--  --}}
-                    {{-- <div class="tab-pane active" id="regSmaBoardingSchool" role="tabpanel" aria-labelledby="smaBoardingSchool" aria-expanded="true">
-            <div class="card">
-              <div class="card-body">
-                boarding
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-pane" id="regSmaAffirmation" role="tabpanel" aria-labelledby="smaAffirmation" aria-expanded="false">
-            <div class="card">
-              <div class="card-body">
-                afirmasi
-              </div>
-            </div>
-          </div> --}}
                 </div>
             </div>
         </div>
@@ -64,7 +48,7 @@
 @push('scripts')
     <script>
         var code = '{{ $phase_code ?? 0 }}',
-            isRegis = "{{ session()->get('stu_status_regis') ? 'y' : 'n' }}";
+            isRegis = "{{ session()->get('stu_is_regis') ? 'y' : 'n' }}";
     </script>
     <script src="/js/student/pages/registration/phase-v1.1.5.js"></script>
 @endpush

@@ -14,10 +14,10 @@
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb breadcrumb-slash">
                             <li class="breadcrumb-item">
-                                <a href="/pendaftaran">Pendaftaran</a>
+                                <a href="{{ route('student.regis') }}">Pendaftaran</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="/pendaftaran/tahap/{{ $phaseCode }}">Pendaftaran Tahap {{ $phase }}</a>
+                                <a href="{{ route('student.regis.phase', [$phaseCode]) }}">Pendaftaran Tahap {{ $phase }}</a>
                             </li>
                             <li class="breadcrumb-item active">
                                 Pendaftaran Jalur {{ $track }}

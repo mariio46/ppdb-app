@@ -15,7 +15,7 @@
                     <form class="faq-search-input">
                         <div class="input-group input-group-merge">
                             <div class="input-group-text">
-                                <i data-feather="search"></i>
+                                <x-tabler-search style="width: 16px; height: 16px;" />
                             </div>
                             <input class="form-control" id="search" name="search" type="text" placeholder="Cari pertanyaan kamu di sini..." />
                             <x-button id="searchBtn" type="button">Cari</x-button>

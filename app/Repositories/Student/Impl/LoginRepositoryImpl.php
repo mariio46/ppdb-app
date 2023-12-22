@@ -18,29 +18,60 @@ class LoginRepositoryImpl implements LoginRepository
 
     $authenticate = $this->loginModel->login($nisn, $password);
 
-    if ($authenticate->get('code') == 200) {
+    if ($authenticate['statusCode'] == 200) {
+      // session()->put([
+      //   'stu_id'            => data_get($authenticate, 'data.id'),
+      //   'stu_name'          => data_get($authenticate, 'data.nama'),
+      //   'stu_nisn'          => data_get($authenticate, 'data.nisn'),
+      //   'stu_school'        => data_get($authenticate, 'data.sekolah_asal'),
+      //   'stu_gender'        => data_get($authenticate, 'data.jenis_kelamin'),
+      //   'stu_profile_img'   => data_get($authenticate, 'data.pasfoto'),
+      //   'stu_token'         => data_get($authenticate, 'data.token'),
+      //   'stu_status_regis'  => data_get($authenticate, 'data.status_pendaftaran' == 'belum_mendaftar' ? false : true),
+      //   'stu_is_locked'     => data_get($authenticate, 'data.kunci' == '0' ? false : true),
+      //   'is_login'          => true
+      // ]);
+
       session()->put([
-        'stu_id'            => data_get($authenticate, 'data.id'),
-        'stu_name'          => data_get($authenticate, 'data.name'),
-        'stu_nisn'          => data_get($authenticate, 'data.nisn'),
-        'stu_school'        => data_get($authenticate, 'data.school'),
-        'stu_gender'        => data_get($authenticate, 'data.gender'),
-        'stu_profile_img'   => data_get($authenticate, 'data.photo'),
-        'stu_token'         => data_get($authenticate, 'data.token'),
-        'stu_status_regis'  => data_get($authenticate, 'data.regis_status' == 'n' ? false : true),
-        'stu_is_locked'     => data_get($authenticate, 'data.locked' == 'n' ? false : true),
-        'is_login'          => true
+        'stu_id'          => $authenticate['data']['id'],
+        'stu_name'        => $authenticate['data']['nama'],
+        'stu_nisn'        => $authenticate['data']['nisn'],
+        'stu_school'      => $authenticate['data']['sekolah_asal'],
+        'stu_gender'      => $authenticate['data']['jenis_kelamin'],
+        'stu_profile_img' => $authenticate['data']['pasfoto'],
+        'stu_token'       => $authenticate['data']['token'],
+        'stu_is_regis'    => $authenticate['data']['status_pendaftaran'] == 'belum_mendaftar' ? false : true,
+        'stu_is_locked'   => $authenticate['data']['kunci'] == '0' ? false : true,
+        'is_login'        => true
       ]);
 
       $result = ['success' => true, 'code' => 200, 'message' => "login berhasil."];
     } else {
-      if ($authenticate->get('code') == 401) {
+      if ($authenticate['statusCode'] == 401) {
+        $result = ['success' => false, 'code' => 401, 'message' => "Kamu sedang login di perangkat lain."];
+      } elseif ($authenticate['statusCode'] == 400) {
         $result = ['success' => false, 'code' => 401, 'message' => "NISN atau kata sandi salah."];
       } else {
         $result = ['success' => false, 'code' => 500, 'message' => "Oops, Server sibuk. Coba lagi nanti."];
       }
     }
 
+    // dd($authenticate);
+
     return collect($result);
+  }
+
+  public function logout(): array
+  {
+    $logout = $this->loginModel->logout(session()->get('stu_id'));
+
+    $result = [];
+    if ($logout['status_code'] == 200) {
+      $result = ['success' => true, 'code' => 200, 'message' => "Kamu berhasil logout."];
+    } else {
+      $result = ['success' => false, 'code' => $logout['status_code'], 'message' => "failed."];
+    }
+
+    return $result;
   }
 }

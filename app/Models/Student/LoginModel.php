@@ -2,34 +2,29 @@
 
 namespace App\Models\Student;
 
-use Illuminate\Support\Collection;
-
-class LoginModel
+class LoginModel extends BaseModel
 {
-  public function login(string $nisn, string $password): Collection
+  public function login(string $nisn, string $password): array
   {
-    if ($nisn == '0123456789' && $password == 'sayang') {
-      $data = [
-        "code" => 200,
-        "msg"  => "login success",
-        "data" => [
-          "id"            => '1',
-          "name"          => "Freya Jayawardana",
-          "nisn"          => "0123456789",
-          "school"        => "SMP Negeri 2 Sukamaju",
-          "gender"        => 'p',
-          "photo"         => "/app-assets/images/profile.png",
-          "token"         => "token_here",
-          "regis_status"  => 'n',
-          "locked"        => 'n'
-        ]
-      ];
-    } else if ($nisn == '0123456789' && $password == 'server') {
-      $data = ["code" => 500, "msg" => "server error", "data" => []];
+    $data = $this->postWoToken('siswa/login', ['nisn' => $nisn, 'kata_sandi' => $password, 'waktu' => 15]);
+
+    if ($data['status_code'] != 200) {
+      $response = ['statusCode' => $data['status_code'], "msg" => 'error', "data" => []];
     } else {
-      $data = ["code" => 401, "msg" => "login failed", "data" => []];
+      $response = $data['response'];
     }
 
-    return collect($data);
+    return $response;
+  }
+
+  public function logout(string $id): array
+  {
+    $data = [
+      'id' => $id
+    ];
+
+    $logout = $this->post('siswa/logout', $data);
+
+    return $logout;
   }
 }

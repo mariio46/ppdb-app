@@ -19,7 +19,7 @@ class DashboardRepositoryImpl implements DashboardRepository
   {
     $result = $this->dashboardModel->getDataStudentById(session()->get('stu_id'));
 
-    return response()->json($result);
+    return response()->json($result['response'], $result['status_code']);
   }
 
   public function getDataScore(): JsonResponse
@@ -43,55 +43,21 @@ class DashboardRepositoryImpl implements DashboardRepository
 
     $update = $this->dashboardModel->postFirstTimeLogin($id, $email, $phone, $pass);
 
-    if ($update['success']) {
+    if ($update['status_code'] == 200) {
       return collect(['success' => true, "code" => 200, "message" => "success"]);
     } else {
       return collect(['success' => false, "code" => 401, "message" => "failed"]);
     }
   }
 
-  public function getListProvince(): Collection|array
-  {
-    $lists = $this->regionModel->getListProvince()->all();
-
-    return $lists;
-  }
-
-  public function getListCity(string $provinceCode): Collection|array
-  {
-    $lists = $this->regionModel->getListCity()->where(function ($value, $key) use ($provinceCode) {
-      return str_starts_with($value['code'], $provinceCode);
-    });
-
-    return $lists->values()->all();
-  }
-
-  public function getListDistrict(string $cityCode): Collection|array
-  {
-    $lists = $this->regionModel->getListDistrict()->where(function ($value, $key) use ($cityCode) {
-      return str_starts_with($value['code'], $cityCode);
-    });
-
-    return $lists->values()->all();
-  }
-
-  public function getListVillage(string $districtCode): Collection|array
-  {
-    $lists = $this->regionModel->getListVillage()->where(function ($value, $key) use ($districtCode) {
-      return str_starts_with($value['code'], $districtCode);
-    });
-
-    return $lists->values()->all();
-  }
-
   public function postUpdateStudentData(Request $request): Collection
   {
     $update = $this->dashboardModel->postUpdateStudentData($request);
 
-    if ($update['success']) {
+    if ($update['status_code'] == 200) {
       return collect(['success' => true, "code" => 200, "message" => "success"]);
     } else {
-      return collect(['success' => false, "code" => 400, "message" => "failed"]);
+      return collect(['success' => false, "code" => $update['status_code'], "message" => "failed"]);
     }
   }
 
@@ -99,11 +65,11 @@ class DashboardRepositoryImpl implements DashboardRepository
   {
     $update = $this->dashboardModel->postUpdateStudentProfile($request);
 
-    if ($update['success']) {
+    if ($update['status_code'] == 200) {
       session()->put('stu_profile_img', $update['data']['profile']);
       return collect(['success' => true, "code" => 200, "message" => "success"]);
     } else {
-      return collect(['success' => false, "code" => 400, "message" => "failed"]);
+      return collect(['success' => false, "code" => $update['status_code'], "message" => "failed"]);
     }
   }
 

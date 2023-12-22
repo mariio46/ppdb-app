@@ -1,4 +1,4 @@
-@extends('layouts.student.auth')
+@extends('layouts.has-role.auth', ['title' => 'Edit Nilai Siswa'])
 
 @section('styles')
     <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
@@ -10,14 +10,21 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Data Diri</h2>
+                    <h2 class="content-header-title float-start mb-0">Verifikasi Manual</h2>
                     <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb breadcrumb-slash">
+                        <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ route('student.personal') }}">Data Diri</a>
+                                <a href="{{ route('verifikasi.manual') }}">
+                                    Verifikasi Manual
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('verifikasi.manual.detail', [$id]) }}">
+                                    Lihat Detail Siswa
+                                </a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Edit Nilai
+                                Edit Nilai Siswa
                             </li>
                         </ol>
                     </div>
@@ -26,16 +33,32 @@
         </div>
     </div>
 
-    @if (session()->get('scoreStatus'))
-        <div class="alert alert-{{ session()->get('scoreStatus') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('scoreMsg') }}</p>
-        </div>
-    @endif
-
     <div class="content-body mb-5">
         <div class="card">
-            <div class="card-header"></div>
-            <form id="formEditScore" action="{{ route('student.personal.update-score', [$semester]) }}" method="post">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td class="pe-0" style="width: 35%;">Nama Siswa</td>
+                                <td style="width: 5%;">:</td>
+                                <td class="ps-0" style="width: 60%;">Freyanashifa Jayawardhana</td>
+                            </tr>
+                            <tr>
+                                <td class="pe-0" style="width: 35%;">NISN</td>
+                                <td style="width: 5%;">:</td>
+                                <td class="ps-0" style="width: 60%;">0123456789</td>
+                            </tr>
+                            <tr>
+                                <td class="pe-0" style="width: 35%;">Asal Sekolah</td>
+                                <td style="width: 5%;">:</td>
+                                <td class="ps-0" style="width: 60%;">SMP NEGERI 1 SUKAMAJU</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <form id="formEditScore" action="" method="post">
                 @csrf
                 <div class="card-body border-top border-bottom p-0">
                     <div class="row">
@@ -43,7 +66,7 @@
                             <ul class="nav flex-column ps-2 d-none d-md-block">
                                 @for ($i = 1; $i <= 5; $i++)
                                     <li class="nav-item mt-1">
-                                        <a class="nav-link {{ $semester == $i ? 'active' : '' }}" href="{{ route('student.personal.score', [$i]) }}">
+                                        <a class="nav-link {{ $semester == $i ? 'active' : '' }}" href="{{ route('verifikasi.manual.score', ['id' => $id, 'semester' => $i]) }}">
                                             <div class="row tab-smt">
                                                 <div class="col-5 tab-smt-badge">
                                                     <p>{{ $i }}</p>
@@ -66,7 +89,7 @@
                                 </div>
                                 @for ($j = 1; $j <= 5; $j++)
                                     <div class="nav-item">
-                                        <a class="nav-link {{ $semester == $j ? 'active' : '' }}" href="{{ route('student.personal.score', [$j]) }}">{{ $j }}</a>
+                                        <a class="nav-link {{ $semester == $j ? 'active' : '' }}" href="{{ route('verifikasi.manual.score', ['id' => $id, 'semester' => $j]) }}">{{ $j }}</a>
                                     </div>
                                 @endfor
                             </ul>
@@ -134,7 +157,7 @@
                 </div>
                 <div class="card-body pb-3">
                     <x-button type="submit" color="success">Simpan Nilai Semester {{ $semester }}</x-button>
-                    <a class="btn btn-outline-secondary" href="{{ route('student.personal') }}" role="button">Batalkan</a>
+                    <a class="btn btn-outline-secondary" href="{{ route('verifikasi.manual.detail', [$id]) }}" role="button">Batalkan</a>
                 </div>
             </form>
         </div>
@@ -147,7 +170,94 @@
 
 @push('scripts')
     <script>
-        var semester = {{ $semester ?? 0 }};
+        $(function() {
+            ('use strict');
+
+            var formEditScore = $('#formEditScore');
+
+            // validations
+            if (formEditScore.length) {
+                formEditScore.validate({
+                    rules: {
+                        math: {
+                            required: true,
+                            number: true,
+                            min: 0,
+                            max: 100
+                        },
+                        indonesian: {
+                            required: true,
+                            number: true,
+                            min: 0,
+                            max: 100
+                        },
+                        english: {
+                            required: true,
+                            number: true,
+                            min: 0,
+                            max: 100
+                        },
+                        science: {
+                            required: true,
+                            number: true,
+                            min: 0,
+                            max: 100
+                        },
+                        social: {
+                            required: true,
+                            number: true,
+                            min: 0,
+                            max: 100
+                        }
+                    },
+                    messages: {
+                        math: {
+                            required: '*Nilai harus diisi.',
+                            number: '*Nilai harus dalam bentuk angka.',
+                            min: '*Masukkan minimal 0.',
+                            max: '*Masukkan maksimal 100.'
+                        },
+                        indonesian: {
+                            required: '*Nilai harus diisi.',
+                            number: '*Nilai harus dalam bentuk angka.',
+                            min: '*Masukkan minimal 0.',
+                            max: '*Masukkan maksimal 100.'
+                        },
+                        english: {
+                            required: '*Nilai harus diisi.',
+                            number: '*Nilai harus dalam bentuk angka.',
+                            min: '*Masukkan minimal 0.',
+                            max: '*Masukkan maksimal 100.'
+                        },
+                        science: {
+                            required: '*Nilai harus diisi.',
+                            number: '*Nilai harus dalam bentuk angka.',
+                            min: '*Masukkan minimal 0.',
+                            max: '*Masukkan maksimal 100.'
+                        },
+                        social: {
+                            required: '*Nilai harus diisi.',
+                            number: '*Nilai harus dalam bentuk angka.',
+                            min: '*Masukkan minimal 0.',
+                            max: '*Masukkan maksimal 100.'
+                        },
+                    }
+                })
+            }
+
+            // get scores
+            $.ajax({
+                url: 'URL_HERE',
+                method: 'get',
+                dataType: 'json',
+                success: function(scores) {
+                    $('#math').val(scores.mtk);
+                    $('#indonesian').val(scores.bid);
+                    $('#english').val(scores.big);
+                    $('#science').val(scores.ipa);
+                    $('#social').val(scores.ips);
+                }
+            });
+        });
     </script>
-    <script src="/js/student/pages/dashboard/update-score-v1.1.0.js"></script>
 @endpush

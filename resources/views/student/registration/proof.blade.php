@@ -9,10 +9,10 @@
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb breadcrumb-slash">
                             <li class="breadcrumb-item">
-                                <a href="/pendaftaran">Pendaftaran</a>
+                                <a href="{{ route('student.regis') }}">Pendaftaran</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="/pendaftaran/tahap/{{ $phaseCode }}">Pendaftaran Tahap {{ $phase }}</a>
+                                <a href="{{ route('student.regis.phase', [$phaseCode]) }}">Pendaftaran Tahap {{ $phase }}</a>
                             </li>
                             <li class="breadcrumb-item active">
                                 Cetak Bukti Pendaftaran
@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="card-body border-top">
-                        <x-button color="success" withIcon="true"><x-tabler-printer /><span class="ms-1">Cetak Bukti Pendaftaran</span></x-button>
+                        <x-button color="success" withIcon="true"><x-tabler-printer style="width: 16px; height: 16px;" /><span class="ms-1">Cetak Bukti Pendaftaran</span></x-button>
                     </div>
                 </div>
             </div>
