@@ -66,7 +66,8 @@ Route::controller(VerificationController::class)->group(function () {
     Route::post('verifikasi-manual/d/{id}/accept-verication', 'manualAcceptVerification')->name('verifikasi.manual.accept');
     Route::post('verifikasi-manual/d/{id}/decline-verication', 'manualDeclineVerification')->name('verifikasi.manual.decline');
 
-    Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar.ulang');
+    Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar-ulang');
+    Route::get('verifikasi-daftar-ulang/{nisn}', 'reregistrationShow')->name('verifikasi.daftar-ulang.show');
 });
 
 Route::controller(AgencyController::class)->group(function () {
