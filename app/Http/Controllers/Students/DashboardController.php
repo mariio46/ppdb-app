@@ -85,7 +85,11 @@ class DashboardController extends Controller
     {
         $update = $this->dashboardRepo->postUpdateStudentScore($semester, $request);
 
-        return redirect()->back()->with(data_get($update, 'message'));
+        if (data_get($update, 'success')) {
+            return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => 'Nilai berhasil disimpan.']);
+        } else {
+            return redirect()->back()->with(['scoreStatus' => 'danger', 'scoreMsg' => 'Nilai gagal disimpan.']);
+        }
     }
 
     public function postLockStudentData()

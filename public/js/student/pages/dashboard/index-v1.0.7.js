@@ -42,31 +42,32 @@ $(document).ready(function() {
     method: 'get',
     dataType: 'json',
     success: function(score) {
-      $('#smt1Bid').text(score.smt1bid);
-      $('#smt2Bid').text(score.smt2bid);
-      $('#smt3Bid').text(score.smt3bid);
-      $('#smt4Bid').text(score.smt4bid);
-      $('#smt5Bid').text(score.smt5bid);
-      $('#smt1Big').text(score.smt1big);
-      $('#smt2Big').text(score.smt2big);
-      $('#smt3Big').text(score.smt3big);
-      $('#smt4Big').text(score.smt4big);
-      $('#smt5Big').text(score.smt5big);
-      $('#smt1Mtk').text(score.smt1mtk);
-      $('#smt2Mtk').text(score.smt2mtk);
-      $('#smt3Mtk').text(score.smt3mtk);
-      $('#smt4Mtk').text(score.smt4mtk);
-      $('#smt5Mtk').text(score.smt5mtk);
-      $('#smt1Ipa').text(score.smt1ipa);
-      $('#smt2Ipa').text(score.smt2ipa);
-      $('#smt3Ipa').text(score.smt3ipa);
-      $('#smt4Ipa').text(score.smt4ipa);
-      $('#smt5Ipa').text(score.smt5ipa);
-      $('#smt1Ips').text(score.smt1ips);
-      $('#smt2Ips').text(score.smt2ips);
-      $('#smt3Ips').text(score.smt3ips);
-      $('#smt4Ips').text(score.smt4ips);
-      $('#smt5Ips').text(score.smt5ips);
+      let s = score.data;
+      $('#smt1Bid').text(s.sm1_bid);
+      $('#smt2Bid').text(s.sm2_bid);
+      $('#smt3Bid').text(s.sm3_bid);
+      $('#smt4Bid').text(s.sm4_bid);
+      $('#smt5Bid').text(s.sm5_bid);
+      $('#smt1Big').text(s.sm1_big);
+      $('#smt2Big').text(s.sm2_big);
+      $('#smt3Big').text(s.sm3_big);
+      $('#smt4Big').text(s.sm4_big);
+      $('#smt5Big').text(s.sm5_big);
+      $('#smt1Mtk').text(s.sm1_mtk);
+      $('#smt2Mtk').text(s.sm2_mtk);
+      $('#smt3Mtk').text(s.sm3_mtk);
+      $('#smt4Mtk').text(s.sm4_mtk);
+      $('#smt5Mtk').text(s.sm5_mtk);
+      $('#smt1Ipa').text(s.sm1_ipa);
+      $('#smt2Ipa').text(s.sm2_ipa);
+      $('#smt3Ipa').text(s.sm3_ipa);
+      $('#smt4Ipa').text(s.sm4_ipa);
+      $('#smt5Ipa').text(s.sm5_ipa);
+      $('#smt1Ips').text(s.sm1_ips);
+      $('#smt2Ips').text(s.sm2_ips);
+      $('#smt3Ips').text(s.sm3_ips);
+      $('#smt4Ips').text(s.sm4_ips);
+      $('#smt5Ips').text(s.sm5_ips);
     }
   });
 });
