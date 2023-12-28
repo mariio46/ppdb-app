@@ -157,9 +157,11 @@ class DashboardModel extends BaseModel
 
   public function postLockStudentData(string $id): array
   {
-    $result = [
-      'success' => true
+    $data = [
+      "id" => $id
     ];
+
+    $result = $this->post('siswa/kunci', $data);
     return $result;
   }
 }

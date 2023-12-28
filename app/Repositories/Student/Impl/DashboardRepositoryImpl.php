@@ -89,8 +89,12 @@ class DashboardRepositoryImpl implements DashboardRepository
     $id = session()->get('stu_id');
 
     $lock = $this->dashboardModel->postLockStudentData($id);
-    session()->put('stu_is_locked', true);
 
-    return collect($lock);
+    if ($lock['status_code'] == 200) {
+      session()->put('stu_is_locked', true);
+      return collect(['success' => true, "code" => 200]);
+    } else {
+      return collect(['success' => false, "code" => $lock['status_code']]);
+    }
   }
 }
