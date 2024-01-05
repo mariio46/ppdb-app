@@ -30,6 +30,9 @@ class AgencyController extends Controller
     }
 
     // --------------------------------------------------
+    /**
+     * trello: A.09.003
+     */
     public function postNewData(Request $request): RedirectResponse
     {
         $data = [
@@ -43,6 +46,9 @@ class AgencyController extends Controller
         return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
     }
 
+    /**
+     * trello: A.09.004
+     */
     public function postUpdateData(Request $request): RedirectResponse
     {
         $data = [
@@ -56,6 +62,9 @@ class AgencyController extends Controller
         return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
     }
 
+    /**
+     * trello: A.09.005
+     */
     public function postRemoveData(Request $request): RedirectResponse
     {
         $data = [
@@ -66,6 +75,9 @@ class AgencyController extends Controller
     }
 
     // --------------------------------------------------
+    /**
+     * trello: A.09.001
+     */
     protected function getAgency(): JsonResponse
     {
         return response()->json([
@@ -156,6 +168,9 @@ class AgencyController extends Controller
         ]);
     }
 
+    /**
+     * trello: 00.003 -> with data province is 73 (Sulawesi Selatan)
+     */
     protected function getCity(): JsonResponse
     {
         $data = [
@@ -260,6 +275,9 @@ class AgencyController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * trello: A.09.002
+     */
     protected function getAgencyBySlug(string $slug): JsonResponse
     {
         $data = [
