@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class OperatorController extends Controller
