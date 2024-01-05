@@ -301,43 +301,43 @@
                                 <tbody>
                                     <tr>
                                         <td class="py-2">Bahasa Indonesia</td>
-                                        <td class="py-2 text-center"><span id="smt1Bid"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt2Bid"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt3Bid"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt4Bid"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt5Bid"><i>Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt1Bid"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt2Bid"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt3Bid"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt4Bid"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt5Bid"><i class="text-black">Loading...</i></span></td>
                                     </tr>
                                     <tr>
                                         <td class="py-2">Bahasa Inggris</td>
-                                        <td class="py-2 text-center"><span id="smt1Big"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt2Big"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt3Big"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt4Big"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt5Big"><i>Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt1Big"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt2Big"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt3Big"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt4Big"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt5Big"><i class="text-black">Loading...</i></span></td>
                                     </tr>
                                     <tr>
                                         <td class="py-2">Matematika</td>
-                                        <td class="py-2 text-center"><span id="smt1Mtk"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt2Mtk"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt3Mtk"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt4Mtk"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt5Mtk"><i>Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt1Mtk"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt2Mtk"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt3Mtk"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt4Mtk"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt5Mtk"><i class="text-black">Loading...</i></span></td>
                                     </tr>
                                     <tr>
                                         <td class="py-2">Ilmu Pengetahuan Alam</td>
-                                        <td class="py-2 text-center"><span id="smt1Ipa"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt2Ipa"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt3Ipa"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt4Ipa"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt5Ipa"><i>Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt1Ipa"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt2Ipa"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt3Ipa"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt4Ipa"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt5Ipa"><i class="text-black">Loading...</i></span></td>
                                     </tr>
                                     <tr>
                                         <td class="py-2">Ilmu Pengetahuan Sosial</td>
-                                        <td class="py-2 text-center"><span id="smt1Ips"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt2Ips"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt3Ips"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt4Ips"><i>Loading...</i></span></td>
-                                        <td class="py-2 text-center"><span id="smt5Ips"><i>Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt1Ips"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt2Ips"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt3Ips"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt4Ips"><i class="text-black">Loading...</i></span></td>
+                                        <td class="py-2 text-center text-success"><span id="smt5Ips"><i class="text-black">Loading...</i></span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -411,5 +411,5 @@
 @endsection
 
 @push('scripts')
-    <script src="/js/student/pages/dashboard/index-v1.0.6.js"></script>
+    <script src="/js/student/pages/dashboard/index-v1.0.7.js"></script>
 @endpush
