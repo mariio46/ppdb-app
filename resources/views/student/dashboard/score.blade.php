@@ -149,5 +149,5 @@
     <script>
         var semester = {{ $semester ?? 0 }};
     </script>
-    <script src="/js/student/pages/dashboard/update-score-v1.1.0.js"></script>
+    <script src="/js/student/pages/dashboard/update-score-v1.1.1.js"></script>
 @endpush

@@ -18,88 +18,49 @@ class DashboardModel extends BaseModel
     {
         $get = $this->get('siswa/nilai?id='.$id);
 
+        if ($get['status_code'] == '400') {
+            return [
+                'status_code' => 200,
+                'response' => [
+                    'data' => [
+                        'sm1_bid' => '0',
+                        'sm1_big' => '0',
+                        'sm1_mtk' => '0',
+                        'sm1_ipa' => '0',
+                        'sm1_ips' => '0',
+                        'sm2_bid' => '0',
+                        'sm2_big' => '0',
+                        'sm2_mtk' => '0',
+                        'sm2_ipa' => '0',
+                        'sm2_ips' => '0',
+                        'sm3_bid' => '0',
+                        'sm3_big' => '0',
+                        'sm3_mtk' => '0',
+                        'sm3_ipa' => '0',
+                        'sm3_ips' => '0',
+                        'sm4_bid' => '0',
+                        'sm4_big' => '0',
+                        'sm4_mtk' => '0',
+                        'sm4_ipa' => '0',
+                        'sm4_ips' => '0',
+                        'sm5_bid' => '0',
+                        'sm5_big' => '0',
+                        'sm5_mtk' => '0',
+                        'sm5_ipa' => '0',
+                        'sm5_ips' => '0',
+                    ],
+                ],
+            ];
+        }
+
         return $get;
-        // return [
-        //   'smt1bid' => '87',
-        //   'smt1big' => '88',
-        //   'smt1mtk' => '80',
-        //   'smt1ipa' => '71',
-        //   'smt1ips' => '93',
-        //   'smt2bid' => '88',
-        //   'smt2big' => '87',
-        //   'smt2mtk' => '98',
-        //   'smt2ipa' => '73',
-        //   'smt2ips' => '70',
-        //   'smt3bid' => '92',
-        //   'smt3big' => '75',
-        //   'smt3mtk' => '70',
-        //   'smt3ipa' => '83',
-        //   'smt3ips' => '99',
-        //   'smt4bid' => '97',
-        //   'smt4big' => '92',
-        //   'smt4mtk' => '79',
-        //   'smt4ipa' => '84',
-        //   'smt4ips' => '99',
-        //   'smt5bid' => '98',
-        //   'smt5big' => '96',
-        //   'smt5mtk' => '86',
-        //   'smt5ipa' => '75',
-        //   'smt5ips' => '80',
-        // ];
     }
 
     public function getDataScoreBySemester(string $id, int $semester): array
     {
-        $score = [];
+        $get = $this->get('siswa/nilai?id='.$id.'&semester='.$semester);
 
-        if ($semester == 1) {
-            $score = [
-                'bid' => '87',
-                'big' => '88',
-                'mtk' => '80',
-                'ipa' => '71',
-                'ips' => '93',
-                'smt' => $semester,
-            ];
-        } elseif ($semester == 2) {
-            $score = [
-                'bid' => '88',
-                'big' => '87',
-                'mtk' => '98',
-                'ipa' => '73',
-                'ips' => '70',
-                'smt' => $semester,
-            ];
-        } elseif ($semester == 3) {
-            $score = [
-                'bid' => '92',
-                'big' => '75',
-                'mtk' => '70',
-                'ipa' => '83',
-                'ips' => '99',
-                'smt' => $semester,
-            ];
-        } elseif ($semester == 4) {
-            $score = [
-                'bid' => '97',
-                'big' => '92',
-                'mtk' => '79',
-                'ipa' => '84',
-                'ips' => '99',
-                'smt' => $semester,
-            ];
-        } elseif ($semester == 5) {
-            $score = [
-                'bid' => '98',
-                'big' => '96',
-                'mtk' => '86',
-                'ipa' => '75',
-                'ips' => '80',
-                'smt' => $semester,
-            ];
-        }
-
-        return $score;
+        return $get;
     }
 
     /**
@@ -179,20 +140,29 @@ class DashboardModel extends BaseModel
 
     public function postUpdateStudentScore(int $semester, Request $request): array
     {
-        $result = [
-            'success' => true,
-            'semester' => $semester,
+        $sm = 'sm'.$semester.'_';
+
+        $data = [
+            'id' => session()->get('stu_id'),
+            $sm.'mtk' => $request->post('math'),
+            $sm.'ipa' => $request->post('science'),
+            $sm.'ips' => $request->post('social'),
+            $sm.'bid' => $request->post('indonesian'),
+            $sm.'big' => $request->post('english'),
         ];
+
+        $result = $this->post('siswa/nilai/update', $data);
 
         return $result;
     }
 
     public function postLockStudentData(string $id): array
     {
-        $result = [
-            'success' => true,
+        $data = [
+            'id' => $id,
         ];
 
+        $result = $this->post('siswa/kunci', $data);
         return $result;
     }
 }

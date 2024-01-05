@@ -26,14 +26,14 @@ class DashboardRepositoryImpl implements DashboardRepository
     {
         $result = $this->dashboardModel->getDataScoreAll(session()->get('stu_id'));
 
-        return response()->json($result);
+        return response()->json($result['response'], $result['status_code']);
     }
 
     public function getScoreBySemester(int $semester): JsonResponse
     {
         $result = $this->dashboardModel->getDataScoreBySemester(session()->get('stu_id'), $semester);
 
-        return response()->json($result);
+        return response()->json($result['response'], $result['status_code']);
     }
 
     public function postFirstTimeLogin(Request $request): Collection
@@ -80,7 +80,7 @@ class DashboardRepositoryImpl implements DashboardRepository
     {
         $update = $this->dashboardModel->postUpdateStudentScore($semester, $request);
 
-        if ($update['success']) {
+        if ($update['status_code'] == 200) {
             return collect(['success' => true, 'code' => 200, 'message' => ['scoreStatus' => 'success', 'scoreMsg' => 'Data berhasil diperbarui.']]);
         } else {
             return collect(['success' => false, 'code' => 400, 'message' => ['scoreStatus' => 'danger', 'scoreMsg' => 'Data gagal diperbarui.']]);
@@ -92,8 +92,13 @@ class DashboardRepositoryImpl implements DashboardRepository
         $id = session()->get('stu_id');
 
         $lock = $this->dashboardModel->postLockStudentData($id);
-        session()->put('stu_is_locked', true);
 
-        return collect($lock);
+        if ($lock['status_code'] == 200) {
+            session()->put('stu_is_locked', true);
+
+            return collect(['success' => true, 'code' => 200]);
+        } else {
+            return collect(['success' => false, 'code' => $lock['status_code']]);
+        }
     }
 }

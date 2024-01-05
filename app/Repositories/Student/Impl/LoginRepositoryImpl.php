@@ -19,19 +19,6 @@ class LoginRepositoryImpl implements LoginRepository
         $authenticate = $this->loginModel->login($nisn, $password);
 
         if ($authenticate['statusCode'] == 200) {
-            // session()->put([
-            //   'stu_id'            => data_get($authenticate, 'data.id'),
-            //   'stu_name'          => data_get($authenticate, 'data.nama'),
-            //   'stu_nisn'          => data_get($authenticate, 'data.nisn'),
-            //   'stu_school'        => data_get($authenticate, 'data.sekolah_asal'),
-            //   'stu_gender'        => data_get($authenticate, 'data.jenis_kelamin'),
-            //   'stu_profile_img'   => data_get($authenticate, 'data.pasfoto'),
-            //   'stu_token'         => data_get($authenticate, 'data.token'),
-            //   'stu_status_regis'  => data_get($authenticate, 'data.status_pendaftaran' == 'belum_mendaftar' ? false : true),
-            //   'stu_is_locked'     => data_get($authenticate, 'data.kunci' == '0' ? false : true),
-            //   'is_login'          => true
-            // ]);
-
             session()->put([
                 'stu_id' => $authenticate['data']['id'],
                 'stu_name' => $authenticate['data']['nama'],
@@ -56,8 +43,6 @@ class LoginRepositoryImpl implements LoginRepository
             }
         }
 
-        // dd($authenticate);
-
         return collect($result);
     }
 
@@ -67,6 +52,7 @@ class LoginRepositoryImpl implements LoginRepository
 
         $result = [];
         if ($logout['status_code'] == 200) {
+            session()->flush();
             $result = ['success' => true, 'code' => 200, 'message' => 'Kamu berhasil logout.'];
         } else {
             $result = ['success' => false, 'code' => $logout['status_code'], 'message' => 'failed.'];

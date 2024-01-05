@@ -92,7 +92,14 @@ Route::controller(RankController::class)->group(function () {
 });
 
 Route::controller(ScheduleController::class)->group(function () {
-    Route::get('schedules', 'index')->name('schedules.index');
+    Route::get('tahap-jadwal', 'index')->name('schedules.index');
+    Route::get('tahap-jadwal/get-data', 'getDataSchedules')->name('schedules.get.data');
+
+    Route::get('tahap-jadwal/tambah', 'create')->name('schedules.create');
+    Route::post('tahap-jadwal/save-data', 'saveData')->name('schedules.create');
+
+    Route::get('tahap-jadwal/d/{id}', 'detail')->name('schedules.detail');
+    Route::post('tahap-jadwal/remove', 'removeData')->name('schedules.remove');
 });
 
 Route::controller(FaqController::class)->group(function () {
