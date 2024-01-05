@@ -8,36 +8,36 @@ use Illuminate\Http\JsonResponse;
 
 class RegionController extends Controller
 {
-  public function __construct(
-    protected RegionRepository $region
-  ) {
-  }
+    public function __construct(
+        protected RegionRepository $region
+    ) {
+    }
 
-  public function getProvinceLists(): JsonResponse
-  {
-    $data = $this->region->getListProvince();
+    public function getProvinceLists(): JsonResponse
+    {
+        $data = $this->region->getListProvince();
 
-    return response()->json($data['data'], $data['status_code']);
-  }
+        return response()->json($data['data'], $data['status_code']);
+    }
 
-  public function getCityLists(string $code): JsonResponse
-  {
-    $data = $this->region->getListCity($code);
+    public function getCityLists(string $code): JsonResponse
+    {
+        $data = $this->region->getListCity($code);
 
-    return response()->json($data['data'], $data['status_code']);
-  }
+        return response()->json($data['data'], $data['status_code']);
+    }
 
-  public function getDistrictLists(string $code): JsonResponse
-  {
-    $data = $this->region->getListDistrict($code);
+    public function getDistrictLists(string $code): JsonResponse
+    {
+        $data = $this->region->getListDistrict($code);
 
-    return response()->json($data['data'], $data['status_code']);
-  }
+        return response()->json($data['data'], $data['status_code']);
+    }
 
-  public function getVillageLists(string $code): JsonResponse
-  {
-    $data = $this->region->getListVillage($code);
+    public function getVillageLists(string $code): JsonResponse
+    {
+        $data = $this->region->getListVillage($code);
 
-    return response()->json($data['data'], $data['status_code']);
-  }
+        return response()->json($data['data'], $data['status_code']);
+    }
 }

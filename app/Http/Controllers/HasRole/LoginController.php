@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\HasRole;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\LoginRepository;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
     public function __construct(protected LoginRepository $loginRepository)
     {
-        // 
+        //
     }
 
     public function index(): View
@@ -34,7 +34,7 @@ class LoginController extends Controller
     {
         $logout = $this->loginRepository->logout();
         if ($logout['success']) {
-            # code...
+            // code...
             return to_route('login')->withErrors(['login_error' => 'You are already logout!']);
         } else {
             return back();

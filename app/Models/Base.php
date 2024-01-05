@@ -11,7 +11,7 @@ class Base
 
     protected function postWithoutToken(string $endpoint, array $data): array
     {
-        $response = Http::post($this->BASE_API_URL . $endpoint, $data);
+        $response = Http::post($this->BASE_API_URL.$endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -22,9 +22,9 @@ class Base
     protected function postWithToken(string $endpoint, array $data)
     {
         $response = Http::withHeaders([
-            "waktu" => 5,
-            'dn-code' => session()->get('token')
-        ])->post($this->BASE_API_URL . $endpoint, $data);
+            'waktu' => 5,
+            'dn-code' => session()->get('token'),
+        ])->post($this->BASE_API_URL.$endpoint, $data);
 
         return [
             'status_code' => $response->status(),

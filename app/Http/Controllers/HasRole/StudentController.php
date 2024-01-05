@@ -44,8 +44,8 @@ class StudentController extends Controller
     public function score(string $username, string $semester): View
     {
         $data = [
-            'username'  => $username,
-            'semester'  => str_replace('semester-', '', $semester) // return only number
+            'username' => $username,
+            'semester' => str_replace('semester-', '', $semester), // return only number
         ];
 
         return view('has-role.student.score', $data);
@@ -54,13 +54,13 @@ class StudentController extends Controller
     public function updateScore(string $username, string $semester, Request $request)
     {
         $data = [
-            'username'      => $username,
-            'semester'      => str_replace('semester-', '', $semester),
-            'indonesian'    => $request->post('indonesian'),
-            'english'       => $request->post('english'),
-            'math'          => $request->post('math'),
-            'science'       => $request->post('science'),
-            'social'        => $request->post('social'),
+            'username' => $username,
+            'semester' => str_replace('semester-', '', $semester),
+            'indonesian' => $request->post('indonesian'),
+            'english' => $request->post('english'),
+            'math' => $request->post('math'),
+            'science' => $request->post('science'),
+            'social' => $request->post('social'),
         ];
 
         return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => json_encode($data)]);
@@ -73,65 +73,66 @@ class StudentController extends Controller
         foreach ($data as $key => $item) {
             $user = (object) $item;
         }
+
         return $user;
     }
 
     protected function getStudents()
     {
         return collect([
-            (object)[
+            (object) [
                 'id' => 1,
                 'name' => 'Ryan Rafli',
-                'username' => 'ryan' . 6564553453,
+                'username' => 'ryan'. 6564553453,
                 'asal_sekolah' => 'SMPN 1 Parepare',
                 'nisn' => 6564553453,
             ],
-            (object)[
+            (object) [
                 'id' => 2,
                 'name' => 'Al Muqtadir',
-                'username' => 'tadir' . 5454224678,
+                'username' => 'tadir'. 5454224678,
                 'asal_sekolah' => 'SMPN 1 Parepare',
                 'nisn' => 5454224678,
             ],
-            (object)[
+            (object) [
                 'id' => 3,
                 'name' => 'Ainun Putri',
-                'username' => 'ainun' . 10302913833,
+                'username' => 'ainun'. 10302913833,
                 'asal_sekolah' => 'SMPN 3 Makassar',
                 'nisn' => 10302913833,
             ],
-            (object)[
+            (object) [
                 'id' => 4,
                 'name' => 'Edy Siswanto Syarif',
-                'username' => 'edy' . 43242354815,
+                'username' => 'edy'. 43242354815,
                 'asal_sekolah' => 'SMPN 10 Maros',
                 'nisn' => 43242354815,
             ],
-            (object)[
+            (object) [
                 'id' => 5,
                 'name' => 'Muh Rafie Muis',
-                'username' => 'rafie' . 42342356788,
+                'username' => 'rafie'. 42342356788,
                 'asal_sekolah' => 'SMPN 3 Pangkep',
                 'nisn' => 42342356788,
             ],
-            (object)[
+            (object) [
                 'id' => 6,
                 'name' => 'Vicky Giovaldi',
-                'username' => 'vicky' . 8787575645,
+                'username' => 'vicky'. 8787575645,
                 'asal_sekolah' => 'SMP 1 Luwu Timur',
                 'nisn' => 8787575645,
             ],
-            (object)[
+            (object) [
                 'id' => 7,
                 'name' => 'Muh Raiz Muis',
-                'username' => 'raiz' . 2432545466,
+                'username' => 'raiz'. 2432545466,
                 'asal_sekolah' => 'SMPN 1 Parepare',
                 'nisn' => 2432545466,
             ],
-            (object)[
+            (object) [
                 'id' => 8,
                 'name' => 'Zhafran',
-                'username' => 'zhafran' . 34234234223,
+                'username' => 'zhafran'. 34234234223,
                 'asal_sekolah' => 'SMPN 2 Makassar',
                 'nisn' => 34234234223,
             ],
@@ -297,56 +298,56 @@ class StudentController extends Controller
         switch ($semester) {
             case '1':
                 $data = [
-                    'bid'   => '90',
-                    'big'   => '87',
-                    'mtk'   => '70',
-                    'ipa'   => '78',
-                    'ips'   => '95'
+                    'bid' => '90',
+                    'big' => '87',
+                    'mtk' => '70',
+                    'ipa' => '78',
+                    'ips' => '95',
                 ];
                 break;
             case '2':
                 $data = [
-                    'bid'   => '98',
-                    'big'   => '78',
-                    'mtk'   => '99',
-                    'ipa'   => '89',
-                    'ips'   => '76'
+                    'bid' => '98',
+                    'big' => '78',
+                    'mtk' => '99',
+                    'ipa' => '89',
+                    'ips' => '76',
                 ];
                 break;
             case '3':
                 $data = [
-                    'bid'   => '87',
-                    'big'   => '79',
-                    'mtk'   => '76',
-                    'ipa'   => '90',
-                    'ips'   => '87'
+                    'bid' => '87',
+                    'big' => '79',
+                    'mtk' => '76',
+                    'ipa' => '90',
+                    'ips' => '87',
                 ];
                 break;
             case '4':
                 $data = [
-                    'bid'   => '98',
-                    'big'   => '76',
-                    'mtk'   => '98',
-                    'ipa'   => '85',
-                    'ips'   => '93'
+                    'bid' => '98',
+                    'big' => '76',
+                    'mtk' => '98',
+                    'ipa' => '85',
+                    'ips' => '93',
                 ];
                 break;
             case '5':
                 $data = [
-                    'bid'   => '94',
-                    'big'   => '87',
-                    'mtk'   => '98',
-                    'ipa'   => '90',
-                    'ips'   => '71'
+                    'bid' => '94',
+                    'big' => '87',
+                    'mtk' => '98',
+                    'ipa' => '90',
+                    'ips' => '71',
                 ];
                 break;
             default:
                 $data = [
-                    'bid'   => '0',
-                    'big'   => '0',
-                    'mtk'   => '0',
-                    'ipa'   => '0',
-                    'ips'   => '0'
+                    'bid' => '0',
+                    'big' => '0',
+                    'mtk' => '0',
+                    'ipa' => '0',
+                    'ips' => '0',
                 ];
                 break;
         }

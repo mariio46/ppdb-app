@@ -10,7 +10,7 @@ class LoginRepositoryImpl implements LoginRepository
 {
     public function __construct(protected Login $login)
     {
-        // 
+        //
     }
 
     public function login(string $username, string $password): Collection
@@ -35,14 +35,14 @@ class LoginRepositoryImpl implements LoginRepository
             $result = [
                 'status' => 'success',
                 'code' => 200,
-                'message' => 'Login Berhasil!'
+                'message' => 'Login Berhasil!',
             ];
         } else {
             if ($authenticate['statusCode'] == 401) {
                 $result = [
                     'status' => 'failed',
                     'code' => 401,
-                    'message' => 'Akun Anda saat ini sedang diakses dari perangkat lain.'
+                    'message' => 'Akun Anda saat ini sedang diakses dari perangkat lain.',
                 ];
             } elseif ($authenticate['statusCode'] == 400) {
                 $result = [
@@ -54,7 +54,7 @@ class LoginRepositoryImpl implements LoginRepository
                 $result = [
                     'status' => 'failed',
                     'code' => 500,
-                    'message' => 'Maaf, server sedang sibuk. Mohon mencoba lagi nanti.'
+                    'message' => 'Maaf, server sedang sibuk. Mohon mencoba lagi nanti.',
                 ];
             }
         }

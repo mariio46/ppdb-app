@@ -19,8 +19,8 @@ class Login extends Base
         if ($data['status_code'] != 200) {
             $response = [
                 'statusCode' => $data['status_code'],
-                "msg" => 'error',
-                'data' => []
+                'msg' => 'error',
+                'data' => [],
             ];
         } else {
             $response = $data['response'];

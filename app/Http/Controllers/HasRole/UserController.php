@@ -16,7 +16,7 @@ class UserController extends Controller
 
     public function create(): View
     {
-        return view('has-role.users.create',);
+        return view('has-role.users.create');
     }
 
     public function show($id): View
@@ -40,56 +40,57 @@ class UserController extends Controller
         foreach ($data as $key => $item) {
             $user = (object) $item;
         }
+
         return $user;
     }
 
     protected function getUsers()
     {
         return collect([
-            (object)[
+            (object) [
                 'id' => 1,
                 'name' => 'Ryan Rafli',
-                'username' => 'ryan' . mt_rand(11111, 99999),
+                'username' => 'ryan'.mt_rand(11111, 99999),
                 'role' => 'Super Admin',
                 'unique_id' => mt_rand(111111, 999999),
                 'status' => rand(1, 2),
             ],
-            (object)[
+            (object) [
                 'id' => 2,
                 'name' => 'Rafie Muix',
-                'username' => 'rafie' . mt_rand(11111, 99999),
+                'username' => 'rafie'.mt_rand(11111, 99999),
                 'role' => 'Admin',
                 'unique_id' => mt_rand(111111, 999999),
                 'status' => rand(1, 2),
             ],
-            (object)[
+            (object) [
                 'id' => 3,
                 'name' => 'Muhammad Al Muqtadir',
-                'username' => 'tadir' . mt_rand(11111, 99999),
+                'username' => 'tadir'.mt_rand(11111, 99999),
                 'role' => 'Operator',
                 'unique_id' => mt_rand(111111, 999999),
                 'status' => rand(1, 2),
             ],
-            (object)[
+            (object) [
                 'id' => 4,
                 'name' => 'Muhammad Raiz',
-                'username' => 'raiz' . mt_rand(11111, 99999),
+                'username' => 'raiz'.mt_rand(11111, 99999),
                 'role' => 'admin cabang dinas',
                 'unique_id' => mt_rand(111111, 999999),
                 'status' => rand(1, 2),
             ],
-            (object)[
+            (object) [
                 'id' => 5,
                 'name' => 'Edy Siswanto Syarif',
-                'username' => 'edy' . mt_rand(11111, 99999),
+                'username' => 'edy'.mt_rand(11111, 99999),
                 'role' => 'admin sekolah',
                 'unique_id' => mt_rand(111111, 999999),
                 'status' => rand(1, 2),
             ],
-            (object)[
+            (object) [
                 'id' => 6,
                 'name' => 'Mario Arya Dimus',
-                'username' => 'mario' . mt_rand(11111, 99999),
+                'username' => 'mario'.mt_rand(11111, 99999),
                 'role' => 'operator sekolah',
                 'unique_id' => mt_rand(111111, 999999),
                 'status' => rand(1, 2),

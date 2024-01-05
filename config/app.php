@@ -174,8 +174,6 @@ return [
          */
         App\Providers\HasRole\LoginServiceProvider::class,
 
-
-
         // ------------------------------------------------------------------
         /*
          * Student Service Providers...
