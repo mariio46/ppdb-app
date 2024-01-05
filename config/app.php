@@ -169,6 +169,17 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * HasRole Service Providers...
+         */
+        App\Providers\HasRole\LoginServiceProvider::class,
+
+
+
+        // ------------------------------------------------------------------
+        /*
+         * Student Service Providers...
+         */
         App\Providers\Student\SchoolServiceProvider::class,
         App\Providers\Student\LoginServiceProvider::class,
         App\Providers\Student\DashboardServiceProvider::class,

@@ -89,7 +89,22 @@ Route::group(['middleware' => 'student.auth'], function () {
   Route::get('/keluar', [StudentLoginController::class, 'logout'])->name('student.logout');
 });
 
-Route::get('login', [LoginController::class, 'index'])->name('login');
+
+/**
+ * HasRole Authentication Action
+ * - Login
+ * - Logout
+ */
+Route::middleware(['HasRole.guest'])->group(function () {
+  Route::get('login', [LoginController::class, 'index'])->name('login');
+  Route::post('login', [LoginController::class, 'store']);
+});
+
+Route::middleware(['HasRole.auth'])->group(function () {
+  Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
+});
+
+
 // example
 Route::view('/component', 'component')->name('component');
 Route::view('/new-components', 'new-components')->name('new-components');

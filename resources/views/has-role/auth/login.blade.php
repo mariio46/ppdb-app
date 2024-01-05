@@ -27,20 +27,30 @@
                                 </a>
                                 <h4 class="card-title mb-1">Selamat Datang di PPDB 2024 👋👋</h4>
                                 <p class="card-text mb-2">Silahkan masukkan username dan password yang sudah di berikan oleh sekolah asal kamu</p>
-                                <form class="auth-login-form mt-2" action="" method="POST">
+                                
+                                @if ($errors->get('login_error') != null)
+                                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                                    <div class="alert-body p-2">
+                                        <span>{{ $errors->first() }}</span>
+                                    </div>
+                                </div>
+                                @endif
+                                
+                                <form class="auth-login-form mt-2" action="{{ route('login') }}" method="POST">
+                                    @csrf
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="username">Username</x-label>
-                                        <x-input id="username" name="username" type="text" placeholder="Masukkan username" autofocus />
+                                        <x-input id="username" name="username" type="text" placeholder="Masukkan username" value="{{ old('username') }}" autofocus required />
                                     </div>
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="password">Password</x-label>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <x-input id="password" name="password" type="password" placeholder="Masukkan password" />
+                                            <x-input id="password" name="password" type="password" placeholder="Masukkan password" required />
                                             <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         </div>
                                     </div>
-                                    {{-- <x-button class="w-100">Login</x-button> --}}
-                                    <a class="btn btn-primary w-100" href="{{ route('dashboard') }}">Login</a>
+                                    <x-button class="w-100" type="submit">Login</x-button>
+                                    {{-- <a class="btn btn-primary w-100" href="{{ route('dashboard') }}">Login</a> --}}
                                 </form>
                             </div>
                         </div>
