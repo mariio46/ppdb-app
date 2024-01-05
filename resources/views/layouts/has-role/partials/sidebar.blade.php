@@ -106,6 +106,16 @@
                     <span class="menu-title text-truncate">FAQ</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <form action="{{ route('logout') }}" method="POST">
+                    <button class="d-flex align-items-center">
+                        @csrf
+                        <x-tabler-logout-2 />
+                        <span class="menu-title text-truncate">Logout</span>
+                    </button>
+                </form>
+            </li>
         </ul>
     </div>
 </div>

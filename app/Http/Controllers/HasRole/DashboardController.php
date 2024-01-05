@@ -13,6 +13,8 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request): View
     {
-        return view('has-role.dashboard.index');
+        return view('has-role.dashboard.index', [
+            'session' => session()->all(),
+        ]);
     }
 }

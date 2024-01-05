@@ -37,6 +37,7 @@ class LoginController extends Controller
         $logout = $this->loginRepo->logout();
 
         if ($logout['success']) {
+            session()->flush();
             return redirect('/masuk')->withErrors(['errorMsg' => 'Kamu sudah logout.']);
         } else {
             return redirect()->back();
