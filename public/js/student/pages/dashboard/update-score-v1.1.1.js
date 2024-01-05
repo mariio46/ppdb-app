@@ -77,11 +77,14 @@ $(function() {
     method: 'get',
     dataType: 'json',
     success: function(scores) {
-      $('#math').val(scores.mtk);
-      $('#indonesian').val(scores.bid);
-      $('#english').val(scores.big);
-      $('#science').val(scores.ipa);
-      $('#social').val(scores.ips);
+      let score = scores.data;
+      let sm = "sm" + semester + "_";
+
+      $('#math').val(score[sm + 'mtk']);
+      $('#indonesian').val(score[sm + 'bid']);
+      $('#english').val(score[sm + 'big']);
+      $('#science').val(score[sm + 'ipa']);
+      $('#social').val(score[sm + 'ips']);
     }
   });
 });

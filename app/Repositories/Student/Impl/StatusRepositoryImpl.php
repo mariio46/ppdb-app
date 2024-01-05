@@ -7,16 +7,17 @@ use App\Repositories\Student\StatusRepository;
 
 class StatusRepositoryImpl implements StatusRepository
 {
-  public function __construct(
-    public StatusModel $statusModel
-  ) {
-  }
+    public function __construct(
+        public StatusModel $statusModel
+    ) {
+    }
 
-  public function getStatus(): array
-  {
-    $studentId = session()->get('stu_id');
+    public function getStatus(): array
+    {
+        $studentId = session()->get('stu_id');
 
-    $get = $this->statusModel->getStudentStatus($studentId);
-    return $get;
-  }
+        $get = $this->statusModel->getStudentStatus($studentId);
+
+        return $get;
+    }
 }

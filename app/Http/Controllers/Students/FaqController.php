@@ -25,6 +25,7 @@ class FaqController extends Controller
         $search = $request->get('search') ?? null;
 
         $get = $this->faqRepository->getFaqData($search);
+
         return response()->json($get);
     }
 }

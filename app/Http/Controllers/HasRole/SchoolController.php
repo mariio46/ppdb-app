@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SchoolController extends Controller
@@ -17,7 +16,7 @@ class SchoolController extends Controller
 
     public function edit(): View
     {
-        return view('has-role.school.edit',);
+        return view('has-role.school.edit');
     }
 
     public function schoolMajorQuota($npsn): View
@@ -31,7 +30,7 @@ class SchoolController extends Controller
     public function schoolDetail($npsn): View
     {
         return view('has-role.school.detail', [
-            'school' => $this->getSingleSchool($npsn)
+            'school' => $this->getSingleSchool($npsn),
         ]);
     }
 
@@ -54,13 +53,13 @@ class SchoolController extends Controller
     protected function getSchoolZone()
     {
         return collect([
-            (object)[
+            (object) [
                 'id' => 1,
                 'province' => 'Sulawesi Selatan',
                 'city' => 'Parepare',
                 'subdistrict' => 'Bacukiki',
             ],
-            (object)[
+            (object) [
                 'id' => 2,
                 'province' => 'Sulawesi Selatan',
                 'city' => 'Parepare',
@@ -72,32 +71,32 @@ class SchoolController extends Controller
     protected function getSchoolMajorQuota()
     {
         return collect([
-            (object)[
+            (object) [
                 'id' => 1,
                 'major_name' => 'Teknik Komputer dan Jaringan',
                 'major_quota' => '150 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 2,
                 'major_name' => 'Teknik Kendaraan Ringan',
                 'major_quota' => '75 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 3,
                 'major_name' => 'Pemodelan dan Informasi Bangunan',
                 'major_quota' => '100 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 4,
                 'major_name' => 'Administrasi Perkantoran',
                 'major_quota' => '200 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 5,
                 'major_name' => 'Tata Rias dan Kecantikan',
                 'major_quota' => '250 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 6,
                 'major_name' => 'Perbankan dan Keuangan Syariah',
                 'major_quota' => '50 Orang',
@@ -108,32 +107,32 @@ class SchoolController extends Controller
     protected function getSchoolQuota()
     {
         return collect([
-            (object)[
+            (object) [
                 'id' => 1,
                 'registration_path' => 'Jalur Afirmasi',
                 'total_quota' => '150 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 2,
                 'registration_path' => 'Jalur Perpindahan Tugas Orang Tua',
                 'total_quota' => '75 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 3,
                 'registration_path' => 'Jalur Anak Guru',
                 'total_quota' => '100 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 4,
                 'registration_path' => 'Jalur Prestasi Non Akademik',
                 'total_quota' => '200 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 5,
                 'registration_path' => 'Jalur Domisili Terdekat',
                 'total_quota' => '250 Orang',
             ],
-            (object)[
+            (object) [
                 'id' => 6,
                 'registration_path' => 'Jalur Prestasi Akademik',
                 'total_quota' => '50 Orang',
@@ -148,62 +147,63 @@ class SchoolController extends Controller
         foreach ($data as $key => $item) {
             $school = (object) $item;
         }
+
         return $school;
     }
 
     protected function getSchools()
     {
         return collect([
-            (object)[
+            (object) [
                 'id' => 1,
                 'school_name' => 'SMAN 1 Parepare',
                 'npsn' => 40311914,
                 'unit' => 'SMA',
                 'address' => 'Jl. Bau Massepe No. 24',
             ],
-            (object)[
+            (object) [
                 'id' => 2,
                 'school_name' => 'SMKN 2 Parepare',
                 'npsn' => 4342314,
                 'unit' => 'SMK',
                 'address' => 'Jl. Karaeng Burane No. 18',
             ],
-            (object)[
+            (object) [
                 'id' => 3,
                 'school_name' => 'SMKN 8 Parepare',
                 'npsn' => 6545346,
                 'unit' => 'SMA Boarding',
                 'address' => 'Jl. Muhammadiyah No. 8',
             ],
-            (object)[
+            (object) [
                 'id' => 4,
                 'school_name' => 'SMAN 1 Makassar',
                 'npsn' => 8767566,
                 'unit' => 'SMA Half Boarding',
                 'address' => 'Jl. Pesantren No. 10',
             ],
-            (object)[
+            (object) [
                 'id' => 5,
                 'school_name' => 'SMKN 1 Parepare',
                 'npsn' => 7567563,
                 'unit' => 'SMA',
                 'address' => 'Jl. Poros Rappang Parepare',
             ],
-            (object)[
+            (object) [
                 'id' => 6,
                 'school_name' => 'SMKN 12 Makassar',
                 'npsn' => 4232456,
                 'unit' => 'SMA Half Boarding',
                 'address' => 'Industri Kecil No 99',
             ],
-            (object)[
+            (object) [
                 'id' => 7,
                 'school_name' => 'SMAN 20 Maros',
                 'npsn' => 9673521,
                 'unit' => 'SMA',
                 'address' => 'Jl.Daeng Siraju No.58',
             ],
-            (object)[
+            (object) [
                 'id' => 8,
                 'school_name' => 'SMAN 3 Enrekang',
                 'npsn' => 5378654,
