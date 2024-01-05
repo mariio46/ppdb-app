@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\HasRole;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {

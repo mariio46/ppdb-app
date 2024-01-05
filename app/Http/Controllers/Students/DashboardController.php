@@ -28,7 +28,7 @@ class DashboardController extends Controller
     public function viewEditStudentScore(string $semester): Response
     {
         $data = [
-            'semester' => str_replace("semester-", "", $semester),
+            'semester' => str_replace('semester-', '', $semester),
         ];
 
         return response()->view('student.dashboard.score', $data);

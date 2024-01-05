@@ -11,90 +11,94 @@ use Illuminate\Support\Collection;
 
 class DashboardRepositoryImpl implements DashboardRepository
 {
-  public function __construct(private DashboardModel $dashboardModel, private RegionModel $regionModel)
-  {
-  }
-
-  public function getDataStudent(): JsonResponse
-  {
-    $result = $this->dashboardModel->getDataStudentById(session()->get('stu_id'));
-
-    return response()->json($result['response'], $result['status_code']);
-  }
-
-  public function getDataScore(): JsonResponse
-  {
-    $result = $this->dashboardModel->getDataScoreAll(session()->get('stu_id'));
-    return response()->json($result['response'], $result['status_code']);
-  }
-
-  public function getScoreBySemester(int $semester): JsonResponse
-  {
-    $result = $this->dashboardModel->getDataScoreBySemester(session()->get('stu_id'), $semester);
-    return response()->json($result['response'], $result['status_code']);
-  }
-
-  public function postFirstTimeLogin(Request $request): Collection
-  {
-    $id     = session()->get('stu_id');
-    $email  = $request->post('ftlEmail');
-    $phone  = $request->post('ftlPhoneNumber');
-    $pass   = $request->post('ftlNewPassword');
-
-    $update = $this->dashboardModel->postFirstTimeLogin($id, $email, $phone, $pass);
-
-    if ($update['status_code'] == 200) {
-      return collect(['success' => true, "code" => 200, "message" => "success"]);
-    } else {
-      return collect(['success' => false, "code" => 401, "message" => "failed"]);
+    public function __construct(private DashboardModel $dashboardModel, private RegionModel $regionModel)
+    {
     }
-  }
 
-  public function postUpdateStudentData(Request $request): Collection
-  {
-    $update = $this->dashboardModel->postUpdateStudentData($request);
+    public function getDataStudent(): JsonResponse
+    {
+        $result = $this->dashboardModel->getDataStudentById(session()->get('stu_id'));
 
-    if ($update['status_code'] == 200) {
-      return collect(['success' => true, "code" => 200, "message" => "success"]);
-    } else {
-      return collect(['success' => false, "code" => $update['status_code'], "message" => "failed"]);
+        return response()->json($result['response'], $result['status_code']);
     }
-  }
 
-  public function postUpdateStudentProfile(Request $request): Collection|array
-  {
-    $update = $this->dashboardModel->postUpdateStudentProfile($request);
+    public function getDataScore(): JsonResponse
+    {
+        $result = $this->dashboardModel->getDataScoreAll(session()->get('stu_id'));
 
-    if ($update['status_code'] == 200) {
-      session()->put('stu_profile_img', $update['data']['profile']);
-      return collect(['success' => true, "code" => 200, "message" => "success"]);
-    } else {
-      return collect(['success' => false, "code" => $update['status_code'], "message" => "failed"]);
+        return response()->json($result['response'], $result['status_code']);
     }
-  }
 
-  public function postUpdateStudentScore(int $semester, Request $request): Collection|array
-  {
-    $update = $this->dashboardModel->postUpdateStudentScore($semester, $request);
+    public function getScoreBySemester(int $semester): JsonResponse
+    {
+        $result = $this->dashboardModel->getDataScoreBySemester(session()->get('stu_id'), $semester);
 
-    if ($update['status_code'] == 200) {
-      return collect(['success' => true, "code" => 200, "message" => ['scoreStatus' => 'success', 'scoreMsg' => 'Data berhasil diperbarui.']]);
-    } else {
-      return collect(['success' => false, "code" => 400, "message" => ['scoreStatus' => 'danger', 'scoreMsg' => 'Data gagal diperbarui.']]);
+        return response()->json($result['response'], $result['status_code']);
     }
-  }
 
-  public function postLockStudentData(): Collection
-  {
-    $id = session()->get('stu_id');
+    public function postFirstTimeLogin(Request $request): Collection
+    {
+        $id = session()->get('stu_id');
+        $email = $request->post('ftlEmail');
+        $phone = $request->post('ftlPhoneNumber');
+        $pass = $request->post('ftlNewPassword');
 
-    $lock = $this->dashboardModel->postLockStudentData($id);
+        $update = $this->dashboardModel->postFirstTimeLogin($id, $email, $phone, $pass);
 
-    if ($lock['status_code'] == 200) {
-      session()->put('stu_is_locked', true);
-      return collect(['success' => true, "code" => 200]);
-    } else {
-      return collect(['success' => false, "code" => $lock['status_code']]);
+        if ($update['status_code'] == 200) {
+            return collect(['success' => true, 'code' => 200, 'message' => 'success']);
+        } else {
+            return collect(['success' => false, 'code' => 401, 'message' => 'failed']);
+        }
     }
-  }
+
+    public function postUpdateStudentData(Request $request): Collection
+    {
+        $update = $this->dashboardModel->postUpdateStudentData($request);
+
+        if ($update['status_code'] == 200) {
+            return collect(['success' => true, 'code' => 200, 'message' => 'success']);
+        } else {
+            return collect(['success' => false, 'code' => $update['status_code'], 'message' => 'failed']);
+        }
+    }
+
+    public function postUpdateStudentProfile(Request $request): Collection|array
+    {
+        $update = $this->dashboardModel->postUpdateStudentProfile($request);
+
+        if ($update['status_code'] == 200) {
+            session()->put('stu_profile_img', $update['data']['profile']);
+
+            return collect(['success' => true, 'code' => 200, 'message' => 'success']);
+        } else {
+            return collect(['success' => false, 'code' => $update['status_code'], 'message' => 'failed']);
+        }
+    }
+
+    public function postUpdateStudentScore(int $semester, Request $request): Collection|array
+    {
+        $update = $this->dashboardModel->postUpdateStudentScore($semester, $request);
+
+        if ($update['status_code'] == 200) {
+            return collect(['success' => true, 'code' => 200, 'message' => ['scoreStatus' => 'success', 'scoreMsg' => 'Data berhasil diperbarui.']]);
+        } else {
+            return collect(['success' => false, 'code' => 400, 'message' => ['scoreStatus' => 'danger', 'scoreMsg' => 'Data gagal diperbarui.']]);
+        }
+    }
+
+    public function postLockStudentData(): Collection
+    {
+        $id = session()->get('stu_id');
+
+        $lock = $this->dashboardModel->postLockStudentData($id);
+
+        if ($lock['status_code'] == 200) {
+            session()->put('stu_is_locked', true);
+
+            return collect(['success' => true, 'code' => 200]);
+        } else {
+            return collect(['success' => false, 'code' => $lock['status_code']]);
+        }
+    }
 }

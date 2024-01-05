@@ -8,19 +8,19 @@ use Illuminate\Support\Collection;
 
 interface DashboardRepository
 {
-  public function getDataStudent(): JsonResponse;
+    public function getDataStudent(): JsonResponse;
 
-  public function getDataScore(): JsonResponse;
+    public function getDataScore(): JsonResponse;
 
-  public function getScoreBySemester(int $semester): JsonResponse;
+    public function getScoreBySemester(int $semester): JsonResponse;
 
-  public function postFirstTimeLogin(Request $request): Collection;
+    public function postFirstTimeLogin(Request $request): Collection;
 
-  public function postUpdateStudentData(Request $request): Collection;
+    public function postUpdateStudentData(Request $request): Collection;
 
-  public function postUpdateStudentProfile(Request $request): Collection|array;
+    public function postUpdateStudentProfile(Request $request): Collection|array;
 
-  public function postUpdateStudentScore(int $semester, Request $request): Collection|array;
+    public function postUpdateStudentScore(int $semester, Request $request): Collection|array;
 
-  public function postLockStudentData(): Collection;
+    public function postLockStudentData(): Collection;
 }
