@@ -14,7 +14,7 @@
                 <div class="d-flex align-items-center px-2">
                     <h4 class="card-title mb-0">Tahap & Jadwal</h4>
 
-                    <a href="{{ route('schedules.create') }}" class="btn btn-success ms-auto">
+                    <a href="{{ route('schedules.create.index') }}" class="btn btn-success ms-auto">
                         <x-tabler-plus style="width: 14px; height: 14px;" />
                         Tambah Tahap
                     </a>

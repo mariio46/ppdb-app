@@ -100,4 +100,49 @@ class ScheduleController extends Controller
 
         return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menghapus data. Silakan coba lagi nanti.']);
     }
+
+    public function edit(string $id): View
+    {
+        $data = [
+            'id' => $id
+        ];
+
+        return view('has-role.schedule.edit-phase', $data);
+    }
+
+    public function getDataSchedule(string $id): JsonResponse
+    {
+        $data = [
+            'statusCode' => 200,
+            'status' => 'success',
+            'message' => 'Berhasil mendapatkan data.',
+            'data' => [
+                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
+                'tahap' => '1',
+                'pendaftaran_mulai' => '2024-01-01',
+                'pendaftaran_selesai' => '2024-01-04',
+                'verifikasi_mulai' => '2024-01-01',
+                'verifikasi_selesai' => '2024-01-04',
+                'pengumuman' => '2024-01-05',
+                'daftar_ulang_mulai' => '2024-01-05',
+                'daftar_ulang_selesai' => '2024-01-06',
+            ]
+        ];
+
+        return response()->json($data);
+    }
+
+    public function updateData(Request $request): RedirectResponse
+    {
+        $remove = [
+            'statusCode' => 200,
+            // 'statusCode' => 404,
+        ];
+
+        if ($remove['statusCode'] == 200) {
+            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
+        }
+
+        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menghapus data. Silakan coba lagi nanti.']);
+    }
 }

@@ -32,13 +32,142 @@
 <div class="content-body row">
   <div class="col-12">
     <div class="card">
-      <div class="card-body">
-        <div class="d-flex align-items-center mb-2">
-          <h5 class="card-title mb-0">Pendaftaran Tahap n</h5>
+      <div class="card-body px-0">
+        <div class="d-flex align-items-center mb-3 px-2">
+          <h5 class="card-title mb-0">Pendaftaran Tahap <span id="phase">1</span></h5>
+
+          <x-link href="{{ route('schedules.edit.index', [$id]) }}" color="success" withIcon="true" class="ms-auto"><x-tabler-pencil-minus /> Edit Tahap</x-link>
         </div>
 
-        <div>
-          <p class="text-center text-muted"><i>Belum fiks</i></p>
+        {{-- registration --}}
+        <div class="mb-3">
+          <div class="d-flex align-items-center mb-1 px-2">
+            <h5 class=" text-primary mb-0">Jadwal Pendaftaran</h5>
+
+            <x-link href="" color="success" variant="outline" class="ms-auto btn-sm">Edit Waktu Pendaftaran</x-link>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped border-bottom">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th class="text-end">Pukul</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="bullet bullet-sm bullet-success me-1"></span> Senin, 01 Januari 2024</td>
+                  <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                </tr>
+                <tr>
+                  <td><span class="bullet bullet-sm bullet-success me-1"></span> Selasa, 02 Januari 2024</td>
+                  <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                </tr>
+                <tr>
+                  <td><span class="bullet bullet-sm bullet-success me-1"></span> Rabu, 03 Januari 2024</td>
+                  <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                </tr>
+                <tr>
+                  <td><span class="bullet bullet-sm bullet-success me-1"></span> Kamis, 04 Januari 2024</td>
+                  <td class="text-end">07.00 WITA - 12.00 WITA</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {{-- verification --}}
+        <div class="mb-3">
+          <div class="d-flex align-items-center mb-1 px-2">
+            <h5 class=" text-primary mb-0">Jadwal Verifikasi Manual</h5>
+
+            <x-link href="" color="success" variant="outline" class="ms-auto btn-sm">Edit Waktu Verifikasi</x-link>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped border-bottom">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th class="text-end">Pukul</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="bullet bullet-sm bullet-primary me-1"></span> Senin, 01 Januari 2024</td>
+                    <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                  </tr>
+                  <tr>
+                    <td><span class="bullet bullet-sm bullet-primary me-1"></span> Selasa, 02 Januari 2024</td>
+                    <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                  </tr>
+                  <tr>
+                    <td><span class="bullet bullet-sm bullet-primary me-1"></span> Rabu, 03 Januari 2024</td>
+                    <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                  </tr>
+                  <tr>
+                    <td><span class="bullet bullet-sm bullet-primary me-1"></span> Kamis, 04 Januari 2024</td>
+                    <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+
+        {{-- announcement --}}
+        <div class="mb-3">
+          <div class="d-flex align-items-center mb-1 px-2">
+            <h5 class=" text-primary mb-0">Jadwal Pengumuman</h5>
+
+            <x-link href="" color="success" variant="outline" class="ms-auto btn-sm">Edit Waktu Pengumuman</x-link>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped border-bottom">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th class="text-end">Pukul</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="bullet bullet-sm bullet-warning me-1"></span> Jumat, 05 Januari 2024</td>
+                    <td class="text-end">09.00 WITA</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+
+        {{-- reregistration --}}
+        <div class="mb-3">
+          <div class="d-flex align-items-center mb-1 px-2">
+            <h5 class=" text-primary mb-0">Jadwal Pendaftaran Ulang</h5>
+
+            <x-link href="" color="success" variant="outline" class="ms-auto btn-sm">Edit Waktu Daftar Ulang</x-link>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped border-bottom">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th class="text-end">Pukul</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="bullet bullet-sm bullet-info me-1"></span> Jumat, 05 Januari 2024</td>
+                    <td class="text-end">09.00 WITA - 17.00 WITA</td>
+                  </tr>
+                  <tr>
+                    <td><span class="bullet bullet-sm bullet-info me-1"></span> Sabtu, 06 Januari 2024</td>
+                    <td class="text-end">07.00 WITA - 17.00 WITA</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

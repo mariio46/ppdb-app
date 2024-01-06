@@ -59,6 +59,31 @@
           </div>
         </div>
         <div class="card-body border-top">
+          <h5 class="text-primary mb-1">Jalur Pendaftaran</h5>
+          <div class="row">
+            <div class="col-lg-6 col-12">
+              <div class="mb-2">
+                <x-label for="sma">SMA</x-label>
+                <x-select class="form-select select2" name="sma" id="sma" data-placeholder="Pilih Jalur SMA" multiple>
+                  <option value=""></option>
+                  <option value="smaafirmasi">Afirmasi</option>
+                  <option value="boardingschool">Boarding School</option>
+                </x-select>
+              </div>
+            </div>
+            <div class="col-lg-6 col-12">
+              <div class="mb-2">
+                <x-label for="smk">SMK</x-label>
+                <x-select class="form-select select2" name="smk" id="smk" data-placeholder="Pilih Jalur SMK" multiple>
+                  <option value=""></option>
+                  <option value="smkafirmasi">Afirmasi</option>
+                  <option value="smkanakdudi">Anak DUDI</option>
+                </x-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body border-top">
           <h5 class="text-primary mb-1">Jadwal Pendaftaran</h5>
 
           <div class="row">
