@@ -5,10 +5,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Students\DashboardController;
 use App\Http\Controllers\Students\FaqController;
 use App\Http\Controllers\Students\LoginController as studentLoginController;
-use App\Http\Controllers\Students\RegionController;
 use App\Http\Controllers\Students\RegistrationController;
 use App\Http\Controllers\Students\SchoolController;
 use App\Http\Controllers\Students\StatusController;
+use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');

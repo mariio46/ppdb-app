@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Providers\Student;
+namespace App\Providers;
 
-use App\Repositories\Student\Impl\RegionRepositoryImpl;
-use App\Repositories\Student\RegionRepository;
+use App\Repositories\Impl\RegionRepositoryImpl;
+use App\Repositories\RegionRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RegionServiceProvider extends ServiceProvider

@@ -12,6 +12,7 @@ use App\Http\Controllers\HasRole\SchoolController;
 use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
+use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
 // Prefix = /panel;
@@ -77,10 +78,10 @@ Route::controller(AgencyController::class)->group(function () {
 
     Route::get('cabang-dinas/get-cabang-dinas', 'getAgency');
     Route::get('cabang-dinas/get-city', 'getCity');
-    Route::get('cabang-dinas/get-cabang-dinas-by-slug/{slug}', 'getAgencyBySlug');
+    Route::get('cabang-dinas/get-cabang-dinas-by-id/{id}', 'getAgencyById');
     Route::post('cabang-dinas/create', 'postNewData');
     Route::post('cabang-dinas/update', 'postUpdateData');
-    Route::post('cabang-dinas/remove', 'postRemoveData');
+    Route::post('cabang-dinas/remove', 'postRemoveData')->name('cabang-dinas.remove');
 });
 
 Route::controller(KeyController::class)->group(function () {
@@ -104,4 +105,8 @@ Route::controller(ScheduleController::class)->group(function () {
 
 Route::controller(FaqController::class)->group(function () {
     Route::get('faq', 'index')->name('faq.index');
+});
+
+Route::controller(RegionController::class)->group(function () {
+    Route::get('get-city/{province_code?}', 'getCityLists')->name('region.get.city');
 });

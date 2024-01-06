@@ -14,7 +14,7 @@ class BaseModel
         $response = Http::withHeaders([
             'waktu' => 5,
             'sw-code' => session()->get('stu_token'),
-        ])->get($this->domain.$endpoint);
+        ])->get($this->domain . $endpoint);
 
         $status = $response->status();
         $json = $response->json();
@@ -27,7 +27,7 @@ class BaseModel
 
     protected function postWoToken(string $endpoint, array $data): array
     {
-        $response = Http::post($this->domain.$endpoint, $data);
+        $response = Http::post($this->domain . $endpoint, $data);
 
         $status = $response->status();
         $json = $response->json();
@@ -43,7 +43,7 @@ class BaseModel
         $response = Http::withHeaders([
             'waktu' => 1,
             'sw-code' => session()->get('stu_token'),
-        ])->post($this->domain.$endpoint, $data);
+        ])->post($this->domain . $endpoint, $data);
 
         $status = $response->status();
         $json = $response->json();
