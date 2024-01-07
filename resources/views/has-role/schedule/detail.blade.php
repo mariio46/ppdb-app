@@ -119,7 +119,7 @@
           <div class="d-flex align-items-center mb-1 px-2">
             <h5 class=" text-primary mb-0">Jadwal Pengumuman</h5>
 
-            <x-link href="" color="success" variant="outline" class="ms-auto btn-sm">Edit Waktu Pengumuman</x-link>
+            <x-link href="{{ route('schedules.edit.announce', [$id]) }}" color="success" variant="outline" class="ms-auto btn-sm">Edit Waktu Pengumuman</x-link>
           </div>
 
           <div class="table-responsive">

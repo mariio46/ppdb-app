@@ -310,4 +310,56 @@ class ScheduleController extends Controller
 
         return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
     }
+
+    // announcement
+    public function editAnnouncement(string $id): View
+    {
+        $data = [
+            'id' => $id
+        ];
+
+        return view('has-role.schedule.edit-announce', $data);
+    }
+
+    public function getDataAnnounceSchedule(string $id): JsonResponse
+    {
+        $data = [
+            'statusCode' => 200,
+            'status' => 'success',
+            'message' => 'Berhasil mendapatkan data.',
+            'data' => [
+                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
+                'tahap' => '1',
+                'pengumuman' => '2024-01-05',
+                'batas_id' => '5',
+                'jam_mulai' => '09.00'
+            ]
+        ];
+        return response()->json($data);
+    }
+
+    public function updateAnnouncement(Request $request): RedirectResponse
+    {
+        $length = $request->length;
+
+        $data = [];
+
+        $data = [
+            'id' => $request->post('id'),
+            'tanggal' => $request->post('date'),
+            'jam_mulai' => $request->post('hour') . '.' . $request->post('minute'),
+            'jenis' => 'pengumuman'
+        ];
+
+        $return = [
+            'statusCode' => 200,
+            // 'statusCode' => 404,
+        ];
+
+        if ($return['statusCode'] == 200) {
+            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
+        }
+
+        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
+    }
 }

@@ -113,6 +113,10 @@ Route::controller(ScheduleController::class)->group(function () {
     Route::get('tahap-jadwal/e-verif/{id}', 'editVerification')->name('schedules.edit.verif');
     Route::get('tahap-jadwal/e-verif/{id}/get-data', 'getDataVerifSchedule')->name('schedules.get.verif');
     Route::post('tahap-jadwal/e-verif/{id}/update-data', 'updateVerification')->name('schedules.update.verif');
+
+    Route::get('tahap-jadwal/e-announce/{id}', 'editAnnouncement')->name('schedules.edit.announce');
+    Route::get('tahap-jadwal/e-announce/{id}/get-data', 'getDataAnnounceSchedule')->name('schedules.get.announce');
+    Route::post('tahap-jadwal/e-announce/{id}/update-data', 'updateAnnouncement')->name('schedules.update.announce');
 });
 
 Route::controller(FaqController::class)->group(function () {
