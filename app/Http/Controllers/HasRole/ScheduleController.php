@@ -201,7 +201,7 @@ class ScheduleController extends Controller
         return response()->json($data);
     }
 
-    public function updateRegistration(Request $request)
+    public function updateRegistration(Request $request): RedirectResponse
     {
         $length = $request->length;
 
@@ -219,6 +219,89 @@ class ScheduleController extends Controller
 
         $return = [
             'statusCode' => 200,
+        ];
+
+        if ($return['statusCode'] == 200) {
+            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
+        }
+
+        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
+    }
+
+    public function editVerification(string $id): View
+    {
+        $data = [
+            'id' => $id
+        ];
+
+        return view('has-role.schedule.edit-verif', $data);
+    }
+
+    public function getDataVerifSchedule(string $id): JsonResponse
+    {
+        $data = [
+            'statusCode' => 200,
+            'status' => 'success',
+            'message' => 'Berhasil mendapatkan data.',
+            'data' => [
+                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
+                'tahap' => '1',
+                'pendaftaran_mulai' => '2024-01-01',
+                'pendaftaran_selesai' => '2024-01-04',
+                'batas' => [
+                    [
+                        'batas_id' => '1',
+                        'tanggal' => '2024-01-01',
+                        'jam_mulai' => '09.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                    [
+                        'batas_id' => '2',
+                        'tanggal' => '2024-01-02',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                    [
+                        'batas_id' => '3',
+                        'tanggal' => '2024-01-03',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                    [
+                        'batas_id' => '4',
+                        'tanggal' => '2024-01-04',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '17.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                ]
+            ]
+        ];
+        return response()->json($data);
+    }
+
+    public function updateVerification(Request $request): RedirectResponse
+    {
+        $length = $request->length;
+
+        $data = [];
+
+        for ($i = 1; $i <= $length; $i++) {
+            $data[] = [
+                'id' => $request->post('id' . $i),
+                'tanggal' => $request->post('date' . $i),
+                'jam_mulai' => $request->post('sH' . $i) . '.' . $request->post('sM' . $i),
+                'jam_selesai' => $request->post('eH' . $i) . '.' . $request->post('eM' . $i),
+                'jenis' => 'verifikasi'
+            ];
+        }
+
+        $return = [
+            // 'statusCode' => 200,
+            'statusCode' => 404,
         ];
 
         if ($return['statusCode'] == 200) {
