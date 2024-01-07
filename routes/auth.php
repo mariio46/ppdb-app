@@ -105,6 +105,10 @@ Route::controller(ScheduleController::class)->group(function () {
     Route::get('tahap-jadwal/e/{id}', 'edit')->name('schedules.edit.index');
     Route::get('tahap-jadwal/get-single-data/{id}', 'getDataSchedule')->name('schedules.get.single');
     Route::post('tahap-jadwal/update-data', 'updateData')->name('schedules.edit');
+
+    Route::get('tahap-jadwal/e-regis/{id}', 'editRegistration')->name('schedules.edit.regis');
+    Route::get('tahap-jadwal/e-regis/{id}/get-data', 'getDataRegisSchedule')->name('schedules.get.regis');
+    Route::post('tahap-jadwal/e-regis/{id}/update-data', 'updateRegistration')->name('schedules.update.regis');
 });
 
 Route::controller(FaqController::class)->group(function () {
