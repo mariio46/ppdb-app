@@ -20,8 +20,15 @@ Route::get('dashboard', DashboardController::class)->name('dashboard');
 Route::controller(UserController::class)->group(function () {
     Route::get('users', 'index')->name('users.index');
     Route::get('users/create', 'create')->name('users.create');
-    Route::get('users/{id}', 'show')->name('users.show');
-    Route::get('users/{id}/lupa-password', 'forgotPassword')->name('users.lupa-password');
+    Route::get('users/{username}', 'show')->name('users.show');
+    Route::get('users/{username}/lupa-password', 'forgotPassword')->name('users.lupa-password');
+
+    Route::get('users/json/collections', 'usersCollections');
+    Route::get('users/json/rolesCollections', 'rolesCollections');
+    Route::get('users/json/regionsCollections', 'regionsCollections');
+    Route::get('users/json/schoolsCollections', 'schoolsCollections');
+    Route::get('users/json/originSchoolsCollections', 'originSchoolsCollections');
+    Route::get('users/json/single-user/{username}', 'singleUser');
 });
 
 Route::controller(OriginSchoolController::class)->group(function () {

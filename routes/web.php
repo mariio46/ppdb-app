@@ -100,7 +100,7 @@ Route::middleware(['HasRole.guest'])->group(function () {
 });
 
 Route::middleware(['HasRole.auth'])->group(function () {
-    Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
+    Route::get('logout', [LoginController::class, 'destroy'])->name('logout');
 });
 
 // example
