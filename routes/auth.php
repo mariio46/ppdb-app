@@ -117,6 +117,10 @@ Route::controller(ScheduleController::class)->group(function () {
     Route::get('tahap-jadwal/e-announce/{id}', 'editAnnouncement')->name('schedules.edit.announce');
     Route::get('tahap-jadwal/e-announce/{id}/get-data', 'getDataAnnounceSchedule')->name('schedules.get.announce');
     Route::post('tahap-jadwal/e-announce/{id}/update-data', 'updateAnnouncement')->name('schedules.update.announce');
+
+    Route::get('tahap-jadwal/e-reregis/{id}', 'editReRegistration')->name('schedules.edit.reregis');
+    Route::get('tahap-jadwal/e-reregis/{id}/get-data', 'getDataReRegisSchedule')->name('schedules.get.reregis');
+    Route::post('tahap-jadwal/e-reregis/{id}/update-data', 'updateReRegistration')->name('schedules.update.reregis');
 });
 
 Route::controller(FaqController::class)->group(function () {
