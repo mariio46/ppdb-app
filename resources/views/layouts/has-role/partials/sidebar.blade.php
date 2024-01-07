@@ -93,8 +93,8 @@
                     <span class="menu-title text-truncate">Tahap & Jadwal</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="d-flex align-items-center" href="#">
+            <li class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
                     <x-tabler-id-badge-2 />
                     <span class="menu-title text-truncate">Role & Permission</span>
                 </a>
@@ -108,6 +108,13 @@
             </li>
 
             <li class="nav-item">
+                <a class="d-flex align-items-center" href="{{ route('logout') }}">
+                    <x-tabler-logout-2 />
+                    <span class="menu-title text-truncate">Logout</span>
+                </a>
+            </li>
+
+            {{-- <li class="nav-item">
                 <form action="{{ route('logout') }}" method="POST">
                     <button class="d-flex align-items-center">
                         @csrf
@@ -115,7 +122,7 @@
                         <span class="menu-title text-truncate">Logout</span>
                     </button>
                 </form>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </div>

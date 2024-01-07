@@ -34,7 +34,9 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')->group(base_path('routes/web.php')); // Student Route
 
             Route::middleware(['web', 'HasRole.auth'])->prefix('panel')->group(base_path('routes/auth.php')); // Has Role Route
-            // , 'auth'
+
+            Route::middleware(['web', 'HasRole.auth'])->prefix('panel')->group(base_path('routes/superadmin.php')); // Super Admin Route
+
         });
     }
 }
