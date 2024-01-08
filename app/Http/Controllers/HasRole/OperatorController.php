@@ -29,11 +29,11 @@ class OperatorController extends Controller
         return view('has-role.operator.edit', compact('username'));
     }
 
-
     // --------------------------------------------------DATA JSON--------------------------------------------------
     protected function singleOperator(string $username): JsonResponse
     {
         $operator = collect($this->operators()->original)->firstWhere('username', $username);
+
         return response()->json($operator);
     }
 

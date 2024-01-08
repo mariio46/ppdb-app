@@ -38,7 +38,7 @@
 
                     <x-separator id="separator-id" style="display: none" marginY="2" />
 
-                    <div style="display: none !important;" id="update-status" class="d-flex align-items-center justify-content-start gap-2 ps-2 pb-0"> </div>
+                    <div class="d-flex align-items-center justify-content-start gap-2 ps-2 pb-0" id="update-status" style="display: none !important;"> </div>
                 </div>
             </form>
         </div>

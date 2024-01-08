@@ -31,7 +31,6 @@
     </style>
 @endsection
 
-
 @section('content')
     <div class="content-body">
         <div id="user-profile">

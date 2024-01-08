@@ -48,7 +48,6 @@ class SchoolController extends Controller
             : abort(404);
     }
 
-
     // --------------------------------------------------DATA JSON--------------------------------------------------
     protected function units(): JsonResponse
     {
@@ -235,32 +234,32 @@ class SchoolController extends Controller
             [
                 // Afirmasi
                 'label' => 'Jalur Afirmasi',
-                'value' => '150 Orang'
+                'value' => '150 Orang',
             ],
             [
                 // Mutasi
                 'label' => 'Jalur Perpindahan Tugas Orang Tua',
-                'value' => '75 Orang'
+                'value' => '75 Orang',
             ],
             [
                 // Anak Guru
                 'label' => 'Jalur Anak Guru',
-                'value' => '100 Orang'
+                'value' => '100 Orang',
             ],
             [
                 // Akademik
                 'label' => 'Jalur Prestasi Akademik',
-                'value' => '50 Orang'
+                'value' => '50 Orang',
             ],
             [
                 // Non Akademik
                 'label' => 'Jalur Prestasi Non Akademik',
-                'value' => '200 Orang'
+                'value' => '200 Orang',
             ],
             [
                 // Zonasi
                 'label' => 'Jalur Zonasi',
-                'value' => '250 Orang'
+                'value' => '250 Orang',
             ],
         ];
 
@@ -372,6 +371,7 @@ class SchoolController extends Controller
                 'address' => 'Jl. Jenderal Sudirman No. 70',
             ],
         ];
+
         return response()->json($schools);
     }
 }

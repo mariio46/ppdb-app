@@ -64,7 +64,7 @@
 
                 <x-checkbox class="form-check-danger" identifier="confirmation" label="Saya yakin untuk menghapus data sekolah ini" variant="danger" />
 
-                <x-button id="btn-delete-school" class="mt-2" data-bs-toggle="modal" data-bs-target="#delete-school" type="button" color="danger" disabled>Hapus Data Sekolah</x-button>
+                <x-button class="mt-2" id="btn-delete-school" data-bs-toggle="modal" data-bs-target="#delete-school" type="button" color="danger" disabled>Hapus Data Sekolah</x-button>
                 <x-modal modal_id="delete-school" label_by="deleteSchoolModal">
                     <x-modal.header>
                         <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>

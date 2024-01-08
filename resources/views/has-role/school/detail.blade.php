@@ -53,7 +53,6 @@
     </div>
 @endsection
 
-
 @push('scripts')
     <script src="/app-assets/js/scripts/pages/page-profile.js"></script>
     <script>
