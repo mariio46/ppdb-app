@@ -4,6 +4,8 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class OriginSchoolController extends Controller
@@ -32,6 +34,20 @@ class OriginSchoolController extends Controller
         return view('has-role.origin-school.edit', [
             'school' => $this->getSingleSchool($id),
         ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $save = [
+            'statusCode' => 201,
+            'messages' => "Lorem ipsum dolor sit amet."
+        ];
+
+        if ($save['statusCode'] == 201) {
+            return to_route('sekolah-asal.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
+        }
+
+        return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages'] ?? 'Data gagal ditambahkan.']);
     }
 
     protected function getSingleSchool($id)
