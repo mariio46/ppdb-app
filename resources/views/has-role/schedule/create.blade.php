@@ -172,6 +172,8 @@
         'use strict';
 
         var select2 = $('.select2'),
+          tracksma = $('#sma'),
+          tracksmk = $('#smk'),
           form = $('#formData'),
           submit = $('#submitBtn');
 
@@ -238,6 +240,42 @@
               reRegisEnd: {
                 required: '*Bidang ini wajib diisi.'
               }
+            }
+          });
+        }
+
+        if (tracksma.length) {
+          $.ajax({
+            url: '/panel/tahap-jadwal/jalur/sma',
+            method: 'get',
+            dataType: 'json',
+            success: function(data) {
+              tracksma.empty().append('<option value=""></option>');
+
+              data.data.forEach(sma => {
+                tracksma.append(`<option value="${sma.kode_jalur}">${sma.nama_jalur}</option>`);
+              });
+            },
+            error: function(xhr, status, error) {
+              console.error('gagal mendapatkan data.', status, error);
+            }
+          });
+        }
+
+        if (tracksmk.length) {
+          $.ajax({
+            url: '/panel/tahap-jadwal/jalur/smk',
+            method: 'get',
+            dataType: 'json',
+            success: function(data) {
+              tracksmk.empty().append('<option value=""></option>');
+
+              data.data.forEach(smk => {
+                tracksmk.append(`<option value="${smk.kode_jalur}">${smk.nama_jalur}</option>`);
+              });
+            },
+            error: function(xhr, status, error) {
+              console.error('gagal mendapatkan data.', status, error);
             }
           });
         }

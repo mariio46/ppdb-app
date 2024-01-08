@@ -122,6 +122,8 @@ Route::controller(ScheduleController::class)->group(function () {
     Route::get('tahap-jadwal/e-reregis/{id}', 'editReRegistration')->name('schedules.edit.reregis');
     Route::get('tahap-jadwal/e-reregis/{id}/get-data', 'getDataReRegisSchedule')->name('schedules.get.reregis');
     Route::post('tahap-jadwal/e-reregis/{id}/update-data', 'updateReRegistration')->name('schedules.update.reregis');
+
+    Route::get('tahap-jadwal/jalur/{type}', 'getTracks')->name('schedules.tracks');
 });
 
 Route::controller(FaqController::class)->group(function () {

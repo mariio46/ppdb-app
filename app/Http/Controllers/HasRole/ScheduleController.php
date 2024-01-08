@@ -212,19 +212,47 @@ class ScheduleController extends Controller
     public function getDataSchedule(string $id): JsonResponse
     {
         $data = [
-            'statusCode' => 200,
-            'status' => 'success',
-            'message' => 'Berhasil mendapatkan data.',
-            'data' => [
-                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-                'tahap' => '1',
-                'pendaftaran_mulai' => '2024-01-01',
-                'pendaftaran_selesai' => '2024-01-04',
-                'verifikasi_mulai' => '2024-01-01',
-                'verifikasi_selesai' => '2024-01-04',
-                'pengumuman' => '2024-01-05',
-                'daftar_ulang_mulai' => '2024-01-05',
-                'daftar_ulang_selesai' => '2024-01-06',
+            "statusCode" => 200,
+            "status" => "success",
+            "message" => "Berhasil mendapatkan data.",
+            "data" => [
+                "tahap_id" => "9ae85c84-0f44-461f-ae95-84d800c07331",
+                "tahap" => "1",
+                "pendaftaran_mulai" => "2024-01-01",
+                "pendaftaran_selesai" => "2024-01-04",
+                "verifikasi_mulai" => "2024-01-01",
+                "verifikasi_selesai" => "2024-01-04",
+                "pengumuman" => "2024-01-05",
+                "daftar_ulang_mulai" => "2024-01-05",
+                "daftar_ulang_selesai" => "2024-01-06",
+                "sma" => [
+                    [
+                        "kode_jalur" => "AG",
+                        "nama_jalur" => "Boarding School"
+                    ],
+                ],
+                "smk" => [
+                    [
+                        "kode_jalur" => "KA",
+                        "nama_jalur" => "Afirmasi"
+                    ],
+                    [
+                        "kode_jalur" => "KB",
+                        "nama_jalur" => "Perpindahan Tugas Orang Tua"
+                    ],
+                    [
+                        "kode_jalur" => "KC",
+                        "nama_jalur" => "Anak Guru"
+                    ],
+                    [
+                        "kode_jalur" => "KF",
+                        "nama_jalur" => "Domisili Terdekat"
+                    ],
+                    [
+                        "kode_jalur" => "KG",
+                        "nama_jalur" => "Anak DUDI"
+                    ],
+                ],
             ]
         ];
 
@@ -528,5 +556,79 @@ class ScheduleController extends Controller
         }
 
         return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
+    }
+
+    // tracks
+    public function getTracks(string $type): JsonResponse
+    {
+        if ($type == 'sma') {
+            $data = [
+                'data' => [
+                    [
+                        'kode_jalur' => 'AA',
+                        'nama_jalur' => 'Afirmasi'
+                    ],
+                    [
+                        'kode_jalur' => 'AB',
+                        'nama_jalur' => 'Perpindahan Tugas Orang Tua'
+                    ],
+                    [
+                        'kode_jalur' => 'AC',
+                        'nama_jalur' => 'Anak Guru'
+                    ],
+                    [
+                        'kode_jalur' => 'AD',
+                        'nama_jalur' => 'Prestasi Akademik'
+                    ],
+                    [
+                        'kode_jalur' => 'AE',
+                        'nama_jalur' => 'Prestasi Non Akademik'
+                    ],
+                    [
+                        'kode_jalur' => 'AF',
+                        'nama_jalur' => 'Zonasi'
+                    ],
+                    [
+                        'kode_jalur' => 'AG',
+                        'nama_jalur' => 'Boarding School'
+                    ],
+                ]
+            ];
+        } else {
+            $data = [
+                'data' => [
+                    [
+                        'kode_jalur' => 'KA',
+                        'nama_jalur' => 'Afirmasi'
+                    ],
+                    [
+                        'kode_jalur' => 'KB',
+                        'nama_jalur' => 'Perpindahan Tugas Orang Tua'
+                    ],
+                    [
+                        'kode_jalur' => 'KC',
+                        'nama_jalur' => 'Anak Guru'
+                    ],
+                    [
+                        'kode_jalur' => 'KD',
+                        'nama_jalur' => 'Prestasi Akademik'
+                    ],
+                    [
+                        'kode_jalur' => 'KE',
+                        'nama_jalur' => 'Prestasi Non Akademik'
+                    ],
+                    [
+                        'kode_jalur' => 'KF',
+                        'nama_jalur' => 'Domisili Terdekat'
+                    ],
+                    [
+                        'kode_jalur' => 'KG',
+                        'nama_jalur' => 'Anak DUDI'
+                    ],
+                ]
+            ];
+        }
+
+        return response()->json($data);
     }
 }

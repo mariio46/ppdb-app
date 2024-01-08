@@ -67,8 +67,6 @@
                                 <x-label for="sma">SMA</x-label>
                                 <x-select class="form-select select2" name="sma[]" id="sma" data-placeholder="Pilih Jalur SMA" multiple>
                                     <option value=""></option>
-                                    <option value="smaafirmasi">Afirmasi</option>
-                                    <option value="boardingschool">Boarding School</option>
                                 </x-select>
                             </div>
                         </div>
@@ -77,8 +75,6 @@
                                 <x-label for="smk">SMK</x-label>
                                 <x-select class="form-select select2" name="smk[]" id="smk" data-placeholder="Pilih Jalur SMK" multiple>
                                     <option value=""></option>
-                                    <option value="smkafirmasi">Afirmasi</option>
-                                    <option value="smkanakdudi">Anak DUDI</option>
                                 </x-select>
                             </div>
                         </div>
@@ -177,6 +173,8 @@ $(function() {
 
     var select2 = $('.select2'),
         form = $('#formData'),
+        tracksma = $('#sma'),
+        tracksmk = $('#smk'),
         submit = $('#submitBtn');
 
     if (select2.length) {
@@ -199,8 +197,14 @@ $(function() {
             dataType: 'json',
             success: function(data) {
                 let d = data.data;
+                let smaList = d.sma.map(function(sma) {return sma.kode_jalur});
+                let smkList = d.smk.map(function(smk) {return smk.kode_jalur});
+
+                console.log(smaList);
 
                 $('#phase').val("Tahap " + d.tahap);
+                generateSchools(tracksma, 'sma', smaList);
+                generateSchools(tracksmk, 'smk', smkList);
                 $('#regisStart').val(d.pendaftaran_mulai);
                 $('#regisEnd').val(d.pendaftaran_selesai);
                 $('#verifStart').val(d.verifikasi_mulai);
@@ -291,6 +295,26 @@ $(function() {
         submit.click(function() {
             if (form.valid()) {
                 form.submit();
+            }
+        });
+    }
+
+    function generateSchools(element, type, selected) {
+        $.ajax({
+            url: `/panel/tahap-jadwal/jalur/${type}`,
+            method: 'get',
+            dataType: 'json',
+            success: function(data) {
+                element.empty().append('<option value=""></option>');
+
+                data.data.forEach(sch => {
+                    element.append(`<option value="${sch.kode_jalur}">${sch.nama_jalur}</option>`);
+                });
+
+                element.val(selected).trigger('change');
+            },
+            error: function(xhr, status, error) {
+                console.error('gagal mendapatkan data.', status, error);
             }
         });
     }
