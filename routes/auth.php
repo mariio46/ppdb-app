@@ -27,9 +27,16 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(OriginSchoolController::class)->group(function () {
     Route::get('sekolah-asal', 'index')->name('sekolah-asal.index');
-    Route::get('seskolah-asal/create', 'create')->name('sekolah-asal.create');
-    Route::get('seskolah-asal/{id}', 'show')->name('sekolah-asal.show');
-    Route::get('seskolah-asal/{id}/edit', 'edit')->name('sekolah-asal.edit');
+    Route::get('sekolah-asal/create', 'create')->name('sekolah-asal.create');
+    Route::get('sekolah-asal/{id}', 'show')->name('sekolah-asal.show');
+    Route::get('sekolah-asal/{id}/edit', 'edit')->name('sekolah-asal.edit');
+
+    Route::post('sekolah-asal/store', 'store')->name('sekolah-asal.store');
+    Route::post('sekolah-asal/update', 'update')->name('sekolah-asal.update');
+    Route::post('sekolah-asal/delete', 'delete')->name('sekolah-asal.delete');
+
+    Route::get('sekolah-asal/json/get-all-data', 'getSchools')->name('sekolah-asal.json.all');
+    Route::get('sekolah-asal/json/get-single-data/{id}', 'getSingleSchool')->name('sekolah-asal.json.single');
 });
 
 Route::controller(StudentController::class)->group(function () {
