@@ -1,5 +1,15 @@
 @extends('layouts.has-role.auth', ['title' => 'Edit Sekolah'])
 
+@section('vendorStyles')
+    <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
+@endsection
+
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
+@endsection
+
 @section('content')
     <div class="content-body">
         <div class="card">
@@ -7,99 +17,42 @@
                 <div class="card-title">Edit Informasi Sekolah</div>
             </div>
             <div class="card-body">
-                <div class="d-flex">
-                    <a class="me-25 " href="#">
-                        <img class="uploadedAvatar rounded me-50" id="account-upload-img" src="{{ Storage::url('images/static/profil-sekolah-sma.png') }}" alt="profil sekolah sma" height="150"
-                            width="150" />
-                    </a>
-                    <!-- upload and reset button -->
-                    <div class="d-flex align-items-center ms-1">
-                        <div>
-                            <label class="btn btn-primary mb-75 me-75" for="account-upload">Upload Logo Baru</label>
-                            <input id="account-upload" type="file" hidden accept="image/*" />
-                            <x-button class="mb-75" id="account-reset" type="button" variant="outline" color="secondary">
-                                Reset Logo
-                            </x-button>
-                            <p class="mb-0">Format JPG, GIF or PNG, Max size of 800K</p>
+
+                <form action="#">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-2">
+                                <x-label for="nama_sekolah">Nama Sekolah</x-label>
+                                <x-input id="nama_sekolah" name="nama_sekolah" placeholder="Masukkan nama sekolah" />
+                            </div>
+                            <div class="mb-2">
+                                <x-label for="npsn">Nomor Pokok Sekolah Nasional</x-label>
+                                <x-input id="npsn" name="npsn" placeholder="Masukkan NPSN" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-2">
+                                <x-label for="kabupaten">Kabupaten/Kota</x-label>
+                                <x-input id="kabupaten" name="kabupaten" placeholder="Masukkan Kabupaten/Kota" />
+                            </div>
+                            <div class="mb-2">
+                                <x-label for="satuan_pendidikan">Satuan Pendidikan</x-label>
+                                <x-select class="select2 form-select" id="satuan_pendidikan" name="satuan_pendidikan" data-placeholder="Pilih Satuan Pendidikan">
+                                    <x-empty-option />
+                                </x-select>
+                            </div>
                         </div>
                     </div>
-                    <!--/ upload and reset button -->
-                </div>
-
-                <x-separator marginY="2" />
-
-                <div class="row">
-                    <div class="col-sm-6 ">
-                        <div class="mb-2">
-                            <x-label>Nama Sekolah</x-label>
-                            <x-input id="school_name" name="school_name" value="SMAN 1 Parepare" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>Nomor Pokok Sekolah Nasional &lpar;NPSN&rpar;</x-label>
-                            <x-input id="npsn" name="npsn" value="22423912" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>Nama Kepala Sekolah</x-label>
-                            <x-input id="headmaster_name" name="headmaster_name" value="H. Ryan Rafli, S.Pd, M.Pd,PDI" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>NIP Kepala Sekolah</x-label>
-                            <x-input id="headmaster_id" name="headmaster_id" value="1234567890" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>Nama Ketua PPDB</x-label>
-                            <x-input id="leader_name" name="leader_name" value="Muhammad Al Muqtadir, S.PDI" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>NIP Ketua PPDB</x-label>
-                            <x-input id="leader_id" name="leader_id" value="1234567890" />
-                        </div>
+                    <x-separator marginY="2" />
+                    <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
+                        <x-button color="success">Simpan Perubahan</x-button>
+                        <x-link href="{{ route('sekolah.index') }}" color="secondary">Batalkan</x-link>
                     </div>
-                    <div class="col-sm-6 ">
-                        <div class="mb-2">
-                            <x-label>Alamat</x-label>
-                            <x-input id="address" name="address" value="Jalan Kemerdekaan Mo.3" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>Kabupaten/Kota</x-label>
-                            <x-input id="city" name="city" value="Parepare" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>Kecamatan</x-label>
-                            <x-input id="subdistrict" name="subdistrict" value="Ujung" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>Desa/Kelurahan</x-label>
-                            <x-input id="ward" name="ward" value="Galung Maloang" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>RT/RW</x-label>
-                            <x-input id="rt_rw" name="rt_rw" value="001/002" />
-                        </div>
-                        <div class="mb-2">
-                            <x-label>Koordinat Sekolah</x-label>
-                            <x-input id="school_coordinate" name="school_coordinate" value="-2.649099922180" />
-                        </div>
-                    </div>
-                </div>
+                </form>
 
-                <x-separator marginY="2" />
-
-                <section id="lokasi-sekolah">
-                    <h4 class="text-primary mb-1">Lokasi Sekolah</h4>
-                    <div class="w-100">
-                        <img class="w-100" src="{{ Storage::url('images/static/lokasi-sekolah.png') }}" alt="Lokasi Sekolah">
-                    </div>
-                </section>
-
-                <x-separator marginY="2" />
-
-                <div class="d-flex align-items-center justify-content-start gap-2">
-                    <x-button color="success">Simpan Perubahan</x-button>
-                    <x-link href="#" variant="outline" color="secondary">Batalkan</x-link>
-                </div>
             </div>
         </div>
+
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Hapus Data Sekolah</h5>
@@ -111,7 +64,7 @@
 
                 <x-checkbox class="form-check-danger" identifier="confirmation" label="Saya yakin untuk menghapus data sekolah ini" variant="danger" />
 
-                <x-button class="mt-2" data-bs-toggle="modal" data-bs-target="#delete-school" type="button" color="danger">Hapus Data Sekolah</x-button>
+                <x-button id="btn-delete-school" class="mt-2" data-bs-toggle="modal" data-bs-target="#delete-school" type="button" color="danger" disabled>Hapus Data Sekolah</x-button>
                 <x-modal modal_id="delete-school" label_by="deleteSchoolModal">
                     <x-modal.header>
                         <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
@@ -131,3 +84,75 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        var npsn = '{{ $npsn }}'
+    </script>
+    <script>
+        $(function() {
+            'use strict';
+
+            var select = $('.select2'),
+                check = $('#confirmation'),
+                btnDeleteSchool = $('#btn-delete-school'),
+                unit = $('#satuan_pendidikan');
+
+            select.each(function() {
+                var $this = $(this);
+                $this.wrap('<div class="position-relative"></div>');
+                $this.select2({
+                    // the following code is used to disable x-scrollbar when click in select input and
+                    // take 100% width in responsive also
+                    dropdownAutoWidth: true,
+                    width: '100%',
+                    dropdownParent: $this.parent()
+                });
+            });
+
+
+            $.ajax({
+                url: `/panel/sekolah/json/single-school/${npsn}`,
+                method: 'get',
+                dataType: 'json',
+                success: function(school) {
+                    // console.log(school.unit.value);
+                    $('#nama_sekolah').val(school.name)
+                    $('#npsn').val(school.npsn)
+                    $('#kabupaten').val(school.kabupaten)
+                    loadUnit(school.unit.value)
+
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to get data single user.", status, error, xhr);
+                }
+            })
+
+            function loadUnit(value) {
+                $.ajax({
+                    url: '/panel/sekolah/json/units',
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(units) {
+                        unit.empty().append('<option value=""></option>');
+
+                        units.forEach(item => {
+                            let selected = item.value === value ? 'selected' : ''
+                            // console.log(value);
+                            unit.append(`<option value="${item.value}" ${selected}>${item.label}</option>`)
+                        })
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to get data units.', status, error);
+                    }
+                })
+            }
+
+            check.change(function() {
+                btnDeleteSchool.prop('disabled', !this.checked);
+            });
+
+        })
+    </script>
+@endpush

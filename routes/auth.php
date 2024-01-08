@@ -53,10 +53,16 @@ Route::controller(SchoolController::class)->group(function () {
     Route::get('sekolah', 'index')->name('sekolah.index');
     Route::get('sekolah/create', 'create')->name('sekolah.create');
     Route::get('sekolah/{npsn}/edit', 'edit')->name('sekolah.edit');
-    Route::get('sekolah/{npsn}/info-sekolah', 'schoolDetail')->name('sekolah.detail');
-    Route::get('sekolah/{npsn}/kuota-sekolah', 'schoolQuota')->name('sekolah.quota');
-    Route::get('sekolah/{npsn}/wilayah-zonasi', 'schoolZone')->name('sekolah.zone');
-    Route::get('sekolah/{npsn}/jurusan-dan-kuota', 'schoolMajorQuota')->name('sekolah.major-quota');
+    Route::get('sekolah/{npsn}/{unit}/info-sekolah', 'schoolDetail')->name('sekolah.detail');
+    Route::get('sekolah/{npsn}/{unit}/kuota-sekolah', 'schoolQuota')->name('sekolah.quota');
+    Route::get('sekolah/{npsn}/{unit}/wilayah-zonasi', 'schoolZone')->name('sekolah.zone');
+    Route::get('sekolah/{npsn}/{unit}/jurusan-dan-kuota', 'schoolMajorQuota')->name('sekolah.major-quota');
+
+    Route::get('sekolah/json/units', 'units');
+    Route::get('sekolah/json/zones', 'zones');
+    Route::get('sekolah/json/schools-collections', 'schools');
+    Route::get('sekolah/json/single-school/{npsn}', 'getSingleSchool');
+    Route::get('sekolah/json/schools-quota/{npsn}/{unit}', 'schoolsQuota');
 });
 
 Route::controller(OperatorController::class)->group(function () {

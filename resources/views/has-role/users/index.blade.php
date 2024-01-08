@@ -28,21 +28,19 @@
     <div class="content-body">
         <div class="card">
             <div class="card-body p-0">
-                <div>
-                    <table class="table table-users">
-                        <thead>
-                            <tr class="table-light ">
-                                <th scope="col">NAMA</th>
-                                <th scope="col">USERNAME</th>
-                                <th scope="col">ROLE</th>
-                                <th scope="col">ID</th>
-                                <th scope="col">STATUS</th>
-                                <th scope="col">DETAIL</th>
-                            </tr>
-                        </thead>
-                        <tbody> </tbody>
-                    </table>
-                </div>
+                <table class="table table-users">
+                    <thead>
+                        <tr class="table-light ">
+                            <th scope="col">NAMA</th>
+                            <th scope="col">USERNAME</th>
+                            <th scope="col">ROLE</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">STATUS</th>
+                            <th scope="col">DETAIL</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
