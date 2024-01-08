@@ -32,7 +32,7 @@ class OriginSchoolController extends Controller
     public function edit($id): View
     {
         return view('has-role.origin-school.edit', [
-            'school' => $this->getSingleSchool($id),
+            'id' => $id,
         ]);
     }
 
@@ -48,6 +48,34 @@ class OriginSchoolController extends Controller
         }
 
         return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages'] ?? 'Data gagal ditambahkan.']);
+    }
+
+    public function update(Request $request): RedirectResponse
+    {
+        $save = [
+            'statusCode' => 200,
+            'messages' => "Berhasil menyimpan perubahan data."
+        ];
+
+        if ($save['statusCode'] == 200) {
+            return to_route('sekolah-asal.show', $request->id)->with(['stat' => 'success', 'msg' => $save['messages']]);
+        }
+
+        return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages'] ?? 'Data gagal diubah.']);
+    }
+
+    public function delete(Request $request): RedirectResponse
+    {
+        $delete = [
+            'statusCode' => 200,
+            'messages' => "Berhasil menghapus data."
+        ];
+
+        if ($delete['statusCode'] == 200) {
+            return to_route('sekolah-asal.index')->with(['stat' => 'success', 'msg' => $delete['messages']]);
+        }
+
+        return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $delete['messages'] ?? 'Data gagal dihapus.']);
     }
 
     protected function getSingleSchool(string $id): JsonResponse

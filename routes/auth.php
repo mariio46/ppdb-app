@@ -32,6 +32,8 @@ Route::controller(OriginSchoolController::class)->group(function () {
     Route::get('sekolah-asal/{id}/edit', 'edit')->name('sekolah-asal.edit');
 
     Route::post('sekolah-asal/store', 'store')->name('sekolah-asal.store');
+    Route::post('sekolah-asal/update', 'update')->name('sekolah-asal.update');
+    Route::post('sekolah-asal/delete', 'delete')->name('sekolah-asal.delete');
 
     Route::get('sekolah-asal/json/get-all-data', 'getSchools')->name('sekolah-asal.json.all');
     Route::get('sekolah-asal/json/get-single-data/{id}', 'getSingleSchool')->name('sekolah-asal.json.single');
