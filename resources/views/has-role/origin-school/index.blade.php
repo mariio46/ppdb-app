@@ -1,63 +1,119 @@
 @extends('layouts.has-role.auth', ['title' => 'Sekolah asal'])
 
+@section('vendorStyles')
+    <link type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
-    <div class="content-body">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Sekolah Asal</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-5 col-12 mb-1 mb-sm-0">
-                        <x-input id="name" name="name" placeholder="Your name" />
-                    </div>
-                    <div class="col-sm-5 col-12 mb-1 mb-sm-0">
-                        <x-input id="name" name="name" placeholder="Your name" />
-                    </div>
-                    <div class="col-sm-2 col-12 mb-1 mb-sm-0">
-                        <x-button class="w-100" color="dark" disabled>Reset Filter</x-button>
-                    </div>
-                </div>
-                <x-separator marginY="2" />
-                <div class="row d-flex justify-content-between align-items-center">
-                    <div class="col-sm-3">
-                        <x-input id="search" name="search" placeholder="Cari sekolah..." />
-                    </div>
-                    <div class="col-sm-3 text-end">
-                        <a class="btn btn-success" href="{{ route('sekolah-asal.create') }}">
-                            <x-tabler-plus style="width: 16px; height: 16px;" />
-                            Tambah Sekolah
-                        </a>
-                    </div>
-                </div>
-                <x-separator marginY="2" />
-                <div>
-                    <table class="table">
-                        <thead>
-                            <tr class="table-light">
-                                <th scope="col">NAMA</th>
-                                <th scope="col">NPSN</th>
-                                <th scope="col">SATUAN PENDIDIKAN</th>
-                                <th scope="col">ALAMAT</th>
-                                <th scope="col">DETAIL</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($collections as $item)
-                                <tr>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->npsn }}</td>
-                                    <td>{{ $item->unit }}</td>
-                                    <td>{{ $item->address }}</td>
-                                    <td>
-                                        <a class="btn btn-primary" href="{{ route('sekolah-asal.show', $item->id) }}">Lihat Detail</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+@if (session()->get('msg'))
+<div class="alert alert-{{ session()->get('stat') }} p-1">
+    <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
+</div>
+@endif
+
+<div class="content-body">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Sekolah Asal</h4>
+        </div>
+        <div class="card-body px-0">
+            <div>
+                <table class="table table-data border-bottom">
+                    <thead>
+                        <tr class="table-light">
+                            <th scope="col">NAMA</th>
+                            <th scope="col">NPSN</th>
+                            <th scope="col">DETAIL</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 @endsection
+
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+@endsection
+
+@push('scripts')
+    <script>
+        $(function() {
+            'use strict';
+
+            var table = $('.table-data');
+
+            if (table.length) {
+                var tb = table.DataTable({
+                    ajax: {
+                        url: '/panel/sekolah-asal/json/get-origin-school-list',
+                        dataSrc: ""
+                    },
+                    columns: [{
+                            data: "name"
+                        },
+                        {
+                            data: "npsn",
+                            render: function(data, type, row) {
+                                return `<span class="text-success">${data}</span>`;
+                            }
+                        },
+                        {
+                            data: "id",
+                            render: function(data, type, row) {
+                                return `<a href="/panel/sekolah-asal/${data}" class="btn btn-primary">Lihat Detail</a>`;
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        {
+                            targets: 1,
+                            className: 'text-center'
+                        },
+                        {
+                            targets: 2, // Target the 'Action' column (zero-based index)
+                            className: 'text-end' // Apply the custom CSS class
+                        }
+                    ],
+                    dom: `<"d-none d-md-block align-items-center"<"row px-2 g-0"<"col-6 d-flex"lf><"col-6"<"add-button">>>>
+                    <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>
+                    <"table-responsive"<t>>
+                    <"row px-2 g-0"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>`,
+                    ordering: false,
+                    lengthMenu: [
+                        [10, 25, 50, 100],
+                        [10, 25, 50, "100"]
+                    ],
+                    language: {
+                        lengthMenu: "_MENU_",
+                        search: "",
+                        searchPlaceholder: "Cari NPSN, Sekolah..",
+                        info: "Display _START_ to _END_ of _TOTAL_ entries",
+                        paginate: {
+                            // remove previous & next text from pagination
+                            previous: '&nbsp;',
+                            next: '&nbsp;'
+                        }
+                    },
+                    initComplete: function() {
+                        // Apply Select2 to the lengthMenu dropdown
+                        $('#DataTables_Table_0_length select').select2({
+                            width: "50%",
+                            minimumResultsForSearch: -1,
+                            dropdownParent: $('#DataTables_Table_0_length select').parent()
+                        });
+                    }
+                });
+
+                $("div.add-button, div.add-button-sm").html('<a href="/panel/sekolah-asal/tambah" class="btn btn-success">+ Tambah Sekolah</a>');
+                $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end');
+                $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
+            }
+        });
+    </script>
+@endpush
