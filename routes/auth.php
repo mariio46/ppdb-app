@@ -100,6 +100,7 @@ Route::controller(ScheduleController::class)->group(function () {
     Route::post('tahap-jadwal/save-data', 'saveData')->name('schedules.create');
 
     Route::get('tahap-jadwal/d/{id}', 'detail')->name('schedules.detail');
+    Route::get('tahap-jadwal/d/{id}/get-data', 'detailData')->name('schedules.get.detail');
     Route::post('tahap-jadwal/remove', 'removeData')->name('schedules.remove');
 
     Route::get('tahap-jadwal/e/{id}', 'edit')->name('schedules.edit.index');

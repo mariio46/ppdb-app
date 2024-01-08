@@ -109,8 +109,8 @@ $(function() {
                 console.log(data);
                 let d = data.data;
 
-                var start = new Date(d.pendaftaran_mulai);
-                var end = new Date(d.pendaftaran_selesai);
+                var start = new Date(d.verifikasi_mulai);
+                var end = new Date(d.verifikasi_selesai);
                 var range = [];
 
                 // looping to get dates of range

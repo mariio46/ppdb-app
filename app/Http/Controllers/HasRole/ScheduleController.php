@@ -88,6 +88,105 @@ class ScheduleController extends Controller
         return view('has-role.schedule.detail', $data);
     }
 
+    public function detailData(string $id): JsonResponse
+    {
+        $data = [
+            'statusCode' => 200,
+            'status' => 'success',
+            'message' => 'Berhasil mendapatkan data.',
+            'data' => [
+                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
+                'tahap' => '1',
+                'pendaftaran_mulai' => '2024-01-01',
+                'pendaftaran_selesai' => '2024-01-04',
+                'pendaftaran_batas' => [
+                    [
+                        'batas_id' => '1',
+                        'tanggal' => '2024-01-01',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                    [
+                        'batas_id' => '2',
+                        'tanggal' => '2024-01-02',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                    [
+                        'batas_id' => '3',
+                        'tanggal' => '2024-01-03',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                    [
+                        'batas_id' => '4',
+                        'tanggal' => '2024-01-04',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '12.00',
+                        'jenis' => 'pendaftaran'
+                    ],
+                ],
+                'verifikasi_mulai' => '2024-01-01',
+                'verifikasi_selesai' => '2024-01-04',
+                'verifikasi_batas' => [
+                    [
+                        'batas_id' => '1',
+                        'tanggal' => '2024-01-01',
+                        'jam_mulai' => '09.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'verifikasi'
+                    ],
+                    [
+                        'batas_id' => '2',
+                        'tanggal' => '2024-01-02',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'verifikasi'
+                    ],
+                    [
+                        'batas_id' => '3',
+                        'tanggal' => '2024-01-03',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'verifikasi'
+                    ],
+                    [
+                        'batas_id' => '4',
+                        'tanggal' => '2024-01-04',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '17.00',
+                        'jenis' => 'verifikasi'
+                    ],
+                ],
+                'pengumuman' => '2024-01-05',
+                'pengumuman_batas_id' => '5',
+                'pengumuman_jam_mulai' => '09.00',
+                'daftar_ulang_mulai' => '2024-01-05',
+                'daftar_ulang_selesai' => '2024-01-06',
+                'daftar_ulang_batas' => [
+                    [
+                        'batas_id' => '1',
+                        'tanggal' => '2024-01-05',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'daftar ulang'
+                    ],
+                    [
+                        'batas_id' => '2',
+                        'tanggal' => '2024-01-06',
+                        'jam_mulai' => '07.00',
+                        'jam_selesai' => '15.00',
+                        'jenis' => 'daftar ulang'
+                    ],
+                ]
+            ]
+        ];
+        return response()->json($data);
+    }
+
     public function removeData(): RedirectResponse
     {
         $remove = [
@@ -248,36 +347,36 @@ class ScheduleController extends Controller
             'data' => [
                 'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
                 'tahap' => '1',
-                'pendaftaran_mulai' => '2024-01-01',
-                'pendaftaran_selesai' => '2024-01-04',
+                'verifikasi_mulai' => '2024-01-01',
+                'verifikasi_selesai' => '2024-01-04',
                 'batas' => [
                     [
                         'batas_id' => '1',
                         'tanggal' => '2024-01-01',
                         'jam_mulai' => '09.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran'
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '2',
                         'tanggal' => '2024-01-02',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran'
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '3',
                         'tanggal' => '2024-01-03',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran'
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '4',
                         'tanggal' => '2024-01-04',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '17.00',
-                        'jenis' => 'pendaftaran'
+                        'jenis' => 'verifikasi'
                     ],
                 ]
             ]
