@@ -1,0 +1,50 @@
+.nav-item .tab-smt .tab-smt-badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F7F7F8;
+  border-radius: .357rem;
+  padding: 1.5rem;
+  height: 4rem;
+  width: 4rem;
+}
+
+.nav-item .active .tab-smt .tab-smt-badge {
+  background-color: #2C82B5;
+}
+
+.nav-item .tab-smt .tab-smt-badge p {
+  color: #BABFC7;
+  font-size: calc(1.275rem + .3vw);
+  font-weight: bold;
+  margin-bottom: 0 !important;
+}
+
+.nav-item .active .tab-smt .tab-smt-badge p {
+  color: white;
+}
+
+.nav-item .tab-smt .tab-smt-body {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item .tab-smt .tab-smt-body .tab-smt-title {
+  font-size: calc(1.2536rem + .0432vw);
+  margin-bottom: 0 !important;
+  font-weight: 500;
+  /* color secondary */
+  color: #82868B;
+}
+
+.nav-item .active .tab-smt .tab-smt-body .tab-smt-title {
+  color: #2C82B5;
+}
+
+.nav-item .tab-smt .tab-smt-body .tab-smt-subtitle {
+  color: #BABFC7;
+}
+
+.nav-item .active .tab-smt .tab-smt-body .tab-smt-subtitle {
+  color: black;
+}

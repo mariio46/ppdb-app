@@ -1,0 +1,53 @@
+.bottom-navbar .nav-link {
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.bottom-navbar .bottom-navbar-icon {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #82868B;
+}
+
+.bottom-navbar .bottom-navbar-label {
+  font-size: .8rem;
+  color: black;
+  display: none;
+}
+
+.bottom-navbar .active .bottom-navbar-icon, .bottom-navbar .active .bottom-navbar-label {
+  color: #7367F0;
+}
+
+.bottom-navbar .active .bottom-navbar-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.bottom-navbar .active .bottom-navbar-label {
+  display: block;
+  font-weight: bold;
+}
+
+.fixed-bottom-right {
+  display: none;
+  position: fixed;
+  width: 300px;
+  bottom: 65px;
+  right: 0;
+  margin-right: 15px; /* Adjust as needed */
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+
+.fixed-bottom-right.show {
+  display: block !important;
+}
