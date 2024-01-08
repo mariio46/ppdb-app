@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -47,6 +48,20 @@ class StudentController extends Controller
         ];
 
         return view('has-role.student.score', $data);
+    }
+
+    public function store(Request $request)
+    {
+        $save = [
+            'statusCode' => 201,
+            'messages' => 'Pesan Hapus Data'
+        ];
+
+        if ($save['statusCode'] == 201) {
+            return to_route('siswa.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
+        }
+
+        return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages']]);
     }
 
     public function updateScore(string $username, string $semester, Request $request)
@@ -129,6 +144,64 @@ class StudentController extends Controller
         ]);
 
         // $data = collect([]);
+
+        return response()->json($data);
+    }
+
+    protected function getOriginSchools(): JsonResponse
+    {
+        $data = collect([
+            [
+                'id' => '13d55276-e0fe-4cef-8ddf-3c63e1e8ab18',
+                'npsn' => '53858380',
+                'nama' => 'SMP NEGERI 14 Balocci'
+            ],
+            [
+                'id' => 'e93d7831-c6e1-4027-86fe-0f4e32f2f9f3',
+                'npsn' => '23701847',
+                'nama' => 'SMP NEGERI 19 Paleteang'
+            ],
+            [
+                'id' => '6d241d92-71b2-4065-9e65-b7e3dc01a453',
+                'npsn' => '40241267',
+                'nama' => 'SMP NEGERI 16 Tellu Limpoe'
+            ],
+            [
+                'id' => 'b77b131c-225f-458a-87af-256b2b70c882',
+                'npsn' => '88290069',
+                'nama' => 'SMP NEGERI 6 Pasirkembang Wetan'
+            ],
+            [
+                'id' => '5a243cbc-573c-42ce-bb54-97ef6b8aa401',
+                'npsn' => '96498610',
+                'nama' => 'SMP NEGERI 13 Talangmarsum'
+            ],
+            [
+                'id' => '017bc657-0c2c-42b4-9eef-db1c1eda1589',
+                'npsn' => '58152069',
+                'nama' => 'SMP NEGERI 17 Bojongkakak Satu'
+            ],
+            [
+                'id' => 'dff0a3e4-5173-4228-ae7a-b8e4399687f6',
+                'npsn' => '96275211',
+                'nama' => 'SMP NEGERI 12 Bojongsirna'
+            ],
+            [
+                'id' => '55510a61-4a69-43af-bca8-14d243625559',
+                'npsn' => '14795405',
+                'nama' => 'SMP NEGERI 2 Penombon'
+            ],
+            [
+                'id' => 'd9d02748-a302-4236-835d-d675f9eef2a7',
+                'npsn' => '29761345',
+                'nama' => 'SMP NEGERI 17 Alongalong'
+            ],
+            [
+                'id' => '9f459bb5-2a3d-4798-b695-9e9ddabf4f20',
+                'npsn' => '57997791',
+                'nama' => 'SMP NEGERI 10 Sungaitarab'
+            ],
+        ]);
 
         return response()->json($data);
     }

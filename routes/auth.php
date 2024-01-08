@@ -46,11 +46,13 @@ Route::controller(StudentController::class)->group(function () {
     Route::get('siswa/{username}/edit', 'edit')->name('siswa.edit');
     Route::get('siswa/{username}/score/{semester}', 'score')->name('siswa.score');
 
+    Route::post('siswa/store', 'store')->name('siswa.store');
     Route::post('siswa/{username}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
 
     Route::get('siswa/get-scores/{username}/{semester}', 'getScores');
 
     Route::get('siswa/json/get-list', 'getStudents')->name('siswa.json.all');
+    Route::get('siswa/json/get-origin-school-list', 'getOriginSchools')->name('siswa.json.origin-school');
 });
 
 Route::controller(SchoolController::class)->group(function () {
