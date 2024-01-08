@@ -48,7 +48,7 @@ class AgencyController extends Controller
             return redirect()->back()->with([
                 'stat' => 'danger',
                 'msg' => $save['messages'],
-                'data' => $save,
+                'data' => $save
             ]);
         }
     }
@@ -63,7 +63,7 @@ class AgencyController extends Controller
         return redirect()->back()->with([
             'stat' => ($upd['statusCode'] == 200) ? 'success' : 'danger',
             'msg' => $upd['messages'],
-            'data' => $upd,
+            'data' => $upd
         ]);
     }
 
@@ -77,7 +77,7 @@ class AgencyController extends Controller
         return to_route('cabang-dinas.index')->with([
             'stat' => ($del['statusCode'] == 200) ? 'success' : 'danger',
             'msg' => $del['messages'],
-            'data' => $del,
+            'data' => $del
         ]);
     }
 
@@ -88,7 +88,6 @@ class AgencyController extends Controller
     protected function getAgency(): JsonResponse
     {
         $get = $this->agencyRepository->getAgency();
-
         return response()->json($get['data']);
     }
 

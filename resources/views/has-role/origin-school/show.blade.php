@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => $id])
+@extends('layouts.has-role.auth', ['title' => $school->name])
 
 @section('styles')
     <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">
@@ -9,26 +9,6 @@
 @endpush
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Sekolah Asal</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('sekolah-asal.index') }}">Sekolah Asal</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Detail Sekolah Asal
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="content-body">
         <div id="user-profile">
             <div class="row">
@@ -55,12 +35,12 @@
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <div class="profile-tabs d-flex justify-content-between align-items-center flex-wrap mt-1 mt-md-0">
                                         <div class="profile-title">
-                                            <h2 class="text-dark">{{ $id }}</h2>
-                                            <p class="text-dark">NPSN.{{ $id }}</p>
+                                            <h2 class="text-dark">{{ $school->name }}</h2>
+                                            <p class="text-dark">NPSN.{{ $school->npsn }}</p>
                                         </div>
                                         <!-- edit button -->
                                         <div>
-                                            <a class="btn btn-success mb-2" href="{{ route('sekolah-asal.edit', $id) }}">
+                                            <a class="btn btn-success mb-2" href="{{ route('sekolah-asal.edit', $school->id) }}">
                                                 <x-tabler-pencil />
                                                 Edit Sekolah
                                             </a>
@@ -75,16 +55,9 @@
                 </div>
             </div>
         </div>
-
-        @if (session()->get('msg'))
-            <div class="alert alert-{{ session()->get('stat') }} p-1">
-                <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-            </div>
-        @endif
-
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title" style="margin-left: 2rem; margin-top: 1.5rem">Informasi detail sekolah {{ $id }}</h4>
+                <h4 class="card-title" style="margin-left: 2rem; margin-top: 1.5rem">Informasi detail sekolah {{ $school->name }}</h4>
             </div>
             <div class="card-body">
                 <div class="row">
