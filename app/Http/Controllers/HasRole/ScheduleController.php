@@ -105,28 +105,28 @@ class ScheduleController extends Controller
                         'tanggal' => '2024-01-01',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
                     [
                         'batas_id' => '2',
                         'tanggal' => '2024-01-02',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
                     [
                         'batas_id' => '3',
                         'tanggal' => '2024-01-03',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
                     [
                         'batas_id' => '4',
                         'tanggal' => '2024-01-04',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '12.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
                 ],
                 'verifikasi_mulai' => '2024-01-01',
@@ -137,28 +137,28 @@ class ScheduleController extends Controller
                         'tanggal' => '2024-01-01',
                         'jam_mulai' => '09.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '2',
                         'tanggal' => '2024-01-02',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '3',
                         'tanggal' => '2024-01-03',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '4',
                         'tanggal' => '2024-01-04',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '17.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
                 ],
                 'pengumuman' => '2024-01-05',
@@ -172,19 +172,18 @@ class ScheduleController extends Controller
                         'tanggal' => '2024-01-05',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'daftar ulang',
+                        'jenis' => 'daftar ulang'
                     ],
                     [
                         'batas_id' => '2',
                         'tanggal' => '2024-01-06',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'daftar ulang',
+                        'jenis' => 'daftar ulang'
                     ],
-                ],
-            ],
+                ]
+            ]
         ];
-
         return response()->json($data);
     }
 
@@ -204,7 +203,7 @@ class ScheduleController extends Controller
     public function edit(string $id): View
     {
         $data = [
-            'id' => $id,
+            'id' => $id
         ];
 
         return view('has-role.schedule.edit-phase', $data);
@@ -213,48 +212,48 @@ class ScheduleController extends Controller
     public function getDataSchedule(string $id): JsonResponse
     {
         $data = [
-            'statusCode' => 200,
-            'status' => 'success',
-            'message' => 'Berhasil mendapatkan data.',
-            'data' => [
-                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-                'tahap' => '1',
-                'pendaftaran_mulai' => '2024-01-01',
-                'pendaftaran_selesai' => '2024-01-04',
-                'verifikasi_mulai' => '2024-01-01',
-                'verifikasi_selesai' => '2024-01-04',
-                'pengumuman' => '2024-01-05',
-                'daftar_ulang_mulai' => '2024-01-05',
-                'daftar_ulang_selesai' => '2024-01-06',
-                'sma' => [
+            "statusCode" => 200,
+            "status" => "success",
+            "message" => "Berhasil mendapatkan data.",
+            "data" => [
+                "tahap_id" => "9ae85c84-0f44-461f-ae95-84d800c07331",
+                "tahap" => "1",
+                "pendaftaran_mulai" => "2024-01-01",
+                "pendaftaran_selesai" => "2024-01-04",
+                "verifikasi_mulai" => "2024-01-01",
+                "verifikasi_selesai" => "2024-01-04",
+                "pengumuman" => "2024-01-05",
+                "daftar_ulang_mulai" => "2024-01-05",
+                "daftar_ulang_selesai" => "2024-01-06",
+                "sma" => [
                     [
-                        'kode_jalur' => 'AG',
-                        'nama_jalur' => 'Boarding School',
+                        "kode_jalur" => "AG",
+                        "nama_jalur" => "Boarding School"
                     ],
                 ],
-                'smk' => [
+                "smk" => [
                     [
-                        'kode_jalur' => 'KA',
-                        'nama_jalur' => 'Afirmasi',
+                        "kode_jalur" => "KA",
+                        "nama_jalur" => "Afirmasi"
                     ],
                     [
-                        'kode_jalur' => 'KB',
-                        'nama_jalur' => 'Perpindahan Tugas Orang Tua',
+                        "kode_jalur" => "KB",
+                        "nama_jalur" => "Perpindahan Tugas Orang Tua"
                     ],
                     [
-                        'kode_jalur' => 'KC',
-                        'nama_jalur' => 'Anak Guru',
+                        "kode_jalur" => "KC",
+                        "nama_jalur" => "Anak Guru"
                     ],
                     [
-                        'kode_jalur' => 'KF',
-                        'nama_jalur' => 'Domisili Terdekat',
+                        "kode_jalur" => "KF",
+                        "nama_jalur" => "Domisili Terdekat"
                     ],
                     [
-                        'kode_jalur' => 'KG',
-                        'nama_jalur' => 'Anak DUDI',
+                        "kode_jalur" => "KG",
+                        "nama_jalur" => "Anak DUDI"
                     ],
                 ],
-            ],
+            ]
         ];
 
         return response()->json($data);
@@ -278,7 +277,7 @@ class ScheduleController extends Controller
     public function editRegistration(string $id): View
     {
         $data = [
-            'id' => $id,
+            'id' => $id
         ];
 
         return view('has-role.schedule.edit-regis', $data);
@@ -301,33 +300,32 @@ class ScheduleController extends Controller
                         'tanggal' => '2024-01-01',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
                     [
                         'batas_id' => '2',
                         'tanggal' => '2024-01-02',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
                     [
                         'batas_id' => '3',
                         'tanggal' => '2024-01-03',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
                     [
                         'batas_id' => '4',
                         'tanggal' => '2024-01-04',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '12.00',
-                        'jenis' => 'pendaftaran',
+                        'jenis' => 'pendaftaran'
                     ],
-                ],
-            ],
+                ]
+            ]
         ];
-
         return response()->json($data);
     }
 
@@ -339,11 +337,11 @@ class ScheduleController extends Controller
 
         for ($i = 1; $i <= $length; $i++) {
             $data[] = [
-                'id' => $request->post('id'.$i),
-                'tanggal' => $request->post('date'.$i),
-                'jam_mulai' => $request->post('sH'.$i).'.'.$request->post('sM'.$i),
-                'jam_selesai' => $request->post('eH'.$i).'.'.$request->post('eM'.$i),
-                'jenis' => 'pendaftaran',
+                'id' => $request->post('id' . $i),
+                'tanggal' => $request->post('date' . $i),
+                'jam_mulai' => $request->post('sH' . $i) . '.' . $request->post('sM' . $i),
+                'jam_selesai' => $request->post('eH' . $i) . '.' . $request->post('eM' . $i),
+                'jenis' => 'pendaftaran'
             ];
         }
 
@@ -362,7 +360,7 @@ class ScheduleController extends Controller
     public function editVerification(string $id): View
     {
         $data = [
-            'id' => $id,
+            'id' => $id
         ];
 
         return view('has-role.schedule.edit-verif', $data);
@@ -385,33 +383,32 @@ class ScheduleController extends Controller
                         'tanggal' => '2024-01-01',
                         'jam_mulai' => '09.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '2',
                         'tanggal' => '2024-01-02',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '3',
                         'tanggal' => '2024-01-03',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
                     [
                         'batas_id' => '4',
                         'tanggal' => '2024-01-04',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '17.00',
-                        'jenis' => 'verifikasi',
+                        'jenis' => 'verifikasi'
                     ],
-                ],
-            ],
+                ]
+            ]
         ];
-
         return response()->json($data);
     }
 
@@ -423,11 +420,11 @@ class ScheduleController extends Controller
 
         for ($i = 1; $i <= $length; $i++) {
             $data[] = [
-                'id' => $request->post('id'.$i),
-                'tanggal' => $request->post('date'.$i),
-                'jam_mulai' => $request->post('sH'.$i).'.'.$request->post('sM'.$i),
-                'jam_selesai' => $request->post('eH'.$i).'.'.$request->post('eM'.$i),
-                'jenis' => 'verifikasi',
+                'id' => $request->post('id' . $i),
+                'tanggal' => $request->post('date' . $i),
+                'jam_mulai' => $request->post('sH' . $i) . '.' . $request->post('sM' . $i),
+                'jam_selesai' => $request->post('eH' . $i) . '.' . $request->post('eM' . $i),
+                'jenis' => 'verifikasi'
             ];
         }
 
@@ -447,7 +444,7 @@ class ScheduleController extends Controller
     public function editAnnouncement(string $id): View
     {
         $data = [
-            'id' => $id,
+            'id' => $id
         ];
 
         return view('has-role.schedule.edit-announce', $data);
@@ -464,10 +461,9 @@ class ScheduleController extends Controller
                 'tahap' => '1',
                 'pengumuman' => '2024-01-05',
                 'batas_id' => '5',
-                'jam_mulai' => '09.00',
-            ],
+                'jam_mulai' => '09.00'
+            ]
         ];
-
         return response()->json($data);
     }
 
@@ -476,8 +472,8 @@ class ScheduleController extends Controller
         $data = [
             'id' => $request->post('id'),
             'tanggal' => $request->post('date'),
-            'jam_mulai' => $request->post('hour').'.'.$request->post('minute'),
-            'jenis' => 'pengumuman',
+            'jam_mulai' => $request->post('hour') . '.' . $request->post('minute'),
+            'jenis' => 'pengumuman'
         ];
 
         $return = [
@@ -496,7 +492,7 @@ class ScheduleController extends Controller
     public function editReRegistration(string $id): View
     {
         $data = [
-            'id' => $id,
+            'id' => $id
         ];
 
         return view('has-role.schedule.edit-reregis', $data);
@@ -519,19 +515,18 @@ class ScheduleController extends Controller
                         'tanggal' => '2024-01-05',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'daftar ulang',
+                        'jenis' => 'daftar ulang'
                     ],
                     [
                         'batas_id' => '2',
                         'tanggal' => '2024-01-06',
                         'jam_mulai' => '07.00',
                         'jam_selesai' => '15.00',
-                        'jenis' => 'daftar ulang',
+                        'jenis' => 'daftar ulang'
                     ],
-                ],
-            ],
+                ]
+            ]
         ];
-
         return response()->json($data);
     }
 
@@ -543,11 +538,11 @@ class ScheduleController extends Controller
 
         for ($i = 1; $i <= $length; $i++) {
             $data[] = [
-                'id' => $request->post('id'.$i),
-                'tanggal' => $request->post('date'.$i),
-                'jam_mulai' => $request->post('sH'.$i).'.'.$request->post('sM'.$i),
-                'jam_selesai' => $request->post('eH'.$i).'.'.$request->post('eM'.$i),
-                'jenis' => 'verifikasi',
+                'id' => $request->post('id' . $i),
+                'tanggal' => $request->post('date' . $i),
+                'jam_mulai' => $request->post('sH' . $i) . '.' . $request->post('sM' . $i),
+                'jam_selesai' => $request->post('eH' . $i) . '.' . $request->post('eM' . $i),
+                'jenis' => 'verifikasi'
             ];
         }
 
@@ -571,66 +566,66 @@ class ScheduleController extends Controller
                 'data' => [
                     [
                         'kode_jalur' => 'AA',
-                        'nama_jalur' => 'Afirmasi',
+                        'nama_jalur' => 'Afirmasi'
                     ],
                     [
                         'kode_jalur' => 'AB',
-                        'nama_jalur' => 'Perpindahan Tugas Orang Tua',
+                        'nama_jalur' => 'Perpindahan Tugas Orang Tua'
                     ],
                     [
                         'kode_jalur' => 'AC',
-                        'nama_jalur' => 'Anak Guru',
+                        'nama_jalur' => 'Anak Guru'
                     ],
                     [
                         'kode_jalur' => 'AD',
-                        'nama_jalur' => 'Prestasi Akademik',
+                        'nama_jalur' => 'Prestasi Akademik'
                     ],
                     [
                         'kode_jalur' => 'AE',
-                        'nama_jalur' => 'Prestasi Non Akademik',
+                        'nama_jalur' => 'Prestasi Non Akademik'
                     ],
                     [
                         'kode_jalur' => 'AF',
-                        'nama_jalur' => 'Zonasi',
+                        'nama_jalur' => 'Zonasi'
                     ],
                     [
                         'kode_jalur' => 'AG',
-                        'nama_jalur' => 'Boarding School',
+                        'nama_jalur' => 'Boarding School'
                     ],
-                ],
+                ]
             ];
         } else {
             $data = [
                 'data' => [
                     [
                         'kode_jalur' => 'KA',
-                        'nama_jalur' => 'Afirmasi',
+                        'nama_jalur' => 'Afirmasi'
                     ],
                     [
                         'kode_jalur' => 'KB',
-                        'nama_jalur' => 'Perpindahan Tugas Orang Tua',
+                        'nama_jalur' => 'Perpindahan Tugas Orang Tua'
                     ],
                     [
                         'kode_jalur' => 'KC',
-                        'nama_jalur' => 'Anak Guru',
+                        'nama_jalur' => 'Anak Guru'
                     ],
                     [
                         'kode_jalur' => 'KD',
-                        'nama_jalur' => 'Prestasi Akademik',
+                        'nama_jalur' => 'Prestasi Akademik'
                     ],
                     [
                         'kode_jalur' => 'KE',
-                        'nama_jalur' => 'Prestasi Non Akademik',
+                        'nama_jalur' => 'Prestasi Non Akademik'
                     ],
                     [
                         'kode_jalur' => 'KF',
-                        'nama_jalur' => 'Domisili Terdekat',
+                        'nama_jalur' => 'Domisili Terdekat'
                     ],
                     [
                         'kode_jalur' => 'KG',
-                        'nama_jalur' => 'Anak DUDI',
+                        'nama_jalur' => 'Anak DUDI'
                     ],
-                ],
+                ]
             ];
         }
 

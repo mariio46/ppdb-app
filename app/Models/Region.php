@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Base;
+
 class Region extends Base
 {
     public function getListProvince(): array
@@ -10,7 +12,7 @@ class Region extends Base
 
         if (session()->get('token')) {
             $get = $this->getWithToken('wilayah/all/provinsi');
-        } elseif (session()->get('stu_token')) {
+        } else if (session()->get('stu_token')) {
             $get = $this->swGetWithToken('wilayah/all/provinsi');
         }
 
@@ -22,20 +24,19 @@ class Region extends Base
         $get = [];
 
         if (session()->get('token')) {
-            $get = $this->getWithToken('wilayah/all/kota?kode='.$provinceCode);
-        } elseif (session()->get('stu_token')) {
-            $get = $this->swGetWithToken('wilayah/all/kota?kode='.$provinceCode);
+            $get = $this->getWithToken('wilayah/all/kota?kode=' . $provinceCode);
+        } else if (session()->get('stu_token')) {
+            $get = $this->swGetWithToken('wilayah/all/kota?kode=' . $provinceCode);
         }
-
         return $get;
     }
 
     public function getListDistrict(string $code): array
     {
         if (session()->get('token')) {
-            $get = $this->getWithToken('wilayah/kota/kecamatan?kode='.$code);
-        } elseif (session()->get('stu_token')) {
-            $get = $this->swGetWithToken('wilayah/kota/kecamatan?kode='.$code);
+            $get = $this->getWithToken('wilayah/kota/kecamatan?kode=' . $code);
+        } else if (session()->get('stu_token')) {
+            $get = $this->swGetWithToken('wilayah/kota/kecamatan?kode=' . $code);
         }
 
         return $get;
@@ -47,9 +48,9 @@ class Region extends Base
     public function getListVillage(string $code): array
     {
         if (session()->get('token')) {
-            $get = $this->getWithToken('wilayah/kota/desa?kode='.$code);
-        } elseif (session()->get('stu_token')) {
-            $get = $this->swGetWithToken('wilayah/kota/desa?kode='.$code);
+            $get = $this->getWithToken('wilayah/kota/desa?kode=' . $code);
+        } else if (session()->get('stu_token')) {
+            $get = $this->swGetWithToken('wilayah/kota/desa?kode=' . $code);
         }
 
         return $get;
