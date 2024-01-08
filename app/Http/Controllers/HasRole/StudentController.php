@@ -11,9 +11,7 @@ class StudentController extends Controller
 {
     public function index(): View
     {
-        return view('has-role.student.index', [
-            'collections' => $this->getStudents(),
-        ]);
+        return view('has-role.student.index');
     }
 
     public function create(): View
@@ -77,66 +75,62 @@ class StudentController extends Controller
         return $user;
     }
 
-    protected function getStudents()
+    protected function getStudents(): JsonResponse
     {
-        return collect([
+        $data = collect([
             (object) [
-                'id' => 1,
-                'name' => 'Ryan Rafli',
-                'username' => 'ryan'. 6564553453,
-                'asal_sekolah' => 'SMPN 1 Parepare',
+                'id' => "9ef555d7-21f9-47ef-9413-f69a6bcfda84",
+                'nama' => 'Ryan Rafli',
+                'sekolah_asal' => 'SMPN 1 Parepare',
                 'nisn' => 6564553453,
             ],
             (object) [
-                'id' => 2,
-                'name' => 'Al Muqtadir',
-                'username' => 'tadir'. 5454224678,
-                'asal_sekolah' => 'SMPN 1 Parepare',
+                'id' => "40fd7174-e24e-4775-9a28-78e5d0f2036f",
+                'nama' => 'Al Muqtadir',
+                'sekolah_asal' => 'SMPN 1 Parepare',
                 'nisn' => 5454224678,
             ],
             (object) [
-                'id' => 3,
-                'name' => 'Ainun Putri',
-                'username' => 'ainun'. 10302913833,
-                'asal_sekolah' => 'SMPN 3 Makassar',
+                'id' => "f909d329-df1d-4a89-85e3-e4f727d2267c",
+                'nama' => 'Ainun Putri',
+                'sekolah_asal' => 'SMPN 3 Makassar',
                 'nisn' => 10302913833,
             ],
             (object) [
-                'id' => 4,
-                'name' => 'Edy Siswanto Syarif',
-                'username' => 'edy'. 43242354815,
-                'asal_sekolah' => 'SMPN 10 Maros',
+                'id' => "899b3068-4f05-4a16-8ad1-683febc5b2f4",
+                'nama' => 'Edy Siswanto Syarif',
+                'sekolah_asal' => 'SMPN 10 Maros',
                 'nisn' => 43242354815,
             ],
             (object) [
-                'id' => 5,
-                'name' => 'Muh Rafie Muis',
-                'username' => 'rafie'. 42342356788,
-                'asal_sekolah' => 'SMPN 3 Pangkep',
+                'id' => "f3bb95a4-0ffb-4c9e-9a67-eeebe0a2f8ea",
+                'nama' => 'Muh Rafie Muis',
+                'sekolah_asal' => 'SMPN 3 Pangkep',
                 'nisn' => 42342356788,
             ],
             (object) [
-                'id' => 6,
-                'name' => 'Vicky Giovaldi',
-                'username' => 'vicky'. 8787575645,
-                'asal_sekolah' => 'SMP 1 Luwu Timur',
+                'id' => "a054e49d-dc6a-4eee-9839-9ac3197d7177",
+                'nama' => 'Vicky Giovaldi',
+                'sekolah_asal' => 'SMP 1 Luwu Timur',
                 'nisn' => 8787575645,
             ],
             (object) [
-                'id' => 7,
-                'name' => 'Muh Raiz Muis',
-                'username' => 'raiz'. 2432545466,
-                'asal_sekolah' => 'SMPN 1 Parepare',
+                'id' => "f27f67a1-55fd-4950-9937-2f042c9e36cf",
+                'nama' => 'Muh Raiz Muis',
+                'sekolah_asal' => 'SMPN 1 Parepare',
                 'nisn' => 2432545466,
             ],
             (object) [
-                'id' => 8,
-                'name' => 'Zhafran',
-                'username' => 'zhafran'. 34234234223,
-                'asal_sekolah' => 'SMPN 2 Makassar',
+                'id' => "ed1f2c97-e75a-4de4-88bc-a0f916039a1e",
+                'nama' => 'Zhafran',
+                'sekolah_asal' => 'SMPN 2 Makassar',
                 'nisn' => 34234234223,
             ],
         ]);
+
+        // $data = collect([]);
+
+        return response()->json($data);
     }
 
     protected function getMoths()
