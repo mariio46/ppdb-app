@@ -84,7 +84,7 @@
                                 if (data === 1) {
                                     return ` <x-badge class="w-100" variant="light" color="success">Aktif</x-badge> `;
                                 } else {
-                                    return ` <x-badge class="w-100" variant="light" color="danger">Aktif</x-badge> `;
+                                    return ` <x-badge class="w-100" variant="light" color="danger">Tidak Aktif</x-badge> `;
                                 }
                             }
                         },

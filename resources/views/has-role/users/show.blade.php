@@ -155,10 +155,6 @@
                     $('#username').val(user.username);
                     $('#status').val(user.status).trigger('change');
                     loadRoles(user.role)
-                    // if (user.role === '3') {
-                    //     $('#input-wilayah').show()
-                    //     loadRegions(user.cabdin_id)
-                    // }
                     switch (user.role) {
                         case '3':
                             $('#input-wilayah').show();

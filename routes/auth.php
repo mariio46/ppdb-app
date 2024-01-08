@@ -67,6 +67,12 @@ Route::controller(SchoolController::class)->group(function () {
 
 Route::controller(OperatorController::class)->group(function () {
     Route::get('operators', 'index')->name('operators.index');
+    Route::get('operators/create', 'create')->name('operators.create');
+    Route::get('operators/{username}', 'show')->name('operators.show');
+    Route::get('operators/{username}/edit', 'edit')->name('operators.edit');
+
+    Route::get('operators/json/operators', 'operators');
+    Route::get('operators/json/singleOperator/{username}', 'singleOperator');
 });
 
 Route::controller(VerificationController::class)->group(function () {
