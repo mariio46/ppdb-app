@@ -25,7 +25,7 @@ class OriginSchoolController extends Controller
     public function show($id): View
     {
         return view('has-role.origin-school.show', [
-            'school' => $this->getSingleSchool($id),
+            'id' => $id,
         ]);
     }
 
@@ -50,15 +50,10 @@ class OriginSchoolController extends Controller
         return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages'] ?? 'Data gagal ditambahkan.']);
     }
 
-    protected function getSingleSchool($id)
+    protected function getSingleSchool(string $id): JsonResponse
     {
-        $schools = $this->getSchools()->where('id', $id);
-        $data = json_decode($schools, true);
-        foreach ($data as $key => $item) {
-            $school = (object) $item;
-        }
-
-        return $school;
+        $school = collect($this->getSchools()->original)->firstWhere('id', $id);
+        return response()->json($school);
     }
 
     protected function getSchools(): JsonResponse

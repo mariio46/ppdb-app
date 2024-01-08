@@ -34,6 +34,7 @@ Route::controller(OriginSchoolController::class)->group(function () {
     Route::post('sekolah-asal/store', 'store')->name('sekolah-asal.store');
 
     Route::get('sekolah-asal/json/get-all-data', 'getSchools')->name('sekolah-asal.json.all');
+    Route::get('sekolah-asal/json/get-single-data/{id}', 'getSingleSchool')->name('sekolah-asal.json.single');
 });
 
 Route::controller(StudentController::class)->group(function () {
