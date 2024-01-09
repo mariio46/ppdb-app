@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => "Detail {$student->name}"])
+@extends('layouts.has-role.auth', ['title' => "Detail Siswa"])
 
 @section('styles')
     <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">
@@ -34,7 +34,7 @@
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                     <div class="profile-tabs d-flex justify-content-end align-items-center flex-wrap mt-1 mt-md-0">
                                         <div>
-                                            <a class="btn btn-success mb-2" href="{{ route('siswa.edit', $student->username) }}">
+                                            <a class="btn btn-success mb-2" href="{{ route('siswa.edit', $id) }}">
                                                 <x-tabler-pencil />
                                                 Edit Data
                                             </a>
@@ -230,7 +230,7 @@
                 <section id="data-nilai-rapor">
                     <div class="d-flex align-items-center justify-content-between" style="margin-left: 2rem; margin-top: 1.5rem; margin-bottom: 1.5rem">
                         <h4 class="text-primary">Data Nilai Rapor</h4>
-                        <a class="btn btn-success" href="{{ route('siswa.score', [$student->username, 'semester-1']) }}">
+                        <a class="btn btn-success" href="{{ route('siswa.score', [$id, 'semester-1']) }}">
                             Edit Nilai
                         </a>
                     </div>
@@ -247,7 +247,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($grades as $item)
+                                {{-- @foreach ($grades as $item)
                                     <tr>
                                         <td>{{ $item->mata_pelajaran }}</td>
                                         <td class="text-success text-center">{{ $item->semester_1 }}</td>
@@ -256,7 +256,7 @@
                                         <td class="text-success text-center">{{ $item->semester_4 }}</td>
                                         <td class="text-success text-center">{{ $item->semester_5 }}</td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
