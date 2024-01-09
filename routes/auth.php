@@ -13,6 +13,7 @@ use App\Http\Controllers\HasRole\SchoolDataController;
 use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
+use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Route;
 
 // Prefix = /panel;
@@ -34,20 +35,34 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(OriginSchoolController::class)->group(function () {
     Route::get('sekolah-asal', 'index')->name('sekolah-asal.index');
-    Route::get('seskolah-asal/create', 'create')->name('sekolah-asal.create');
-    Route::get('seskolah-asal/{id}', 'show')->name('sekolah-asal.show');
-    Route::get('seskolah-asal/{id}/edit', 'edit')->name('sekolah-asal.edit');
+    Route::get('sekolah-asal/create', 'create')->name('sekolah-asal.create');
+    Route::get('sekolah-asal/{id}', 'show')->name('sekolah-asal.show');
+    Route::get('sekolah-asal/{id}/edit', 'edit')->name('sekolah-asal.edit');
+
+    Route::post('sekolah-asal/store', 'store')->name('sekolah-asal.store');
+    Route::post('sekolah-asal/update', 'update')->name('sekolah-asal.update');
+    Route::post('sekolah-asal/delete', 'delete')->name('sekolah-asal.delete');
+
+    Route::get('sekolah-asal/json/get-all-data', 'getSchools')->name('sekolah-asal.json.all');
+    Route::get('sekolah-asal/json/get-single-data/{id}', 'getSingleSchool')->name('sekolah-asal.json.single');
 });
 
 Route::controller(StudentController::class)->group(function () {
     Route::get('siswa', 'index')->name('siswa.index');
     Route::get('siswa/create', 'create')->name('siswa.create');
-    Route::get('siswa/{username}', 'show')->name('siswa.show');
-    Route::get('siswa/{username}/edit', 'edit')->name('siswa.edit');
-    Route::get('siswa/{username}/score/{semester}', 'score')->name('siswa.score');
-    Route::post('siswa/{username}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
+    Route::get('siswa/{id}', 'show')->name('siswa.show');
+    Route::get('siswa/{id}/edit', 'edit')->name('siswa.edit');
+    Route::get('siswa/{id}/score/{semester}', 'score')->name('siswa.score');
 
-    Route::get('siswa/get-scores/{username}/{semester}', 'getScores');
+    Route::post('siswa/store', 'store')->name('siswa.store');
+    Route::post('siswa/{id}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
+
+    Route::get('siswa/get-scores/{id}/{semester}', 'getScores');
+
+    Route::get('siswa/json/get-list', 'getStudents')->name('siswa.json.all');
+    Route::get('siswa/json/get-single', 'getSingleStudent')->name('siswa.json.single');
+    Route::get('siswa/json/search-nisn/{nisn}', 'getSingleStudentByNisn')->name('siswa.json.search');
+    Route::get('siswa/json/get-origin-school-list', 'getOriginSchools')->name('siswa.json.origin-school');
 });
 
 Route::controller(SchoolController::class)->group(function () {
@@ -104,10 +119,10 @@ Route::controller(AgencyController::class)->group(function () {
 
     Route::get('cabang-dinas/get-cabang-dinas', 'getAgency');
     Route::get('cabang-dinas/get-city', 'getCity');
-    Route::get('cabang-dinas/get-cabang-dinas-by-slug/{slug}', 'getAgencyBySlug');
+    Route::get('cabang-dinas/get-cabang-dinas-by-id/{id}', 'getAgencyById');
     Route::post('cabang-dinas/create', 'postNewData');
     Route::post('cabang-dinas/update', 'postUpdateData');
-    Route::post('cabang-dinas/remove', 'postRemoveData');
+    Route::post('cabang-dinas/remove', 'postRemoveData')->name('cabang-dinas.remove');
 });
 
 Route::controller(KeyController::class)->group(function () {
@@ -122,13 +137,41 @@ Route::controller(ScheduleController::class)->group(function () {
     Route::get('tahap-jadwal', 'index')->name('schedules.index');
     Route::get('tahap-jadwal/get-data', 'getDataSchedules')->name('schedules.get.data');
 
-    Route::get('tahap-jadwal/tambah', 'create')->name('schedules.create');
+    Route::get('tahap-jadwal/tambah', 'create')->name('schedules.create.index');
     Route::post('tahap-jadwal/save-data', 'saveData')->name('schedules.create');
 
     Route::get('tahap-jadwal/d/{id}', 'detail')->name('schedules.detail');
+    Route::get('tahap-jadwal/d/{id}/get-data', 'detailData')->name('schedules.get.detail');
     Route::post('tahap-jadwal/remove', 'removeData')->name('schedules.remove');
+
+    Route::get('tahap-jadwal/e/{id}', 'edit')->name('schedules.edit.index');
+    Route::get('tahap-jadwal/get-single-data/{id}', 'getDataSchedule')->name('schedules.get.single');
+    Route::post('tahap-jadwal/update-data', 'updateData')->name('schedules.edit');
+
+    Route::get('tahap-jadwal/e-regis/{id}', 'editRegistration')->name('schedules.edit.regis');
+    Route::get('tahap-jadwal/e-regis/{id}/get-data', 'getDataRegisSchedule')->name('schedules.get.regis');
+    Route::post('tahap-jadwal/e-regis/{id}/update-data', 'updateRegistration')->name('schedules.update.regis');
+
+    Route::get('tahap-jadwal/e-verif/{id}', 'editVerification')->name('schedules.edit.verif');
+    Route::get('tahap-jadwal/e-verif/{id}/get-data', 'getDataVerifSchedule')->name('schedules.get.verif');
+    Route::post('tahap-jadwal/e-verif/{id}/update-data', 'updateVerification')->name('schedules.update.verif');
+
+    Route::get('tahap-jadwal/e-announce/{id}', 'editAnnouncement')->name('schedules.edit.announce');
+    Route::get('tahap-jadwal/e-announce/{id}/get-data', 'getDataAnnounceSchedule')->name('schedules.get.announce');
+    Route::post('tahap-jadwal/e-announce/{id}/update-data', 'updateAnnouncement')->name('schedules.update.announce');
+
+    Route::get('tahap-jadwal/e-reregis/{id}', 'editReRegistration')->name('schedules.edit.reregis');
+    Route::get('tahap-jadwal/e-reregis/{id}/get-data', 'getDataReRegisSchedule')->name('schedules.get.reregis');
+    Route::post('tahap-jadwal/e-reregis/{id}/update-data', 'updateReRegistration')->name('schedules.update.reregis');
+
+    Route::get('tahap-jadwal/jalur/{type}', 'getTracks')->name('schedules.tracks');
 });
 
 Route::controller(FaqController::class)->group(function () {
     Route::get('faq', 'index')->name('faq.index');
+});
+
+Route::controller(RegionController::class)->group(function () {
+    Route::get('get-city/{province_code?}', 'getCityLists')->name('region.get.city');
+    Route::get('get-district/{city_code}', 'getDistrictLists')->name('region.get.district');
 });

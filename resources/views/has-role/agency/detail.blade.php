@@ -25,6 +25,13 @@
             </div>
         </div>
     </div>
+
+    @if (session()->get('msg'))
+        <div class="alert alert-{{ session()->get('stat') }} p-1">
+            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
+        </div>
+    @endif
+
     <div class="content-body row">
         <div class="col-12">
             <div class="card">
@@ -34,6 +41,8 @@
                 <div class="card-body">
                     <form id="formUpdateAgency" action="/panel/cabang-dinas/update" method="post">
                         @csrf
+                        <input type="hidden" name="id" value="{{ $id_agency }}">
+
                         <div class="row">
                             {{-- name --}}
                             <div class="col-md-6 col-12 mb-1">
@@ -113,9 +122,9 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="/panel/cabang-dinas/remove" method="post">
+                                    <form action="{{ route('cabang-dinas.remove') }}" method="post">
                                         @csrf
-                                        <input id="agencyId" name="agencyId" type="hidden">
+                                        <input id="agencyId" name="agencyId" type="hidden" value="{{ $id_agency }}">
                                         <button class="btn btn-danger" type="submit">Ya, Hapus Cabang Dinas</button>
                                     </form>
                                 </div>
@@ -135,7 +144,7 @@
 
 @push('scripts')
     <script>
-        var slug = '{{ $slug ?? '' }}';
+        var idAgency = '{{ $id_agency ?? '' }}';
     </script>
     <script>
         $(function() {
@@ -164,18 +173,23 @@
             });
 
             $.ajax({
-                url: '/panel/cabang-dinas/get-cabang-dinas-by-slug/' + slug,
+                url: '/panel/cabang-dinas/get-cabang-dinas-by-id/' + idAgency,
                 method: 'get',
                 dataType: 'json',
                 success: function(data) {
-                    $('#name').val(data.name);
-                    $('#phone').val(data.phone);
-                    loadServiceArea(data.service_area, data.position);
-                    $('#address').val(data.address);
+                    let areas = data.wilayah.map(function(wilayah) {
+                        return wilayah.kode + '|' + wilayah.nama;
+                    });
+
+                    console.log(data);
+
+                    $('#name').val(data.nama);
+                    $('#phone').val(data.nomor_telepon);
+                    loadServiceArea(areas, data.kedudukan_kode + '|' + data.kedudukan);
+                    $('#address').val(data.alamat);
 
                     // modal
-                    agencyName.text(data.name);
-                    agencyId.val(data.id);
+                    agencyName.text(data.nama);
                 },
                 error: function(xhr, status, error) {
                     console.error("Failed to get data.", status, error);
@@ -184,21 +198,25 @@
 
             function loadServiceArea(serviceAreaArray, positionData) {
                 $.ajax({
-                    url: '/panel/cabang-dinas/get-city',
+                    url: '/panel/get-city',
                     method: 'get',
                     dataType: 'json',
                     success: function(cities) {
                         serviceArea.empty().append('<option value=""></option>');
 
                         cities.forEach(city => {
-                            serviceArea.append('<option value="' + city.code + '|' + city.name + '">' + city.name + '</option>');
+                            let value = city.code + '|' + city.name;
+
+                            let opt = $("<option></option>").val(value).text(city.name);
+
+                            if (serviceAreaArray.indexOf(value) !== -1) {
+                                opt.attr('selected', 'selected');
+
+                                position.append('<option value="' + value + '" ' + ((value == positionData) ? 'selected' : '') + '>' + city.name + '</option>');
+                            }
+
+                            serviceArea.append(opt);
                         });
-
-                        serviceArea.val(serviceAreaArray).trigger('change');
-
-                        if (positionData.length) {
-                            position.val(positionData).trigger('change');
-                        }
                     },
                     error: function(xhr, status, error) {
                         console.error('Failed to get data.', status, error);
