@@ -5,6 +5,12 @@
     <link type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css" rel="stylesheet">
 @endsection
 
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+@endsection
+
 @section('styles')
     <style>
         div.dataTables_wrapper div.dataTables_filter input {
@@ -43,12 +49,6 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('vendorScripts')
-    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
-    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 @endsection
 
 @push('scripts')

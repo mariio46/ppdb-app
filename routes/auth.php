@@ -9,6 +9,7 @@ use App\Http\Controllers\HasRole\OriginSchoolController;
 use App\Http\Controllers\HasRole\RankController;
 use App\Http\Controllers\HasRole\ScheduleController;
 use App\Http\Controllers\HasRole\SchoolController;
+use App\Http\Controllers\HasRole\SchoolDataController;
 use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
@@ -63,6 +64,13 @@ Route::controller(SchoolController::class)->group(function () {
     Route::get('sekolah/json/schools-collections', 'schools');
     Route::get('sekolah/json/single-school/{npsn}', 'getSingleSchool');
     Route::get('sekolah/json/schools-quota/{npsn}/{unit}', 'schoolsQuota');
+});
+
+Route::controller(SchoolDataController::class)->group(function () {
+    Route::get('data-sekolah', 'index')->name('school-data.index');
+
+    Route::get('data-sekolah/json/school/{id}', 'school');
+    Route::get('data-sekolah/json/schools', 'schools');
 });
 
 Route::controller(OperatorController::class)->group(function () {
