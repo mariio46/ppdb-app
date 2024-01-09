@@ -51,6 +51,12 @@
                     <span class="menu-title text-truncate">Sekolah</span>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs('school-data.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('school-data.index') }}">
+                    <x-tabler-file-database />
+                    <span class="menu-title text-truncate">Data Sekolah</span>
+                </a>
+            </li>
             <li class="nav-item {{ request()->routeIs('operators.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('operators.index') }}">
                     <x-tabler-user-plus />
@@ -71,7 +77,7 @@
             </li>
             <li class="nav-item {{ request()->routeIs('cabang-dinas.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('cabang-dinas.index') }}">
-                    <x-tabler-home />
+                    <x-tabler-building-bank />
                     <span class="menu-title text-truncate">Cabang Dinas</span>
                 </a>
             </li>
@@ -93,8 +99,8 @@
                     <span class="menu-title text-truncate">Tahap & Jadwal</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="d-flex align-items-center" href="#">
+            <li class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
                     <x-tabler-id-badge-2 />
                     <span class="menu-title text-truncate">Role & Permission</span>
                 </a>
@@ -108,14 +114,12 @@
             </li>
 
             <li class="nav-item">
-                <form action="{{ route('logout') }}" method="POST">
-                    <button class="d-flex align-items-center">
-                        @csrf
-                        <x-tabler-logout-2 />
-                        <span class="menu-title text-truncate">Logout</span>
-                    </button>
-                </form>
+                <a class="d-flex align-items-center" href="{{ route('logout') }}">
+                    <x-tabler-logout-2 />
+                    <span class="menu-title text-truncate">Logout</span>
+                </a>
             </li>
+
         </ul>
     </div>
 </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\HasRole\OriginSchoolController;
 use App\Http\Controllers\HasRole\RankController;
 use App\Http\Controllers\HasRole\ScheduleController;
 use App\Http\Controllers\HasRole\SchoolController;
+use App\Http\Controllers\HasRole\SchoolDataController;
 use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
@@ -21,8 +22,15 @@ Route::get('dashboard', DashboardController::class)->name('dashboard');
 Route::controller(UserController::class)->group(function () {
     Route::get('users', 'index')->name('users.index');
     Route::get('users/create', 'create')->name('users.create');
-    Route::get('users/{id}', 'show')->name('users.show');
-    Route::get('users/{id}/lupa-password', 'forgotPassword')->name('users.lupa-password');
+    Route::get('users/{username}', 'show')->name('users.show');
+    Route::get('users/{username}/lupa-password', 'forgotPassword')->name('users.lupa-password');
+
+    Route::get('users/json/collections', 'usersCollections');
+    Route::get('users/json/rolesCollections', 'rolesCollections');
+    Route::get('users/json/regionsCollections', 'regionsCollections');
+    Route::get('users/json/schoolsCollections', 'schoolsCollections');
+    Route::get('users/json/originSchoolsCollections', 'originSchoolsCollections');
+    Route::get('users/json/single-user/{username}', 'singleUser');
 });
 
 Route::controller(OriginSchoolController::class)->group(function () {
@@ -61,14 +69,33 @@ Route::controller(SchoolController::class)->group(function () {
     Route::get('sekolah', 'index')->name('sekolah.index');
     Route::get('sekolah/create', 'create')->name('sekolah.create');
     Route::get('sekolah/{npsn}/edit', 'edit')->name('sekolah.edit');
-    Route::get('sekolah/{npsn}/info-sekolah', 'schoolDetail')->name('sekolah.detail');
-    Route::get('sekolah/{npsn}/kuota-sekolah', 'schoolQuota')->name('sekolah.quota');
-    Route::get('sekolah/{npsn}/wilayah-zonasi', 'schoolZone')->name('sekolah.zone');
-    Route::get('sekolah/{npsn}/jurusan-dan-kuota', 'schoolMajorQuota')->name('sekolah.major-quota');
+    Route::get('sekolah/{npsn}/{unit}/info-sekolah', 'schoolDetail')->name('sekolah.detail');
+    Route::get('sekolah/{npsn}/{unit}/kuota-sekolah', 'schoolQuota')->name('sekolah.quota');
+    Route::get('sekolah/{npsn}/{unit}/wilayah-zonasi', 'schoolZone')->name('sekolah.zone');
+    Route::get('sekolah/{npsn}/{unit}/jurusan-dan-kuota', 'schoolMajorQuota')->name('sekolah.major-quota');
+
+    Route::get('sekolah/json/units', 'units');
+    Route::get('sekolah/json/zones', 'zones');
+    Route::get('sekolah/json/schools-collections', 'schools');
+    Route::get('sekolah/json/single-school/{npsn}', 'getSingleSchool');
+    Route::get('sekolah/json/schools-quota/{npsn}/{unit}', 'schoolsQuota');
+});
+
+Route::controller(SchoolDataController::class)->group(function () {
+    Route::get('data-sekolah', 'index')->name('school-data.index');
+
+    Route::get('data-sekolah/json/school/{id}', 'school');
+    Route::get('data-sekolah/json/schools', 'schools');
 });
 
 Route::controller(OperatorController::class)->group(function () {
     Route::get('operators', 'index')->name('operators.index');
+    Route::get('operators/create', 'create')->name('operators.create');
+    Route::get('operators/{username}', 'show')->name('operators.show');
+    Route::get('operators/{username}/edit', 'edit')->name('operators.edit');
+
+    Route::get('operators/json/operators', 'operators');
+    Route::get('operators/json/singleOperator/{username}', 'singleOperator');
 });
 
 Route::controller(VerificationController::class)->group(function () {

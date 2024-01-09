@@ -1,50 +1,49 @@
 @extends('layouts.has-role.auth', ['title' => 'Tahap & Jadwal'])
 
 @section('content')
-@if (session()->get('msg'))
-    <div class="alert alert-success p-1">
-        <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-    </div>
-@endif
+    @if (session()->get('msg'))
+        <div class="alert alert-success p-1">
+            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
+        </div>
+    @endif
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body px-0">
-                <div class="d-flex align-items-center px-2">
-                    <h4 class="card-title mb-0">Tahap & Jadwal</h4>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body px-0">
+                    <div class="d-flex align-items-center px-2">
+                        <h4 class="card-title mb-0">Tahap & Jadwal</h4>
 
-                    <a href="{{ route('schedules.create.index') }}" class="btn btn-success ms-auto">
-                        <x-tabler-plus style="width: 14px; height: 14px;" />
-                        Tambah Tahap
-                    </a>
-                </div>
+                        <a href="{{ route('schedules.create.index') }}" class="btn btn-success ms-auto">
+                            <x-tabler-plus style="width: 14px; height: 14px;" />
+                            Tambah Tahap
+                        </a>
+                    </div>
 
-                <div class="table-responsive mt-2">
-                    <table class="table border-bottom">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Tahap</th>
-                                <th>Pendaftaran</th>
-                                <th>Verifikasi</th>
-                                <th class="text-center">Pengumuman</th>
-                                <th>Daftar Ulang</th>
-                                <th class="text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableData">
-                            <tr>
-                                <td class="text-center py-1" colspan="6"><i>Tidak ada data ditemukan.</i></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive mt-2">
+                        <table class="table border-bottom">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Tahap</th>
+                                    <th>Pendaftaran</th>
+                                    <th>Verifikasi</th>
+                                    <th class="text-center">Pengumuman</th>
+                                    <th>Daftar Ulang</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableData">
+                                <tr>
+                                    <td class="text-center py-1" colspan="6"><i>Tidak ada data ditemukan.</i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
-
 
 @push('scripts')
     <script>
@@ -70,18 +69,18 @@
                                 let ds = new Date(d.pendaftaran_mulai);
                                 let de = new Date(d.pendaftaran_selesai);
                                 let dr = ds.getDate() + ' ' + months[ds.getMonth()] + ' - ' + de.getDate() + ' ' + months[de.getMonth()] + ' ' + de.getFullYear();
-                                
+
                                 let vs = new Date(d.verifikasi_mulai);
                                 let ve = new Date(d.verifikasi_selesai);
                                 let vr = vs.getDate() + ' ' + months[vs.getMonth()] + ' - ' + ve.getDate() + ' ' + months[ve.getMonth()] + ' ' + ve.getFullYear();
-                                
+
                                 let p = new Date(d.pengumuman);
                                 let pr = p.getDate() + ' ' + months[p.getMonth()];
-                                
+
                                 let us = new Date(d.daftar_ulang_mulai);
                                 let ue = new Date(d.daftar_ulang_selesai);
                                 let ur = us.getDate() + ' ' + months[us.getMonth()] + ' - ' + ue.getDate() + ' ' + months[ue.getMonth()] + ' ' + ue.getFullYear();
-    
+
                                 table.append(generateRow(d.tahap, dr, vr, pr, ur, d.tahap_id));
                             });
                         } else {

@@ -163,6 +163,7 @@ class DashboardModel extends BaseModel
         ];
 
         $result = $this->post('siswa/kunci', $data);
+
         return $result;
     }
 }

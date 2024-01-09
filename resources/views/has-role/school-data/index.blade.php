@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Detail Sekolah'])
+@extends('layouts.has-role.auth', ['title' => 'Data Sekolah'])
 
 @section('styles')
     <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">
@@ -6,12 +6,13 @@
 
 @section('content')
     <div class="content-body">
-        <div id="user-profile">
-            @include('has-role.school.partials.school-header')
-        </div>
-        <div class="d-flex gap-md-2">
-            @include('has-role.school.partials.school-tab')
-        </div>
+
+        {{-- Header Profile --}}
+        @include('has-role.school-data.partials.header')
+
+        {{-- Tab Menu --}}
+        @include('has-role.school-data.partials.tab')
+
         <div class="card">
             <div class="card-body">
                 <section id="informasi-detail-sekolah">
@@ -21,6 +22,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
+                                <x-three-row-info identifier="nama_sekolah" label="Nama Sekolah" />
                                 <x-three-row-info identifier="nama_kepsek" label="Nama Kepala Sekolah" />
                                 <x-three-row-info identifier="nip_kepsek" label="NIP Kepala Sekolah" />
                                 <x-three-row-info identifier="nama_kappdb" label="Nama Ketua PPDB" />
@@ -30,6 +32,7 @@
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
+                                <x-three-row-info identifier="npsn" label="NPSN" />
                                 <x-three-row-info identifier="kabupaten" label="Kabupaten/Kota" />
                                 <x-three-row-info identifier="kecamatan" label="Kecamatan" />
                                 <x-three-row-info identifier="desa" label="Desa Kelurahan" />
@@ -56,6 +59,7 @@
 @push('scripts')
     <script src="/app-assets/js/scripts/pages/page-profile.js"></script>
     <script>
+        // 40311914/SMA
         var npsn = '{{ $npsn }}',
             unit = '{{ $unit }}'
     </script>
@@ -64,11 +68,14 @@
             'use strict';
 
             $.ajax({
-                url: `/panel/sekolah/json/single-school/${npsn}`,
+                url: `/panel/data-sekolah/json/school/${npsn}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(data) {
+                    $('#logo-sekolah').attr('src', data.logo)
+
                     // Column 1
+                    $('#nama_sekolah').text(data.nama_sekolah)
                     $('#nama_kepsek').text(data.nama_kepsek)
                     $('#nip_kepsek').text(data.nip_kepsek)
                     $('#nama_kappdb').text(data.nama_kappdb)
@@ -76,6 +83,7 @@
                     $('#alamat_jalan').text(data.alamat_jalan)
 
                     // Column 2
+                    $('#npsn').text(data.npsn)
                     $('#kabupaten').text(data.kabupaten)
                     $('#kecamatan').text(data.kecamatan)
                     $('#desa').text(data.desa)

@@ -40,12 +40,12 @@
                                     @csrf
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="username">Username</x-label>
-                                        <x-input id="username" name="username" type="text" value="{{ old('username') }}" placeholder="Masukkan username" autofocus required />
+                                        <x-input id="username" name="username" type="text" value="{{ old('username', 'rio') }}" placeholder="Masukkan username" autofocus required />
                                     </div>
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="password">Password</x-label>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <x-input id="password" name="password" type="password" placeholder="Masukkan password" required />
+                                            <x-input id="password" name="password" type="password" value="123.dmn" placeholder="Masukkan password" required />
                                             <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         </div>
                                     </div>

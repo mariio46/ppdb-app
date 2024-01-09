@@ -1,4 +1,4 @@
-@extends('layouts/has-role/auth', ['title' => "Tambah Tahap"])
+@extends('layouts/has-role/auth', ['title' => 'Tambah Tahap'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-<div class="content-header row">
+    <div class="content-header row">
   <div class="content-header-left col-md-9 col-12 mb-2">
       <div class="row breadcrumbs-top">
           <div class="col-12">
@@ -168,6 +168,7 @@
 
 @push('scripts')
     <script>
+      
       $(function() {
         'use strict';
 
@@ -246,37 +247,37 @@
 
         if (tracksma.length) {
           $.ajax({
-            url: '/panel/tahap-jadwal/jalur/sma',
-            method: 'get',
-            dataType: 'json',
-            success: function(data) {
-              tracksma.empty().append('<option value=""></option>');
+          url: '/panel/tahap-jadwal/jalur/sma',
+          method: 'get',
+          dataType: 'json',
+          success: function(data) {
+            tracksma.empty().append('<option value=""></option>');
 
-              data.data.forEach(sma => {
-                tracksma.append(`<option value="${sma.kode_jalur}">${sma.nama_jalur}</option>`);
-              });
-            },
-            error: function(xhr, status, error) {
-              console.error('gagal mendapatkan data.', status, error);
-            }
+            data.data.forEach(sma => {
+            tracksma.append(`<option value="${sma.kode_jalur}">${sma.nama_jalur}</option>`);
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error('gagal mendapatkan data.', status, error);
+          }
           });
         }
 
         if (tracksmk.length) {
           $.ajax({
-            url: '/panel/tahap-jadwal/jalur/smk',
-            method: 'get',
-            dataType: 'json',
-            success: function(data) {
-              tracksmk.empty().append('<option value=""></option>');
+          url: '/panel/tahap-jadwal/jalur/smk',
+          method: 'get',
+          dataType: 'json',
+          success: function(data) {
+            tracksmk.empty().append('<option value=""></option>');
 
-              data.data.forEach(smk => {
-                tracksmk.append(`<option value="${smk.kode_jalur}">${smk.nama_jalur}</option>`);
-              });
-            },
-            error: function(xhr, status, error) {
-              console.error('gagal mendapatkan data.', status, error);
-            }
+            data.data.forEach(smk => {
+            tracksmk.append(`<option value="${smk.kode_jalur}">${smk.nama_jalur}</option>`);
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error('gagal mendapatkan data.', status, error);
+          }
           });
         }
 
@@ -285,6 +286,6 @@
             form.submit();
           }
         });
-      });
+      })
     </script>
 @endpush
