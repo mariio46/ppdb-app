@@ -19,7 +19,11 @@
                 <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                     <!-- collapse  -->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <div class="profile-tabs d-flex justify-content-end align-items-center flex-wrap mt-1 mt-md-0">
+                        <div class="profile-tabs d-flex justify-content-end align-items-center gap-2 flex-wrap mt-1 mt-md-0">
+                            <x-link href="{{ route('sekolah.edit', $npsn) }}" color="success">
+                                <x-tabler-pencil />
+                                Edit Info Sekolah
+                            </x-link>
                             <x-button data-bs-toggle="modal" data-bs-target="#modal-kunci-data-sekolah" type="button" color="warning">
                                 <x-tabler-lock-square-rounded />
                                 Kunci Data Sekolah
