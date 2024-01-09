@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HasRole\AgencyRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,6 +11,10 @@ use Illuminate\View\View;
 
 class AgencyController extends Controller
 {
+    public function __construct(protected AgencyRepository $agencyRepository)
+    {
+    }
+
     public function index(): View
     {
         return view('has-role.agency.index');
@@ -20,10 +25,10 @@ class AgencyController extends Controller
         return view('has-role.agency.create');
     }
 
-    public function detail(string $slugAgency): View
+    public function detail(string $idAgency): View
     {
         $data = [
-            'slug' => $slugAgency,
+            'id_agency' => $idAgency,
         ];
 
         return view('has-role.agency.detail', $data);
@@ -35,15 +40,17 @@ class AgencyController extends Controller
      */
     public function postNewData(Request $request): RedirectResponse
     {
-        $data = [
-            'name' => $request->post('name'),
-            'phone' => $request->post('phone'),
-            'service_area' => $request->post('serviceArea'),
-            'position' => $request->post('position'),
-            'address' => $request->post('address'),
-        ];
+        $save = $this->agencyRepository->create($request);
 
-        return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
+        if ($save['statusCode'] == 201) {
+            return to_route('cabang-dinas.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
+        } else {
+            return redirect()->back()->with([
+                'stat' => 'danger',
+                'msg' => $save['messages'],
+                'data' => $save
+            ]);
+        }
     }
 
     /**
@@ -51,15 +58,13 @@ class AgencyController extends Controller
      */
     public function postUpdateData(Request $request): RedirectResponse
     {
-        $data = [
-            'name' => $request->post('name'),
-            'phone' => $request->post('phone'),
-            'service_area' => $request->post('serviceArea'),
-            'position' => $request->post('position'),
-            'address' => $request->post('address'),
-        ];
+        $upd = $this->agencyRepository->update($request);
 
-        return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
+        return redirect()->back()->with([
+            'stat' => ($upd['statusCode'] == 200) ? 'success' : 'danger',
+            'msg' => $upd['messages'],
+            'data' => $upd
+        ]);
     }
 
     /**
@@ -67,11 +72,13 @@ class AgencyController extends Controller
      */
     public function postRemoveData(Request $request): RedirectResponse
     {
-        $data = [
-            'id' => $request->post('agencyId'),
-        ];
+        $del = $this->agencyRepository->remove($request->post('agencyId'));
 
-        return response()->redirectTo('/panel/cabang-dinas')->with('postMsg', json_encode($data));
+        return to_route('cabang-dinas.index')->with([
+            'stat' => ($del['statusCode'] == 200) ? 'success' : 'danger',
+            'msg' => $del['messages'],
+            'data' => $del
+        ]);
     }
 
     // --------------------------------------------------
@@ -80,92 +87,8 @@ class AgencyController extends Controller
      */
     protected function getAgency(): JsonResponse
     {
-        return response()->json([
-            [
-                'id' => 1,
-                'slug' => 'wilayah1',
-                'name' => 'Wilayah I',
-                'position' => 'Makassar',
-                'service_area' => 'Makassar, Maros',
-            ],
-            [
-                'id' => 2,
-                'slug' => 'wilayah2',
-                'name' => 'Wilayah II',
-                'position' => 'Gowa',
-                'service_area' => 'Gowa',
-            ],
-            [
-                'id' => 3,
-                'slug' => 'wilayah3',
-                'name' => 'Wilayah III',
-                'position' => 'Bone',
-                'service_area' => 'Bone, Sinjai',
-            ],
-            [
-                'id' => 4,
-                'slug' => 'wilayah4',
-                'name' => 'Wilayah IV',
-                'position' => 'Wajo',
-                'service_area' => 'Wajo, Soppeng',
-            ],
-            [
-                'id' => 5,
-                'slug' => 'wilayah5',
-                'name' => 'Wilayah V',
-                'position' => 'Bantaeng',
-                'service_area' => 'Bantaeng, Bulukumba',
-            ],
-            [
-                'id' => 6,
-                'slug' => 'wilayah6',
-                'name' => 'Wilayah VI',
-                'position' => 'Kepulauan Selayar',
-                'service_area' => 'Kepulauan Selayar',
-            ],
-            [
-                'id' => 7,
-                'slug' => 'wilayah7',
-                'name' => 'Wilayah VII',
-                'position' => 'Jeneponto',
-                'service_area' => 'Jeneponto, Takalar',
-            ],
-            [
-                'id' => 8,
-                'slug' => 'wilayah8',
-                'name' => 'Wilayah VIII',
-                'position' => 'Parepare',
-                'service_area' => 'Parepare, Barru, Sidrap',
-            ],
-            [
-                'id' => 9,
-                'slug' => 'wilayah9',
-                'name' => 'Wilayah IX',
-                'position' => 'Pangkajene dan Kepulauan',
-                'service_area' => 'Pangkajene dan Kepulauan',
-            ],
-            [
-                'id' => 10,
-                'slug' => 'wilayah10',
-                'name' => 'Wilayah X',
-                'position' => 'Pinrang',
-                'service_area' => 'Pinrang, Enrekang, Tana Toraja',
-            ],
-            [
-                'id' => 11,
-                'slug' => 'wilayah11',
-                'name' => 'Wilayah XI',
-                'position' => 'Palopo',
-                'service_area' => 'Palopo, Luwu, Toraja Utara',
-            ],
-            [
-                'id' => 12,
-                'slug' => 'wilayah12',
-                'name' => 'Wilayah XII',
-                'position' => 'Luwu Timur',
-                'service_area' => 'Luwu Timur, Luwu Utara',
-            ],
-        ]);
+        $get = $this->agencyRepository->getAgency();
+        return response()->json($get['data']);
     }
 
     /**
@@ -278,19 +201,10 @@ class AgencyController extends Controller
     /**
      * trello: A.09.002
      */
-    protected function getAgencyBySlug(string $slug): JsonResponse
+    protected function getAgencyById(string $id): JsonResponse
     {
-        $data = [
-            'id' => 'aksjdaksjdkasdlask',
-            'slug' => 'wilayah1',
-            'name' => 'Wilayah I',
-            'phone' => '08123456789',
-            'service_area' => ['73.09|Kab. Maros', '73.71|Kota Makassar'],
-            'position' => '73.71|Kota Makassar',
-            // 'position'      => "",
-            'address' => 'jl. Perintis Kemerdekaan No. 29',
-        ];
+        $get = $this->agencyRepository->getById($id);
 
-        return response()->json($data);
+        return response()->json($get['data']);
     }
 }

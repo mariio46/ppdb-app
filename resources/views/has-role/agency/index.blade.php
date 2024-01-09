@@ -27,9 +27,9 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            @if (session()->get('postMsg'))
-                <div class="alert alert-success p-1">
-                    <p class="text-center">{{ session()->get('postMsg') }}</p>
+            @if (session()->get('msg'))
+                <div class="alert alert-{{ session()->get('stat') }} p-1">
+                    <p class="text-center">{{ session()->get('msg') }}</p>
                 </div>
             @endif
 
@@ -73,16 +73,22 @@
                         dataSrc: ""
                     },
                     columns: [{
-                            data: "name"
+                            data: "nama"
                         },
                         {
-                            data: "service_area"
+                            data: "wilayah",
+                            render: function(data, type, row) {
+                                let areas = data.map(function(data) {
+                                    return data.nama;
+                                });
+                                return areas.join(", ");
+                            }
                         },
                         {
-                            data: "position"
+                            data: "kedudukan"
                         },
                         {
-                            data: "slug",
+                            data: "id",
                             render: function(data, type, row) {
                                 return `<a href="/panel/cabang-dinas/d/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
