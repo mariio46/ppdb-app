@@ -42,16 +42,18 @@ Route::controller(OriginSchoolController::class)->group(function () {
 Route::controller(StudentController::class)->group(function () {
     Route::get('siswa', 'index')->name('siswa.index');
     Route::get('siswa/create', 'create')->name('siswa.create');
-    Route::get('siswa/{username}', 'show')->name('siswa.show');
-    Route::get('siswa/{username}/edit', 'edit')->name('siswa.edit');
-    Route::get('siswa/{username}/score/{semester}', 'score')->name('siswa.score');
+    Route::get('siswa/{id}', 'show')->name('siswa.show');
+    Route::get('siswa/{id}/edit', 'edit')->name('siswa.edit');
+    Route::get('siswa/{id}/score/{semester}', 'score')->name('siswa.score');
 
     Route::post('siswa/store', 'store')->name('siswa.store');
-    Route::post('siswa/{username}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
+    Route::post('siswa/{id}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
 
-    Route::get('siswa/get-scores/{username}/{semester}', 'getScores');
+    Route::get('siswa/get-scores/{id}/{semester}', 'getScores');
 
     Route::get('siswa/json/get-list', 'getStudents')->name('siswa.json.all');
+    Route::get('siswa/json/get-single', 'getSingleStudent')->name('siswa.json.single');
+    Route::get('siswa/json/search-nisn/{nisn}', 'getSingleStudentByNisn')->name('siswa.json.search');
     Route::get('siswa/json/get-origin-school-list', 'getOriginSchools')->name('siswa.json.origin-school');
 });
 
@@ -144,4 +146,5 @@ Route::controller(FaqController::class)->group(function () {
 
 Route::controller(RegionController::class)->group(function () {
     Route::get('get-city/{province_code?}', 'getCityLists')->name('region.get.city');
+    Route::get('get-district/{city_code}', 'getDistrictLists')->name('region.get.district');
 });

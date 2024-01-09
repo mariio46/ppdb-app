@@ -17,17 +17,13 @@ class StudentController extends Controller
 
     public function create(): View
     {
-        return view('has-role.student.create', [
-            'months' => $this->getMoths(),
-            'years' => $this->getYears(),
-        ]);
+        return view('has-role.student.create');
     }
 
-    public function show($username): View
+    public function show($id): View
     {
         return view('has-role.student.show', [
-            'student' => $this->getSingleStudent($username),
-            'grades' => $this->getGrades(),
+            'id' => $id,
         ]);
     }
 
@@ -50,6 +46,7 @@ class StudentController extends Controller
         return view('has-role.student.score', $data);
     }
 
+    // 
     public function store(Request $request)
     {
         $save = [
@@ -79,15 +76,17 @@ class StudentController extends Controller
         return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => json_encode($data)]);
     }
 
-    protected function getSingleStudent($username)
+    // 
+    protected function getSingleStudent($id): JsonResponse
     {
-        $users = $this->getStudents()->where('username', $username);
-        $data = json_decode($users, true);
-        foreach ($data as $key => $item) {
-            $user = (object) $item;
-        }
+        $user = collect($this->getStudents()->original)->firstWhere('username', $id);
+        return response()->json($user);
+    }
 
-        return $user;
+    protected function getSingleStudentByNisn($nisn): JsonResponse
+    {
+        $user = collect($this->getStudents()->original)->firstWhere('nisn', $nisn);
+        return response()->json($user);
     }
 
     protected function getStudents(): JsonResponse
