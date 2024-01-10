@@ -32,7 +32,7 @@ Route::group(['middleware' => 'student.auth'], function () {
 
         Route::get('json/get-data-pribadi-siswa', 'getDataDashboard')->name('student.personal.get-data');
         Route::get('json/get-data-nilai-siswa', 'getDataScore')->name('student.personal.get-score');
-        Route::get('/personal-data/get-student-score/{semester}', 'getDataScoreBySemester')->name('student.personal.get-score');
+        Route::get('json/personal-data/get-student-score/{semester}', 'getDataScoreBySemester')->name('student.personal.get-score');
 
         Route::post('/first-time-login', 'postFirstTimeLogin')->name('student.personal.first-login');
         Route::post('/personal-data/update-data', 'postUpdateStudentData')->name('student.personal.update-data');

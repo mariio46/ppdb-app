@@ -387,6 +387,14 @@
                                             <div class="modal-body">
                                                 <form id="lockDataForm" action="{{ route('student.personal.lock-data') }}" method="post">
                                                     @csrf
+                                                    <div class="d-none" id="alertBeforeLock">
+                                                        <div class="alert alert-warning p-1">
+                                                            <div class="d-flex justify-content-center">
+                                                                <x-tabler-alert-triangle-filled />
+                                                            </div>
+                                                            <p class="text-center">Pastikan bahwa nilai rapor telah terisi.</p>
+                                                        </div>
+                                                    </div>
                                                     <div class="alert alert-danger p-1">
                                                         Data yang sudah dikunci tidak dapat diubah kembali. Pastikan data kamu sudah benar sebelum mengunci data.
                                                     </div>
@@ -423,7 +431,9 @@
                 content = $('#content'),
                 firstTimeLoginForm = $('#ftlForm'),
                 lockDataCheckbox = $('#lockCheck'),
-                lockDataBtn = $('#lockCheckBtn');
+                lockDataBtn = $('#lockCheckBtn'),
+                alertBeforeLock = $('#alertBeforeLock'),
+                allData = {};
 
             //------------------------------------------------------------INIT
             // jQuery Validation
@@ -477,6 +487,14 @@
                 lockDataBtn.prop('disabled', !lockDataCheckbox.is(":checked"));
             });
 
+            lockDataBtn.click(function() {
+                if (!isDataComplete(allData)) {
+                    alertBeforeLock.removeClass('d-none');
+                } else {
+                    alertBeforeLock.addClass('d-none');
+                }
+            });
+
             //------------------------------------------------------------CALL
             getData();
 
@@ -490,6 +508,15 @@
                     dataType: 'json',
                     success: function(data) {
                         let d = data.data;
+
+                        let check = {
+                            'jenis_kelamin': d.jenis_kelamin,
+                            'tempat_lahir': d.tempat_lahir,
+                            'tanggal_lahir': d.tanggal_lahir,
+                            'telepon': d.telepon,
+                            'kecamatan': d.kecamatan
+                        };
+                        Object.assign(allData, check);
 
                         if (d.pertama_login == 't' && d.kunci == '0') {
                             $('#btnEditData, #btnEditScore, #cardLock').removeClass("d-none");
@@ -538,6 +565,12 @@
                     dataType: 'json',
                     success: function(score) {
                         let s = score.data;
+
+                        let check = Object.fromEntries(
+                            Object.entries(s).map(([key, value]) => [key, value === 0 ? null : value])
+                        );
+
+                        Object.assign(allData, check)
                         for (let i = 1; i <= 5; i++) {
                             $(`#smt${i}Bid`).text(s[`sm${i}_bid`]);
                             $(`#smt${i}Big`).text(s[`sm${i}_big`]);
@@ -548,8 +581,19 @@
                     },
                     error: function(x, s, e) {
                         console.error('gagal mendapatkan data.', s, e);
+                        let check = {score: null};
+                        Object.assign(allData, check);
                     }
                 });
+            }
+
+            function isDataComplete(data) {
+                for (var key in data) {
+                    if (data[key] === null) {
+                        return false; // Jika ada nilai yang belum terisi
+                    }
+                }
+                return true;
             }
         });
     </script>

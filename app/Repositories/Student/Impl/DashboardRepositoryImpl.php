@@ -82,7 +82,7 @@ class DashboardRepositoryImpl implements DashboardRepository
     {
         $update = $this->dashboardModel->postUpdateStudentScore($semester, $request);
 
-        if ($update['status_code'] == 200) {
+        if ($update['status_code'] == 200 || $update['status_code' == 201]) {
             return collect(['success' => true, 'code' => 200, 'message' => ['scoreStatus' => 'success', 'scoreMsg' => 'Data berhasil diperbarui.']]);
         } else {
             return collect(['success' => false, 'code' => 400, 'message' => ['scoreStatus' => 'danger', 'scoreMsg' => 'Data gagal diperbarui.']]);
