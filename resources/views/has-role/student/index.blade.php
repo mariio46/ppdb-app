@@ -15,7 +15,7 @@
 
     <div class="content-body">
         <div class="d-flex mb-2">
-            <x-link class="ms-auto" href="" color="success">+ Tambah Siswa</x-link>
+            <x-link class="ms-auto" href="{{ route('siswa.create') }}" color="success">+ Tambah Siswa</x-link>
         </div>
 
         <div class="card">

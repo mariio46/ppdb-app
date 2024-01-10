@@ -55,6 +55,7 @@ Route::controller(StudentController::class)->group(function () {
     Route::get('siswa/{id}/score/{semester}', 'score')->name('siswa.score');
 
     Route::post('siswa/store', 'store')->name('siswa.store');
+    Route::post('siswa/update', 'update')->name('siswa.update');
     Route::post('siswa/{id}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
 
     Route::get('siswa/get-scores/{id}/{semester}', 'getScores');

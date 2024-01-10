@@ -27,12 +27,13 @@ class StudentController extends Controller
         ]);
     }
 
-    public function edit($username): View
+    public function edit($id): View
     {
         return view('has-role.student.edit', [
-            'student' => $this->getSingleStudent($username),
-            'months' => $this->getMoths(),
-            'years' => $this->getYears(),
+            'id' => $id,
+            // 'student' => $this->getSingleStudent($username),
+            // 'months' => $this->getMoths(),
+            // 'years' => $this->getYears(),
         ]);
     }
 
@@ -61,7 +62,21 @@ class StudentController extends Controller
         return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages']]);
     }
 
-    public function updateScore(string $username, string $semester, Request $request)
+    public function update(Request $request): RedirectResponse
+    {
+        $upd = [
+            'statusCode' => 200,
+            'messages' => "Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        ];
+
+        if ($upd['statusCode'] == 200) {
+            return redirect()->back()->with(['stat' => 'success', 'msg' => $upd['messages']]);
+        }
+
+        return redirect()->back()->with(['stat' => 'danger', 'msg' => $upd['messages']]);
+    }
+
+    public function updateScore(string $username, string $semester, Request $request): RedirectResponse
     {
         $data = [
             'username' => $username,
@@ -73,7 +88,15 @@ class StudentController extends Controller
             'social' => $request->post('social'),
         ];
 
-        return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => json_encode($data)]);
+        $upd = [
+            'statusCode' => 200,
+            'messages' => "Lorem ipsum dolor sit, amet consectetur adipisicing elit."
+        ];
+
+        if ($upd['statusCode'] == 200) {
+            return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => $upd['messages']]);
+        }
+        return redirect()->back()->with(['scoreStatus' => 'danger', 'scoreMsg' => $upd['messages']]);
     }
 
     // 
@@ -81,73 +104,74 @@ class StudentController extends Controller
     {
         $user = collect($this->getStudents()->original)->firstWhere('id', $id);
 
-        // $additional_data = [
-        //     "nik" => "1234567890123456",
-        //     "jenis_kelamin" => "p",
-        //     "tempat_lahir" => "Sukamaju",
-        //     "tanggal_lahir" => "2001-01-01",
-        //     "email" => "test@email.com",
-        //     "telepon" => "081234567890",
-        //     "pas_foto" => "",
-        //     "buta_warna" => "n",
-        //     "tinggi_badan" => "",
-        //     "nama_ayah" => "Prabu Halim",
-        //     "telepon_ayah" => "08123456780",
-        //     "nama_ibu" => "Rina Uyainah",
-        //     "telepon_ibu" => "06138000098",
-        //     "nama_wali" => "Cawuk Hidayat",
-        //     "telepon_wali" => "026687065495",
-        //     "kode_provinsi" => "73",
-        //     "provinsi" => "PROV. SULAWESI SELATAN",
-        //     "kode_kabupaten" => "73.03",
-        //     "kabupaten" => "Kab. Bantaeng",
-        //     "kode_kecamatan" => "73.03.07",
-        //     "kecamatan" => "Kecamatan Gantarang Keke",
-        //     "kode_desa" => "73.03.07.2003",
-        //     "desa" => "Desa Layoa",
-        //     "dusun" => "Dusun Durian Runtuh",
-        //     "rtrw" => "001/002",
-        //     "alamat_jalan" => "jl. jalanin aja dulu",
-        //     "kode_wilayah" => "73.03.07",
-        //     "wilayah_id" => "1",
-        //     "pertama_login" => "n",
-        //     "kunci" => "0",
-        //     "status_pendaftaran" => "belum_mendaftar",
-        // ];
-
         $additional_data = [
-            "nik" => "",
+            "nik" => "1234567890123456",
             "jenis_kelamin" => "p",
             "tempat_lahir" => "Sukamaju",
             "tanggal_lahir" => "2001-01-01",
-            "email" => "",
-            "telepon" => "",
+            "email" => "test@email.com",
+            "telepon" => "081234567890",
             "pas_foto" => "",
-            "buta_warna" => "",
+            "buta_warna" => "n",
             "tinggi_badan" => "",
-            "nama_ayah" => "",
-            "telepon_ayah" => "",
-            "nama_ibu" => "",
-            "telepon_ibu" => "",
-            "nama_wali" => "",
-            "telepon_wali" => "",
-            "kode_provinsi" => "",
-            "provinsi" => "",
-            "kode_kabupaten" => "",
-            "kabupaten" => "",
-            "kode_kecamatan" => "",
-            "kecamatan" => "",
-            "kode_desa" => "",
-            "desa" => "",
-            "dusun" => "",
-            "rtrw" => "",
-            "alamat_jalan" => "",
-            "kode_wilayah" => "",
-            "wilayah_id" => "",
+            "nama_ayah" => "Prabu Halim",
+            "telepon_ayah" => "08123456780",
+            "nama_ibu" => "Rina Uyainah",
+            "telepon_ibu" => "06138000098",
+            "nama_wali" => "Cawuk Hidayat",
+            "telepon_wali" => "026687065495",
+            "kode_provinsi" => "73",
+            "provinsi" => "PROV. SULAWESI SELATAN",
+            "kode_kabupaten" => "73.03",
+            "kabupaten" => "Kab. Bantaeng",
+            "kode_kecamatan" => "73.03.07",
+            "kecamatan" => "Kecamatan Gantarang Keke",
+            "kode_desa" => "73.03.07.2003",
+            "desa" => "Desa Layoa",
+            "dusun" => "Dusun Durian Runtuh",
+            "rtrw" => "001/002",
+            "alamat_jalan" => "jl. jalanin aja dulu",
+            "kode_wilayah" => "73.03.07",
+            "wilayah_id" => "1",
             "pertama_login" => "n",
             "kunci" => "0",
             "status_pendaftaran" => "belum_mendaftar",
         ];
+
+        // $additional_data = [
+        //     "id_sekolah_asal" => "e93d7831-c6e1-4027-86fe-0f4e32f2f9f3",
+        //     "nik" => "",
+        //     "jenis_kelamin" => "p",
+        //     "tempat_lahir" => "Sukamaju",
+        //     "tanggal_lahir" => "2001-01-01",
+        //     "email" => "",
+        //     "telepon" => "",
+        //     "pas_foto" => "",
+        //     "buta_warna" => "",
+        //     "tinggi_badan" => "",
+        //     "nama_ayah" => "",
+        //     "telepon_ayah" => "",
+        //     "nama_ibu" => "",
+        //     "telepon_ibu" => "",
+        //     "nama_wali" => "",
+        //     "telepon_wali" => "",
+        //     "kode_provinsi" => "",
+        //     "provinsi" => "",
+        //     "kode_kabupaten" => "",
+        //     "kabupaten" => "",
+        //     "kode_kecamatan" => "",
+        //     "kecamatan" => "",
+        //     "kode_desa" => "",
+        //     "desa" => "",
+        //     "dusun" => "",
+        //     "rtrw" => "",
+        //     "alamat_jalan" => "",
+        //     "kode_wilayah" => "",
+        //     "wilayah_id" => "",
+        //     "pertama_login" => "n",
+        //     "kunci" => "0",
+        //     "status_pendaftaran" => "belum_mendaftar",
+        // ];
 
         $newuser = collect($user)->merge($additional_data);
 
@@ -166,7 +190,7 @@ class StudentController extends Controller
             (object) [
                 'id' => "9ef555d7-21f9-47ef-9413-f69a6bcfda84",
                 'nama' => 'Ryan Rafli',
-                'sekolah_asal' => 'SMPN 1 Parepare',
+                'sekolah_asal' => 'SMP NEGERI 19 Paleteang',
                 'nisn' => 6564553453,
             ],
             (object) [
