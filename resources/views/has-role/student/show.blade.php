@@ -9,8 +9,36 @@
 @endpush
 
 @section('content')
+    <div class="content-header row">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12">
+                    <h2 class="content-header-title float-start mb-0">Akun Siswa</h2>
+                    <div class="breadcrumb-wrapper">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('siswa.index') }}">
+                                    Akun Siswa
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Detail Siswa
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (session()->get('msg'))
+        <div class="alert alert-danger p-1">
+            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
+        </div>
+    @endif
+
     <div class="content-body">
-        <div id="user-profile">
+        {{-- <div id="user-profile">
             <div class="row">
                 <div class="col-12">
                     <div class="card profile-header mb-2">
@@ -48,63 +76,42 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="card">
-            <div class="card-body">
-                <section id="data-diri">
-                    <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Diri</h4>
+            <div class="card-body px-0">
+                <section id="data-diri" class="px-2">
+                    <div class="d-flex align-items-center">
+                        <h4 class="text-primary">Data Diri</h4>
+
+                        <x-link class="ms-auto" href="{{ route('siswa.edit', [$id]) }}" color="success">
+                            <x-tabler-pencil style="width: 1rem; height: 1rem;" />
+                            Edit Data
+                        </x-link>
+                    </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td>Nama Lengkap</td>
-                                    <td>:</td>
-                                    <td>Nadya Khietna Putri</td>
-                                </tr>
-                                <tr>
-                                    <td>NISN</td>
-                                    <td>:</td>
-                                    <td>12345678909</td>
-                                </tr>
-                                <tr>
-                                    <td>NIK</td>
-                                    <td>:</td>
-                                    <td>727201234567890</td>
-                                </tr>
-                                <tr>
-                                    <td>Asal Sekolah</td>
-                                    <td>:</td>
-                                    <td>SMPN 8 Parepare</td>
-                                </tr>
-                                <tr>
-                                    <td>Jenis</td>
-                                    <td>:</td>
-                                    <td>Perempuan</td>
-                                </tr>
+                                <x-three-row-info label="Nama Lengkap" identifier="fullname" />
+
+                                <x-three-row-info label="NISN" identifier="nisn" />
+                                
+                                <x-three-row-info label="NIK" identifier="nik" />
+                                
+                                <x-three-row-info label="Asal Sekolah" identifier="origin_school" />
+                                
+                                <x-three-row-info label="Jenis Kelamin" identifier="gender" />
+                                
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td>Tempat Lahir</td>
-                                    <td>:</td>
-                                    <td>Parepare</td>
-                                </tr>
-                                <tr>
-                                    <td>Tanggal Lahir</td>
-                                    <td>:</td>
-                                    <td>1 Januari 2001</td>
-                                </tr>
-                                <tr>
-                                    <td>Nomor HP</td>
-                                    <td>:</td>
-                                    <td>081234567890</td>
-                                </tr>
-                                <tr>
-                                    <td>Email</td>
-                                    <td>:</td>
-                                    <td>nadya.putri@gmail.com</td>
-                                </tr>
+                                <x-three-row-info label="Tempat Lahir" identifier="birth_place" />
+                                
+                                <x-three-row-info label="Tanggal Lahir" identifier="birth_day" />
+                                
+                                <x-three-row-info label="Nomor HP" identifier="phone" />
+                                
+                                <x-three-row-info label="Email" identifier="email" />
                             </table>
                         </div>
                     </div>
@@ -115,40 +122,22 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td>Kabupaten kota</td>
-                                    <td>:</td>
-                                    <td>Kota Parepare</td>
-                                </tr>
-                                <tr>
-                                    <td>Kecamatan</td>
-                                    <td>:</td>
-                                    <td>Bacukiki</td>
-                                </tr>
-                                <tr>
-                                    <td>Desa / Kelurahan</td>
-                                    <td>:</td>
-                                    <td>Galung Maloang</td>
-                                </tr>
-                                <tr>
-                                    <td>Dusun / Lingkungan</td>
-                                    <td>:</td>
-                                    <td>-</td>
-                                </tr>
+                                <x-three-row-info label="Provinsi" identifier="province" />
+
+                                <x-three-row-info label="Kabupaten / kota" identifier="city" />
+                                
+                                <x-three-row-info label="Kecamatan" identifier="district" />
+                                
+                                <x-three-row-info label="Desa / Kelurahan" identifier="village" />
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td>RT / RW</td>
-                                    <td>:</td>
-                                    <td>001 / 002</td>
-                                </tr>
-                                <tr>
-                                    <td>Alamat Jalan</td>
-                                    <td>:</td>
-                                    <td>BTN Indah Permai 2</td>
-                                </tr>
+                                <x-three-row-info label="Dusun / Lingkungan" identifier="hamlet" />
+
+                                <x-three-row-info label="RT / RW" identifier="rtrw" />
+                                
+                                <x-three-row-info label="Alamat Jalan" identifier="address" />
                             </table>
                         </div>
                     </div>
@@ -159,66 +148,30 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td>Nama Ibu Kandung</td>
-                                    <td>:</td>
-                                    <td>Sukriani</td>
-                                </tr>
-                                <tr>
-                                    <td>Pekerjaan</td>
-                                    <td>:</td>
-                                    <td>IRT</td>
-                                </tr>
-                                <tr>
-                                    <td>Penghasilan</td>
-                                    <td>:</td>
-                                    <td>
-                                        < Rp.500.000</td>
+                                <x-three-row-info label="Nama Ibu Kandung" identifier="mother_name" />
+                            
+                                <x-three-row-info label="Nomor HP" identifier="mother_phone" />
                                 </tr>
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td>Nama Ayah</td>
-                                    <td>:</td>
-                                    <td>Ryan Rafli</td>
-                                </tr>
-                                <tr>
-                                    <td>Pekerjaan</td>
-                                    <td>:</td>
-                                    <td>TNI</td>
-                                </tr>
-                                <tr>
-                                    <td>Penghasilan</td>
-                                    <td>:</td>
-                                    <td>> Rp.100.000.000</td>
-                                </tr>
+                                <x-three-row-info label="Nama Ayah" identifier="father_name" />
+                                
+                                <x-three-row-info label="Nomor HP" identifier="father_phone" />
                             </table>
                         </div>
                     </div>
                 </section>
                 <x-separator marginY="3" />
                 <section id="data-orang-tua">
-                    <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Orang Tua Wali (Opsional)</h4>
+                    <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Wali</h4>
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <tr>
-                                    <td>Nama Wali</td>
-                                    <td>:</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>Pekerjaan</td>
-                                    <td>:</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>Penghasilan</td>
-                                    <td>:</td>
-                                    <td>-</td>
-                                </tr>
+                                <x-three-row-info label="Nama Wali" identifier="guard_name" />
+                                
+                                <x-three-row-info label="Nomor HP" identifier="guard_phone" />
                             </table>
                         </div>
                     </div>
@@ -226,44 +179,75 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-body">
+            <div class="card-body px-0">
                 <section id="data-nilai-rapor">
-                    <div class="d-flex align-items-center justify-content-between" style="margin-left: 2rem; margin-top: 1.5rem; margin-bottom: 1.5rem">
-                        <h4 class="text-primary">Data Nilai Rapor</h4>
-                        <a class="btn btn-success" href="{{ route('siswa.score', [$id, 'semester-1']) }}">
+                    <div class="d-flex align-items-center justify-content-between px-2 mb-2">
+                        <h4 class="text-primary mb-0">Data Nilai Rapor</h4>
+                        <x-link href="{{ route('siswa.score', [$id, 'semester-1']) }}" color="success">
+                            <x-tabler-pencil style="width: 1rem; height: 1rem;" /> 
                             Edit Nilai
-                        </a>
+                        </x-link>
                     </div>
                     <div>
-                        <table class="table table-borderless">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <td>Mata Pelajaran</td>
-                                    <td class="text-center">Semester 1</td>
-                                    <td class="text-center">Semester 2</td>
-                                    <td class="text-center">Semester 3</td>
-                                    <td class="text-center">Semester 4</td>
-                                    <td class="text-center">Semester 5</td>
+                                    <th>Mata Pelajaran</th>
+                                    <th class="text-center">Semester 1</th>
+                                    <th class="text-center">Semester 2</th>
+                                    <th class="text-center">Semester 3</th>
+                                    <th class="text-center">Semester 4</th>
+                                    <th class="text-center">Semester 5</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($grades as $item)
-                                    <tr>
-                                        <td>{{ $item->mata_pelajaran }}</td>
-                                        <td class="text-success text-center">{{ $item->semester_1 }}</td>
-                                        <td class="text-success text-center">{{ $item->semester_2 }}</td>
-                                        <td class="text-success text-center">{{ $item->semester_3 }}</td>
-                                        <td class="text-success text-center">{{ $item->semester_4 }}</td>
-                                        <td class="text-success text-center">{{ $item->semester_5 }}</td>
-                                    </tr>
-                                @endforeach --}}
+                                <tr>
+                                    <td class="py-2">Bahasa Indonesia</td>
+                                    <td class="text-success text-center" id="bid1">0</td>
+                                    <td class="text-success text-center" id="bid2">0</td>
+                                    <td class="text-success text-center" id="bid3">0</td>
+                                    <td class="text-success text-center" id="bid4">0</td>
+                                    <td class="text-success text-center" id="bid5">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">Bahasa Inggris</td>
+                                    <td class="text-success text-center" id="big1">0</td>
+                                    <td class="text-success text-center" id="big2">0</td>
+                                    <td class="text-success text-center" id="big3">0</td>
+                                    <td class="text-success text-center" id="big4">0</td>
+                                    <td class="text-success text-center" id="big5">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">Matematika</td>
+                                    <td class="text-success text-center" id="mtk1">0</td>
+                                    <td class="text-success text-center" id="mtk2">0</td>
+                                    <td class="text-success text-center" id="mtk3">0</td>
+                                    <td class="text-success text-center" id="mtk4">0</td>
+                                    <td class="text-success text-center" id="mtk5">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">Ilmu Pengetahuan Alam (IPA)</td>
+                                    <td class="text-success text-center" id="ipa1">0</td>
+                                    <td class="text-success text-center" id="ipa2">0</td>
+                                    <td class="text-success text-center" id="ipa3">0</td>
+                                    <td class="text-success text-center" id="ipa4">0</td>
+                                    <td class="text-success text-center" id="ipa5">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">Ilmu Pengetahuan Sosial (IPS)</td>
+                                    <td class="text-success text-center" id="ips1">0</td>
+                                    <td class="text-success text-center" id="ips2">0</td>
+                                    <td class="text-success text-center" id="ips3">0</td>
+                                    <td class="text-success text-center" id="ips4">0</td>
+                                    <td class="text-success text-center" id="ips5">0</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </section>
             </div>
         </div>
-        <div class="card">
+        {{-- <div class="card">
             <div class="card-body">
                 <section id="kunci-data-diri" style="margin: 1.5rem 2rem;">
                     <h4>Kunci Data Diri</h4>
@@ -317,6 +301,84 @@
                     </x-modal>
                 </section>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        var id = "{{ $id }}";
+    </script>
+    <script>
+        $(function() {
+            'use strict';
+
+            var months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+            getData();
+            getGrade();
+
+            function getData() {
+                $.ajax({
+                    url: `/panel/siswa/json/get-single/${id}`,
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        let tl = new Date(data.tanggal_lahir);
+
+                        $('#fullname').text(data.nama);
+                        $('#nisn').text(data.nisn);
+                        $('#nik').text(data.nik || '-');
+                        $('#origin_school').text(data.sekolah_asal);
+
+                        $('#gender').text(data.jenis_kelamin == 'p' ? 'Perempuan' : (data.jenis_kelamin == 'l' ? "Laki-laki" : "-"));
+                        $('#birth_place').text(data.tempat_lahir || '-');
+                        $('#birth_day').text(`${tl.getDate()} ${months[tl.getMonth()]} ${tl.getFullYear()}`);
+                        $('#phone').text(data.telepon || '-');
+                        $('#email').text(data.email || '-');
+                        $('#province').text(data.provinsi || '-');
+                        $('#city').text(data.kabupaten || '-');
+                        $('#district').text(data.kecamatan || '-');
+                        $('#village').text(data.desa || '-');
+                        $('#hamlet').text(data.dusun || '-');
+                        $('#rtrw').text(data.rtrw || '-');
+                        $('#address').text(data.alamat_jalan || '-');
+
+                        $('#mother_name').text(data.nama_ibu || '-');
+                        $('#mother_phone').text(data.telepon_ibu || '-');
+                        $('#father_name').text(data.nama_ayah || '-');
+                        $('#father_phone').text(data.telepon_ayah || '-');
+                        $('#guard_name').text(data.nama_wali || '-');
+                        $('#guard_phone').text(data.telepon_wali || '-');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('gagal mendapatkan data.', status, error);
+                    }
+                });
+            }
+
+            function getGrade() {
+                $.ajax({
+                    url: `/panel/siswa/json/get-grades/${id}`,
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+
+                        for (let i = 1; i <= 5; i++) {
+                            $(`#bid${i}`).text(data[`sm${i}_bid`]);
+                            $(`#big${i}`).text(data[`sm${i}_big`]);
+                            $(`#mtk${i}`).text(data[`sm${i}_mtk`]);
+                            $(`#ipa${i}`).text(data[`sm${i}_ipa`]);
+                            $(`#ips${i}`).text(data[`sm${i}_ips`]);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('gagal mendapatkan data.', status, error);
+                    }
+                });
+            }
+        });
+    </script>
+@endpush
