@@ -10,34 +10,12 @@
 @endsection
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Data Diri</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb breadcrumb-slash">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('student.personal') }}">Data Diri</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Edit Data
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-breadcrumb title="Data Diri">
+        <x-breadcrumb-item to="{{ route('student.personal') }}" title="Data Diri" />
+        <x-breadcrumb-active title="Edit Data" />
+    </x-breadcrumb>
 
-    <section id="error-section" style="display: none;">
-        <div class="alert alert-danger p-1">
-            <p class="text-center mb-1">Terjadi kesalahan ketika mengambil data. Mohon muat ulang halaman.</p>
-            <div class="d-flex justify-content-center">
-                <x-button color="danger" onclick="location.reload();">Muat Ulang Halaman</x-button>
-            </div>
-        </div>
-    </section>
+    <x-error-reload />
 
     <section id="placeholder">
         <div class="card px-0">
@@ -353,7 +331,7 @@
 
 @push('scripts')
     <script>
-        var profilePicture = "{{ session()->get('stu-picture') }}";
+        var profilePicture = "{{ session()->get('stu_profile_img') }}";
     </script>
     {{-- <script src="/js/student/pages/dashboard/personal-data-v1.1.5.js"></script> --}}
     <script>
@@ -362,8 +340,9 @@
 
             // --------------------------------------------------------------------VAR
             var select2 = $('.select2'),
-                profilePictureInput = $('#profilePictureInput'),
-                profilePicturePreview = $('#profilePicturePrev'),
+                ppModal = $("#uploadProfilePictureModal"),
+                ppInput = $('#profilePictureInput'),
+                ppPreview = $('#profilePicturePrev'),
                 nik = $('#nik'),
                 associations = $('#associations'),
                 phone = $('.phone-mask'),
@@ -590,75 +569,105 @@
                 return this.optional(element) || (element.files[0].size <= param);
             }, 'File size must be less than {0}');
 
+            // preview photos
+            if (ppInput.length) {
+                ppInput.change(function() {
+                    previewProfilePict();
+                });
+            }
+
             // --------------------------------------------------------------------CALL
             getData();
             
-            provinceElement.change(function() { generateSelectCity(this.value) });
+            provinceElement.change(function() {
+                districtElement.empty().append('<option value=""></value>');
+                villageElement.empty().append('<option value=""></value>');
 
-            cityElement.change(function() { generateSelectDistrict(this.value) });
+                generateSelectCity(this.value)
+            });
+
+            cityElement.change(function() { 
+                villageElement.empty().append('<option value=""></value>');
+                generateSelectDistrict(this.value)
+            });
 
             districtElement.change(function() { generateSelectVillage(this.value) });
+
+            // when modal dismiss
+            ppModal.on("hidden.bs.modal", function () {
+                ppInput.val('');
+                ppPreview.attr("src", profilePicture ? profilePicture : "/img/base-profile.png");
+                $('#profilePictureErrorMsg').css("display", "none");
+            });
 
             // --------------------------------------------------------------------FUNC
             // provinces
             function generateSelectProvince(selected = null) {
-                $.ajax({
-                url: '/provinces',
-                method: 'get',
-                dataType: 'json',
-                async: false,
-                success: function(provinces) {
-                    provinceElement.empty().append('<option value></value>');
+                provinceElement.empty().append('<option value></value>');
 
-                    provinces.forEach(province => {
-                    let v = province.code + '|' + province.name;
-                    provinceElement.append('<option value="' + v + '" ' + (v == selected ? 'selected' : '') + '>' + province.name + '</option>');
-                    });
-                }
+                $.ajax({
+                    url: '/json/provinces',
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(provinces) {
+                        provinces.forEach(province => {
+                            let v = `${province.code}|${province.name}`;
+                            let s = (v == selected) ? 'selected' : '';
+                            
+                            provinceElement.append(`<option value="${v}" ${s}>${province.name}</option>`);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('gagal mendapatkan data.', status, error);
+                    }
                 });
             }
 
             // cities
-            function generateSelectCity(provinceCode, selected = null)
-            {
+            function generateSelectCity(provinceCode, selected = null) {
                 cityElement.empty().append('<option value=""></value>');
-                districtElement.empty().append('<option value=""></value>');
-                villageElement.empty().append('<option value=""></value>');
-
+                
                 let code = provinceCode.split('|');
 
                 $.ajax({
-                url: '/cities/' + code[0],
-                method: 'get',
-                dataType: 'json',
-                async: false,
-                success: function(cities) {
-                    cities.forEach(city => {
-                    let v = city.code + '|' + city.name;
-                    cityElement.append('<option value="' + v + '" ' + (v == selected ? 'selected' : '') + '>' + city.name + '</option>');
-                    });
-                }
+                    url: `/json/cities/${code[0]}`,
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(cities) {
+                        cities.forEach(city => {
+                            let v = `${city.code}|${city.name}`;
+                            let s = (v == selected) ? 'selected' : '';
+
+                            cityElement.append(`<option value="${v}" ${s}>${city.name}</option>`);
+                        });
+                    }, error: function(xhr, status, error) {
+                        console.error('gagal mendapatkan data.', status, error);
+                    }
                 });
             }
 
             // district
             function generateSelectDistrict(cityCode, selected = null) {
                 districtElement.empty().append('<option value=""></value>');
-                villageElement.empty().append('<option value=""></value>');
 
                 let code = cityCode.split('|');
 
                 $.ajax({
-                url: '/districts/' + code[0],
-                method: 'get',
-                dataType: 'json',
-                async: false,
-                success: function(districts) {
-                    districts.forEach(district => {
-                    let v = district.code + '|' + district.name;
-                    districtElement.append('<option value="' + v + '" ' + (v == selected ? 'selected' : '') + '>' + district.name + '</option>');
-                    });
-                }
+                    url: `/json/districts/${code[0]}`,
+                    method: 'get',
+                    dataType: 'json',
+                    async: false,
+                    success: function(districts) {
+                        districts.forEach(district => {
+                            let v = `${district.code}|${district.name}`;
+                            let s = (v == selected) ? 'selected' : '';
+
+                            districtElement.append(`<option value="${v}" ${s}>${district.name}</option>`);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('gagal mendapatkan data.', status, error);
+                    }
                 });
             }
 
@@ -669,23 +678,25 @@
                 let code = districtCode.split('|');
 
                 $.ajax({
-                url: '/villages/' + code[0],
-                method: 'get',
-                dataType: 'json',
-                async: false,
-                success: function(villages) {
-                    villages.forEach(village => {
-                    let v = village.code + '|' + village.name;
-                    villageElement.append('<option value="' + v + '" ' + (v == selected ? 'selected' : '') + '>' + village.name + '</option>');
-                    });
-                }
+                    url: `/json/villages/${code[0]}`,
+                    method: 'get',
+                    dataType: 'json',
+                    async: false,
+                    success: function(villages) {
+                        villages.forEach(village => {
+                            let v = `${village.code}|${village.name}`;
+                            let s = (v == selected) ? 'selected' : '';
+
+                            villageElement.append(`<option value="${v}" ${s}>${village.name}</option>`);
+                        });
+                    }
                 });
             }
 
             // get student's data
             function getData() {
                 $.ajax({
-                    url: "/get-data-pribadi-siswa",
+                    url: "/json/get-data-pribadi-siswa",
                     method: 'get',
                     dataType: 'json',
                     success: function(studentData) {
@@ -702,15 +713,12 @@
                         $('#birthYear').val(date.getFullYear()).change();
                         $('#phone').val(d.telepon);
                         $('#email').val(d.email);
-                        
-                        if (d.kode_provinsi) {
-                            generateSelectProvince(d.kode_provinsi + '|' + d.provinsi);
-                        } else {
-                            generateSelectProvince();
-                        }
-                        generateSelectCity(d.kode_provinsi + '|' + d.provinsi, d.kode_kabupaten + '|' + d.kabupaten);
-                        generateSelectDistrict(d.kode_kabupaten + '|' + d.kabupaten, d.kode_kecamatan + '|' + d.kecamatan);
-                        generateSelectVillage(d.kode_kecamatan + '|' + d.kecamatan, d.kode_desa + '|' + d.desa);
+
+                        generateSelectProvince(d.kode_provinsi ? `${d.kode_provinsi}|${d.provinsi}` : '');
+                        generateSelectCity(`${d.kode_provinsi}|${d.provinsi}`, `${d.kode_kabupaten}|${d.kabupaten}`);
+                        generateSelectDistrict(`${d.kode_kabupaten}|${d.kabupaten}`, `${d.kode_kecamatan}|${d.kecamatan}`);
+                        generateSelectVillage(`${d.kode_kecamatan}|${d.kecamatan}`, `${d.kode_desa}|${d.desa}`);
+
                         $('#hamlet').val(d.dusun);
                         $('#associations').val(d.rtrw);
                         $('#address').val(d.alamat_jalan);
@@ -732,35 +740,20 @@
                 });
             }
 
-            // when profile picture is selected
-            // --------------------------------------------------------------------
-            if (profilePictureInput.length) {
-                profilePictureInput.change(function() {
-                    previewProfilePict();
-                });
-            }
-
             function previewProfilePict() {
-                let input = profilePictureInput[0],
-                preview = profilePicturePreview[0];
+                let input = ppInput[0],
+                preview = ppPreview[0];
                 
                 if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                };
-                
-                reader.readAsDataURL(input.files[0]);
+                    var reader = new FileReader();
+                    
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                    };
+                    
+                    reader.readAsDataURL(input.files[0]);
                 }
             }
-
-            // when modal dismiss
-            $("#uploadProfilePictureModal").on("hidden.bs.modal", function () {
-                profilePictureInput.val('');
-                profilePicturePreview.attr("src", profilePicture ? profilePicture : "/img/base-profile.png");
-                $('#profilePictureErrorMsg').css("display", "none");
-            });
         });
     </script>
 @endpush
