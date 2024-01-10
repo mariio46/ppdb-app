@@ -26,9 +26,9 @@
         </div>
     </div>
 
-    @if (session()->get('scoreStatus'))
-        <div class="alert alert-{{ session()->get('scoreStatus') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('scoreMsg') }}</p>
+    @if (session()->get('stat'))
+        <div class="alert alert-{{ session()->get('stat') }} p-1">
+            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
         </div>
     @endif
 

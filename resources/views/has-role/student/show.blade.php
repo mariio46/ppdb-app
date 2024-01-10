@@ -79,8 +79,8 @@
         </div> --}}
         <div class="card">
             <div class="card-body px-0">
-                <section id="data-diri" class="px-2">
-                    <div class="d-flex align-items-center">
+                <section id="data-diri">
+                    <div class="d-flex align-items-center px-2">
                         <h4 class="text-primary">Data Diri</h4>
 
                         <x-link class="ms-auto" href="{{ route('siswa.edit', [$id]) }}" color="success">

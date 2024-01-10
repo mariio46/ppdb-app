@@ -32,10 +32,11 @@ Route::group(['middleware' => 'student.auth'], function () {
 
         Route::get('/get-data-pribadi-siswa', 'getDataDashboard')->name('student.personal.get-data');
         Route::get('/get-data-nilai-siswa', 'getDataScore')->name('student.personal.get-score');
+        Route::get('/personal-data/get-student-score/{semester}', 'getDataScoreBySemester')->name('student.personal.get-score');
+
         Route::post('/first-time-login', 'postFirstTimeLogin')->name('student.personal.first-login');
         Route::post('/personal-data/update-data', 'postUpdateStudentData')->name('student.personal.update-data');
         Route::post('/personal-data/update-profile-picture', 'postUpdateStudentProfileImage')->name('student.personal.update-photo');
-        Route::get('/personal-data/get-student-score/{semester}', 'getDataScoreBySemester')->name('student.personal.get-score');
         Route::post('/personal-data/{semester}/update-score', 'postUpdateStudentScore')->name('student.personal.update-score');
         Route::post('/lock-student-data', 'postLockStudentData')->name('student.personal.lock-data');
     });
