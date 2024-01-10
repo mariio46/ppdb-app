@@ -63,7 +63,97 @@
     </div>
     {{-- /first time login --}}
 
-    <div class="content-body">
+    <x-error-reload />
+
+    <section id="loader">
+        <div id="user-profile">
+            <div class="card profile-header mb-2 placeholder-glow">
+                <img class="card-img-top placeholder" src="/app-assets/images/profile/user-uploads/timeline.jpg" />
+    
+                <div class="position-relative">
+                    <div class="profile-img-container d-flex align-items-center">
+                        <div class="profile-img placeholder-glow">
+                            <div class="rounded placeholder h-100 w-100"></div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="profile-header-nav" style="min-height: 3rem;">
+                    <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
+                        <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0 placeholder-glow">
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body placeholder-glow">
+                    <h4 class="mb-2 placeholder rounded col-6 col-lg-2"></h4>
+
+                    <div class="row placeholder-glow">
+                        <div class="col-12 col-sm-6 placeholder-glow">
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body border-top placeholder-glow">
+                    <h4 class="mb-2 placeholder col-6 col-sm-2 rounded"></h4>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-6 placeholder-glow">
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body placeholder-glow">
+                    <h4 class="mb-2 placeholder rounded col-6 col-lg-2"></h4>
+
+                    <div class="row placeholder-glow">
+                        <div class="col-12 col-sm-6 placeholder-glow">
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body border-top placeholder-glow">
+                    <h4 class="mb-2 placeholder col-6 col-sm-2 rounded"></h4>
+
+                    <div class="row">
+                        <div class="col-12 col-sm-6 placeholder-glow">
+                            <p class="placeholder col-12 rounded"></p>
+                            <p class="placeholder col-12 rounded"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="content-body" id="content" style="display: none;">
         <div id="user-profile">
             <div class="row">
                 <div class="col-12">
@@ -85,10 +175,10 @@
                             <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                                 <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0">
                                     {{-- edit button  --}}
-                                    <a class="btn btn-success btn-icon d-none" id="btnEditData" href="{{ route('student.personal.data') }}">
-                                        <x-tabler-pencil style="width: 16px; height: 16px;" />
+                                    <x-link href="{{ route('student.personal.data') }}" class="d-none" color="success" withIcon="true" id="btnEditData">
+                                        <x-tabler-pencil style="width: 14px; height: 14px;" />
                                         <span class="fw-bold">Edit Data</span>
-                                    </a>
+                                    </x-link>
                                 </div>
                             </nav>
                         </div>
@@ -97,61 +187,25 @@
                     {{-- personal data --}}
                     <div class="card">
                         {{-- data diri --}}
-                        <div class="card-body">
+                        <div class="card-body px-lg-3 py-lg-2">
                             <h4 class="mb-2">Data Diri</h4>
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <tr>
-                                            <td class="px-1 col-auto" style="width: 40%;">Nama Lengkap</td>
-                                            <td class="px-1 col-auto">:</td>
-                                            <td class="px-1 col-auto">{{ session()->get('stu_name') }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">NISN</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1">{{ session()->get('stu_nisn') }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">NIK</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfNik"><i>loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Asal Sekolah</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfFromSchool"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Jenis Kelamin</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfGender"><i>Loading...</i></span></td>
-                                        </tr>
+                                        <x-three-row-info label="Nama Lengkap" identifier="selfName" value="{{ session()->get('stu_name') }}" />
+                                        <x-three-row-info label="NISN" identifier="selfNisn" value="{{ session()->get('stu_nisn') }}" />
+                                        <x-three-row-info label="NIK" identifier="selfNik" />
+                                        <x-three-row-info label="Asal Sekolah" identifier="selfOriginSchool" />
+                                        <x-three-row-info label="Jenis Kelamin" identifier="selfGender" />
                                     </table>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <tr>
-                                            <td class="px-1 col-auto" style="width: 40%;">Tempat Lahir</td>
-                                            <td class="px-1 col-auto">:</td>
-                                            <td class="px-1 col-auto"><span id="selfBirthPlace"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1 ">Tanggal Lahir</td>
-                                            <td class="px-1 ">:</td>
-                                            <td class="px-1 "><span id="selfBirthDay"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1 ">Nomor <i>Handphone</i></td>
-                                            <td class="px-1 ">:</td>
-                                            <td class="px-1 "><span id="selfPhoneNumber"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1 "><i>Email</i></td>
-                                            <td class="px-1 ">:</td>
-                                            <td class="px-1 text-break"><span id="selfEmail"><i>Loading...</i></span></td>
-                                        </tr>
+                                        <x-three-row-info label="Tempat Lahir" identifier="selfBirthPlace" />
+                                        <x-three-row-info label="Tanggal Lahir" identifier="selfBirthDay" />
+                                        <x-three-row-info label="Nomor Telepon" identifier="selfPhoneNumber" />
+                                        <x-three-row-info label="Email" identifier="selfEmail" />
                                     </table>
                                 </div>
                             </div>
@@ -159,51 +213,23 @@
                         {{-- /data diri --}}
 
                         {{-- data alamat --}}
-                        <div class="card-body border-top">
+                        <div class="card-body border-top px-lg-3 py-lg-2">
                             <h4 class="mb-2">Data Alamat</h4>
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <tr>
-                                            <td class="px-1 col-auto" style="width: 40%;">Provinsi</td>
-                                            <td class="px-1 col-auto">:</td>
-                                            <td class="px-1 col-auto"><span id="selfProvince"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Kabupaten / Kota</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfCity"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Kecamatan</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfSubDistrict"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Desa / Kelurahan</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfVillage"><i>Loading...</i></span></td>
-                                        </tr>
+                                        <x-three-row-info label="Provinsi" identifier="selfProvince" />
+                                        <x-three-row-info label="Kabupaten / Kota" identifier="selfCity" />
+                                        <x-three-row-info label="Kecamatan" identifier="selfSubDistrict" />
+                                        <x-three-row-info label="Desa / Kelurahan" identifier="selfVillage" />
                                     </table>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <tr>
-                                            <td class="px-1" style="width: 40%;">Dusun / Lingkungan</td>
-                                            <td class="px-1 col-auto">:</td>
-                                            <td class="px-1 col-auto"><span id="selfHamlet"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">RT/RW</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfRtRw"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Alamat Jalan</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfAddress"><i>Loading...</i></span></td>
-                                        </tr>
+                                        <x-three-row-info label="Dusun / Lingkungan" identifier="selfHamlet" />
+                                        <x-three-row-info label="RT / RW" identifier="selfRtRw" />
+                                        <x-three-row-info label="Alamat Jalan" identifier="selfAddress" />
                                     </table>
                                 </div>
                             </div>
@@ -211,36 +237,20 @@
                         {{-- /data alamat --}}
 
                         {{-- data orang tua --}}
-                        <div class="card-body border-top">
+                        <div class="card-body border-top px-lg-3 py-lg-2">
                             <h4 class="mb-2">Data Orang Tua</h4>
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <tr>
-                                            <td class="px-1 col-auto" style="width: 40%;">Nama Ibu Kandung</td>
-                                            <td class="px-1 col-auto">:</td>
-                                            <td class="px-1 col-auto"><span id="selfMothersName"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Nomor <i>Handphone</i> Ibu</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfMothersPhone"><i>Loading...</i></span></td>
-                                        </tr>
+                                        <x-three-row-info label="Nama Ibu Kandung" identifier="selfMothersName" />
+                                        <x-three-row-info label="Nomor Telepon Ibu" identifier="selfMothersPhone" />
                                     </table>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <tr>
-                                            <td class="px-1 col-auto" style="width: 40%;">Nama Ayah</td>
-                                            <td class="px-1 col-auto">:</td>
-                                            <td class="px-1 col-auto"><span id="selfFathersName"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Nomor <i>Handphone</i> Ayah</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfFathersPhone"><i>Loading...</i></span></td>
-                                        </tr>
+                                        <x-three-row-info label="Nama Ayah" identifier="selfFathersName" />
+                                        <x-three-row-info label="Nomor Telepon Ayah" identifier="selfFathersPhone" />
                                     </table>
                                 </div>
                             </div>
@@ -248,22 +258,14 @@
                         {{-- /data orang tua --}}
 
                         {{-- data wali --}}
-                        <div class="card-body border-top">
-                            <h4 class="mb-2">Data Wali <small>(Opsional)</small></h4>
+                        <div class="card-body border-top px-lg-3 py-lg-2">
+                            <h4 class="mb-2">Data Wali</h4>
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <tr>
-                                            <td class="px-1 col-auto" style="width: 40%;">Nama Wali</td>
-                                            <td class="px-1 col-auto">:</td>
-                                            <td class="px-1 col-auto"><span id="selfGuardsName"><i>Loading...</i></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-1">Nomor <i>Handphone</i> Wali</td>
-                                            <td class="px-1">:</td>
-                                            <td class="px-1"><span id="selfGuardsPhone"><i>Loading...</i></span></td>
-                                        </tr>
+                                        <x-three-row-info label="Nama Wali" identifier="selfGuardsName" />
+                                        <x-three-row-info label="Nomor Telepon Wali" identifier="selfGuardsPhone" />
                                     </table>
                                 </div>
                             </div>
@@ -278,8 +280,10 @@
                             <div class="d-flex align-items-end mb-1">
                                 <h4 class="text-title mb-0">Data Nilai Rapor</h4>
 
-                                <a class="ms-auto btn btn-success d-none" id="btnEditScore" href="{{ route('student.personal.score', ['semester-1']) }}"><x-tabler-pencil
-                                        style="width: 16px; height: 16px;" /> Edit Nilai</a>
+                                <x-link href="{{ route('student.personal.score', ['semester-1']) }}" class="ms-auto d-none" color="success" withIcon="true" id="btnEditScore">
+                                    <x-tabler-pencil style="width: 14px; height: 14px;" />
+                                    Edit Nilai
+                                </x-link>
                             </div>
 
                             <small class="text-subtitle">Data nilai rapor adalah data <strong>nilai pengetahuan</strong> mata pelajaran Bahasa Indonesia, Bahasa Inggris, Matematika, Ilmu Pengetahuan Alam
@@ -412,143 +416,141 @@
 @push('scripts')
     {{-- <script src="/js/student/pages/dashboard/index-v1.0.7.js"></script> --}}
     <script>
-        $(document).ready(function() {
-            // get data
-            $.ajax({
-                url: "/get-data-pribadi-siswa",
-                method: 'get',
-                dataType: 'json',
-                success: function(data) {
-                let d = data.data;
-
-                if (d.pertama_login == 't' && d.kunci == '0') {
-                    $('#btnEditData, #btnEditScore, #cardLock').removeClass("d-none");
-                } else if (d.pertama_login == 'y') {
-                    $('#firstTimeLoginModal').modal('show');
-                }
-                
-                $('#profileImage').attr('src', d.pasfoto || '/img/base-profile.png'); // profile image
-                $('#selfNik').text(d.nik); // personal's data
-                $('#selfFromSchool').text(d.sekolah_asal);
-                $('#selfGender').text((d.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');
-                $('#selfBirthPlace').text(d.tempat_lahir);
-                $('#selfBirthDay').text(d.tanggal_lahir);
-                $('#selfPhoneNumber').text(d.telepon);
-                $('#selfEmail').text(d.email);
-                $('#selfProvince').text(d.provinsi); // address's data
-                $('#selfCity').text(d.kabupaten);
-                $('#selfSubDistrict').text(d.kecamatan);
-                $('#selfVillage').text(d.desa);
-                $('#selfHamlet').text(d.dusun);
-                $('#selfRtRw').text(d.rtrw);
-                $('#selfAddress').text(d.alamat_jalan);
-                $('#selfMothersName').text(d.nama_ibu); // parent's data
-                $('#selfMothersPhone').text(d.telepon_ibu);
-                $('#selfFathersName').text(d.nama_ayah);
-                $('#selfFathersPhone').text(d.telepon_ayah);
-                $('#selfGuardsName').text(d.nama_wali);
-                $('#selfGuardsPhone').text(d.telepon_wali);
-                }
-            });
-
-            $.ajax({
-                url: "/get-data-nilai-siswa",
-                method: 'get',
-                dataType: 'json',
-                success: function(score) {
-                let s = score.data;
-                $('#smt1Bid').text(s.sm1_bid);
-                $('#smt2Bid').text(s.sm2_bid);
-                $('#smt3Bid').text(s.sm3_bid);
-                $('#smt4Bid').text(s.sm4_bid);
-                $('#smt5Bid').text(s.sm5_bid);
-                $('#smt1Big').text(s.sm1_big);
-                $('#smt2Big').text(s.sm2_big);
-                $('#smt3Big').text(s.sm3_big);
-                $('#smt4Big').text(s.sm4_big);
-                $('#smt5Big').text(s.sm5_big);
-                $('#smt1Mtk').text(s.sm1_mtk);
-                $('#smt2Mtk').text(s.sm2_mtk);
-                $('#smt3Mtk').text(s.sm3_mtk);
-                $('#smt4Mtk').text(s.sm4_mtk);
-                $('#smt5Mtk').text(s.sm5_mtk);
-                $('#smt1Ipa').text(s.sm1_ipa);
-                $('#smt2Ipa').text(s.sm2_ipa);
-                $('#smt3Ipa').text(s.sm3_ipa);
-                $('#smt4Ipa').text(s.sm4_ipa);
-                $('#smt5Ipa').text(s.sm5_ipa);
-                $('#smt1Ips').text(s.sm1_ips);
-                $('#smt2Ips').text(s.sm2_ips);
-                $('#smt3Ips').text(s.sm3_ips);
-                $('#smt4Ips').text(s.sm4_ips);
-                $('#smt5Ips').text(s.sm5_ips);
-                }
-            });
-            });
-
-            $(function () {
+        $(function () {
             'use strict';
 
-            var firstTimeLoginForm = $('#ftlForm'),
+            var loader = $('#loader'),
+                content = $('#content'),
+                firstTimeLoginForm = $('#ftlForm'),
                 lockDataCheckbox = $('#lockCheck'),
                 lockDataBtn = $('#lockCheckBtn');
 
+            //------------------------------------------------------------INIT
             // jQuery Validation
-            // --------------------------------------------------------------------
             if (firstTimeLoginForm.length) {
                 firstTimeLoginForm.validate({
-                rules: {
-                    'ftlEmail': {
-                    required: true,
-                    email: true
+                    rules: {
+                        ftlEmail: {
+                            required: true,
+                            email: true
+                        },
+                        ftlPhoneNumber: {
+                            required: true,
+                            digits: true,
+                            rangelength: [10, 13]
+                        },
+                        ftlNewPassword: {
+                            required: true,
+                            minlength: 6
+                        },
+                        ftlConfirmPassword: {
+                            required: true,
+                            minlength: 6,
+                            equalTo: "#ftlNewPassword"
+                        }
                     },
-                    'ftlPhoneNumber': {
-                    required: true,
-                    digits: true,
-                    rangelength: [10, 13]
-                    },
-                    'ftlNewPassword': {
-                    required: true,
-                    minlength: 6
-                    },
-                    'ftlConfirmPassword': {
-                    required: true,
-                    minlength: 6,
-                    equalTo: "#ftlNewPassword"
+                    messages: {
+                        ftlEmail: {
+                            required: "*Bidang ini harus diisi.",
+                            email: "*Mohon masukkan alamat email yang valid."
+                        },
+                        ftlPhoneNumber: {
+                            required: "*Bidang ini harus diisi.",
+                            digits: "*Mohon masukkan nomor telepon yang valid.",
+                            rangelength: "*Mohon masukkan nomor telepon yang valid."
+                        },
+                        ftlNewPassword: {
+                            required: "*Bidang ini harus diisi.",
+                            minlength: "*Mohon masukkan minimal 6 karakter."
+                        },
+                        ftlConfirmPassword: {
+                            required: "*Bidang ini harus diisi.",
+                            minlength: "*Mohon masukkan minimal 6 karakter.",
+                            equalTo: "*Ulangi kata sandi harus sama dengan kata sandi baru."
+                        },
                     }
-                },
-                messages: {
-                    'ftlEmail': {
-                    required: "*Bidang ini harus diisi.",
-                    email: "*Mohon masukkan alamat email yang valid."
-                    },
-                    'ftlPhoneNumber': {
-                    required: "*Bidang ini harus diisi.",
-                    digits: "*Mohon masukkan nomor telepon yang valid.",
-                    rangelength: "*Mohon masukkan nomor telepon yang valid."
-                    },
-                    'ftlNewPassword': {
-                    required: "*Bidang ini harus diisi.",
-                    minlength: "*Mohon masukkan minimal 6 karakter."
-                    },
-                    'ftlConfirmPassword': {
-                    required: "*Bidang ini harus diisi.",
-                    minlength: "*Mohon masukkan minimal 6 karakter.",
-                    equalTo: "*Ulangi kata sandi harus sama dengan kata sandi baru."
-                    },
-                }
                 });
             }
 
             // Lock Data
-            // --------------------------------------------------------------------
             lockDataCheckbox.click(function() {
-                if (lockDataCheckbox.is(":checked")) {
-                lockDataBtn.removeAttr('disabled');
-                } else {
-                lockDataBtn.attr('disabled', true);
-                }
+                lockDataBtn.prop('disabled', !lockDataCheckbox.is(":checked"));
             });
+
+            //------------------------------------------------------------CALL
+            getData();
+
+            getScore();
+
+            //------------------------------------------------------------FUNC
+            function getData() {
+                $.ajax({
+                    url: "/json/get-data-pribadi-siswa",
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                        let d = data.data;
+
+                        if (d.pertama_login == 't' && d.kunci == '0') {
+                            $('#btnEditData, #btnEditScore, #cardLock').removeClass("d-none");
+                        } else if (d.pertama_login == 'y') {
+                            $('#firstTimeLoginModal').modal('show');
+                        }
+                        
+                        $('#profileImage').attr('src', d.pasfoto || '/img/base-profile.png'); // profile image
+                        $('#selfNik').text(d.nik); // personal's data
+                        $('#selfOriginSchool').text(d.sekolah_asal);
+                        $('#selfGender').text((d.jenis_kelamin == 'l') ? 'Laki-laki' : 'Perempuan');
+                        $('#selfBirthPlace').text(d.tempat_lahir);
+                        $('#selfBirthDay').text(d.tanggal_lahir);
+                        $('#selfPhoneNumber').text(d.telepon);
+                        $('#selfEmail').text(d.email);
+                        $('#selfProvince').text(d.provinsi); // address's data
+                        $('#selfCity').text(d.kabupaten);
+                        $('#selfSubDistrict').text(d.kecamatan);
+                        $('#selfVillage').text(d.desa);
+                        $('#selfHamlet').text(d.dusun);
+                        $('#selfRtRw').text(d.rtrw);
+                        $('#selfAddress').text(d.alamat_jalan);
+                        $('#selfMothersName').text(d.nama_ibu); // parent's data
+                        $('#selfMothersPhone').text(d.telepon_ibu);
+                        $('#selfFathersName').text(d.nama_ayah);
+                        $('#selfFathersPhone').text(d.telepon_ayah);
+                        $('#selfGuardsName').text(d.nama_wali);
+                        $('#selfGuardsPhone').text(d.telepon_wali);
+
+                        // hide load
+                        loader.hide();
+                        content.show();
+                    },
+                    error: function(x, s, e) {
+                        console.error("gagal mendapatkan data.", s, e);
+                        $('#loader, #content').hide();
+                        $('#error-section').show();
+                    }
+                });
+            }
+
+            function getScore() {
+                $.ajax({
+                    url: "/json/get-data-nilai-siswa",
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(score) {
+                        let s = score.data;
+                        for (let i = 1; i <= 5; i++) {
+                            $(`#smt${i}Bid`).text(s[`sm${i}_bid`]);
+                            $(`#smt${i}Big`).text(s[`sm${i}_big`]);
+                            $(`#smt${i}Mtk`).text(s[`sm${i}_mtk`]);
+                            $(`#smt${i}Ipa`).text(s[`sm${i}_ipa`]);
+                            $(`#smt${i}Ips`).text(s[`sm${i}_ips`]);
+                        }
+                    },
+                    error: function(x, s, e) {
+                        console.error('gagal mendapatkan data.', s, e);
+                    }
+                });
+            }
         });
     </script>
 @endpush
