@@ -422,7 +422,7 @@
                         originSchool.empty().append('<option value=""></option>');
 
                         data.forEach(os => {
-                            originSchool.append(`<option value="${os.id}">${os.npsn} - ${os.nama}</option>`);
+                            originSchool.append(`<option value="${os.id}|${os.npsn}|${os.nama}">${os.npsn} - ${os.nama}</option>`);
                         });
 
                         originSchool.append('<option value="other">Lainnya</option>');

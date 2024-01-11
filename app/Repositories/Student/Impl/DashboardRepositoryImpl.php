@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Student\Impl;
 
+use App\Models\Region;
 use App\Models\Student\DashboardModel;
-use App\Models\Student\RegionModel;
 use App\Repositories\Student\DashboardRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,10 +11,11 @@ use Illuminate\Support\Collection;
 
 class DashboardRepositoryImpl implements DashboardRepository
 {
-    public function __construct(private DashboardModel $dashboardModel, private RegionModel $regionModel)
+    public function __construct(private DashboardModel $dashboardModel, private Region $regionModel)
     {
     }
 
+    //------------------------------------------------------------GET
     public function getDataStudent(): JsonResponse
     {
         $result = $this->dashboardModel->getDataStudentById(session()->get('stu_id'));
@@ -36,6 +37,7 @@ class DashboardRepositoryImpl implements DashboardRepository
         return response()->json($result['response'], $result['status_code']);
     }
 
+    //------------------------------------------------------------POST
     public function postFirstTimeLogin(Request $request): Collection
     {
         $id = session()->get('stu_id');
@@ -57,9 +59,9 @@ class DashboardRepositoryImpl implements DashboardRepository
         $update = $this->dashboardModel->postUpdateStudentData($request);
 
         if ($update['status_code'] == 200) {
-            return collect(['success' => true, 'code' => 200, 'message' => 'success']);
+            return collect(['success' => true, 'code' => 200, 'message' => $update['response']['messages']]);
         } else {
-            return collect(['success' => false, 'code' => $update['status_code'], 'message' => 'failed']);
+            return collect(['success' => false, 'code' => $update['status_code'], 'message' => $update['response']['messages']]);
         }
     }
 
@@ -68,7 +70,7 @@ class DashboardRepositoryImpl implements DashboardRepository
         $update = $this->dashboardModel->postUpdateStudentProfile($request);
 
         if ($update['status_code'] == 200) {
-            session()->put('stu_profile_img', $update['data']['profile']);
+            session()->put('stu_profile_img', $update['response']['data']['pasfoto']);
 
             return collect(['success' => true, 'code' => 200, 'message' => 'success']);
         } else {
@@ -80,7 +82,7 @@ class DashboardRepositoryImpl implements DashboardRepository
     {
         $update = $this->dashboardModel->postUpdateStudentScore($semester, $request);
 
-        if ($update['status_code'] == 200) {
+        if ($update['status_code'] == 200 || $update['status_code' == 201]) {
             return collect(['success' => true, 'code' => 200, 'message' => ['scoreStatus' => 'success', 'scoreMsg' => 'Data berhasil diperbarui.']]);
         } else {
             return collect(['success' => false, 'code' => 400, 'message' => ['scoreStatus' => 'danger', 'scoreMsg' => 'Data gagal diperbarui.']]);

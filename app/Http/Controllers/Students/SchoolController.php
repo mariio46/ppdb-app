@@ -15,13 +15,13 @@ class SchoolController extends Controller
     ) {
     }
 
-    // --------------------------------------------------
+    //------------------------------------------------------------VIEW
     public function index(): Response
     {
         return response()->view('student.school.index');
     }
 
-    // --------------------------------------------------
+    // --------------------------------------------------JSON
     public function getSchools(Request $request): JsonResponse
     {
         $type = $request->get('t', '');
