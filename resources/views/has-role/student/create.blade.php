@@ -257,17 +257,17 @@
                 <h4 class="card-title">Tambah Siswa</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('siswa.store') }}" method="post" id="create-form">
+                <form id="create-form" action="{{ route('siswa.store') }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6 ">
                             <div class="mb-2">
                                 <x-label>Nama Lengkap</x-label>
-                                <x-input id="nama_lengkap" name="nama_lengkap" placeholder="Nama Siswa" value="{{ old('nama_lengkap') }}" />
+                                <x-input id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" placeholder="Nama Siswa" />
                             </div>
                             <div class="mb-2">
                                 <x-label>NISN</x-label>
-                                <x-input id="nisn" name="nisn" placeholder="NISN Siswa" value="{{ old('nisn') }}" />
+                                <x-input id="nisn" name="nisn" value="{{ old('nisn') }}" placeholder="NISN Siswa" />
                             </div>
                             <div class="mb-2">
                                 <x-label>Asal Sekolah</x-label>
@@ -279,11 +279,11 @@
                             </div>
                             <div class="mb-2" id="origin-school-code-div" style="display: none;">
                                 <x-label>NPSN Asal Sekolah</x-label>
-                                <x-input id="npsn_sekolah_asal" name="npsn_sekolah_asal" placeholder="NPSN Sekolah Asal" value="{{ old('npsn_sekolah_asal') }}" />
+                                <x-input id="npsn_sekolah_asal" name="npsn_sekolah_asal" value="{{ old('npsn_sekolah_asal') }}" placeholder="NPSN Sekolah Asal" />
                             </div>
                             <div class="mb-2" id="origin-school-name-div" style="display: none;">
                                 <x-label>Nama Asal Sekolah</x-label>
-                                <x-input id="nama_sekolah_asal" name="nama_sekolah_asal" placeholder="Nama Sekolah Asal" value="{{ old('nama_sekolah_asal') }}" />
+                                <x-input id="nama_sekolah_asal" name="nama_sekolah_asal" value="{{ old('nama_sekolah_asal') }}" placeholder="Nama Sekolah Asal" />
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -297,11 +297,11 @@
                             </div>
                             <div class="mb-2">
                                 <x-label>Tempat Lahir</x-label>
-                                <x-input id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir Siswa" value="{{ old('tempat_lahir') }}" />
+                                <x-input id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir') }}" placeholder="Tempat Lahir Siswa" />
                             </div>
                             <div class="mb-2">
                                 <x-label>Tanggal Lahir</x-label>
-                                <x-input type="date" id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir Siswa" value="{{ old('tanggal_lahir') }}" />
+                                <x-input id="tanggal_lahir" name="tanggal_lahir" type="date" value="{{ old('tanggal_lahir') }}" placeholder="Tanggal Lahir Siswa" />
                             </div>
                         </div>
                     </div>
@@ -420,7 +420,7 @@
                     dataType: 'json',
                     success: function(data) {
                         originSchool.empty().append('<option value=""></option>');
-                        
+
                         data.forEach(os => {
                             originSchool.append(`<option value="${os.id}">${os.npsn} - ${os.nama}</option>`);
                         });

@@ -71,8 +71,7 @@
                             }
                         }
                     ],
-                    columnDefs: [
-                        {
+                    columnDefs: [{
                             targets: 1,
                             className: 'text-center'
                         },

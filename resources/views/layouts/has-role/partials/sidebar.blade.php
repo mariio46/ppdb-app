@@ -65,7 +65,7 @@
             </li>
             <li class="nav-item {{ request()->routeIs('verifikasi.manual*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('verifikasi.manual') }}">
-                    <x-tabler-file-text />
+                    <x-tabler-file-check />
                     <span class="menu-title text-truncate">Verifikasi Manual</span>
                 </a>
             </li>
@@ -99,11 +99,39 @@
                     <span class="menu-title text-truncate">Tahap & Jadwal</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+
+            {{-- <li class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
                     <x-tabler-id-badge-2 />
                     <span class="menu-title text-truncate">Role & Permission</span>
                 </a>
+            </li> --}}
+
+            <li class=" nav-item">
+                <a class="d-flex align-items-center" href="#">
+                    <x-tabler-shield />
+                    <span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">
+                        Roles &amp; Permission
+                    </span>
+                </a>
+                <ul class="menu-content">
+                    <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
+                            <i data-feather="circle"></i>
+                            <span class="menu-item text-truncate" data-i18n="Roles">
+                                Roles
+                            </span>
+                        </a>
+                    </li>
+                    <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}">
+                        <a class="d-flex align-items-center" href="{{ route('permissions.index') }}">
+                            <i data-feather="circle"></i>
+                            <span class="menu-item text-truncate" data-i18n="Roles">
+                                Permission
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
 
             <li class="nav-item {{ request()->routeIs('faq.index') ? 'active' : '' }}">

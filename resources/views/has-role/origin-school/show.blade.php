@@ -41,8 +41,8 @@
                 <div class="row">
                     <div class="col-sm-6 col-12">
                         <table class="table table-borderless">
-                            <x-three-row-info label="NPSN" identifier="npsn" />
-                            <x-three-row-info label="Nama Sekolah" identifier="nama" />
+                            <x-three-row-info identifier="npsn" label="NPSN" />
+                            <x-three-row-info identifier="nama" label="Nama Sekolah" />
                         </table>
                     </div>
                 </div>

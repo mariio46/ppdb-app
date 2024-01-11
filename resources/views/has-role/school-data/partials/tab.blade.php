@@ -3,19 +3,19 @@
         <x-tabler-home />
         Info Sekolah
     </x-link>
-    @if ($unit == 'SMA' || $unit == 'SMA Half Boarding' || $unit == 'SMA Boarding')
-        <x-link class="mb-2" :variant="request()->routeIs('sekolah.quota') ? 'default' : 'flat'" :color="request()->routeIs('sekolah.quota') ? 'primary' : 'secondary'" :href="route('sekolah.quota', [$npsn, $unit])">
+    @if ($unit == 1 || $unit == 4 || $unit == 3)
+        <x-link class="mb-2" :variant="request()->routeIs('school-data.quota') ? 'default' : 'flat'" :color="request()->routeIs('school-data.quota') ? 'primary' : 'secondary'" :href="route('school-data.quota')">
             <x-tabler-chart-pie />
             Kuota Sekolah
         </x-link>
-        @if ($unit == 'SMA' || $unit == 'SMA Half Boarding')
+        @if ($unit == 1 || $unit == 4)
             <x-link class="mb-2" :variant="request()->routeIs('sekolah.zone') ? 'default' : 'flat'" :color="request()->routeIs('sekolah.zone') ? 'primary' : 'secondary'" :href="route('sekolah.zone', [$npsn, $unit])">
                 <x-tabler-map-pin-filled />
                 Wilayah Zonasi
             </x-link>
         @endif
-    @elseif ($unit == 'SMK')
-        <x-link class="mb-2" :variant="request()->routeIs('sekolah.major-quota') ? 'default' : 'flat'" :color="request()->routeIs('sekolah.major-quota') ? 'primary' : 'secondary'" :href="route('sekolah.major-quota', [$npsn, $unit])">
+    @elseif ($unit == 2)
+        <x-link class="mb-2" :variant="request()->routeIs('school-data.quota') ? 'default' : 'flat'" :color="request()->routeIs('school-data.quota') ? 'primary' : 'secondary'" :href="route('school-data.quota')">
             <x-tabler-chart-pie />
             Jurusan dan Kuota
         </x-link>

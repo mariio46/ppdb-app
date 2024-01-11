@@ -41,7 +41,7 @@
                 <div class="card-body">
                     <form id="formUpdateAgency" action="/panel/cabang-dinas/update" method="post">
                         @csrf
-                        <input type="hidden" name="id" value="{{ $id_agency }}">
+                        <input name="id" type="hidden" value="{{ $id_agency }}">
 
                         <div class="row">
                             {{-- name --}}
