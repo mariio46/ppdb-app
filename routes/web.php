@@ -48,9 +48,10 @@ Route::group(['middleware' => 'student.auth'], function () {
         Route::get('/pendaftaran/jalur/{code}', 'track')->name('student.regis.track');
         Route::get('/pendaftaran/bukti/{phaseCode}', 'proof')->name('student.regis.proof');
 
-        Route::get('/registration/get-schedules', 'getSchedules')->name('student.regis.get-schedule');
-        Route::get('/registration/get-schedule-by-phase-code/{code}', 'getScheduleByPhaseCode')->name('student.regis.get-phase');
         Route::post('/registration/{trackCode}/register', 'postSchoolRegistration')->name('student.regis.save-registration');
+
+        Route::get('json/registration/get-schedules', 'getSchedules')->name('student.regis.get-schedule');
+        Route::get('/registration/get-schedule-by-phase-code/{code}', 'getScheduleByPhaseCode')->name('student.regis.get-phase');
         Route::get('/registration/get-data/{phase}', 'getDataByPhase')->name('student.regis.get-registration'); // student registration data
     });
 
