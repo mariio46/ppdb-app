@@ -55,14 +55,16 @@ Route::controller(StudentController::class)->group(function () {
     Route::get('siswa/{id}/score/{semester}', 'score')->name('siswa.score');
 
     Route::post('siswa/store', 'store')->name('siswa.store');
+    Route::post('siswa/update', 'update')->name('siswa.update');
     Route::post('siswa/{id}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
 
     Route::get('siswa/get-scores/{id}/{semester}', 'getScores');
 
     Route::get('siswa/json/get-list', 'getStudents')->name('siswa.json.all');
-    Route::get('siswa/json/get-single', 'getSingleStudent')->name('siswa.json.single');
+    Route::get('siswa/json/get-single/{id}', 'getSingleStudent')->name('siswa.json.single');
     Route::get('siswa/json/search-nisn/{nisn}', 'getSingleStudentByNisn')->name('siswa.json.search');
     Route::get('siswa/json/get-origin-school-list', 'getOriginSchools')->name('siswa.json.origin-school');
+    Route::get('siswa/json/get-grades/{id}', 'getGrades')->name('siswa.json.grades');
 });
 
 Route::controller(SchoolController::class)->group(function () {

@@ -49,7 +49,20 @@ class Base
         $response = Http::withHeaders([
             'waktu' => 5,
             'sw-code' => session()->get('stu_token'),
-        ])->post($this->BASE_API_URL.$endpoint);
+        ])->get($this->BASE_API_URL . $endpoint);
+
+        return [
+            'status_code' => $response->status(),
+            'response' => $response->json(),
+        ];
+    }
+
+    protected function swPostWithToken(string $endpoint, array $data): array
+    {
+        $response = Http::withHeaders([
+            'waktu' => 5,
+            'sw-code' => session()->get('stu_token'),
+        ])->post($this->BASE_API_URL . $endpoint, $data);
 
         return [
             'status_code' => $response->status(),
