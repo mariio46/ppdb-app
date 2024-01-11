@@ -21,7 +21,7 @@
                         <!-- collapse  -->
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <div class="profile-tabs d-flex justify-content-end align-items-center gap-2 flex-wrap mt-1 mt-md-0">
-                                <x-link href="{{ route('sekolah.edit', $npsn) }}" color="success">
+                                <x-link href="{{ route('school-data.edit') }}" color="success">
                                     <x-tabler-pencil />
                                     Edit Info Sekolah
                                 </x-link>

@@ -9,442 +9,180 @@ use Illuminate\View\View;
 
 class SchoolDataController extends Controller
 {
+    public int $id;
+
+    public string $unit;
+
+    public function __construct()
+    {
+        $this->id = 3;
+        $this->unit = 2;
+        // $this->id = 1;
+        // $this->unit = 1;
+    }
+
     public function index(): View
     {
-        $npsn = 2;
-        $unit = 'SMA Half Boarding';
+        $npsn = $this->id;
+        $unit = $this->unit;
 
         return view('has-role.school-data.index', compact('npsn', 'unit'));
     }
 
+    public function edit(): View
+    {
+        $id = $this->id;
+
+        return view('has-role.school-data.edit', compact('id'));
+    }
+
+    public function quota(): View
+    {
+        $npsn = $this->id;
+        $unit = $this->unit;
+
+        return $unit == 2
+            ? view('has-role.school-data.quota-smk', compact('npsn', 'unit'))
+            : view('has-role.school-data.quota', compact('npsn', 'unit'));
+    }
+
+    public function addQuota(): View
+    {
+        $npsn = $this->id;
+        $unit = $this->unit;
+        $json = $this->formDataPercentage();
+        $default = 36;
+
+        return $unit == 2
+            ? view('has-role.school-data.add-quota-smk', compact('npsn', 'unit', 'json', 'default'))
+            : view('has-role.school-data.add-quota', compact('npsn', 'unit'));
+    }
+
+    public function editQuota(string $identifier): View
+    {
+        $json = $this->formDataPercentage();
+        $default = 36;
+
+        return view('has-role.school-data.edit-quota-smk', compact('identifier', 'json', 'default'));
+    }
+
     // --------------------------------------------------DATA JSON--------------------------------------------------
-    protected function subdistrict(string $param): JsonResponse
+    protected function formDataPercentage(): string
     {
-        $result = collect($this->subdistricts()->original)
-            ->filter(fn ($subdistrict) => strpos($subdistrict['value'], $param) === 0)
-            ->values();
+        $percentage = [
+            'afirmasi' => 0.1,
+            'mutasi' => 0.2,
+            'anak_guru' => 0.25,
+            'akademik' => 0.25,
+            'non_akademik' => 0.05,
+            'zonasi' => 0.15,
+        ];
 
-        return response()->json($result);
+        return json_encode($percentage);
     }
 
-    protected function subdistricts(): JsonResponse
+    protected function majorQuota(string $identifier): JsonResponse
     {
-        $subdistricts = [
+        $quota = collect($this->schoolsQuota($this->unit)->original)->firstWhere('identifier', $identifier);
+
+        return response()->json($quota);
+    }
+
+    protected function schoolsQuota($unit): JsonResponse
+    {
+        $quota_smk = [
             [
-                'value' => '73.01.01',
-                'label' => 'Kecamatan Benteng',
+                'label' => 'Teknik Komputer dan Jaringan',
+                'identifier' => 479305,
+                'value' => 144,
             ],
             [
-                'value' => '73.01.02',
-                'label' => 'Kecamatan Bontoharu',
+                'label' => 'Teknik Kendaraan Ringan',
+                'identifier' => 114565,
+                'value' => 72,
             ],
             [
-                'value' => '73.01.03',
-                'label' => 'Kecamatan Bontomatene',
+                'label' => 'Pemodelan dan Informasi Bangunan',
+                'identifier' => 911899,
+                'value' => 108,
             ],
             [
-                'value' => '73.01.04',
-                'label' => 'Kecamatan Bontomanai',
+                'label' => 'Administrasi Perkantoran',
+                'identifier' => 238415,
+                'value' => 216,
             ],
             [
-                'value' => '73.01.05',
-                'label' => 'Kecamatan Bontosikuyu',
+                'label' => 'Tata Rias dan Kecantikan',
+                'identifier' => 598110,
+                'value' => 252,
             ],
             [
-                'value' => '73.01.06',
-                'label' => 'Kecamatan Pasimasunggu',
-            ],
-            [
-                'value' => '73.01.07',
-                'label' => 'Kecamatan Pasimarannu',
-            ],
-            [
-                'value' => '73.01.08',
-                'label' => 'Kecamatan Taka Bonerate',
-            ],
-            [
-                'value' => '73.01.09',
-                'label' => 'Kecamatan Pasilambena',
-            ],
-            [
-                'value' => '73.01.10',
-                'label' => 'Kecamatan Pasimasunggu Timur',
-            ],
-            [
-                'value' => '73.01.11',
-                'label' => 'Kecamatan Buki',
-            ],
-            [
-                'value' => '73.02.01',
-                'label' => 'Kecamatan Gantorang',
-            ],
-            [
-                'value' => '73.02.02',
-                'label' => 'Kecamatan Ujung Bulu',
-            ],
-            [
-                'value' => '73.02.03',
-                'label' => 'Kecamatan Bonto Bahari',
-            ],
-            [
-                'value' => '73.02.04',
-                'label' => 'Kecamatan Bonto Tiro',
-            ],
-            [
-                'value' => '73.02.05',
-                'label' => 'Kecamatan Herlang',
-            ],
-            [
-                'value' => '73.02.06',
-                'label' => 'Kecamatan Kajang',
-            ],
-            [
-                'value' => '73.02.07',
-                'label' => 'Kecamatan Bulukumpa',
-            ],
-            [
-                'value' => '73.02.08',
-                'label' => 'Kecamatan Kindang',
-            ],
-            [
-                'value' => '73.02.09',
-                'label' => 'Kecamatan Ujungloe',
-            ],
-            [
-                'value' => '73.02.10',
-                'label' => 'Kecamatan Rilauale',
-            ],
-            [
-                'value' => '73.03.01',
-                'label' => 'Kecamatan Bissappu',
-            ],
-            [
-                'value' => '73.03.02',
-                'label' => 'Kecamatan Bantaeng',
-            ],
-            [
-                'value' => '73.03.03',
-                'label' => 'Kecamatan Eremerasa',
-            ],
-            [
-                'value' => '73.03.04',
-                'label' => 'Kecamatan Tompo Bulu',
-            ],
-            [
-                'value' => '73.03.05',
-                'label' => 'Kecamatan Pajukukang',
-            ],
-            [
-                'value' => '73.03.06',
-                'label' => 'Kecamatan Uluere',
-            ],
-            [
-                'value' => '73.03.07',
-                'label' => 'Kecamatan Gantarang Keke',
-            ],
-            [
-                'value' => '73.03.08',
-                'label' => 'Kecamatan Sinoa',
-            ],
-            [
-                'value' => '73.04.01',
-                'label' => 'Kecamatan Bangkala',
-            ],
-            [
-                'value' => '73.04.02',
-                'label' => 'Kecamatan Tamalatea',
-            ],
-            [
-                'value' => '73.04.03',
-                'label' => 'Kecamatan Binamu',
-            ],
-            [
-                'value' => '73.04.04',
-                'label' => 'Kecamatan Batang',
-            ],
-            [
-                'value' => '73.04.05',
-                'label' => 'Kecamatan Kelara',
-            ],
-            [
-                'value' => '73.04.06',
-                'label' => 'Kecamatan Bangkala Barat',
-            ],
-            [
-                'value' => '73.04.07',
-                'label' => 'Kecamatan Bontoramba',
-            ],
-            [
-                'value' => '73.04.08',
-                'label' => 'Kecamatan Turatea',
-            ],
-            [
-                'value' => '73.04.09',
-                'label' => 'Kecamatan Arungkeke',
-            ],
-            [
-                'value' => '73.04.10',
-                'label' => 'Kecamatan Rumbia',
-            ],
-            [
-                'value' => '73.04.11',
-                'label' => 'Kecamatan Tarowang',
-            ],
-            [
-                'value' => '73.05.01',
-                'label' => 'Kecamatan Mappakasunggu',
-            ],
-            [
-                'value' => '73.05.02',
-                'label' => 'Kecamatan Mangarabombang',
-            ],
-            [
-                'value' => '73.05.03',
-                'label' => 'Kecamatan Polombangkeng Selatan',
-            ],
-            [
-                'value' => '73.05.04',
-                'label' => 'Kecamatan Polombangkeng Utara',
-            ],
-            [
-                'value' => '73.05.05',
-                'label' => 'Kecamatan Galesong Selatan',
-            ],
-            [
-                'value' => '73.05.06',
-                'label' => 'Kecamatan Galesong Utara',
-            ],
-            [
-                'value' => '73.05.07',
-                'label' => 'Kecamatan Pattallassang',
-            ],
-            [
-                'value' => '73.05.08',
-                'label' => 'Kecamatan Sanrobone',
-            ],
-            [
-                'value' => '73.05.09',
-                'label' => 'Kecamatan Galesong',
-            ],
-            [
-                'value' => '73.05.10',
-                'label' => 'Kecamatan Kepulauan Tanakeke',
-            ],
-            [
-                'value' => '73.06.01',
-                'label' => 'Kecamatan Bontonompo',
-            ],
-            [
-                'value' => '73.06.02',
-                'label' => 'Kecamatan Bajeng',
-            ],
-            [
-                'value' => '73.06.03',
-                'label' => 'Kecamatan Tompobullu',
-            ],
-            [
-                'value' => '73.06.04',
-                'label' => 'Kecamatan Tinggimoncong',
-            ],
-            [
-                'value' => '73.06.05',
-                'label' => 'Kecamatan Parangloe',
-            ],
-            [
-                'value' => '73.06.06',
-                'label' => 'Kecamatan Bontomarannu',
-            ],
-            [
-                'value' => '73.06.07',
-                'label' => 'Kecamatan Palangga',
-            ],
-            [
-                'value' => '73.06.08',
-                'label' => 'Kecamatan Somba Upu',
-            ],
-            [
-                'value' => '73.06.09',
-                'label' => 'Kecamatan Bungaya',
-            ],
-            [
-                'value' => '73.06.10',
-                'label' => 'Kecamatan Tombolopao',
-            ],
-            [
-                'value' => '73.06.11',
-                'label' => 'Kecamatan Biringbulu',
-            ],
-            [
-                'value' => '73.06.12',
-                'label' => 'Kecamatan Barombong',
-            ],
-            [
-                'value' => '73.06.13',
-                'label' => 'Kecamatan Pattalasang',
-            ],
-            [
-                'value' => '73.06.14',
-                'label' => 'Kecamatan Manuju',
-            ],
-            [
-                'value' => '73.06.15',
-                'label' => 'Kecamatan Bontolempangang',
-            ],
-            [
-                'value' => '73.06.16',
-                'label' => 'Kecamatan Bontonompo Selatan',
-            ],
-            [
-                'value' => '73.06.17',
-                'label' => 'Kecamatan Parigi',
-            ],
-            [
-                'value' => '73.06.18',
-                'label' => 'Kecamatan Bajeng Barat',
-            ],
-            [
-                'value' => '73.07.01',
-                'label' => 'Kecamatan Sinjai Barat',
-            ],
-            [
-                'value' => '73.07.02',
-                'label' => 'Kecamatan Sinjai Selatan',
-            ],
-            [
-                'value' => '73.07.03',
-                'label' => 'Kecamatan Sinjai Timur',
-            ],
-            [
-                'value' => '73.07.04',
-                'label' => 'Kecamatan Sinjai Tengah',
-            ],
-            [
-                'value' => '73.07.05',
-                'label' => 'Kecamatan Sinjai Utara',
-            ],
-            [
-                'value' => '73.07.06',
-                'label' => 'Kecamatan Bulupoddo',
-            ],
-            [
-                'value' => '73.07.07',
-                'label' => 'Kecamatan Sinjai Borong',
-            ],
-            [
-                'value' => '73.07.08',
-                'label' => 'Kecamatan Tellu Limpoe',
-            ],
-            [
-                'value' => '73.07.09',
-                'label' => 'Kecamatan Pulau Sembilan',
+                'label' => 'Perbankan dan Keuangan Syariah',
+                'identifier' => 922020,
+                'value' => 72,
             ],
         ];
 
-        return response()->json($subdistricts);
-    }
-
-    protected function regencies(): JsonResponse
-    {
-        $regencies = [
+        $quota_sma = [
             [
-                'value' => '73.01',
-                'label' => 'Kabupaten Selayar',
+                // Afirmasi
+                'label' => 'Jalur Afirmasi',
+                'identifier' => 333992,
+                'value' => 150,
             ],
             [
-                'value' => '73.02',
-                'label' => 'Kabupaten Bulukumba',
+                // Mutasi
+                'label' => 'Jalur Perpindahan Tugas Orang Tua',
+                'identifier' => 476632,
+                'value' => 75,
             ],
             [
-                'value' => '73.03',
-                'label' => 'Kabupaten Bantaeng',
+                // Anak Guru
+                'label' => 'Jalur Anak Guru',
+                'identifier' => 939003,
+                'value' => 100,
             ],
             [
-                'value' => '73.04',
-                'label' => 'Kabupaten Jeneponto',
+                // Akademik
+                'label' => 'Jalur Prestasi Akademik',
+                'identifier' => 589846,
+                'value' => 50,
             ],
             [
-                'value' => '73.05',
-                'label' => 'Kabupaten Takalar',
+                // Non Akademik
+                'label' => 'Jalur Prestasi Non Akademik',
+                'identifier' => 891432,
+                'value' => 200,
             ],
             [
-                'value' => '73.06',
-                'label' => 'Kabupaten Gowa',
-            ],
-            [
-                'value' => '73.07',
-                'label' => 'Kabupaten Sinjai',
-            ],
-            [
-                'value' => '73.08',
-                'label' => 'Kabupaten Bone',
-            ],
-            [
-                'value' => '73.09',
-                'label' => 'Kabupaten Maros',
-            ],
-            [
-                'value' => '73.10',
-                'label' => 'Kabupaten Pangkajene Kepulauan',
-            ],
-            [
-                'value' => '73.11',
-                'label' => 'Kabupaten Barru',
-            ],
-            [
-                'value' => '73.12',
-                'label' => 'Kabupaten Soppeng',
-            ],
-            [
-                'value' => '73.13',
-                'label' => 'Kabupaten Wajo',
-            ],
-            [
-                'value' => '73.14',
-                'label' => 'Kabupaten Sidenreng Rappang',
-            ],
-            [
-                'value' => '73.15',
-                'label' => 'Kabupaten Pinrang',
-            ],
-            [
-                'value' => '73.16',
-                'label' => 'Kabupaten Enrekang',
-            ],
-            [
-                'value' => '73.17',
-                'label' => 'Kabupaten Luwu',
-            ],
-            [
-                'value' => '73.18',
-                'label' => 'Kabupaten Tana Toraja',
-            ],
-            [
-                'value' => '73.22',
-                'label' => 'Kabupaten Luwu Utara',
-            ],
-            [
-                'value' => '73.24',
-                'label' => 'Kabupaten Luwu Timur',
-            ],
-            [
-                'value' => '73.26',
-                'label' => 'Kabupaten Toraja Utara',
-            ],
-            [
-                'value' => '73.71',
-                'label' => 'Kota Makassar',
-            ],
-            [
-                'value' => '73.72',
-                'label' => 'Kota Parepare',
-            ],
-            [
-                'value' => '73.73',
-                'label' => 'Kota Palopo',
+                // Zonasi
+                'label' => 'Jalur Zonasi',
+                'identifier' => 505066,
+                'value' => 250,
             ],
         ];
 
-        return response()->json($regencies);
+        $quota_sma_full_boarding = [
+            [
+                'label' => 'Jalur Boarding School',
+                'identifier' => 919851,
+                'value' => 500,
+            ],
+        ];
+
+        $quota_sma_half_boarding = array_merge($quota_sma, $quota_sma_full_boarding);
+
+        if ($unit == 1) {
+            return response()->json($quota_sma);
+        } elseif ($unit == 2) {
+            return response()->json($quota_smk);
+        } elseif ($unit == 3) {
+            return response()->json($quota_sma_full_boarding);
+        } elseif ($unit == 4) {
+            return response()->json($quota_sma_half_boarding);
+        } else {
+            return response()->json(['error' => 'Quota Tidak Ditemukan'], 404);
+        }
     }
 
     protected function school(int|string $id): JsonResponse

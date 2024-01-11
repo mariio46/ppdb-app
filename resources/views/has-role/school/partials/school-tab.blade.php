@@ -14,7 +14,7 @@
         </x-link>
     @endif
 @elseif ($unit == 'SMK')
-    <x-link class="mb-2" :variant="request()->routeIs('sekolah.major-quota') ? 'default' : 'flat'" :color="request()->routeIs('sekolah.major-quota') ? 'primary' : 'secondary'" :href="route('sekolah.major-quota', [$npsn, $unit])">
+    <x-link class="mb-2" :variant="request()->routeIs('sekolah.quota') ? 'default' : 'flat'" :color="request()->routeIs('sekolah.quota') ? 'primary' : 'secondary'" :href="route('sekolah.quota', [$npsn, $unit])">
         <x-tabler-chart-pie />
         Jurusan dan Kuota
     </x-link>

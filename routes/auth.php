@@ -85,9 +85,16 @@ Route::controller(SchoolController::class)->group(function () {
 
 Route::controller(SchoolDataController::class)->group(function () {
     Route::get('data-sekolah', 'index')->name('school-data.index');
+    Route::get('data-sekolah/edit', 'edit')->name('school-data.edit');
+    Route::get('data-sekolah/quota', 'quota')->name('school-data.quota');
+    Route::get('data-sekolah/quota/add', 'addQuota')->name('school-data.add-quota');
+    Route::get('data-sekolah/quota/edit/{identifier}', 'editQuota')->name('school-data.edit-quota');
 
-    Route::get('data-sekolah/json/school/{id}', 'school');
     Route::get('data-sekolah/json/schools', 'schools');
+    Route::get('data-sekolah/json/form-data-percentage', 'formDataPercentage');
+    Route::get('data-sekolah/json/school/{id}', 'school');
+    Route::get('data-sekolah/json/major-quota/{identifier}', 'majorQuota');
+    Route::get('data-sekolah/json/school-quota/{unit}', 'schoolsQuota');
 });
 
 Route::controller(OperatorController::class)->group(function () {

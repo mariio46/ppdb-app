@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => "Edit Sekolah Asal"])
+@extends('layouts.has-role.auth', ['title' => 'Edit Sekolah Asal'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
@@ -33,7 +33,7 @@
             <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
         </div>
     @endif
-    
+
     <div class="content-body">
         <div class="card">
             <div class="card-header">
@@ -42,18 +42,18 @@
                 </div>
             </div>
             <div class="card-body my-25">
-                <form action="{{ route('sekolah-asal.update') }}" method="post" id="update-form">
+                <form id="update-form" action="{{ route('sekolah-asal.update') }}" method="post">
                     @csrf
-                    <x-input type="hidden" name="id" value="{{ $id }}" />
+                    <x-input name="id" type="hidden" value="{{ $id }}" />
                     <div class="row">
                         <div class="col-sm-6 col-12">
                             <div class="mb-2">
                                 <x-label>Nomor Pokok Sekolah Nasional (NPSN)</x-label>
-                                <x-input name="npsn" id="npsn" placeholder="Masukkan NPSN.." value="{{ old('npsn') }}" />
+                                <x-input id="npsn" name="npsn" value="{{ old('npsn') }}" placeholder="Masukkan NPSN.." />
                             </div>
                             <div class="mb-2">
                                 <x-label>Nama Sekolah</x-label>
-                                <x-input name="nama" id="nama" placeholder="Masukkan Nama Sekolah.." value="{{ old('nama') }}" />
+                                <x-input id="nama" name="nama" value="{{ old('nama') }}" placeholder="Masukkan Nama Sekolah.." />
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
 
                 <x-checkbox class="form-check-danger" identifier="confirmation" label="Saya yakin untuk menghapus data sekolah ini" variant="danger" />
 
-                <x-button class="mt-2" data-bs-toggle="modal" data-bs-target="#delete-school" type="button" color="danger" id="delete-btn" disabled>Hapus Data Sekolah</x-button>
+                <x-button class="mt-2" id="delete-btn" data-bs-toggle="modal" data-bs-target="#delete-school" type="button" color="danger" disabled>Hapus Data Sekolah</x-button>
 
                 <x-modal modal_id="delete-school" label_by="deleteSchoolModal">
                     <x-modal.header>
@@ -89,9 +89,9 @@
                         <p>Apakah Anda yakin ingin menghapus data sekolah ini? Data yang sudah di hapus tidak bisa di kembalikan kembali</p>
                     </x-modal.body>
                     <x-modal.footer class="justify-content-center mb-2">
-                        <form action="{{ route('sekolah-asal.delete') }}" method="post" id="delete-form">
+                        <form id="delete-form" action="{{ route('sekolah-asal.delete') }}" method="post">
                             @csrf
-                            <x-input type="hidden" name="delete-btn" value="{{ $id }}" />
+                            <x-input name="delete-btn" type="hidden" value="{{ $id }}" />
                             <x-button type="submit" color="danger">Ya, Hapus</x-button>
                         </form>
                         <x-button data-bs-dismiss="modal" color="secondary">Batalkan</x-button>
@@ -148,7 +148,7 @@
             }
 
             if (deletebtn.length) {
-                checkbox.change(function () {
+                checkbox.change(function() {
                     deletebtn.prop('disabled', !checkbox.is(':checked'));
                 });
             }
