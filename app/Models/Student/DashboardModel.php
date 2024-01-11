@@ -2,21 +2,23 @@
 
 namespace App\Models\Student;
 
+use App\Models\Base;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class DashboardModel extends BaseModel
+class DashboardModel extends Base
 {
+    // 01.001
     public function getDataStudentById(string $id): array
     {
-        $get = $this->get('siswa/byid?id='.$id);
+        $get = $this->swGetWithToken('siswa/byid?id=' . $id);
 
         return $get;
     }
 
     public function getDataScoreAll(string $id): array
     {
-        $get = $this->get('siswa/nilai?id='.$id);
+        $get = $this->swGetWithToken('siswa/nilai?id=' . $id);
 
         if ($get['status_code'] == '400') {
             return [
@@ -58,7 +60,7 @@ class DashboardModel extends BaseModel
 
     public function getDataScoreBySemester(string $id, int $semester): array
     {
-        $get = $this->get('siswa/nilai?id='.$id.'&semester='.$semester);
+        $get = $this->swGetWithToken('siswa/nilai?id=' . $id . '&semester=' . $semester);
 
         return $get;
     }
@@ -77,7 +79,7 @@ class DashboardModel extends BaseModel
             'id' => $id,
         ];
 
-        $result = $this->post('siswa/pertama/login', $data);
+        $result = $this->swPostWithToken('siswa/pertama/login', $data);
 
         return $result;
     }
@@ -91,7 +93,7 @@ class DashboardModel extends BaseModel
 
         $data = [
             'nik' => $request->post('nik'),
-            'tanggal_lahir' => $request->post('birthYear').'-'.$request->post('birthMonth').'-'.$request->post('birthDay'),
+            'tanggal_lahir' => $request->post('birthYear') . '-' . $request->post('birthMonth') . '-' . $request->post('birthDay'),
             'tempat_lahir' => $request->post('birthPlace'),
             'jenis_kelamin' => $request->post('gender'),
             'email' => $request->post('email'),
@@ -118,7 +120,7 @@ class DashboardModel extends BaseModel
             'id' => session()->get('stu_id'),
         ];
 
-        $result = $this->post('siswa/update', $data);
+        $result = $this->swPostWithToken('siswa/update', $data);
 
         return $result;
     }
@@ -130,7 +132,7 @@ class DashboardModel extends BaseModel
 
         $response = Http::withHeaders(['waktu' => 1, 'sw-code' => session()->get('stu_token')])
             ->attach('pasfoto', file_get_contents($file->path()), $file->getClientOriginalName())
-            ->post($this->domain.'siswa/update/profil', $data);
+            ->post($this->BASE_API_URL . 'siswa/update/profil', $data);
 
         return [
             'status_code' => $response->status(),
@@ -140,18 +142,18 @@ class DashboardModel extends BaseModel
 
     public function postUpdateStudentScore(int $semester, Request $request): array
     {
-        $sm = 'sm'.$semester.'_';
+        $sm = 'sm' . $semester . '_';
 
         $data = [
             'id' => session()->get('stu_id'),
-            $sm.'mtk' => $request->post('math'),
-            $sm.'ipa' => $request->post('science'),
-            $sm.'ips' => $request->post('social'),
-            $sm.'bid' => $request->post('indonesian'),
-            $sm.'big' => $request->post('english'),
+            $sm . 'mtk' => $request->post('math'),
+            $sm . 'ipa' => $request->post('science'),
+            $sm . 'ips' => $request->post('social'),
+            $sm . 'bid' => $request->post('indonesian'),
+            $sm . 'big' => $request->post('english'),
         ];
 
-        $result = $this->post('siswa/nilai/update', $data);
+        $result = $this->swPostWithToken('siswa/nilai/update', $data);
 
         return $result;
     }
@@ -162,7 +164,7 @@ class DashboardModel extends BaseModel
             'id' => $id,
         ];
 
-        $result = $this->post('siswa/kunci', $data);
+        $result = $this->swPostWithToken('siswa/kunci', $data);
 
         return $result;
     }

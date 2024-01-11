@@ -1,7 +1,7 @@
-@props(['hide' => 'n', 'color' => 'black', 'label', 'identifier'])
+@props(['hide' => 'n', 'color' => 'black', 'label', 'identifier', 'value' => ''])
 
 <tr id="tr{{ $identifier }}" style="@if ($hide == 'y') display: none; @endif">
-    <td class="pe-0 text-{{ $color }}" style="width: 35%;">{{ $label }}</td>
-    <td style="width: 5%;">:</td>
-    <td class="ps-0" id="{{ $identifier }}" style="width: 60%;"></td>
+    <td class="px-0 text-break text-{{ $color }}" style="width: 35%;">{{ $label }}</td>
+    <td class="px-1" style="width: 5%;">:</td>
+    <td class="px-0 text-break" id="{{ $identifier }}" style="width: 60%;">{{ $value }}</td>
 </tr>

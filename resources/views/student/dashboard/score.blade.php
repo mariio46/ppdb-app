@@ -6,29 +6,14 @@
 @endsection
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Data Diri</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb breadcrumb-slash">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('student.personal') }}">Data Diri</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Edit Nilai
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-breadcrumb title="Data Diri">
+        <x-breadcrumb-item to="{{ route('student.personal') }}" title="Data Diri" />
+        <x-breadcrumb-active title="Edit Nilai" />
+    </x-breadcrumb>
 
-    @if (session()->get('scoreStatus'))
-        <div class="alert alert-{{ session()->get('scoreStatus') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('scoreMsg') }}</p>
+    @if (session()->get('stat'))
+        <div class="alert alert-{{ session()->get('stat') }} p-1">
+            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
         </div>
     @endif
 
@@ -149,5 +134,56 @@
     <script>
         var semester = {{ $semester ?? 0 }};
     </script>
-    <script src="/js/student/pages/dashboard/update-score-v1.1.1.js"></script>
+    {{-- <script src="/js/student/pages/dashboard/update-score-v1.1.1.js"></script> --}}
+    <script>
+        $(function() {
+            ('use strict');
+
+            var formEditScore = $('#formEditScore'),
+                subjects = ['math', 'indonesian', 'english', 'science', 'social'],
+                rulesConf = {
+                    required: true,
+                    number: true,
+                    min: 0, 
+                    max: 100
+                },
+                messagesConf = {
+                    required: '*Nilai harus diisi.',
+                    number: '*Nilai harus dalam bentuk angka.',
+                    min: '*Masukkan minimal 0.',
+                    max: '*Masukkan maksimal 100.'
+                };
+
+            if (formEditScore.length) {
+                let mrules = {},
+                mmessages = {};
+
+                subjects.forEach(subject => {
+                    mrules[subject] = rulesConf;
+                    mmessages[subject] = messagesConf;
+                });
+
+                formEditScore.validate({
+                    rules: mrules,
+                    messages: mmessages
+                });
+            }
+
+            $.ajax({
+                url: '/json/personal-data/get-student-score/' + semester,
+                method: 'get',
+                dataType: 'json',
+                success: function(scores) {
+                let score = scores.data;
+                let sm = "sm" + semester + "_";
+
+                $('#math').val(score[sm + 'mtk']);
+                $('#indonesian').val(score[sm + 'bid']);
+                $('#english').val(score[sm + 'big']);
+                $('#science').val(score[sm + 'ipa']);
+                $('#social').val(score[sm + 'ips']);
+                }
+            });
+        });
+    </script>
 @endpush
