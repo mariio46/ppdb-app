@@ -276,12 +276,17 @@
             
             for (let i = 0; i < range.length; i++) {
                 let dt = range[i].toISOString().split('T')[0].toString();
+                console.log('dt:', range.length);
                 if (data.length > 0) {
                     let rangeData = data.find(function(data) {
                         return data.tanggal == dt;
-                    });
+                    }) || [];
                     
-                    element.append(generateRow(dt, color, rangeData.jam_mulai + ' - ' + rangeData.jam_selesai + ' WITA'));
+                    if (rangeData.length > 0) {
+                        element.append(generateRow(dt, color, rangeData.jam_mulai + ' - ' + rangeData.jam_selesai + ' WITA'));
+                    } else {
+                        element.append(generateRow(dt, color, '-'));
+                    }
                 } else {
                     element.append(generateRow(dt, color, '-'));
                 }

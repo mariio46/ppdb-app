@@ -180,17 +180,25 @@ $(function() {
                     if (d.batas.length > 0) {
                         let rangeData = d.batas.find(function(batas) {
                             return batas.tanggal == dt;
-                        });
+                        }) || [];
 
-                        id = rangeData.batas_id;
-    
-                        let sData = rangeData.jam_mulai.split('.');
-                        sh = sData[0];
-                        sm = sData[1];
-                        
-                        let eData = rangeData.jam_selesai.split('.');
-                        eh = eData[0];
-                        em = eData[1];
+                        if (rangeData.length > 0) {
+                            id = rangeData.batas_id;
+        
+                            let sData = rangeData.jam_mulai.split('.');
+                            sh = sData[0];
+                            sm = sData[1];
+                            
+                            let eData = rangeData.jam_selesai.split('.');
+                            eh = eData[0];
+                            em = eData[1];
+                        } else {
+                            id = null;
+                            sh = null;
+                            sm = null;
+                            eh = null;
+                            em = null;
+                        }
                     }
 
                     let j = i + 1;

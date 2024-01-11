@@ -196,7 +196,7 @@ $(function() {
             method: 'get',
             dataType: 'json',
             success: function(data) {
-                let d = data.data;
+                let d = data.data[0];
                 let smaList = d.sma.map(function(sma) {return sma.kode_jalur});
                 let smkList = d.smk.map(function(smk) {return smk.kode_jalur});
 
