@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => "Detail Siswa"])
+@extends('layouts.has-role.auth', ['title' => 'Detail Siswa'])
 
 @section('styles')
     <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">

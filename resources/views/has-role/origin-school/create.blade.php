@@ -37,7 +37,7 @@
                 <div class="card-title">Tambah Sekolah</div>
             </div>
             <div class="card-body">
-                <form action="{{ route('sekolah-asal.store') }}" method="post" id="create-form">
+                <form id="create-form" action="{{ route('sekolah-asal.store') }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6">
@@ -51,10 +51,10 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="d-flex align-items-center justify-content-start gap-2">
                         <x-button type="submit" color="success">Simpan Perubahan</x-button>
-                        <x-link href="{{ route('sekolah-asal.index') }}" type="button" color="secondary" variant="outline">Batalkan</x-link>
+                        <x-link type="button" href="{{ route('sekolah-asal.index') }}" color="secondary" variant="outline">Batalkan</x-link>
                     </div>
                 </form>
             </div>

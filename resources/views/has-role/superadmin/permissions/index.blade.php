@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Roles'])
+@extends('layouts.has-role.auth', ['title' => 'Permissions'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
@@ -37,9 +37,8 @@
                 <table class="table table-schools">
                     <thead>
                         <tr class="table-light">
-                            <th scope="col">NAMA ROLES</th>
-                            <th scope="col">TOTAL USER</th>
-                            <th scope="col">TOTAL PERMISSION</th>
+                            <th scope="col">NAMA PERMISSION</th>
+                            <th scope="col">KETERANGAN</th>
                             <th scope="col">DETAIL</th>
                         </tr>
                     </thead>
@@ -61,30 +60,28 @@
             if (table.length) {
                 var tb = table.DataTable({
                     ajax: {
-                        url: '/panel/roles/json/roles',
+                        url: '/panel/permissions/json/permissions',
                         dataSrc: ''
                     },
                     columns: [{
                             data: 'name'
                         },
                         {
-                            data: 'user_count'
-                        },
-                        {
-                            data: 'permissions',
-                            render: (data, type, row) => row.id === 1 ? '*' : data.length,
+                            data: 'keterangan'
                         },
                         {
                             data: 'id',
-                            render: (data, type, row) => `<a href="/panel/roles/${data}" class="btn btn-primary">Lihat Detail</a>`,
+                            render: function(data, type, row) {
+                                return `<a href="/panel/permissions/edit/${data}" class="btn btn-primary">Lihat Detail</a>`;
+                            }
                         },
                     ],
 
                     // Styling Table
-                    columnDefs: [{
-                        targets: [1, 2, 3],
-                        className: 'text-center'
-                    }],
+                    // columnDefs: [{
+                    //     targets: 3,
+                    //     className: 'text-center'
+                    // }],
 
                     dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-6 d-flex"lf><"col-6"<"add-button">>>>
                     <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>
@@ -116,7 +113,7 @@
                     }
                 });
 
-                $("div.add-button, div.add-button-sm").html('<a href="/panel/roles/create" class="btn btn-success">+ Tambah Role</a>');
+                $("div.add-button, div.add-button-sm").html('<a href="/panel/permissions/create" class="btn btn-success">+ Tambah Permission</a>');
                 $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
                 $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
             }

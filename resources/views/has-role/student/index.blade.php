@@ -26,14 +26,14 @@
                 </div>
             </div>
             <div class="card-body px-0">
-                <form action="#" id="search-form">
+                <form id="search-form" action="#">
                     <div class="px-2 row">
                         <div class="col-lg-6 col-12 mb-1">
                             <x-input id="nisn" name="nisn" placeholder="Cari NISN.." />
                         </div>
                         <div class="col-auto">
-                            <x-button type="button" id="search-btn" withIcon="true"><x-tabler-search style="width: 1rem; height: 1rem;" /> Cari</x-button>
-                            <x-button type="button" id="search-reset-btn" variant="outline" color="secondary">Reset</x-button>
+                            <x-button id="search-btn" type="button" withIcon="true"><x-tabler-search style="width: 1rem; height: 1rem;" /> Cari</x-button>
+                            <x-button id="search-reset-btn" type="button" variant="outline" color="secondary">Reset</x-button>
                         </div>
                     </div>
                 </form>
@@ -43,9 +43,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">NAMA SISWA</th>
-                                <th scope="col" class="text-center">NISN</th>
+                                <th class="text-center" scope="col">NISN</th>
                                 <th scope="col">ASAL SEKOLAH</th>
-                                <th scope="col" class="text-end">DETAIL</th>
+                                <th class="text-end" scope="col">DETAIL</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,8 +165,7 @@
                         url: '/panel/siswa/json/get-list',
                         dataSrc: ""
                     },
-                    columns: [
-                        {
+                    columns: [{
                             data: "nama"
                         },
                         {
@@ -185,8 +184,7 @@
                             }
                         }
                     ],
-                    columnDefs: [
-                        {
+                    columnDefs: [{
                             targets: 1,
                             className: 'text-center'
                         },
