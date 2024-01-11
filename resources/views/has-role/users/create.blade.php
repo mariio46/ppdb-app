@@ -1,0 +1,199 @@
+@extends('layouts.has-role.auth', ['title' => 'Tambah user'])
+
+@section('vendorStyles')
+    <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
+@endsection
+
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
+@endsection
+
+@section('content')
+    <div class="content-body">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Tambah User</h4>
+            </div>
+            <div class="card-body">
+
+                <form action="#">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-2">
+                                <x-label for="name">Nama</x-label>
+                                <x-input id="name" name="name" placeholder="Masukkan nama" />
+                            </div>
+                            <div class="mb-2">
+                                <x-label for="username">Username</x-label>
+                                <x-input id="username" name="username" placeholder="Masukkan username" />
+                            </div>
+                            <div class="mb-2">
+                                <x-label for="status">Status</x-label>
+                                <x-select class="select2 form-select" id="status" name="status" data-placeholder="Pilih Status">
+                                    <x-empty-option />
+                                    <option value="aktif">Aktif</option>
+                                    <option value="tidak_aktif">Tidak Aktif</option>
+                                </x-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-2">
+                                <x-label for="role">Role</x-label>
+                                <x-select class="select2 form-select" id="role" name="role" data-placeholder="Pilih Role">
+                                    <x-empty-option />
+                                </x-select>
+                            </div>
+                            <div class="mb-2" id="input-wilayah" style="display: none">
+                                <x-label for="wilayah">Wilayah</x-label>
+                                <x-select class="select2 form-select" id="wilayah" name="wilayah" data-placeholder="Pilih Wilayah">
+                                    <x-empty-option />
+                                </x-select>
+                            </div>
+                            <div class="mb-2" id="input-sekolah" style="display: none">
+                                <x-label for="sekolah">Sekolah</x-label>
+                                <x-select class="select2 form-select" id="sekolah" name="sekolah" data-placeholder="Pilih Sekolah">
+                                    <x-empty-option />
+                                </x-select>
+                            </div>
+                            <div class="mb-2" id="input-sekolah-asal" style="display: none">
+                                <x-label for="sekolah_asal">Sekolah Asal</x-label>
+                                <x-select class="select2 form-select" id="sekolah_asal" name="sekolah_asal" data-placeholder="Pilih Sekolah Asal">
+                                    <x-empty-option />
+                                </x-select>
+                            </div>
+                        </div>
+                    </div>
+                    <x-separator marginY="2" />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4 class="card-title"> Password </h4>
+                            <x-label for="password">Password</x-label>
+                            <x-input-password>
+                                <x-input id="password" name="password" type="password" autocomplete="password" />
+                            </x-input-password>
+                            <x-label for="password_confirmation">Masukkan Ulang Password</x-label>
+                            <x-input-password>
+                                <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="password_confirmation" />
+                            </x-input-password>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
+                        <x-button color="success">Tambah User</x-button>
+                        <x-link href="{{ route('users.index') }}" color="secondary">Batalkan</x-link>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    <script>
+        $(function() {
+            'use strict';
+
+            var role = $('#role'),
+                select = $('.select2'),
+                wilayah = $('#wilayah'),
+                sekolah = $('#sekolah'),
+                sekolah_asal = $('#sekolah_asal')
+
+            select.each(function() {
+                var $this = $(this);
+                $this.wrap('<div class="position-relative"></div>');
+                $this.select2({
+                    // the following code is used to disable x-scrollbar when click in select input and
+                    // take 100% width in responsive also
+                    dropdownAutoWidth: true,
+                    width: '100%',
+                    dropdownParent: $this.parent()
+                });
+            });
+
+            $.ajax({
+                url: '/panel/users/json/rolesCollections',
+                method: 'get',
+                dataType: 'json',
+                success: function(roles) {
+                    role.empty().append('<option value=""></option>');
+
+                    roles.forEach(item => {
+                        role.append(`<option value="${item.id}">${item.name}</option>`)
+                    })
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to get data roles.', status, error);
+                }
+            })
+
+            $('#role').change(function() {
+                let value = $(this).val()
+
+                $('#input-wilayah, #input-sekolah, #input-sekolah-asal').hide();
+
+                switch (value) {
+                    case '3':
+                        $('#input-wilayah').show();
+                        break;
+                    case '4':
+                        $('#input-sekolah').show();
+                        break;
+                    case '5':
+                        $('#input-sekolah-asal').show();
+                        break;
+                }
+                // Handle other cases or defaults if needed
+            })
+
+
+            $.ajax({
+                url: '/panel/users/json/regionsCollections',
+                method: 'get',
+                dataType: 'json',
+                success: function(regions) {
+                    wilayah.empty().append('<option value=""></option>');
+                    regions.forEach(region => {
+                        wilayah.append(`<option value="${region.id}">${region.name}</option>`)
+                    })
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to get data wilayah.', status, error);
+                }
+            })
+
+            $.ajax({
+                url: '/panel/users/json/schoolsCollections',
+                method: 'get',
+                dataType: 'json',
+                success: function(schools) {
+                    sekolah.empty().append('<option value=""></option>');
+                    schools.forEach(school => {
+                        sekolah.append(`<option value="${school.id}">${school.name}</option>`)
+                    })
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to get data sekolah.', status, error);
+                }
+            })
+
+            $.ajax({
+                url: '/panel/users/json/originSchoolsCollections',
+                method: 'get',
+                dataType: 'json',
+                success: function(origin_schools) {
+                    sekolah_asal.empty().append('<option value=""></option>');
+                    origin_schools.forEach(school => {
+                        sekolah_asal.append(`<option value="${school.id}">${school.name}</option>`)
+                    })
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to get data sekolah asal.', status, error);
+                }
+            })
+        })
+    </script>
+@endpush
