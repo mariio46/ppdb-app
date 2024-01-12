@@ -128,7 +128,7 @@ class VerificationController extends Controller
                 'sm5_mtk' => '77',
                 'sm5_ipa' => '66',
                 'sm5_ips' => '76',
-                'jalur' => 'KA',
+                'jalur' => 'AE',
                 'jenis_afirmasi' => 'disabilitas',
                 'no_pkh' => '',
                 'prestasi_jenis' => 'Beregu',
