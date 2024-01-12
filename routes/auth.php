@@ -144,36 +144,25 @@ Route::controller(RankController::class)->group(function () {
 
 Route::controller(ScheduleController::class)->group(function () {
     Route::get('tahap-jadwal', 'index')->name('schedules.index');
-    Route::get('tahap-jadwal/get-data', 'getDataSchedules')->name('schedules.get.data');
-
     Route::get('tahap-jadwal/tambah', 'create')->name('schedules.create.index');
-    Route::post('tahap-jadwal/save-data', 'saveData')->name('schedules.create');
-
     Route::get('tahap-jadwal/d/{id}', 'detail')->name('schedules.detail');
-    Route::get('tahap-jadwal/d/{id}/get-data', 'detailData')->name('schedules.get.detail');
+
+    Route::post('tahap-jadwal/save-data', 'saveData')->name('schedules.create');
     Route::post('tahap-jadwal/remove', 'removeData')->name('schedules.remove');
 
     Route::get('tahap-jadwal/e/{id}', 'edit')->name('schedules.edit.index');
     Route::get('tahap-jadwal/get-single-data/{id}', 'getDataSchedule')->name('schedules.get.single');
-    Route::post('tahap-jadwal/update-data', 'updateData')->name('schedules.edit');
+    Route::post('tahap-jadwal/update-data/{id}', 'updateData')->name('schedules.edit');
 
-    Route::get('tahap-jadwal/e-regis/{id}', 'editRegistration')->name('schedules.edit.regis');
-    Route::get('tahap-jadwal/e-regis/{id}/get-data', 'getDataRegisSchedule')->name('schedules.get.regis');
-    Route::post('tahap-jadwal/e-regis/{id}/update-data', 'updateRegistration')->name('schedules.update.regis');
+    Route::get('tahap-jadwal/e-{type}/{id}', 'editTime')->name('schedules.edit.time');
+    Route::post('tahap-jadwal/e-{type}/{id}/update-data', 'updateTime')->name('schedules.update.time');
 
-    Route::get('tahap-jadwal/e-verif/{id}', 'editVerification')->name('schedules.edit.verif');
-    Route::get('tahap-jadwal/e-verif/{id}/get-data', 'getDataVerifSchedule')->name('schedules.get.verif');
-    Route::post('tahap-jadwal/e-verif/{id}/update-data', 'updateVerification')->name('schedules.update.verif');
-
-    Route::get('tahap-jadwal/e-announce/{id}', 'editAnnouncement')->name('schedules.edit.announce');
-    Route::get('tahap-jadwal/e-announce/{id}/get-data', 'getDataAnnounceSchedule')->name('schedules.get.announce');
     Route::post('tahap-jadwal/e-announce/{id}/update-data', 'updateAnnouncement')->name('schedules.update.announce');
 
-    Route::get('tahap-jadwal/e-reregis/{id}', 'editReRegistration')->name('schedules.edit.reregis');
-    Route::get('tahap-jadwal/e-reregis/{id}/get-data', 'getDataReRegisSchedule')->name('schedules.get.reregis');
-    Route::post('tahap-jadwal/e-reregis/{id}/update-data', 'updateReRegistration')->name('schedules.update.reregis');
-
-    Route::get('tahap-jadwal/jalur/{type}', 'getTracks')->name('schedules.tracks');
+    Route::get('tahap-jadwal/json/d/{id}/get-data', 'detailData')->name('schedules.get.detail');
+    Route::get('tahap-jadwal/json/e-{type}/{id}/get-data', 'getDataTime')->name('schedules.get.time');
+    Route::get('tahap-jadwal/json/get-data', 'getDataSchedules')->name('schedules.get.data');
+    Route::get('tahap-jadwal/json/jalur/{type}', 'getTracks')->name('schedules.tracks');
 });
 
 Route::controller(FaqController::class)->group(function () {

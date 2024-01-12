@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Edit Jadwal Verifikasi'])
+@extends('layouts.has-role.auth', ['title' => 'Edit Jadwal ' . ucwords(strtr($type, '_', ' '))])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
                             </a>
                         </li>
                         <li class="breadcrumb-item active">
-                            Edit Jadwal Verifikasi
+                            Edit Jadwal {{ ucwords(strtr($type, '_', ' ')) }}
                         </li>
                     </ol>
                 </div>
@@ -44,23 +44,31 @@
 <div class="content-body row">
     <div class="col-12">
         <div class="card">
-            <form action="{{ route('schedules.update.verif', [$id]) }}" method="post" id="formData">
+            <form action="{{ route('schedules.update.time', [$type, $id]) }}" method="post" id="formData">
                 @csrf
                 <div class="card-body px-0">
-                    <h5 class="card-title text-primary mb-2 px-2">Jadwal Verifikasi Manual Tahap <span id="phase"></span></h5>
+                    <h5 class="card-title text-primary mb-2 px-2">Jadwal {{ ucwords(strtr($type, '_', ' ')) }} Tahap <span id="phs"></span></h5>
 
-                    <input type="hidden" name="phase" id="phase" value="{{ $id }}">
                     <input type="hidden" name="length" id="length">
 
                     <table class="table table-striped border-bottom">
                         <thead>
                             <tr>
-                                <th class="py-2">Hari, Tanggal</th>
-                                <th class="py-2">Jam Mulai</th>
-                                <th class="py-2">Jam Selesai</th>
+                                <th class="py-2 col-6">Hari, Tanggal</th>
+                                <th class="py-2 col-3">Jam Mulai</th>
+                                <th class="py-2 col-3">Jam Selesai</th>
                             </tr>
                         </thead>
-                        <tbody id="dateSections"></tbody>
+                        <tbody id="dateSections">
+                            <tr>
+                                <td colspan="3">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <span class="spinner-grow spinner-grow-sm me-1" role="status"></span>
+                                        Loading...
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                     
                     <div class="px-2 mt-2">
@@ -81,7 +89,8 @@
 
 @push('scripts')
 <script>
-    var idSchedule = '{{ $id }}';
+    var id_schedule = '{{ $id }}',
+      type_schedule = '{{ $type }}';
 </script>
 <script>
 $(function() {
@@ -102,15 +111,18 @@ $(function() {
 
     function generate() {
         $.ajax({
-            url: '/panel/tahap-jadwal/e-verif/' + idSchedule + '/get-data',
+            url: `/panel/tahap-jadwal/json/e-${type_schedule}/${id_schedule}/get-data`,
             method: 'get',
             dataType: 'json',
             success: function(data) {
-                console.log(data);
+                section.empty();
+                
                 let d = data.data;
+                console.log(d);
+                $('#phs').text(d.tahap);
 
-                var start = new Date(d.verifikasi_mulai);
-                var end = new Date(d.verifikasi_selesai);
+                var start = new Date(d[`${type_schedule}_mulai`]);
+                var end = new Date(d[`${type_schedule}_selesai`]);
                 var range = [];
 
                 // looping to get dates of range
@@ -123,41 +135,39 @@ $(function() {
 
                 for (var i = 0; i < range.length; i++) {
                     let dt = range[i].toISOString().split('T')[0].toString();
-                    let id = null, sh = null, sm = null, eh = null, em = null;
+                    let id = null, start_time = null, end_time;
                     if (d.batas.length > 0) {
                         let rangeData = d.batas.find(function(batas) {
                             return batas.tanggal == dt;
-                        }) || [];
+                        }) || {};
 
-                        if (rangeData.length > 0) {
+                        if (Object.entries(rangeData).length > 0) {
                             id = rangeData.batas_id;
-        
-                            let sData = rangeData.jam_mulai.split('.');
-                            sh = sData[0];
-                            sm = sData[1];
-                            
-                            let eData = rangeData.jam_selesai.split('.');
-                            eh = eData[0];
-                            em = eData[1];
+                            start_time = rangeData.jam_mulai;
+                            end_time = rangeData.jam_selesai;
                         }
                     }
 
                     let j = i + 1;
-                    let row = '<tr>'
-                        + '<td>'
-                        + generateDate(j, id, range[i])
-                        + '</td>'
-                        + '<td class="py-2"><div class="row">'
-                        + generateHours('sH' + j, sh)
-                        + generateMinutes('sM' + j, sm)
-                        + '</div></td>'
-                        + '<td><div class="row">'
-                        + generateHours('eH' + j, eh)
-                        + generateMinutes('eM' + j, em)
-                        + '</div></td>'
-                        + '</tr>';
+                    let r = `<tr>
+                                <td>
+                                    ${generateDate(j, id, range[i])}
+                                </td>
+                                <td class="py-2">
+                                    <div class="row">
+                                        <input type="time" class="form-control" name="s_${j}" id="s_${j}" placeholder="Waktu Mulai" value="${start_time}">
+                                        <input type="hidden" name="current_s_${j}" id="current_s_${j}" value="${start_time}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <input type="time" class="form-control" name="e_${j}" id="e_${j}" placeholder="Waktu Selesai" value="${end_time}">
+                                        <input type="hidden" name="current_e_${j}" id="current_e_${j}" value="${end_time}">
+                                    </div>
+                                </td>
+                            </tr>`;
 
-                    section.append(row);
+                    section.append(r);
 
                     $('.select2').each(function() {
                         var $this = $(this);
@@ -167,10 +177,8 @@ $(function() {
                         });
                     });
 
-                    $('#sH' + j).rules('add', {required: true, messages: {'required': 'Harus diisi.'}});
-                    $('#sM' + j).rules('add', {required: true, messages: {'required': 'Harus diisi.'}});
-                    $('#eH' + j).rules('add', {required: true, messages: {'required': 'Harus diisi.'}});
-                    $('#eM' + j).rules('add', {required: true, messages: {'required': 'Harus diisi.'}});
+                    $(`#s_${j}`).rules('add', {required: true, messages: {'required': 'Harus diisi.'}});
+                    $(`#e_${j}`).rules('add', {required: true, messages: {'required': 'Harus diisi.'}});
                 }
             },
             error: function (xhr, status, error) {
@@ -182,38 +190,9 @@ $(function() {
     function generateDate(n, id, date) {
         let d = (new Date(date)).toISOString().split('T')[0];
 
-        return days[date.getDay()] + ', ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear()
-            + `<input type="hidden" name="id${n}" id="id${n}" value="${id}">`
-            + `<input type="hidden" name="date${n}" id="date${n}" value="${d}">`;
-    }
-
-    function generateHours(id, value = null) {
-        let html = `<div class="col-md-6 col-12"><select class="form-select select2" name="${id}" id="${id}" data-placeholder="Jam" data-minimum-results-for-search="-1"><option value=""></option>`;
-        
-        for (let h = 0; h < 24; h++) {
-            let s = (h < 10) ? '0' + h : h;
-            let sel = (s == value) ? 'selected' : '';
-            html += `<option value="${s}" ${sel}>${s}</option>`;
-        }
-        
-        html += `</select></div>`;
-
-
-        return html;
-    }
-
-    function generateMinutes(id, value = null) {
-        let html = `<div class="col-md-6 col-12"><select class="form-select select2" name="${id}" id="${id}" data-placeholder="Menit" data-minimum-results-for-search="-1"><option value=""></option>`;
-
-        for (let m = 0; m < 60; m++) {
-            let s = (m < 10) ? '0' + m : m;
-            let sel = (s == value) ? 'selected' : '';
-            html += `<option value="${s}" ${sel}>${s}</option>`;
-        }
-        
-        html += `</select></div>`;
-
-        return html;
+        return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}
+                <input type="hidden" name="id_${n}" id="id_${n}" value="${id}">
+                <input type="hidden" name="date_${n}" id="date_${n}" value="${d}">`;
     }
 });
 </script>

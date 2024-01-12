@@ -57,7 +57,7 @@
 
             function getData() {
                 $.ajax({
-                    url: '/panel/tahap-jadwal/get-data',
+                    url: '/panel/tahap-jadwal/json/get-data',
                     method: 'get',
                     dataType: 'json',
                     success: function(response) {
@@ -68,18 +68,18 @@
                             data.forEach(d => {
                                 let ds = new Date(d.pendaftaran_mulai);
                                 let de = new Date(d.pendaftaran_selesai);
-                                let dr = ds.getDate() + ' ' + months[ds.getMonth()] + ' - ' + de.getDate() + ' ' + months[de.getMonth()] + ' ' + de.getFullYear();
+                                let dr = `${ds.getDate()} ${months[ds.getMonth()]} - ${de.getDate()} ${months[de.getMonth()]} ${de.getFullYear()}`;
 
                                 let vs = new Date(d.verifikasi_mulai);
                                 let ve = new Date(d.verifikasi_selesai);
-                                let vr = vs.getDate() + ' ' + months[vs.getMonth()] + ' - ' + ve.getDate() + ' ' + months[ve.getMonth()] + ' ' + ve.getFullYear();
+                                let vr = `${vs.getDate()}  ${months[vs.getMonth()]} - ${ve.getDate()} ${months[ve.getMonth()]} ${ve.getFullYear()}`;
 
                                 let p = new Date(d.pengumuman);
-                                let pr = p.getDate() + ' ' + months[p.getMonth()];
+                                let pr = `${p.getDate()} ${months[p.getMonth()]} ${p.getFullYear()}`;
 
                                 let us = new Date(d.daftar_ulang_mulai);
                                 let ue = new Date(d.daftar_ulang_selesai);
-                                let ur = us.getDate() + ' ' + months[us.getMonth()] + ' - ' + ue.getDate() + ' ' + months[ue.getMonth()] + ' ' + ue.getFullYear();
+                                let ur = `${us.getDate()} ${months[us.getMonth()]} - ${ue.getDate()} ${months[ue.getMonth()]} ${ue.getFullYear()}`;
 
                                 table.append(generateRow(d.tahap, dr, vr, pr, ur, d.tahap_id));
                             });
