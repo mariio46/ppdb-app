@@ -124,6 +124,7 @@ class RegistrationModel extends Base
 
     private $p3 = ['start' => '2024-01-01', 'end' => '2024-01-30'];
 
+    // 02.002
     public function getSchedules(): array
     {
         // return [
@@ -302,6 +303,14 @@ class RegistrationModel extends Base
                     ],
                 ],
                 'smk' => [],
+            ];
+        } else {
+            $get = [
+                'phase' => "4",
+                'start' => "2024-01-01",
+                'end' => "2024-12-31",
+                "sma" => [],
+                "smk" => []
             ];
         }
 
