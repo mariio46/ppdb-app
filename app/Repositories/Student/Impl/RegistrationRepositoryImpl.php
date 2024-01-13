@@ -5,6 +5,7 @@ namespace App\Repositories\Student\Impl;
 use App\Models\Student\RegistrationModel;
 use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class RegistrationRepositoryImpl implements RegistrationRepository
 {
@@ -27,7 +28,24 @@ class RegistrationRepositoryImpl implements RegistrationRepository
 
     public function getScheduleByPhaseCode(string $code): array
     {
-        return $this->registrationModel->getScheduleByPhaseCode($code);
+        $phase = json_decode(Crypt::decryptString($code))->phase;
+
+        $data = $this->registrationModel->getScheduleByPhaseCode($phase);
+
+        foreach ($data['data'] as &$tahap) {
+            foreach (['sma', 'smk'] as $school) {
+                foreach ($tahap[$school] as &$track) {
+                    $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
+                    $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
+                    $track['info'] = $this->registrationModel->informations[$track['kode']];
+                }
+            }
+        }
+
+        $data['data'][0]['time_start'] = '00:00'; // format tt:mm
+        $data['data'][0]['time_end'] = '23:59';
+
+        return $data;
     }
 
     public function postSaveRegistration(string $trackCode, Request $request): array

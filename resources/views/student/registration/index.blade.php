@@ -114,7 +114,7 @@
 
             function generateListItems(school, items) {
                 if (items.length > 0 || items != null) {
-                    let html = items.map(item => items.map(item => `<li class="pb-1">Jalur ${item.jalur}</li>`).join('')) || '';
+                    let html = items.map(item => `<li class="pb-1">Jalur ${item.jalur}</li>`).join('');
 
                     return `<h4 class="mt-2">${school}</h4>
                             <ul>
@@ -128,20 +128,23 @@
             function checkDateRange(startDate, endDate) {
                 // Mendapatkan tanggal sekarang
                 var currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0); // set waktu menjadi 0
 
                 // Mengonversi tanggal mulai dan tanggal selesai ke objek Date
                 var startDateObj = new Date(startDate);
+                startDateObj.setHours(0, 0, 0, 0); // set waktu menjadi 0
                 var endDateObj = new Date(endDate);
+                endDateObj.setHours(0, 0, 0, 0); // set waktu menjadi 0
 
                 // Memeriksa apakah tanggal sekarang berada dalam rentang waktu
                 if (currentDate >= startDateObj && currentDate <= endDateObj) {
-                return "now";
+                    return "now";
                 } else if (currentDate < startDateObj) {
-                return "pre";
+                    return "pre";
                 } else {
-                return "post";
+                    return "post";
                 }
             }
-            });
+        });
     </script>
 @endpush

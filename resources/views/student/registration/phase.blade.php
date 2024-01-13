@@ -59,7 +59,7 @@
                 alert = $('#phaseAlert'),
                 tabList = $('#tabList'),
                 tabContent = $('#tabContent'),
-                months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
                 icons = new Map([
                 ['AA',
                     '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>'
@@ -111,12 +111,13 @@
                 dataType: 'json',
                 success: function(data) {
                     console.log(data);
-                    let isNotExpired = (isCurrentTimeInRange(data.time_start, data.time_end));
+                    let d = data.data[0];
+                    let isNotExpired = (isCurrentTimeInRange(d.time_start, d.time_end));
                     let n = 0;
-                    let start = new Date(data.start);
-                    let end = new Date(data.end);
+                    let start = new Date(d.mulai);
+                    let end = new Date(d.selesai);
 
-                    bcTahap.text(data.phase);
+                    bcTahap.text(d.phase);
 
                     if (!isNotExpired) {
                         alert.html(`<div class="alert alert-info p-1">
@@ -124,28 +125,29 @@
                         </div>`);
                     }
 
-                    if (data.sma.length) {
+                    if (d.sma.length) {
                         tabList.append('<h4>SMA</h4>');
                     }
-                    data.sma.forEach(sma => {
-                        let abb = 'sma' + sma.track.replace(/ +/g, "");
+                    d.sma.forEach(sma => {
+                        console.log(sma);
+                        let abb = 'sma' + sma.jalur.replace(/ +/g, "");
 
-                        var smaTab = generateTabListHtml(n == 0, abb, sma.code, sma.track);
-                        var tab = generateTabContentHtml(n == 0, abb, sma.track, sma.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, sma.slug);
+                        var smaTab = generateTabListHtml(n == 0, abb, sma.kode, sma.jalur);
+                        var tab = generateTabContentHtml(n == 0, abb, sma.jalur, sma.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, sma.slug);
 
                         tabList.append(smaTab);
                         tabContent.append(tab);
                         n++;
                     });
 
-                    if (data.smk.length) {
+                    if (d.smk.length) {
                         tabList.append('<h4 class="mt-2">SMK</h4>');
                     }
-                    data.smk.forEach(smk => {
-                        let abb = 'smk' + smk.track.replace(/ +/g, "");
+                    d.smk.forEach(smk => {
+                        let abb = 'smk' + smk.jalur.replace(/ +/g, "");
 
-                        var smkTab = generateTabListHtml(n == 0, abb, smk.code, smk.track);
-                        var tab = generateTabContentHtml(n == 0, abb, smk.track, smk.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, smk.slug);
+                        var smkTab = generateTabListHtml(n == 0, abb, smk.kode, smk.jalur);
+                        var tab = generateTabContentHtml(n == 0, abb, smk.jalur, smk.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, smk.slug);
 
                         tabList.append(smkTab);
                         tabContent.append(tab);
@@ -159,6 +161,8 @@
 
             function isCurrentTimeInRange(startTime, endTime) {
                 var currentTime = new Date();
+                console.log('time database', startTime);
+                console.log('time current', currentTime);
             
                 var startHours = parseInt(startTime.split(":")[0]);
                 var startMinutes = parseInt(startTime.split(":")[1]);
