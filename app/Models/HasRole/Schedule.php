@@ -8,28 +8,28 @@ use Illuminate\Http\Request;
 class Schedule extends Base
 {
     //------------------------------------------------------------GET
-    public function getDataSchedules(): array
+    public function getDataSchedules(): array // A.12.001
     {
         return $this->getWithToken('tahap');
     }
 
-    public function getDetailData(string $id): array
+    public function getDetailData(string $id): array // A.12.003
     {
         return $this->getWithToken("tahap/batas?id=$id");
     }
 
-    public function getDataSchedule(string $id): array
+    public function getDataSchedule(string $id): array // A.12.005
     {
         return $this->getWithToken("tahap/detail?id=$id");
     }
 
-    public function getDetailTime(string $id, string $type): array
+    public function getDetailTime(string $id, string $type): array // A.12.007
     {
         return $this->getWithToken("batas/jenis?id=$id&tipe=$type");
     }
 
     //------------------------------------------------------------POST
-    public function insertPhase(Request $request): array
+    public function insertPhase(Request $request): array // A.12.002
     {
         $data = [
             "tahap" => $request->phase,
@@ -57,7 +57,7 @@ class Schedule extends Base
         }
     }
 
-    public function updatePhase(Request $request, string $id): array
+    public function updatePhase(Request $request, string $id): array // A.12.006
     {
         $data = [
             "tahap_id" => $id,
@@ -85,7 +85,7 @@ class Schedule extends Base
         }
     }
 
-    public function removePhase(string $id)
+    public function removePhase(string $id) // A.12.004
     {
         $del = $this->postWithToken("tahap/hapus", [
             "id" => $id
@@ -102,9 +102,10 @@ class Schedule extends Base
         }
     }
 
-    public function updateTime(array $data): bool
+    public function updateTime(array $data): bool // A.12.008
     {
         $upd = $this->postWithToken("batas/create", $data);
+        // dd($upd);
 
         if ($upd['status_code'] == 200 || $upd['status_code'] == 201) {
             if ($upd['response']['statusCode'] == 200 || $upd['response']['statusCode'] == 201) {

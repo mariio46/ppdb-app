@@ -24,7 +24,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body px-0">
-                    <form id="formData" action="{{ route('schedules.update.announce', [$id]) }}" method="post">
+                    <form id="formData" action="{{ route('schedules.update.time', ['pengumuman', $id]) }}" method="post">
                         @csrf
                         <h5 class="card-title text-primary mb-2 px-2">Jadwal Verifikasi Manual Tahap <span id="phs"></span></h5>
 
@@ -45,7 +45,8 @@
                                         <input id="date" name="date" type="hidden">
                                     </td>
                                     <td>
-                                        <x-input type="time" name="time" id="time" placeholder="hh.mm" />
+                                        <x-input type="hidden" name="current_time" id="current_time" />
+                                        <x-input type="time" name="time" id="time" placeholder="hh.mm" step="60" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -118,13 +119,15 @@
                         $('#phs').text(d.tahap);
                         
                         let dt = new Date(d.pengumuman);
-                        let tm = d.jam_mulai.split(":");
 
                         $('#dateShow').text(`${days[dt.getDay()]}, ${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`);
-                        $('#id').val(d.batas_id);
                         $('#date').val(d.pengumuman);
-                        $('#hour').val(tm[0]).trigger('change');
-                        $('#minute').val(tm[1]).trigger('change');
+                        
+                        if (d.batas.length) {
+                            $('#id').val(d.batas[0].batas_id);
+                            $('#time').val(d.batas[0].jam_mulai);
+                            $('#current_time').val(d.batas[0].jam_mulai);
+                        }
                     },
                     error: function(xhr, status, error) {
                         console.error("get data failed.", status, error);

@@ -157,7 +157,7 @@ Route::controller(ScheduleController::class)->group(function () {
     Route::get('tahap-jadwal/e-{type}/{id}', 'editTime')->name('schedules.edit.time');
     Route::post('tahap-jadwal/e-{type}/{id}/update-data', 'updateTime')->name('schedules.update.time');
 
-    Route::post('tahap-jadwal/e-announce/{id}/update-data', 'updateAnnouncement')->name('schedules.update.announce');
+    // Route::post('tahap-jadwal/e-announce/{id}/update-data', 'updateAnnouncement')->name('schedules.update.announce');
 
     Route::get('tahap-jadwal/json/d/{id}/get-data', 'detailData')->name('schedules.get.detail');
     Route::get('tahap-jadwal/json/e-{type}/{id}/get-data', 'getDataTime')->name('schedules.get.time');

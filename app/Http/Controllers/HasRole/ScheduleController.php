@@ -60,7 +60,7 @@ class ScheduleController extends Controller
     }
 
     //------------------------------------------------------------FUNC
-    public function saveData(Request $request): RedirectResponse
+    public function saveData(Request $request): RedirectResponse // A.12.002
     {
         $save = $this->schedule->insertPhase($request);
 
@@ -71,7 +71,7 @@ class ScheduleController extends Controller
         return redirect()->back()->with(['msg' => 'Gagal menyimpan data. Silakan coba lagi nanti.']);
     }
 
-    public function removeData(Request $request): RedirectResponse
+    public function removeData(Request $request): RedirectResponse // A.12.004
     {
         $remove = $this->schedule->removePhase($request->remove_id);
 
@@ -82,7 +82,7 @@ class ScheduleController extends Controller
         return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menghapus data. Silakan coba lagi nanti.']);
     }
 
-    public function updateData(string $id, Request $request): RedirectResponse
+    public function updateData(string $id, Request $request): RedirectResponse // A.12.006
     {
         $update = $this->schedule->updatePhase($request, $id);
 
@@ -93,121 +93,108 @@ class ScheduleController extends Controller
         return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
     }
 
-    public function updateTime(string $type, string $id, Request $request): RedirectResponse
+    public function updateTime(string $type, string $id, Request $request): RedirectResponse // A.12.008
     {
-        $length = $request->length;
-        $countSuccess = 0;
-        $dateFailed = [];
-
-        for ($i = 1; $i <= $length; $i++) {
+        if ($type == 'pengumuman') {
             $data = [
-                'tahap_id'      => $id,
-                'jam_mulai'     => $request->post("s_$i"),
-                'jam_selesai'   => $request->post("e_$i"),
-                'tanggal'       => $request->post("date_$i"),
-                'jenis'         => $type,
+                'tahap_id' => $id,
+                'tanggal' => $request->post('date'),
+                'jam_mulai' => $request->post('time'),
+                'jam_selesai' => null,
+                'jenis' => 'pengumuman'
             ];
 
-            ($request->post("id_$i") != null) ? $data['id'] = $request->post("id_$i") : '';
+            ($request->post('id') != null) ? $data['id'] = $request->post('id') : '';
 
-            $s  = substr($request->post("s_$i"), 0, 5); // start time changes
-            $cs = substr($request->post("current_s_$i"), 0, 5); // current start time
-            $e  = substr($request->post("e_$i"), 0, 5); // end time changes
-            $es = substr($request->post("current_e_$i"), 0, 5); // current end time
-
-            if ($s != $cs || $e != $es) {
+            if (substr($request->time, 0, 5) != substr($request->current_time, 0, 5)) {
                 $save = $this->schedule->updateTime($data);
+
                 if ($save) {
-                    $countSuccess++;
+                    $msg = ["stat" => "success", "msg" => "Berhasil menyimpan perubahan data."];
                 } else {
-                    $dateFailed[] = date("d-m-Y", $request->post("date_$i"));
+                    $msg = ["stat" => "danger", "msg" => "Gagal menyimpan perubahan data."];
+                }
+            } else {
+                $msg = ["stat" => "info", "msg" => "Tidak ada perubahan data."];
+            }
+
+            return redirect()->back()->with($msg);
+        } else {
+            $length = $request->length;
+            $countSuccess = 0;
+            $dateFailed = [];
+
+            for ($i = 1; $i <= $length; $i++) {
+                $data = [
+                    'tahap_id'      => $id,
+                    'jam_mulai'     => $request->post("s_$i"),
+                    'jam_selesai'   => $request->post("e_$i"),
+                    'tanggal'       => $request->post("date_$i"),
+                    'jenis'         => $type,
+                ];
+
+                ($request->post("id_$i") != null) ? $data['id'] = $request->post("id_$i") : '';
+
+                $s  = substr($request->post("s_$i"), 0, 5); // start time changes
+                $cs = substr($request->post("current_s_$i"), 0, 5); // current start time
+                $e  = substr($request->post("e_$i"), 0, 5); // end time changes
+                $es = substr($request->post("current_e_$i"), 0, 5); // current end time
+
+                if ($s != $cs || $e != $es) {
+                    $save = $this->schedule->updateTime($data);
+                    if ($save) {
+                        $countSuccess++;
+                    } else {
+                        $dateFailed[] = date("d-m-Y", $request->post("date_$i"));
+                    }
                 }
             }
-        }
 
-        $failed = (count($dateFailed) != 0) ? "data tanggal " . implode(", ", $dateFailed) : "0 data.";
-        $msg = "";
+            $failed = (count($dateFailed) != 0) ? "data tanggal " . implode(", ", $dateFailed) : "0 data.";
+            $msg = "";
 
-        if ($countSuccess == 0 && $dateFailed == []) {
-            $msg .= "Tidak ada perubahan data";
-        } else {
-            if ($countSuccess != 0) {
-                $msg .= "Berhasil memperbarui $countSuccess data.";
+            if ($countSuccess == 0 && $dateFailed == []) {
+                $msg .= "Tidak ada perubahan data";
+            } else {
+                if ($countSuccess != 0) {
+                    $msg .= "Berhasil memperbarui $countSuccess data.";
+                }
+
+                if ($dateFailed != []) {
+                    $msg .= "Gagal menyimpan $failed";
+                }
             }
 
-            if ($dateFailed != []) {
-                $msg .= "Gagal menyimpan $failed";
-            }
+            return redirect()->back()->with(['stat' => 'info', 'msg' => $msg]);
         }
-
-        return redirect()->back()->with(['stat' => 'info', 'msg' => $msg]);
     }
 
-    public function updateAnnouncement(Request $request): RedirectResponse
-    {
-        $data = [
-            'id' => $request->post('id'),
-            'tanggal' => $request->post('date'),
-            'jam_mulai' => $request->post('hour') . '.' . $request->post('minute'),
-            'jenis' => 'pengumuman'
-        ];
+    // public function updateAnnouncement(Request $request): RedirectResponse
+    // {
+    //     $data = [
+    //         'id' => $request->post('id'),
+    //         'tanggal' => $request->post('date'),
+    //         'jam_mulai' => $request->post('hour') . '.' . $request->post('minute'),
+    //         'jenis' => 'pengumuman'
+    //     ];
 
-        $return = [
-            'statusCode' => 200,
-            // 'statusCode' => 404,
-        ];
+    //     dd($data);
 
-        if ($return['statusCode'] == 200) {
-            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
-        }
+    //     $return = [
+    //         'statusCode' => 200,
+    //         // 'statusCode' => 404,
+    //     ];
 
-        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
-    }
+    //     if ($return['statusCode'] == 200) {
+    //         return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
+    //     }
+
+    //     return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
+    // }
 
     //------------------------------------------------------------JSON
     public function getDataSchedules(): JsonResponse
     {
-        // $data = [
-        //     'statusCode' => 200,
-        //     'status' => 'success',
-        //     'message' => 'Berhasil mendapatkan data.',
-        //     'data' => [
-        //         [
-        //             'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-        //             'tahap' => '1',
-        //             'pendaftaran_mulai' => '2024-01-01',
-        //             'pendaftaran_selesai' => '2024-01-04',
-        //             'verifikasi_mulai' => '2024-01-01',
-        //             'verifikasi_selesai' => '2024-01-04',
-        //             'pengumuman' => '2024-01-05',
-        //             'daftar_ulang_mulai' => '2024-01-05',
-        //             'daftar_ulang_selesai' => '2024-01-06',
-        //         ],
-        //         [
-        //             'tahap_id' => '55fdd760-7b58-437e-b8c1-638cbccb2a30',
-        //             'tahap' => '2',
-        //             'pendaftaran_mulai' => '2024-01-08',
-        //             'pendaftaran_selesai' => '2024-01-11',
-        //             'verifikasi_mulai' => '2024-01-08',
-        //             'verifikasi_selesai' => '2024-01-11',
-        //             'pengumuman' => '2024-01-12',
-        //             'daftar_ulang_mulai' => '2024-01-12',
-        //             'daftar_ulang_selesai' => '2024-01-13',
-        //         ],
-        //         [
-        //             'tahap_id' => 'f5793a90-4396-497f-af43-a7b0edd995fb',
-        //             'tahap' => '3',
-        //             'pendaftaran_mulai' => '2024-01-15',
-        //             'pendaftaran_selesai' => '2024-01-18',
-        //             'verifikasi_mulai' => '2024-01-15',
-        //             'verifikasi_selesai' => '2024-01-18',
-        //             'pengumuman' => '2024-01-19',
-        //             'daftar_ulang_mulai' => '2024-01-19',
-        //             'daftar_ulang_selesai' => '2024-01-20',
-        //         ],
-        //     ],
-        // ];
-
         $data = $this->schedule->getDataSchedules();
 
         return response()->json($data['response'], $data['status_code']);
