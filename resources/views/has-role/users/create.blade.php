@@ -269,13 +269,13 @@
             })
 
             $.ajax({
-                url: '/panel/users/json/originSchoolsCollections',
+                url: '/panel/sekolah-asal/json/get-all-data',
                 method: 'get',
                 dataType: 'json',
                 success: function(origin_schools) {
                     sekolah_asal.empty().append('<option value=""></option>');
-                    origin_schools.forEach(school => {
-                        sekolah_asal.append(`<option value="${school.id}">${school.name}</option>`)
+                    origin_schools.data.forEach(school => {
+                        sekolah_asal.append(`<option value="${school.id}">${school.nama}</option>`)
                     })
                 },
                 error: function(xhr, status, error) {
