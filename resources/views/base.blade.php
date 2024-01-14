@@ -13,6 +13,7 @@
 
         {{-- Vendor CSS --}}
         <link type="text/css" href="/app-assets/vendors/css/vendors.min.css" rel="stylesheet">
+        <link type="text/css" href="/app-assets/vendors/css/extensions/toastr.min.css" rel="stylesheet">
         @yield('vendorStyles')
 
         {{-- Theme CSS --}}
@@ -23,6 +24,7 @@
 
         {{-- Page CSS --}}
         <link type="text/css" href="/app-assets/css/core/menu/menu-types/vertical-menu.min.css" rel="stylesheet">
+        <link type="text/css" href="/app-assets/css/plugins/extensions/ext-component-toastr.css" rel="stylesheet">
         @yield('styles')
 
         {{-- Custom CSS --}}
@@ -40,6 +42,7 @@
 
         {{-- Vendor JS --}}
         <script src="/app-assets/vendors/js/vendors.min.js"></script>
+        <script src="/app-assets/vendors/js/extensions/toastr.min.js"></script>
 
         {{-- Page Vendor JS --}}
         @yield('vendorScripts')
@@ -53,8 +56,26 @@
 
         <script>
             $(window).on('load', function() {
+                var stat = "{{ session()->get('stat') }}",
+                    msg = "{{ session()->get('msg') }}",
+                    toast_title = '';
+
                 if (feather) {
                     feather.replace();
+                }
+
+                if (stat !== "") {
+                    if (stat == 'success') {
+                        toast_title = 'Sukses!';
+                    } else if (stat == 'error') {
+                        toast_title = 'Gagal!';
+                    } else {
+                        toast_title = 'Perhatian!';
+                    }
+
+                    toastr[stat](msg, toast_title, {
+                        positionClass: 'toast-top-right',
+                    });
                 }
             })
         </script>

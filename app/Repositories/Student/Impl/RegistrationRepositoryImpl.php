@@ -5,6 +5,7 @@ namespace App\Repositories\Student\Impl;
 use App\Models\Student\RegistrationModel;
 use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class RegistrationRepositoryImpl implements RegistrationRepository
 {
@@ -27,7 +28,34 @@ class RegistrationRepositoryImpl implements RegistrationRepository
 
     public function getScheduleByPhaseCode(string $code): array
     {
-        return $this->registrationModel->getScheduleByPhaseCode($code);
+        $phase = json_decode(Crypt::decryptString($code))->phase;
+
+        $data = $this->registrationModel->getScheduleByPhaseCode($phase);
+
+        foreach (['sma', 'smk'] as $schoolType) {
+            if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
+                foreach ($data['data'][$schoolType] as &$track) {
+                    $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
+                    $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
+                    $track['info'] = $this->registrationModel->informations[$track['kode']];
+                }
+            }
+        }
+
+        // foreach ($data['data'] as &$tahap) {
+        //     foreach (['sma', 'smk'] as $school) {
+        //         foreach ($tahap[$school] as &$track) {
+        //             $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
+        //             $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
+        //             $track['info'] = $this->registrationModel->informations[$track['kode']];
+        //         }
+        //     }
+        // }
+
+        // $data['data']['jam_mulai'] = '00:00'; // format tt:mm
+        // $data['data']['jam_selesai'] = '23:59';
+
+        return $data;
     }
 
     public function postSaveRegistration(string $trackCode, Request $request): array
@@ -35,23 +63,31 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         switch ($trackCode) {
             case 'AA':
                 $data = [
-                    'code' => $trackCode,
-                    'affType' => $request->post('affirmationType'),
-                    'affNum' => $request->post('affirmationNumber'),
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'city2' => $request->post('city2'),
-                    'city2Name' => $request->post('city2Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'city3' => $request->post('city3'),
-                    'city3Name' => $request->post('city3Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
+                    "siswa_id" => session()->get("stu_id"),
+                    "tahap" => $request->phaseCode,
+                    "jenis_afirmasi" => $request->affirmationType,
+                    "no_pkh" => $request->affirmationNumber,
+                    "sekolah1_id" => $request->school1,
+                    "sekolah2_id" => $request->school2,
+                    "sekolah3_id" => $request->school3,
+                    "sekolah_verif_id" => $request->schoolVerif
+                    // 'code' => $trackCode,
+                    // 'affType' => $request->post('affirmationType'),
+                    // 'affNum' => $request->post('affirmationNumber'),
+                    // 'city1' => $request->post('city1'),
+                    // 'city1Name' => $request->post('city1Name'),
+                    // 'school1' => $request->post('school1'),
+                    // 'school1Name' => $request->post('school1Name'),
+                    // 'city2' => $request->post('city2'),
+                    // 'city2Name' => $request->post('city2Name'),
+                    // 'school2' => $request->post('school2'),
+                    // 'school2Name' => $request->post('school2Name'),
+                    // 'city3' => $request->post('city3'),
+                    // 'city3Name' => $request->post('city3Name'),
+                    // 'school3' => $request->post('school3'),
+                    // 'school3Name' => $request->post('school3Name'),
+                    // 'schoolVerif' => $request->post('schoolVerif'),
+                    // 'schoolVerifName' => $request->post('schoolVerifName'),
                 ];
                 break;
             case 'AB':
@@ -290,7 +326,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
 
         $save = $this->registrationModel->saveRegistration($data);
 
-        if ($save['success']) {
+        if ($save['statusCode'] == 201) {
             session()->put('stu_status_regis', true);
         }
 

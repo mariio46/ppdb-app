@@ -3,12 +3,21 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use App\Models\HasRole\OriginSchool;
+use App\Models\HasRole\Student;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class StudentController extends Controller
 {
+    public function __construct(
+        protected Student $student,
+        protected OriginSchool $originSchool
+    ) {
+    }
+
     public function index(): View
     {
         return view('has-role.student.index');
@@ -46,13 +55,10 @@ class StudentController extends Controller
         return view('has-role.student.score', $data);
     }
 
-    //
+    //------------------------------------------------------------FUNC
     public function store(Request $request)
     {
-        $save = [
-            'statusCode' => 201,
-            'messages' => 'Pesan Hapus Data',
-        ];
+        $save = $this->student->store($request);
 
         if ($save['statusCode'] == 201) {
             return to_route('siswa.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
@@ -61,12 +67,9 @@ class StudentController extends Controller
         return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages']]);
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(string $id, Request $request): RedirectResponse
     {
-        $upd = [
-            'statusCode' => 200,
-            'messages' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-        ];
+        $upd = $this->student->update($id, $request);
 
         if ($upd['statusCode'] == 200) {
             return redirect()->back()->with(['stat' => 'success', 'msg' => $upd['messages']]);
@@ -99,204 +102,139 @@ class StudentController extends Controller
         return redirect()->back()->with(['scoreStatus' => 'danger', 'scoreMsg' => $upd['messages']]);
     }
 
-    //
+    //------------------------------------------------------------JSON
     protected function getSingleStudent(string $id): JsonResponse
     {
-        $user = collect($this->getStudents()->original)->firstWhere('id', $id);
+        $student = $this->student->getStudent(student_id: $id);
 
-        $additional_data = [
-            'nik' => '1234567890123456',
-            'jenis_kelamin' => 'p',
-            'tempat_lahir' => 'Sukamaju',
-            'tanggal_lahir' => '2001-01-01',
-            'email' => 'test@email.com',
-            'telepon' => '081234567890',
-            'pas_foto' => '',
-            'buta_warna' => 'n',
-            'tinggi_badan' => '',
-            'nama_ayah' => 'Prabu Halim',
-            'telepon_ayah' => '08123456780',
-            'nama_ibu' => 'Rina Uyainah',
-            'telepon_ibu' => '06138000098',
-            'nama_wali' => 'Cawuk Hidayat',
-            'telepon_wali' => '026687065495',
-            'kode_provinsi' => '73',
-            'provinsi' => 'PROV. SULAWESI SELATAN',
-            'kode_kabupaten' => '73.03',
-            'kabupaten' => 'Kab. Bantaeng',
-            'kode_kecamatan' => '73.03.07',
-            'kecamatan' => 'Kecamatan Gantarang Keke',
-            'kode_desa' => '73.03.07.2003',
-            'desa' => 'Desa Layoa',
-            'dusun' => 'Dusun Durian Runtuh',
-            'rtrw' => '001/002',
-            'alamat_jalan' => 'jl. jalanin aja dulu',
-            'kode_wilayah' => '73.03.07',
-            'wilayah_id' => '1',
-            'pertama_login' => 'n',
-            'kunci' => '0',
-            'status_pendaftaran' => 'belum_mendaftar',
-        ];
-
-        // $additional_data = [
-        //     "id_sekolah_asal" => "e93d7831-c6e1-4027-86fe-0f4e32f2f9f3",
-        //     "nik" => "",
-        //     "jenis_kelamin" => "p",
-        //     "tempat_lahir" => "Sukamaju",
-        //     "tanggal_lahir" => "2001-01-01",
-        //     "email" => "",
-        //     "telepon" => "",
-        //     "pas_foto" => "",
-        //     "buta_warna" => "",
-        //     "tinggi_badan" => "",
-        //     "nama_ayah" => "",
-        //     "telepon_ayah" => "",
-        //     "nama_ibu" => "",
-        //     "telepon_ibu" => "",
-        //     "nama_wali" => "",
-        //     "telepon_wali" => "",
-        //     "kode_provinsi" => "",
-        //     "provinsi" => "",
-        //     "kode_kabupaten" => "",
-        //     "kabupaten" => "",
-        //     "kode_kecamatan" => "",
-        //     "kecamatan" => "",
-        //     "kode_desa" => "",
-        //     "desa" => "",
-        //     "dusun" => "",
-        //     "rtrw" => "",
-        //     "alamat_jalan" => "",
-        //     "kode_wilayah" => "",
-        //     "wilayah_id" => "",
-        //     "pertama_login" => "n",
-        //     "kunci" => "0",
-        //     "status_pendaftaran" => "belum_mendaftar",
-        // ];
-
-        $newuser = collect($user)->merge($additional_data);
-
-        return response()->json($newuser);
+        return response()->json($student);
     }
 
-    protected function getSingleStudentByNisn($nisn): JsonResponse
+    protected function getSingleStudentByNisn(string $nisn): JsonResponse
     {
-        $user = collect($this->getStudents()->original)->firstWhere('nisn', $nisn);
+        $student = $this->student->getStudent(nisn: $nisn);
 
-        return response()->json($user);
+        return response()->json($student);
     }
 
-    protected function getStudents(): JsonResponse
+    protected function getStudents(): JsonResponse // A.04.001
     {
-        $data = collect([
-            (object) [
-                'id' => '9ef555d7-21f9-47ef-9413-f69a6bcfda84',
-                'nama' => 'Ryan Rafli',
-                'sekolah_asal' => 'SMP NEGERI 19 Paleteang',
-                'nisn' => 6564553453,
-            ],
-            (object) [
-                'id' => '40fd7174-e24e-4775-9a28-78e5d0f2036f',
-                'nama' => 'Al Muqtadir',
-                'sekolah_asal' => 'SMPN 1 Parepare',
-                'nisn' => 5454224678,
-            ],
-            (object) [
-                'id' => 'f909d329-df1d-4a89-85e3-e4f727d2267c',
-                'nama' => 'Ainun Putri',
-                'sekolah_asal' => 'SMPN 3 Makassar',
-                'nisn' => 10302913833,
-            ],
-            (object) [
-                'id' => '899b3068-4f05-4a16-8ad1-683febc5b2f4',
-                'nama' => 'Edy Siswanto Syarif',
-                'sekolah_asal' => 'SMPN 10 Maros',
-                'nisn' => 43242354815,
-            ],
-            (object) [
-                'id' => 'f3bb95a4-0ffb-4c9e-9a67-eeebe0a2f8ea',
-                'nama' => 'Muh Rafie Muis',
-                'sekolah_asal' => 'SMPN 3 Pangkep',
-                'nisn' => 42342356788,
-            ],
-            (object) [
-                'id' => 'a054e49d-dc6a-4eee-9839-9ac3197d7177',
-                'nama' => 'Vicky Giovaldi',
-                'sekolah_asal' => 'SMP 1 Luwu Timur',
-                'nisn' => 8787575645,
-            ],
-            (object) [
-                'id' => 'f27f67a1-55fd-4950-9937-2f042c9e36cf',
-                'nama' => 'Muh Raiz Muis',
-                'sekolah_asal' => 'SMPN 1 Parepare',
-                'nisn' => 2432545466,
-            ],
-            (object) [
-                'id' => 'ed1f2c97-e75a-4de4-88bc-a0f916039a1e',
-                'nama' => 'Zhafran',
-                'sekolah_asal' => 'SMPN 2 Makassar',
-                'nisn' => 34234234223,
-            ],
-        ]);
+        // $data = collect([
+        //     (object) [
+        //         'id' => '9ef555d7-21f9-47ef-9413-f69a6bcfda84',
+        //         'nama' => 'Ryan Rafli',
+        //         'sekolah_asal' => 'SMP NEGERI 19 Paleteang',
+        //         'nisn' => 6564553453,
+        //     ],
+        //     (object) [
+        //         'id' => '40fd7174-e24e-4775-9a28-78e5d0f2036f',
+        //         'nama' => 'Al Muqtadir',
+        //         'sekolah_asal' => 'SMPN 1 Parepare',
+        //         'nisn' => 5454224678,
+        //     ],
+        //     (object) [
+        //         'id' => 'f909d329-df1d-4a89-85e3-e4f727d2267c',
+        //         'nama' => 'Ainun Putri',
+        //         'sekolah_asal' => 'SMPN 3 Makassar',
+        //         'nisn' => 10302913833,
+        //     ],
+        //     (object) [
+        //         'id' => '899b3068-4f05-4a16-8ad1-683febc5b2f4',
+        //         'nama' => 'Edy Siswanto Syarif',
+        //         'sekolah_asal' => 'SMPN 10 Maros',
+        //         'nisn' => 43242354815,
+        //     ],
+        //     (object) [
+        //         'id' => 'f3bb95a4-0ffb-4c9e-9a67-eeebe0a2f8ea',
+        //         'nama' => 'Muh Rafie Muis',
+        //         'sekolah_asal' => 'SMPN 3 Pangkep',
+        //         'nisn' => 42342356788,
+        //     ],
+        //     (object) [
+        //         'id' => 'a054e49d-dc6a-4eee-9839-9ac3197d7177',
+        //         'nama' => 'Vicky Giovaldi',
+        //         'sekolah_asal' => 'SMP 1 Luwu Timur',
+        //         'nisn' => 8787575645,
+        //     ],
+        //     (object) [
+        //         'id' => 'f27f67a1-55fd-4950-9937-2f042c9e36cf',
+        //         'nama' => 'Muh Raiz Muis',
+        //         'sekolah_asal' => 'SMPN 1 Parepare',
+        //         'nisn' => 2432545466,
+        //     ],
+        //     (object) [
+        //         'id' => 'ed1f2c97-e75a-4de4-88bc-a0f916039a1e',
+        //         'nama' => 'Zhafran',
+        //         'sekolah_asal' => 'SMPN 2 Makassar',
+        //         'nisn' => 34234234223,
+        //     ],
+        // ]);
 
         // $data = collect([]);
+
+        // if role == admin sekolah asal -> get data by sekolah_asal_id
+        // else if role == adm sekolah / adm cabang dinas / adm dinas / adm super user -> get data by kreator
+        $data = $this->student->getStudents(creator: session()->get('id'));
 
         return response()->json($data);
     }
 
-    protected function getOriginSchools(): JsonResponse
+    protected function getOriginSchools(): JsonResponse // A.03.001
     {
-        $data = collect([
-            [
-                'id' => '13d55276-e0fe-4cef-8ddf-3c63e1e8ab18',
-                'npsn' => '53858380',
-                'nama' => 'SMP NEGERI 14 Balocci',
-            ],
-            [
-                'id' => 'e93d7831-c6e1-4027-86fe-0f4e32f2f9f3',
-                'npsn' => '23701847',
-                'nama' => 'SMP NEGERI 19 Paleteang',
-            ],
-            [
-                'id' => '6d241d92-71b2-4065-9e65-b7e3dc01a453',
-                'npsn' => '40241267',
-                'nama' => 'SMP NEGERI 16 Tellu Limpoe',
-            ],
-            [
-                'id' => 'b77b131c-225f-458a-87af-256b2b70c882',
-                'npsn' => '88290069',
-                'nama' => 'SMP NEGERI 6 Pasirkembang Wetan',
-            ],
-            [
-                'id' => '5a243cbc-573c-42ce-bb54-97ef6b8aa401',
-                'npsn' => '96498610',
-                'nama' => 'SMP NEGERI 13 Talangmarsum',
-            ],
-            [
-                'id' => '017bc657-0c2c-42b4-9eef-db1c1eda1589',
-                'npsn' => '58152069',
-                'nama' => 'SMP NEGERI 17 Bojongkakak Satu',
-            ],
-            [
-                'id' => 'dff0a3e4-5173-4228-ae7a-b8e4399687f6',
-                'npsn' => '96275211',
-                'nama' => 'SMP NEGERI 12 Bojongsirna',
-            ],
-            [
-                'id' => '55510a61-4a69-43af-bca8-14d243625559',
-                'npsn' => '14795405',
-                'nama' => 'SMP NEGERI 2 Penombon',
-            ],
-            [
-                'id' => 'd9d02748-a302-4236-835d-d675f9eef2a7',
-                'npsn' => '29761345',
-                'nama' => 'SMP NEGERI 17 Alongalong',
-            ],
-            [
-                'id' => '9f459bb5-2a3d-4798-b695-9e9ddabf4f20',
-                'npsn' => '57997791',
-                'nama' => 'SMP NEGERI 10 Sungaitarab',
-            ],
-        ]);
+        // $data = collect([
+        //     [
+        //         'id' => '13d55276-e0fe-4cef-8ddf-3c63e1e8ab18',
+        //         'npsn' => '53858380',
+        //         'nama' => 'SMP NEGERI 14 Balocci',
+        //     ],
+        //     [
+        //         'id' => 'e93d7831-c6e1-4027-86fe-0f4e32f2f9f3',
+        //         'npsn' => '23701847',
+        //         'nama' => 'SMP NEGERI 19 Paleteang',
+        //     ],
+        //     [
+        //         'id' => '6d241d92-71b2-4065-9e65-b7e3dc01a453',
+        //         'npsn' => '40241267',
+        //         'nama' => 'SMP NEGERI 16 Tellu Limpoe',
+        //     ],
+        //     [
+        //         'id' => 'b77b131c-225f-458a-87af-256b2b70c882',
+        //         'npsn' => '88290069',
+        //         'nama' => 'SMP NEGERI 6 Pasirkembang Wetan',
+        //     ],
+        //     [
+        //         'id' => '5a243cbc-573c-42ce-bb54-97ef6b8aa401',
+        //         'npsn' => '96498610',
+        //         'nama' => 'SMP NEGERI 13 Talangmarsum',
+        //     ],
+        //     [
+        //         'id' => '017bc657-0c2c-42b4-9eef-db1c1eda1589',
+        //         'npsn' => '58152069',
+        //         'nama' => 'SMP NEGERI 17 Bojongkakak Satu',
+        //     ],
+        //     [
+        //         'id' => 'dff0a3e4-5173-4228-ae7a-b8e4399687f6',
+        //         'npsn' => '96275211',
+        //         'nama' => 'SMP NEGERI 12 Bojongsirna',
+        //     ],
+        //     [
+        //         'id' => '55510a61-4a69-43af-bca8-14d243625559',
+        //         'npsn' => '14795405',
+        //         'nama' => 'SMP NEGERI 2 Penombon',
+        //     ],
+        //     [
+        //         'id' => 'd9d02748-a302-4236-835d-d675f9eef2a7',
+        //         'npsn' => '29761345',
+        //         'nama' => 'SMP NEGERI 17 Alongalong',
+        //     ],
+        //     [
+        //         'id' => '9f459bb5-2a3d-4798-b695-9e9ddabf4f20',
+        //         'npsn' => '57997791',
+        //         'nama' => 'SMP NEGERI 10 Sungaitarab',
+        //     ],
+        // ]);
+
+        $data = $this->originSchool->getAll();
 
         return response()->json($data);
     }
