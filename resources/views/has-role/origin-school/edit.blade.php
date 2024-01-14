@@ -159,8 +159,8 @@
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
-                        $('#npsn').val(data.npsn);
-                        $('#nama').val(data.name);
+                        $('#npsn').val(data.data.npsn);
+                        $('#nama').val(data.data.nama);
                     },
                     error: function(xhr, status, error) {
                         console.error('gagal mendapatkan data.', status, error);

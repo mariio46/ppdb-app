@@ -53,10 +53,10 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/sekolah-asal/json/get-all-data',
-                        dataSrc: ""
+                        dataSrc: "data"
                     },
                     columns: [{
-                            data: "name"
+                            data: "nama"
                         },
                         {
                             data: "npsn",

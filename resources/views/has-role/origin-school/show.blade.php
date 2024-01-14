@@ -66,8 +66,8 @@
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
-                        $('#npsn').text(data.npsn);
-                        $('#nama').text(data.name);
+                        $('#npsn').text(data.data.npsn);
+                        $('#nama').text(data.data.nama);
                     },
                     error: function(xhr, status, error) {
                         console.error('gagal mendapatkan data.', status, error);
