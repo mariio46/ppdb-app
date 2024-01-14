@@ -32,9 +32,9 @@ class RegistrationRepositoryImpl implements RegistrationRepository
 
         $data = $this->registrationModel->getScheduleByPhaseCode($phase);
 
-        foreach ($data['data'] as &$tahap) {
-            foreach (['sma', 'smk'] as $school) {
-                foreach ($tahap[$school] as &$track) {
+        foreach (['sma', 'smk'] as $schoolType) {
+            if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
+                foreach ($data['data'][$schoolType] as &$track) {
                     $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
                     $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
                     $track['info'] = $this->registrationModel->informations[$track['kode']];
@@ -42,8 +42,18 @@ class RegistrationRepositoryImpl implements RegistrationRepository
             }
         }
 
-        $data['data'][0]['time_start'] = '00:00'; // format tt:mm
-        $data['data'][0]['time_end'] = '23:59';
+        // foreach ($data['data'] as &$tahap) {
+        //     foreach (['sma', 'smk'] as $school) {
+        //         foreach ($tahap[$school] as &$track) {
+        //             $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
+        //             $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
+        //             $track['info'] = $this->registrationModel->informations[$track['kode']];
+        //         }
+        //     }
+        // }
+
+        // $data['data'][0]['time_start'] = '00:00'; // format tt:mm
+        // $data['data'][0]['time_end'] = '23:59';
 
         return $data;
     }

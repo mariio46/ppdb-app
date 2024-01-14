@@ -110,9 +110,9 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
-                    let d = data.data[0];
-                    let isNotExpired = (isCurrentTimeInRange(d.time_start, d.time_end));
+                    let d = data.data;
+                    console.log(d);
+                    let isNotExpired = (isCurrentTimeInRange(d.jam_mulai, d.jam_selesai));
                     let n = 0;
                     let start = new Date(d.mulai);
                     let end = new Date(d.selesai);
@@ -125,34 +125,35 @@
                         </div>`);
                     }
 
-                    if (d.sma.length) {
+                    if (d.sma != null && d.sma.length) {
                         tabList.append('<h4>SMA</h4>');
+
+                        d.sma.forEach(sma => {
+                            let abb = 'sma' + sma.jalur.replace(/ +/g, "");
+    
+                            var smaTab = generateTabListHtml(n == 0, abb, sma.kode, sma.jalur);
+                            var tab = generateTabContentHtml(n == 0, abb, sma.jalur, sma.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, sma.slug);
+    
+                            tabList.append(smaTab);
+                            tabContent.append(tab);
+                            n++;
+                        });
                     }
-                    d.sma.forEach(sma => {
-                        console.log(sma);
-                        let abb = 'sma' + sma.jalur.replace(/ +/g, "");
 
-                        var smaTab = generateTabListHtml(n == 0, abb, sma.kode, sma.jalur);
-                        var tab = generateTabContentHtml(n == 0, abb, sma.jalur, sma.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, sma.slug);
-
-                        tabList.append(smaTab);
-                        tabContent.append(tab);
-                        n++;
-                    });
-
-                    if (d.smk.length) {
+                    if (d.smk != null && d.smk.length) {
                         tabList.append('<h4 class="mt-2">SMK</h4>');
+
+                        d.smk.forEach(smk => {
+                            let abb = 'smk' + smk.jalur.replace(/ +/g, "");
+    
+                            var smkTab = generateTabListHtml(n == 0, abb, smk.kode, smk.jalur);
+                            var tab = generateTabContentHtml(n == 0, abb, smk.jalur, smk.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, smk.slug);
+    
+                            tabList.append(smkTab);
+                            tabContent.append(tab);
+                            n++;
+                        });
                     }
-                    d.smk.forEach(smk => {
-                        let abb = 'smk' + smk.jalur.replace(/ +/g, "");
-
-                        var smkTab = generateTabListHtml(n == 0, abb, smk.kode, smk.jalur);
-                        var tab = generateTabContentHtml(n == 0, abb, smk.jalur, smk.info, start.getDate(), start.getMonth(), end.getDate(), end.getMonth(), end.getFullYear(), isNotExpired, smk.slug);
-
-                        tabList.append(smkTab);
-                        tabContent.append(tab);
-                        n++;
-                    });
                 },
                 error: function(xhr, status, error) {
                 console.error('Failed to get data.', status, error);
@@ -161,8 +162,6 @@
 
             function isCurrentTimeInRange(startTime, endTime) {
                 var currentTime = new Date();
-                console.log('time database', startTime);
-                console.log('time current', currentTime);
             
                 var startHours = parseInt(startTime.split(":")[0]);
                 var startMinutes = parseInt(startTime.split(":")[1]);
