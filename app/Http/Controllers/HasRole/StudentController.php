@@ -65,7 +65,7 @@ class StudentController extends Controller
     {
         $upd = [
             'statusCode' => 200,
-            'messages' => "Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            'messages' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
         ];
 
         if ($upd['statusCode'] == 200) {
@@ -89,52 +89,53 @@ class StudentController extends Controller
 
         $upd = [
             'statusCode' => 200,
-            'messages' => "Lorem ipsum dolor sit, amet consectetur adipisicing elit."
+            'messages' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
         ];
 
         if ($upd['statusCode'] == 200) {
             return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => $upd['messages']]);
         }
+
         return redirect()->back()->with(['scoreStatus' => 'danger', 'scoreMsg' => $upd['messages']]);
     }
 
-    // 
+    //
     protected function getSingleStudent(string $id): JsonResponse
     {
         $user = collect($this->getStudents()->original)->firstWhere('id', $id);
 
         $additional_data = [
-            "nik" => "1234567890123456",
-            "jenis_kelamin" => "p",
-            "tempat_lahir" => "Sukamaju",
-            "tanggal_lahir" => "2001-01-01",
-            "email" => "test@email.com",
-            "telepon" => "081234567890",
-            "pas_foto" => "",
-            "buta_warna" => "n",
-            "tinggi_badan" => "",
-            "nama_ayah" => "Prabu Halim",
-            "telepon_ayah" => "08123456780",
-            "nama_ibu" => "Rina Uyainah",
-            "telepon_ibu" => "06138000098",
-            "nama_wali" => "Cawuk Hidayat",
-            "telepon_wali" => "026687065495",
-            "kode_provinsi" => "73",
-            "provinsi" => "PROV. SULAWESI SELATAN",
-            "kode_kabupaten" => "73.03",
-            "kabupaten" => "Kab. Bantaeng",
-            "kode_kecamatan" => "73.03.07",
-            "kecamatan" => "Kecamatan Gantarang Keke",
-            "kode_desa" => "73.03.07.2003",
-            "desa" => "Desa Layoa",
-            "dusun" => "Dusun Durian Runtuh",
-            "rtrw" => "001/002",
-            "alamat_jalan" => "jl. jalanin aja dulu",
-            "kode_wilayah" => "73.03.07",
-            "wilayah_id" => "1",
-            "pertama_login" => "n",
-            "kunci" => "0",
-            "status_pendaftaran" => "belum_mendaftar",
+            'nik' => '1234567890123456',
+            'jenis_kelamin' => 'p',
+            'tempat_lahir' => 'Sukamaju',
+            'tanggal_lahir' => '2001-01-01',
+            'email' => 'test@email.com',
+            'telepon' => '081234567890',
+            'pas_foto' => '',
+            'buta_warna' => 'n',
+            'tinggi_badan' => '',
+            'nama_ayah' => 'Prabu Halim',
+            'telepon_ayah' => '08123456780',
+            'nama_ibu' => 'Rina Uyainah',
+            'telepon_ibu' => '06138000098',
+            'nama_wali' => 'Cawuk Hidayat',
+            'telepon_wali' => '026687065495',
+            'kode_provinsi' => '73',
+            'provinsi' => 'PROV. SULAWESI SELATAN',
+            'kode_kabupaten' => '73.03',
+            'kabupaten' => 'Kab. Bantaeng',
+            'kode_kecamatan' => '73.03.07',
+            'kecamatan' => 'Kecamatan Gantarang Keke',
+            'kode_desa' => '73.03.07.2003',
+            'desa' => 'Desa Layoa',
+            'dusun' => 'Dusun Durian Runtuh',
+            'rtrw' => '001/002',
+            'alamat_jalan' => 'jl. jalanin aja dulu',
+            'kode_wilayah' => '73.03.07',
+            'wilayah_id' => '1',
+            'pertama_login' => 'n',
+            'kunci' => '0',
+            'status_pendaftaran' => 'belum_mendaftar',
         ];
 
         // $additional_data = [
@@ -454,33 +455,33 @@ class StudentController extends Controller
         // ]);
 
         $data = collect([
-            "id" => "1",
-            "siswa_id" => $id,
-            "sm1_mtk" => "90",
-            "sm1_ipa" => "98",
-            "sm1_ips" => "87",
-            "sm1_bid" => "98",
-            "sm1_big" => "94",
-            "sm2_mtk" => "87",
-            "sm2_ipa" => "78",
-            "sm2_ips" => "79",
-            "sm2_bid" => "76",
-            "sm2_big" => "87",
-            "sm3_mtk" => "70",
-            "sm3_ipa" => "99",
-            "sm3_ips" => "76",
-            "sm3_bid" => "98",
-            "sm3_big" => "98",
-            "sm4_mtk" => "78",
-            "sm4_ipa" => "89",
-            "sm4_ips" => "90",
-            "sm4_bid" => "85",
-            "sm4_big" => "90",
-            "sm5_mtk" => "95",
-            "sm5_ipa" => "76",
-            "sm5_ips" => "87",
-            "sm5_bid" => "93",
-            "sm5_big" => "71",
+            'id' => '1',
+            'siswa_id' => $id,
+            'sm1_mtk' => '90',
+            'sm1_ipa' => '98',
+            'sm1_ips' => '87',
+            'sm1_bid' => '98',
+            'sm1_big' => '94',
+            'sm2_mtk' => '87',
+            'sm2_ipa' => '78',
+            'sm2_ips' => '79',
+            'sm2_bid' => '76',
+            'sm2_big' => '87',
+            'sm3_mtk' => '70',
+            'sm3_ipa' => '99',
+            'sm3_ips' => '76',
+            'sm3_bid' => '98',
+            'sm3_big' => '98',
+            'sm4_mtk' => '78',
+            'sm4_ipa' => '89',
+            'sm4_ips' => '90',
+            'sm4_bid' => '85',
+            'sm4_big' => '90',
+            'sm5_mtk' => '95',
+            'sm5_ipa' => '76',
+            'sm5_ips' => '87',
+            'sm5_bid' => '93',
+            'sm5_big' => '71',
         ]);
 
         return response()->json($data);

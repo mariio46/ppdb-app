@@ -8,11 +8,9 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
     public function __invoke(Request $request): View
     {
+        // Check if admin or not = session()->get('roles.name');
         return view('has-role.dashboard.index', [
             'session' => session()->all(),
         ]);

@@ -91,27 +91,27 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Lengkap" identifier="fullname" />
+                                <x-three-row-info identifier="fullname" label="Nama Lengkap" />
 
-                                <x-three-row-info label="NISN" identifier="nisn" />
-                                
-                                <x-three-row-info label="NIK" identifier="nik" />
-                                
-                                <x-three-row-info label="Asal Sekolah" identifier="origin_school" />
-                                
-                                <x-three-row-info label="Jenis Kelamin" identifier="gender" />
-                                
+                                <x-three-row-info identifier="nisn" label="NISN" />
+
+                                <x-three-row-info identifier="nik" label="NIK" />
+
+                                <x-three-row-info identifier="origin_school" label="Asal Sekolah" />
+
+                                <x-three-row-info identifier="gender" label="Jenis Kelamin" />
+
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Tempat Lahir" identifier="birth_place" />
-                                
-                                <x-three-row-info label="Tanggal Lahir" identifier="birth_day" />
-                                
-                                <x-three-row-info label="Nomor HP" identifier="phone" />
-                                
-                                <x-three-row-info label="Email" identifier="email" />
+                                <x-three-row-info identifier="birth_place" label="Tempat Lahir" />
+
+                                <x-three-row-info identifier="birth_day" label="Tanggal Lahir" />
+
+                                <x-three-row-info identifier="phone" label="Nomor HP" />
+
+                                <x-three-row-info identifier="email" label="Email" />
                             </table>
                         </div>
                     </div>
@@ -122,22 +122,22 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Provinsi" identifier="province" />
+                                <x-three-row-info identifier="province" label="Provinsi" />
 
-                                <x-three-row-info label="Kabupaten / kota" identifier="city" />
-                                
-                                <x-three-row-info label="Kecamatan" identifier="district" />
-                                
-                                <x-three-row-info label="Desa / Kelurahan" identifier="village" />
+                                <x-three-row-info identifier="city" label="Kabupaten / kota" />
+
+                                <x-three-row-info identifier="district" label="Kecamatan" />
+
+                                <x-three-row-info identifier="village" label="Desa / Kelurahan" />
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Dusun / Lingkungan" identifier="hamlet" />
+                                <x-three-row-info identifier="hamlet" label="Dusun / Lingkungan" />
 
-                                <x-three-row-info label="RT / RW" identifier="rtrw" />
-                                
-                                <x-three-row-info label="Alamat Jalan" identifier="address" />
+                                <x-three-row-info identifier="rtrw" label="RT / RW" />
+
+                                <x-three-row-info identifier="address" label="Alamat Jalan" />
                             </table>
                         </div>
                     </div>
@@ -148,17 +148,17 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Ibu Kandung" identifier="mother_name" />
-                            
-                                <x-three-row-info label="Nomor HP" identifier="mother_phone" />
+                                <x-three-row-info identifier="mother_name" label="Nama Ibu Kandung" />
+
+                                <x-three-row-info identifier="mother_phone" label="Nomor HP" />
                                 </tr>
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Ayah" identifier="father_name" />
-                                
-                                <x-three-row-info label="Nomor HP" identifier="father_phone" />
+                                <x-three-row-info identifier="father_name" label="Nama Ayah" />
+
+                                <x-three-row-info identifier="father_phone" label="Nomor HP" />
                             </table>
                         </div>
                     </div>
@@ -169,9 +169,9 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Wali" identifier="guard_name" />
-                                
-                                <x-three-row-info label="Nomor HP" identifier="guard_phone" />
+                                <x-three-row-info identifier="guard_name" label="Nama Wali" />
+
+                                <x-three-row-info identifier="guard_phone" label="Nomor HP" />
                             </table>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                     <div class="d-flex align-items-center justify-content-between px-2 mb-2">
                         <h4 class="text-primary mb-0">Data Nilai Rapor</h4>
                         <x-link href="{{ route('siswa.score', [$id, 'semester-1']) }}" color="success">
-                            <x-tabler-pencil style="width: 1rem; height: 1rem;" /> 
+                            <x-tabler-pencil style="width: 1rem; height: 1rem;" />
                             Edit Nilai
                         </x-link>
                     </div>

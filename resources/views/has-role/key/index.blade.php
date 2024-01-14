@@ -2,88 +2,147 @@
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
+    <link type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css" rel="stylesheet">
 @endsection
 
-@push('scripts')
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
     <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-    <script src="/app-assets/js/scripts/forms/form-select2.js"></script>
-@endpush
+@endsection
+
+@section('styles')
+    <style>
+        div.dataTables_wrapper div.dataTables_filter input {
+            margin-left: 0 !important;
+        }
+
+        @media (min-width: 768px) {
+            div.dataTables_wrapper div.dataTables_filter {
+                text-align: left !important;
+            }
+
+            div.dataTables_wrapper div.dataTables_filter input,
+            div.dataTables_wrapper div.dataTables_length label {
+                margin-left: 0.75rem !important;
+            }
+        }
+    </style>
+@endsection
 
 @section('content')
     <div class="content-body">
         <div class="card">
-            <div class="card-header">
-                <div class="card-title">Filter</div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-5 col-12 mb-1 mb-sm-0">
-                        <x-select class="select2 form-select" data-placeholder="Pilih Satuan Pendidikan">
-                            <x-empty-option />
-                            <option value="SMA">SMA</option>
-                            <option value="SMK">SMK</option>
-                            <option value="SMA Half Boarding">SMA Half Boarding</option>
-                            <option value="SMA Boarding">SMA Boarding</option>
-                        </x-select>
-                    </div>
-                    <div class="col-sm-5 col-12 mb-1 mb-sm-0">
-                        <x-select class="select2 form-select" data-placeholder="Pilih Kabupaten/Kota">
-                            <x-empty-option />
-                            <option value="Pareapre">Pareapre</option>
-                            <option value="Makassar">Makassar</option>
-                            <option value="Maros">Maros</option>
-                            <option value="Pangkep">Pangkep</option>
-                            <option value="Pinrang">Pinrang</option>
-                            <option value="Sidrap">Sidrap</option>
-                            <option value="Enrekang">Enrekang</option>
-                        </x-select>
-                    </div>
-                    <div class="col-sm-2 col-12 mb-1 mb-sm-0">
-                        <x-button class="w-100" color="dark" disabled>Reset Filter</x-button>
-                    </div>
-                </div>
-                <x-separator marginY="2" />
-                <x-input class="w-25" id="search" name="search" placeholder="Cari user..." />
-                <x-separator marginY="2" />
-                <table class="table">
+            <div class="card-body p-0">
+                <table class="table table-schools">
                     <thead>
                         <tr class="table-light">
-                            <th scope="col">NAMA</th>
+                            <th scope="col">NAMA SEKOLAH</th>
                             <th scope="col">NPSN</th>
-                            <th scope="col">SATUAN PENDIDIKAN</th>
+                            <th scope="col">SATUAN PENDIDKAN</th>
                             <th scope="col">ALAMAT</th>
-                            <th scope="col">ACTION</th>
+                            <th scope="col">AKSI</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($collections as $item)
-                            <tr>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->npsn }}</td>
-                                <td>{{ $item->unit }}</td>
-                                <td>{{ $item->address }}</td>
-                                <td>
-                                    <x-button data-bs-toggle="modal" data-bs-target="#modal-buka-kunci-sekolah-{{ $item->npsn }}" type="button" color="success">Buka Kunci</x-button>
-                                    <x-modal modal_id="modal-buka-kunci-sekolah-{{ $item->npsn }}" label_by="modalBukaKunciSekolah{{ $item->npsn }}">
-                                        <x-modal.header>
-                                            <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
-                                        </x-modal.header>
-                                        <x-modal.body>
-                                            <h5 class="text-center mt-2">Buka Kunci Sekolah {{ $item->name }}</h5>
-                                            <p>Data sekolah yang kuncinya terbuka dapat mengedit kembali data sekolahnya kembali dengan benar, Apakah Anda ingin membuka kunci sekolah {{ $item->name }}?
-                                            </p>
-                                        </x-modal.body>
-                                        <x-modal.footer class="justify-content-center mb-3">
-                                            <x-button color="success">Buka Kunci</x-button>
-                                            <x-button data-bs-dismiss="modal" color="secondary">Batalkan</x-button>
-                                        </x-modal.footer>
-                                    </x-modal>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(function() {
+            'use strict';
+
+            var table = $('.table-schools'),
+                select = $('.select2');
+
+            if (table.length) {
+                var tb = table.DataTable({
+                    ajax: {
+                        url: '/panel/kunci-sekolah/json/schools',
+                        dataSrc: ''
+                    },
+                    columns: [{
+                            data: 'name'
+                        },
+                        {
+                            data: 'npsn'
+                        },
+                        {
+                            data: 'unit'
+                        },
+                        {
+                            data: 'address'
+                        },
+                        {
+                            data: 'npsn',
+                            render: function(data, type, row) {
+                                return `
+                                <button data-bs-toggle="modal" data-bs-target="#modal-buka-kunci-sekolah-${row.npsn}" type="button" class="btn btn-success">Buka Kunci</button>
+                                <div id="modal-buka-kunci-sekolah-${row.npsn}" aria-labelledby="modalBukaKunciSekolah${row.npsn}" aria-hidden="true" tabindex="-1" class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h5 class="text-center mt-2">Buka Kunci Sekolah ${row.name}</h5>
+                                                <p>
+                                                    Data sekolah yang kuncinya terbuka dapat mengedit kembali data sekolahnya kembali dengan benar, Apakah Anda ingin membuka kunci sekolah ${row.name}?
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer justify-content-center">
+                                                <button class="btn btn-success">Buka Kunci</button>
+                                                <button class="btn btn-secondary" data-bs-dismiss="modal">Batalkan</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                            }
+                        },
+                    ],
+
+                    // Styling Table
+                    columnDefs: [{
+                        targets: [1, 2, 4],
+                        className: 'text-center'
+                    }],
+
+                    dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-6 d-flex"lf><"col-6"<"add-button">>>>
+                    <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>
+                    <"table-responsive"<t>>
+                    <"row g-0"<"col-sm-12 col-md-5 ps-1"i><"col-sm-12 pe-1 col-md-7"p>>`,
+
+                    ordering: false,
+                    lengthMenu: [
+                        [10, 25, 50, 100],
+                        [10, 25, 50, "100"]
+                    ],
+                    language: {
+                        lengthMenu: "_MENU_",
+                        search: "",
+                        searchPlaceholder: "Cari Sekolah",
+                        info: "Display _START_ to _END_ of _TOTAL_ entries",
+                        paginate: {
+                            // remove previous & next text from pagination
+                            previous: '&nbsp;',
+                            next: '&nbsp;'
+                        }
+                    },
+                    initComplete: function() {
+                        $('#DataTables_Table_0_length select').select2({
+                            width: "50%",
+                            minimumResultsForSearch: -1,
+                            dropdownParent: $('#DataTables_Table_0_length select').parent()
+                        });
+                    }
+                });
+
+            }
+        })
+    </script>
+@endpush

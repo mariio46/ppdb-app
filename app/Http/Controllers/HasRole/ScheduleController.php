@@ -38,7 +38,7 @@ class ScheduleController extends Controller
     public function edit(string $id): View
     {
         $data = [
-            'id' => $id
+            'id' => $id,
         ];
 
         return view('has-role.schedule.edit-phase', $data);
@@ -48,7 +48,7 @@ class ScheduleController extends Controller
     public function editRegistration(string $id): View
     {
         $data = [
-            'id' => $id
+            'id' => $id,
         ];
 
         return view('has-role.schedule.edit-regis', $data);
@@ -58,7 +58,7 @@ class ScheduleController extends Controller
     public function editVerification(string $id): View
     {
         $data = [
-            'id' => $id
+            'id' => $id,
         ];
 
         return view('has-role.schedule.edit-verif', $data);
@@ -78,7 +78,7 @@ class ScheduleController extends Controller
     public function editReRegistration(string $id): View
     {
         $data = [
-            'id' => $id
+            'id' => $id,
         ];
 
         return view('has-role.schedule.edit-reregis', $data);
@@ -160,11 +160,11 @@ class ScheduleController extends Controller
 
         for ($i = 1; $i <= $length; $i++) {
             $data[] = [
-                'id' => $request->post('id' . $i),
-                'tanggal' => $request->post('date' . $i),
-                'jam_mulai' => $request->post('sH' . $i) . '.' . $request->post('sM' . $i),
-                'jam_selesai' => $request->post('eH' . $i) . '.' . $request->post('eM' . $i),
-                'jenis' => 'verifikasi'
+                'id' => $request->post('id'.$i),
+                'tanggal' => $request->post('date'.$i),
+                'jam_mulai' => $request->post('sH'.$i).'.'.$request->post('sM'.$i),
+                'jam_selesai' => $request->post('eH'.$i).'.'.$request->post('eM'.$i),
+                'jenis' => 'verifikasi',
             ];
         }
 
@@ -185,8 +185,8 @@ class ScheduleController extends Controller
         $data = [
             'id' => $request->post('id'),
             'tanggal' => $request->post('date'),
-            'jam_mulai' => $request->post('hour') . '.' . $request->post('minute'),
-            'jenis' => 'pengumuman'
+            'jam_mulai' => $request->post('hour').'.'.$request->post('minute'),
+            'jenis' => 'pengumuman',
         ];
 
         $return = [
@@ -376,6 +376,7 @@ class ScheduleController extends Controller
         // ];
 
         $data = $this->schedule->getDetailData($id);
+
         return response()->json($data['response'], $data['status_code']);
     }
 
@@ -476,6 +477,7 @@ class ScheduleController extends Controller
         // ];
 
         $data = $this->schedule->getDetailTime($id, 'pendaftaran');
+
         return response()->json($data['response'], $data['status_code']);
     }
 
@@ -523,6 +525,7 @@ class ScheduleController extends Controller
         //     ]
         // ];
         $data = $this->schedule->getDetailTime($id, 'verifikasi');
+
         return response()->json($data['response'], $data['status_code']);
     }
 

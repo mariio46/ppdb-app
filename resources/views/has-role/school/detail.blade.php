@@ -56,7 +56,7 @@
 @push('scripts')
     <script src="/app-assets/js/scripts/pages/page-profile.js"></script>
     <script>
-        var npsn = '{{ $npsn }}',
+        var id = '{{ $id }}',
             unit = '{{ $unit }}'
     </script>
     <script>
@@ -64,23 +64,24 @@
             'use strict';
 
             $.ajax({
-                url: `/panel/sekolah/json/single-school/${npsn}`,
+                url: `/panel/sekolah/json/single-school/${id}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(data) {
+                    console.log(data);
                     // Column 1
-                    $('#nama_kepsek').text(data.nama_kepsek)
-                    $('#nip_kepsek').text(data.nip_kepsek)
-                    $('#nama_kappdb').text(data.nama_kappdb)
-                    $('#nip_kappdb').text(data.nip_kappdb)
-                    $('#alamat_jalan').text(data.alamat_jalan)
+                    $('#nama_kepsek').text(data.nama_kepsek ?? 'Belum Ada')
+                    $('#nip_kepsek').text(data.nip_kepsek ?? 'Belum Ada')
+                    $('#nama_kappdb').text(data.nama_kappdb ?? 'Belum Ada')
+                    $('#nip_kappdb').text(data.nip_kappdb ?? 'Belum Ada')
+                    $('#alamat_jalan').text(data.alamat_jalan ?? 'Belum Ada')
 
                     // Column 2
-                    $('#kabupaten').text(data.kabupaten)
-                    $('#kecamatan').text(data.kecamatan)
-                    $('#desa').text(data.desa)
-                    $('#rtrw').text(data.rtrw)
-                    $('#koordinat_sekolah').text(`${data.bujur} , ${data.lintang}`)
+                    $('#kabupaten').text(data.kabupaten ?? 'Belum Ada')
+                    $('#kecamatan').text(data.kecamatan ?? 'Belum Ada')
+                    $('#desa').text(data.desa ?? 'Belum Ada')
+                    $('#rtrw').text(data.rtrw ?? 'Belum Ada')
+                    $('#koordinat_sekolah').text(data.bujur ? `${data.bujur} , ${data.lintanh}` : 'Belum Ada')
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);

@@ -50,7 +50,7 @@
                 <h4 class="card-title">Edit Siswa</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('siswa.update') }}" method="post" id="update-form">
+                <form id="update-form" action="{{ route('siswa.update') }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6 ">
@@ -72,17 +72,17 @@
                             </div>
                             <div class="mb-2" id="origin-school-code-div" style="display: none;">
                                 <x-label>NPSN Asal Sekolah</x-label>
-                                <x-input id="npsn_sekolah_asal" name="npsn_sekolah_asal" placeholder="NPSN Sekolah Asal" value="{{ old('npsn_sekolah_asal') }}" />
+                                <x-input id="npsn_sekolah_asal" name="npsn_sekolah_asal" value="{{ old('npsn_sekolah_asal') }}" placeholder="NPSN Sekolah Asal" />
                             </div>
                             <div class="mb-2" id="origin-school-name-div" style="display: none;">
                                 <x-label>Nama Asal Sekolah</x-label>
-                                <x-input id="nama_sekolah_asal" name="nama_sekolah_asal" placeholder="Nama Sekolah Asal" value="{{ old('nama_sekolah_asal') }}" />
+                                <x-input id="nama_sekolah_asal" name="nama_sekolah_asal" value="{{ old('nama_sekolah_asal') }}" placeholder="Nama Sekolah Asal" />
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-2">
                                 <x-label>Jenis Kelamin</x-label>
-                                <x-select class="select2 form-select" id="jenis_kelamin" name="jenis_kelamin" data-placeholder="Jenis Kelamin" data-minimum-results-for-search="-1" >
+                                <x-select class="select2 form-select" id="jenis_kelamin" name="jenis_kelamin" data-placeholder="Jenis Kelamin" data-minimum-results-for-search="-1">
                                     <option value=""></option>
                                     <option value="l">Laki-laki</option>
                                     <option value="p">Perempuan</option>
@@ -94,11 +94,11 @@
                             </div>
                             <div class="mb-2">
                                 <x-label>Tanggal Lahir</x-label>
-                                <x-input type="date" id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir" />
+                                <x-input id="tanggal_lahir" name="tanggal_lahir" type="date" placeholder="Tanggal Lahir" />
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="d-flex align-items-center justify-content-start gap-2">
                         <x-button color="success">Simpan Perubahan</x-button>
                         <a class="btn btn-outline-secondary " href="{{ route('siswa.show', $id) }}">Kembali</a>
@@ -150,7 +150,7 @@
                     dataType: 'json',
                     success: function(data) {
                         originSchool.empty().append('<option value=""></option>');
-                        
+
                         data.forEach(os => {
                             originSchool.append(`<option value="${os.id}|${os.npsn}|${os.nama}">${os.npsn} - ${os.nama}</option>`);
                         });

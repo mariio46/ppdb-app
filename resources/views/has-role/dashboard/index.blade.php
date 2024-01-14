@@ -2,4 +2,6 @@
 
 @section('content')
     @dump($session)
+    {{-- {{ session()->get() }} --}}
+    {{-- @dump($role) --}}
 @endsection

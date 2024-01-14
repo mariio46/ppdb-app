@@ -120,11 +120,11 @@
             // select2
             if (select.length) {
                 select.each(function() {
-                var $this = $(this);
-                $this.wrap('<div class="position-relative"></div>');
-                $this.select2({
-                    dropdownParent: $this.parent()
-                });
+                    var $this = $(this);
+                    $this.wrap('<div class="position-relative"></div>');
+                    $this.select2({
+                        dropdownParent: $this.parent()
+                    });
                 });
             }
 
@@ -134,43 +134,44 @@
                 let filterType = fType.val();
                 let filterCity = fCity.val();
                 var datatable = table.DataTable({
-                ajax: {
-                    url: '/schools/get-list?t=' + filterType + '&c=' + filterCity,
-                    dataSrc: 'data'
-                },
-                columns: [{
-                    data: 'name'
+                    ajax: {
+                        url: '/schools/get-list?t=' + filterType + '&c=' + filterCity,
+                        dataSrc: 'data'
                     },
-                    {
-                    data: 'id'
+                    columns: [{
+                            data: 'name'
+                        },
+                        {
+                            data: 'id'
+                        },
+                        {
+                            data: 'type'
+                        },
+                        {
+                            data: 'address'
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return '<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all=\'' + JSON.stringify(row) +
+                                    '\'>Lihat Detail</button>';
+                            }
+                        }
+                    ],
+                    columnDefs: [{
+                        className: 'text-center',
+                        targets: [1, 2, 4]
+                    }, ],
+                    language: {
+                        paginate: {
+                            // remove previous & next text from pagination
+                            previous: '&nbsp;',
+                            next: '&nbsp;'
+                        }
                     },
-                    {
-                    data: 'type'
+                    createdRow: function(row, data, dataIndex) {
+                        $(row).addClass('row-' + dataIndex);
                     },
-                    {
-                    data: 'address'
-                    },
-                    {
-                    data: null,
-                    render: function(data, type, row) {
-                        return '<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all=\'' + JSON.stringify(row) + '\'>Lihat Detail</button>';
-                    }
-                    }
-                ],
-                columnDefs: [{
-                    className: 'text-center',
-                    targets: [1, 2, 4]
-                }, ],
-                language: {
-                    paginate: {
-                    // remove previous & next text from pagination
-                    previous: '&nbsp;',
-                    next: '&nbsp;'
-                    }
-                },
-                createdRow: function(row, data, dataIndex) {
-                    $(row).addClass('row-' + dataIndex);
-                },
                 });
             }
 
@@ -178,19 +179,19 @@
             // load city
             function loadCity() {
                 $.ajax({
-                url: '/json/cities/73',
-                method: 'get',
-                dataType: 'json',
-                success: function(cities) {
-                    fCity.empty().append('<option value=""></option>');
+                    url: '/json/cities/73',
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(cities) {
+                        fCity.empty().append('<option value=""></option>');
 
-                    cities.forEach(city => {
-                    fCity.append(`<option value="${city.code}">${city.name}</option>`);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Get data failed: ', status, error);
-                }
+                        cities.forEach(city => {
+                            fCity.append(`<option value="${city.code}">${city.name}</option>`);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Get data failed: ', status, error);
+                    }
                 });
             }
 
@@ -225,17 +226,17 @@
                 $('#modalDepartment').html('');
 
                 if (rowData.type === 'SMK') {
-                $('#modalDepartment').addClass('card-body border-top');
+                    $('#modalDepartment').addClass('card-body border-top');
 
-                var title = $('<h5 class="mb-2">Daftar Jurusan</h5>').appendTo('#modalDepartment');
+                    var title = $('<h5 class="mb-2">Daftar Jurusan</h5>').appendTo('#modalDepartment');
 
-                var rowElement = $('<div class="row"></div>').appendTo('#modalDepartment');
+                    var rowElement = $('<div class="row"></div>').appendTo('#modalDepartment');
 
-                rowData.department.forEach(dep => {
-                    rowElement.append($('<div class="col-md-6 col-12"><p>&bull; ' + dep + '</p></div>'));
-                });
+                    rowData.department.forEach(dep => {
+                        rowElement.append($('<div class="col-md-6 col-12"><p>&bull; ' + dep + '</p></div>'));
+                    });
                 }
             });
-            });
+        });
     </script>
 @endpush

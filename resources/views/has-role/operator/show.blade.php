@@ -18,7 +18,7 @@
                     <h4 class="card-title">Detail User</h4>
                     <x-link :href="route('operators.edit', $username)">Edit Operator</x-link>
                 </div>
-                <div class="card-body p-0 pb-1">
+                <div class="card-body pb-1">
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
@@ -38,7 +38,7 @@
 
                     <x-separator id="separator-id" style="display: none" marginY="2" />
 
-                    <div class="d-flex align-items-center justify-content-start gap-2 ps-2 pb-0" id="update-status" style="display: none !important;"> </div>
+                    <div id="update-status" style="display: none !important;"></div>
                 </div>
             </form>
         </div>
