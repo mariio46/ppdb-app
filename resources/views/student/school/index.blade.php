@@ -44,8 +44,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body border-top">
-                    <table class="table" id="tableData">
+                <div class="card-body border-top px-0">
+                    <table class="table table-hover" id="tableData">
                         <thead>
                             <tr>
                                 <th>Nama Sekolah</th>
@@ -134,43 +134,71 @@
                 let filterType = fType.val();
                 let filterCity = fCity.val();
                 var datatable = table.DataTable({
-                ajax: {
-                    url: '/schools/get-list?t=' + filterType + '&c=' + filterCity,
-                    dataSrc: 'data'
-                },
-                columns: [{
-                    data: 'name'
+                    ajax: {
+                        // url: '/schools/get-list?t=' + filterType + '&c=' + filterCity,
+                        url: '/schools/get-list',
+                        dataSrc: 'data.data'
                     },
-                    {
-                    data: 'id'
+                    columns: [
+                        {
+                            data: 'nama_sekolah'
+                        },
+                        {
+                            data: 'npsn'
+                        },
+                        {
+                            data: 'satuan_pendidikan',
+                            render: function (data, type, row) {
+                                switch (data) {
+                                    case 'smk':
+                                        return 'SMK';
+                                        break;
+                                    case 'hbs': 
+                                        return 'SMA Semi Boarding School';
+                                        break;
+                                    case 'fbs':
+                                        return 'SMA Boarding School';
+                                        break;
+                                    case 'sma':
+                                    default:
+                                        return 'SMA';
+                                        break;
+                                }
+                            }
+                        },
+                        {
+                            data: 'alamat_jalan'
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return `<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all="${JSON.stringify(row)}">Lihat Detail</button>`;
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        {
+                        className: 'text-center',
+                        targets: [1, 2, 4]
+                        },
+                    ],
+                    dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-12 px-2 d-flex"lf>>>
+                        <"table-responsive"<t>>
+                        <"row g-0"<"col-sm-12 col-md-5 px-2"i><"col-sm-12 px-2 col-md-7"p>>`,
+                    language: {
+                        lengthMenu: "_MENU_",
+                        search: "",
+                        searchPlaceholder: "Cari Sekolah...",
+                        info: "Display _START_ to _END_ of _TOTAL_ entries",
+                        paginate: {
+                            // remove previous & next text from pagination
+                            previous: '&nbsp;',
+                            next: '&nbsp;'
+                        }
                     },
-                    {
-                    data: 'type'
+                    createdRow: function(row, data, dataIndex) {
+                        $(row).addClass('row-' + dataIndex);
                     },
-                    {
-                    data: 'address'
-                    },
-                    {
-                    data: null,
-                    render: function(data, type, row) {
-                        return '<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all=\'' + JSON.stringify(row) + '\'>Lihat Detail</button>';
-                    }
-                    }
-                ],
-                columnDefs: [{
-                    className: 'text-center',
-                    targets: [1, 2, 4]
-                }, ],
-                language: {
-                    paginate: {
-                    // remove previous & next text from pagination
-                    previous: '&nbsp;',
-                    next: '&nbsp;'
-                    }
-                },
-                createdRow: function(row, data, dataIndex) {
-                    $(row).addClass('row-' + dataIndex);
-                },
                 });
             }
 
@@ -218,13 +246,13 @@
             $('#tableData tbody').on('click', '.btn-detail', function() {
                 var rowData = datatable.row($(this).closest('tr')).data();
 
-                $('#schoolName').text(rowData.name);
-                $('#schoolId').text(rowData.id);
-                $('#schoolAddress').text(rowData.address);
+                $('#schoolName').text(rowData.nama_sekolah);
+                $('#schoolId').text(rowData.npsn);
+                $('#schoolAddress').text(rowData.alamat_jalan);
 
                 $('#modalDepartment').html('');
 
-                if (rowData.type === 'SMK') {
+                if (rowData.satuan_pendidikan === 'smk') {
                 $('#modalDepartment').addClass('card-body border-top');
 
                 var title = $('<h5 class="mb-2">Daftar Jurusan</h5>').appendTo('#modalDepartment');

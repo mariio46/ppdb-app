@@ -52,8 +52,8 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         //     }
         // }
 
-        // $data['data'][0]['time_start'] = '00:00'; // format tt:mm
-        // $data['data'][0]['time_end'] = '23:59';
+        // $data['data']['jam_mulai'] = '00:00'; // format tt:mm
+        // $data['data']['jam_selesai'] = '23:59';
 
         return $data;
     }

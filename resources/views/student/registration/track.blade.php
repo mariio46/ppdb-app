@@ -206,14 +206,15 @@
                 // --------------------------------------------------------------------
                 function loadSchool(n, cityCode = '0') {
                     $.ajax({
-                    url: '/schools/by-city/' + cityCode + '/sma',
+                    url: `/schools/by-city/${cityCode}/sma`,
                     method: 'get',
                     dataType: 'json',
                     success: function(schools) {
-                        $('#school' + n).empty().append('<option value=""></option>');
+                        console.log(schools);
+                        $(`#school${n}`).empty().append('<option value=""></option>');
 
-                        schools.forEach(school => {
-                        $('#school' + n).append('<option value="' + school.id + '">' + school.name + '</option>');
+                        schools.data.forEach(school => {
+                            $(`#school${n}`).append(`<option value="${school.id}">${school.nama_sekolah}</option>`);
                         });
                     },
                     error: function(xhr, status, error) {
@@ -425,16 +426,16 @@
                     // validation for sma affirmation
                     // --------------------------------------------------------------------
                     affType.rules("add", {
-                    required: true,
-                    messages: {
-                        required: "*Pilih salah satu."
-                    }
+                        required: true,
+                        messages: {
+                            required: "*Pilih salah satu."
+                        }
                     });
                     affNum.rules("add", {
-                    requiredIfPkh: 'affirmationType',
-                    messages: {
-                        requiredIfPkh: "*Harus diisi."
-                    }
+                        requiredIfPkh: 'affirmationType',
+                        messages: {
+                            requiredIfPkh: "*Harus diisi."
+                        }
                     });
                     $.validator.addMethod("requiredIfPkh", function(value, element, params) {
                     var sourceValue = $("#" + params).val();

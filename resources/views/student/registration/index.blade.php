@@ -113,7 +113,7 @@
             }
 
             function generateListItems(school, items) {
-                if (items.length > 0 || items != null) {
+                if (items != null && items.length > 0) {
                     let html = items.map(item => `<li class="pb-1">Jalur ${item.jalur}</li>`).join('');
 
                     return `<h4 class="mt-2">${school}</h4>

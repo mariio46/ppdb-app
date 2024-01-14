@@ -111,7 +111,7 @@
                 dataType: 'json',
                 success: function(data) {
                     let d = data.data;
-                    console.log(d);
+                    console.log(data);
                     let isNotExpired = (isCurrentTimeInRange(d.jam_mulai, d.jam_selesai));
                     let n = 0;
                     let start = new Date(d.mulai);
