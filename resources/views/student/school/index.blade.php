@@ -18,16 +18,10 @@
                     <div class="row">
                         <div class="col-md-5 col-9 mb-1 pe-1">
                             <x-select class="form-select select2 w-100" id="eduType" data-placeholder="Satuan Pendidikan" data-minimum-results-for-search="-1">
-                                <option value=""></option>
+                                <option value="all">Semua</option>
                                 <option value="SMA">SMA</option>
                                 <option value="SMK">SMK</option>
                             </x-select>
-                        </div>
-                        <div class="col-md-1 col-3 ps-0">
-                            <x-button class="w-100 btn-md" id="btnResetTypeFilter" type="button" variant="outline" color="secondary">
-                                <span class="d-lg-block d-none">Reset</span>
-                                <span class="d-lg-none">&#10005;</span>
-                            </x-button>
                         </div>
 
                         <div class="col-md-5 col-9 mb-1 pe-1">
@@ -120,18 +114,17 @@
             // select2
             if (select.length) {
                 select.each(function() {
-                var $this = $(this);
-                $this.wrap('<div class="position-relative"></div>');
-                $this.select2({
-                    dropdownParent: $this.parent()
-                });
+                    var $this = $(this);
+                    $this.wrap('<div class="position-relative"></div>');
+                    $this.select2({
+                        dropdownParent: $this.parent()
+                    });
                 });
             }
 
             // --------------------------------------------------
             // dataTable
             if (table.length) {
-                let filterType = fType.val();
                 let filterCity = fCity.val();
                 var datatable = table.DataTable({
                     ajax: {
@@ -207,18 +200,18 @@
             function loadCity() {
                 $.ajax({
                 url: '/json/cities/73',
-                method: 'get',
-                dataType: 'json',
-                success: function(cities) {
-                    fCity.empty().append('<option value=""></option>');
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(cities) {
+                        fCity.empty().append('<option value=""></option>');
 
-                    cities.forEach(city => {
-                    fCity.append(`<option value="${city.code}">${city.name}</option>`);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Get data failed: ', status, error);
-                }
+                        cities.forEach(city => {
+                            fCity.append(`<option value="${city.code}">${city.name}</option>`);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Get data failed: ', status, error);
+                    }
                 });
             }
 
@@ -230,7 +223,7 @@
                 const t = fType.val();
                 const c = fCity.val();
 
-                datatable.ajax.url('/schools/get-list?t=' + t + '&c=' + c).load();
+                datatable.ajax.url(`/schools/get-list?t=${t}&c=${c}`).load();
             }
             $('#eduType, #city').change(function() {
                 filtering();
@@ -260,10 +253,10 @@
                 var rowElement = $('<div class="row"></div>').appendTo('#modalDepartment');
 
                 rowData.department.forEach(dep => {
-                    rowElement.append($('<div class="col-md-6 col-12"><p>&bull; ' + dep + '</p></div>'));
+                    rowElement.append($(`<div class="col-md-6 col-12"><p>&bull; ${dep}</p></div>`));
                 });
                 }
             });
-            });
+        });
     </script>
 @endpush

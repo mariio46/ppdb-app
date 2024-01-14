@@ -24,17 +24,19 @@
                         <table class="table border-bottom">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Tahap</th>
-                                    <th>Pendaftaran</th>
-                                    <th>Verifikasi</th>
-                                    <th class="text-center">Pengumuman</th>
-                                    <th>Daftar Ulang</th>
-                                    <th class="text-center">Aksi</th>
+                                    <th class="col align-middle text-center">Tahap</th>
+                                    <th class="col align-middle">Pendaftaran</th>
+                                    <th class="col align-middle">Verifikasi</th>
+                                    <th class="col align-middle text-center">Pengumuman</th>
+                                    <th class="col align-middle">Daftar Ulang</th>
+                                    <th class="col align-middle">Jalur SMA</th>
+                                    <th class="col align-middle">Jalur SMK</th>
+                                    <th class="col align-middle text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="tableData">
                                 <tr>
-                                    <td class="text-center py-1" colspan="6"><i>Tidak ada data ditemukan.</i></td>
+                                    <td class="text-center py-1" colspan="8"><i>Tidak ada data ditemukan.</i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -51,7 +53,7 @@
             'use strict';
 
             var table = $('#tableData'),
-                months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+                months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
             getData();
 
@@ -61,6 +63,7 @@
                     method: 'get',
                     dataType: 'json',
                     success: function(response) {
+                        console.log(response.data);
                         let data = response.data;
 
                         if (response.statusCode == 200) {
@@ -68,20 +71,20 @@
                             data.forEach(d => {
                                 let ds = new Date(d.pendaftaran_mulai);
                                 let de = new Date(d.pendaftaran_selesai);
-                                let dr = `${ds.getDate()} ${months[ds.getMonth()]} - ${de.getDate()} ${months[de.getMonth()]} ${de.getFullYear()}`;
+                                let dr = `${ds.getDate()} ${(ds.getMonth() !== de.getMonth()) ? months[ds.getMonth()] : ''} - ${de.getDate()} ${months[de.getMonth()]} ${de.getFullYear()}`;
 
                                 let vs = new Date(d.verifikasi_mulai);
                                 let ve = new Date(d.verifikasi_selesai);
-                                let vr = `${vs.getDate()}  ${months[vs.getMonth()]} - ${ve.getDate()} ${months[ve.getMonth()]} ${ve.getFullYear()}`;
+                                let vr = `${vs.getDate()}  ${(vs.getMonth() !== ve.getMonth()) ? months[vs.getMonth()] : ''} -  ${ve.getDate()} ${months[ve.getMonth()]} ${ve.getFullYear()}`;
 
                                 let p = new Date(d.pengumuman);
                                 let pr = `${p.getDate()} ${months[p.getMonth()]} ${p.getFullYear()}`;
 
                                 let us = new Date(d.daftar_ulang_mulai);
                                 let ue = new Date(d.daftar_ulang_selesai);
-                                let ur = `${us.getDate()} ${months[us.getMonth()]} - ${ue.getDate()} ${months[ue.getMonth()]} ${ue.getFullYear()}`;
+                                let ur = `${us.getDate()} ${(us.getMonth() !== ue.getMonth()) ? months[us.getMonth()] : ''} - ${ue.getDate()} ${months[ue.getMonth()]} ${ue.getFullYear()}`;
 
-                                table.append(generateRow(d.tahap, dr, vr, pr, ur, d.tahap_id));
+                                table.append(generateRow(d.tahap, dr, vr, pr, ur, d.sma, d.smk, d.tahap_id));
                             });
                         } else {
                             table.html('');
@@ -94,7 +97,22 @@
                 })
             }
 
-            function generateRow(phase, registration, verification, announcement, reregistration, id) {
+            function generateRow(phase, registration, verification, announcement, reregistration, sma, smk, id) {
+                let sma_html = '', smk_html = '';
+                // console.log('sma', sma);
+                if (sma != null) {
+                    sma.forEach(a => {
+                        sma_html += `<span class="badge bg-primary">${a.jalur.replace('SMA ', '')}</span><br />`;
+                    });
+                }
+                
+                // console.log('smk', sma);
+                if (smk != null) {
+                    smk.forEach(k => {
+                        smk_html += `<span class="badge bg-info">${k.jalur.replace("SMK ", '')}</span><br />`;
+                    });
+                }
+
                 return `
                 <tr>
                     <td class="py-1 text-center">${phase}</td>
@@ -102,6 +120,8 @@
                     <td class="py-1 text-success">${verification}</td>
                     <td class="py-1 text-success text-center">${announcement}</td>
                     <td class="py-1 text-success">${reregistration}</td>
+                    <td class="px-1">${sma_html}</td>
+                    <td class="px-1">${smk_html}</td>
                     <td class="py-1 text-center">
                         <a href="/panel/tahap-jadwal/d/${id}" class="btn btn-primary">
                             Lihat Detail

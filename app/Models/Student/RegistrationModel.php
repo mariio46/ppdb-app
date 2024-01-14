@@ -205,11 +205,18 @@ class RegistrationModel extends Base
 
     public function saveRegistration(array $data): array
     {
-        $result = [
-            'success' => true,
-        ];
+        $register = $this->swPostWithToken("pendaftaran/siswa", $data);
 
-        return $result;
+        if ($register['status_code'] == 200 || $register['status_code'] == 201) {
+            return $register['response'];
+        } else {
+            return [
+                "statusCode"    => $register["status_code"],
+                "status"        => "failed",
+                "message"       => "Gagal menyimpan data.",
+                "data"          => []
+            ];
+        }
     }
 
     public function getRegistrationDataByPhase(string $phase): array

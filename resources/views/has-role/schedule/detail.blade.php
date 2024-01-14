@@ -39,6 +39,18 @@
                         <x-link class="ms-auto" href="{{ route('schedules.edit.index', [$id]) }}" color="success"><x-tabler-pencil-minus style="width: 14px; height: 14px;" /> Edit Tahap</x-link>
                     </div>
 
+                    <div class="mb-1 p-2 border-bottom">
+                        <h5 class="text-primary mb-0">Jalur SMA</h5>
+
+                        <div id="sma-list">-</div>
+                    </div>
+
+                    <div class="mb-1 p-2 border-bottom">
+                        <h5 class="text-primary mb-0">Jalur SMK</h5>
+
+                        <div id="smk-list">-</div>
+                    </div>
+
                     {{-- registration --}}
                     <div class="mb-3">
                         <div class="d-flex align-items-center mb-1 px-2">
@@ -202,6 +214,22 @@
                 verificationTable = $('#verificationTable'),
                 announcementTable = $('#announcementTable'),
                 reRegistrationTable = $('#reRegistrationTable'),
+                tracks = {
+                    "AA"  : "Afirmasi",
+                    "AB"  : "Perpindahan Tugas Orang Tua",
+                    "AC"  : "Anak Guru",
+                    "AD"  : "Prestasi Akademik",
+                    "AE"  : "Prestasi Non Akademik",
+                    "AF"  : "Zonasi",
+                    "AG"  : "Boarding School",
+                    "KA"  : "Afirmasi",
+                    "KB"  : "Perpindahan Tugas Orang Tua",
+                    "KC"  : "Anak Guru",
+                    "KD"  : "Prestasi Akademik",
+                    "KE"  : "Prestasi Non Akademik",
+                    "KF"  : "Domisili Terdekat",
+                    "KG"  : "Anak DUDI"
+                },
                 months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
                 days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
@@ -219,6 +247,21 @@
                         let announce_show = announce ? `${announce[0]}.${announce[1]} WITA` : '-';
 
                         $('#phase').text(d.tahap);
+
+                        if (d.kode_jalur != '') {
+                            $('#sma-list, #smk-list').empty();
+                            let jalur = d.kode_jalur.split(', ');
+
+                            jalur.forEach(jalur => {
+                                if (jalur[0] == 'A') {
+                                    $('#sma-list').append(`<span class="badge bg-primary me-sm-1 mt-sm-1">${tracks[jalur]}</span>`);
+                                }
+
+                                if (jalur[0] == 'K') {
+                                    $('#smk-list').append(`<span class="badge bg-primary me-sm-1 mt-sm-1">${tracks[jalur]}</span>`);
+                                }
+                            });
+                        }
 
                         checkingRow(d.pendaftaran_mulai, d.pendaftaran_selesai, d.pendaftaran_batas, registrationTable, 'success');
 

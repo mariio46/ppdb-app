@@ -54,7 +54,7 @@ class RegistrationController extends Controller
         return view('student.registration.phase', $data);
     }
 
-    public function track(string $code): View
+    public function track(string $code): View|RedirectResponse
     {
         $decCode = json_decode(Crypt::decryptString($code));
         $phaseCode = Crypt::encryptString(json_encode(['phase' => $decCode->phase]));
@@ -99,10 +99,10 @@ class RegistrationController extends Controller
         } else {
             $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
 
-            if ($save['success']) {
-                return redirect()->to("/pendaftaran/bukti/$code");
+            if ($save['statusCode'] == 201) {
+                return redirect()->to("/pendaftaran/bukti/$code")->with(["stat" => "success", "msg" => $save['messages']]);
             } else {
-                return redirect()->back();
+                return redirect()->back()->with(["stat" => "error", "msg" => "Gagal menyimpan data."]);
             }
         }
     }

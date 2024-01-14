@@ -21,11 +21,11 @@
         </div>
     </div>
 
-    @if (session()->get('msg'))
+    {{-- @if (session()->get('msg'))
         <div class="alert alert-{{ session()->get('stat') }} p-1">
             <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
         </div>
-    @endif
+    @endif --}}
 
     <div class="content-body">
         <div class="card">
