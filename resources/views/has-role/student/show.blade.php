@@ -88,7 +88,7 @@
                             Edit Data
                         </x-link>
                     </div>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="fullname" label="Nama Lengkap" />
@@ -119,7 +119,7 @@
                 <x-separator marginY="3" />
                 <section id="data-alamat">
                     <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Alamat</h4>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="province" label="Provinsi" />
@@ -145,7 +145,7 @@
                 <x-separator marginY="3" />
                 <section id="data-orang-tua">
                     <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Orang Tua</h4>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="mother_name" label="Nama Ibu Kandung" />
@@ -166,7 +166,7 @@
                 <x-separator marginY="3" />
                 <section id="data-orang-tua">
                     <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Wali</h4>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="guard_name" label="Nama Wali" />
@@ -325,32 +325,33 @@
                     dataType: 'json',
                     success: function(data) {
                         console.log(data);
-                        let tl = new Date(data.tanggal_lahir);
+                        let d = data.data;
+                        let tl = new Date(d.tanggal_lahir);
 
-                        $('#fullname').text(data.nama);
-                        $('#nisn').text(data.nisn);
-                        $('#nik').text(data.nik || '-');
-                        $('#origin_school').text(data.sekolah_asal);
+                        $('#fullname').text(d.nama);
+                        $('#nisn').text(d.nisn);
+                        $('#nik').text(d.nik || '-');
+                        $('#origin_school').text(d.sekolah_asal);
 
-                        $('#gender').text(data.jenis_kelamin == 'p' ? 'Perempuan' : (data.jenis_kelamin == 'l' ? "Laki-laki" : "-"));
-                        $('#birth_place').text(data.tempat_lahir || '-');
+                        $('#gender').text(d.jenis_kelamin == 'p' ? 'Perempuan' : (d.jenis_kelamin == 'l' ? "Laki-laki" : "-"));
+                        $('#birth_place').text(d.tempat_lahir || '-');
                         $('#birth_day').text(`${tl.getDate()} ${months[tl.getMonth()]} ${tl.getFullYear()}`);
-                        $('#phone').text(data.telepon || '-');
-                        $('#email').text(data.email || '-');
-                        $('#province').text(data.provinsi || '-');
-                        $('#city').text(data.kabupaten || '-');
-                        $('#district').text(data.kecamatan || '-');
-                        $('#village').text(data.desa || '-');
-                        $('#hamlet').text(data.dusun || '-');
-                        $('#rtrw').text(data.rtrw || '-');
-                        $('#address').text(data.alamat_jalan || '-');
+                        $('#phone').text(d.telepon || '-');
+                        $('#email').text(d.email || '-');
+                        $('#province').text(d.provinsi || '-');
+                        $('#city').text(d.kabupaten || '-');
+                        $('#district').text(d.kecamatan || '-');
+                        $('#village').text(d.desa || '-');
+                        $('#hamlet').text(d.dusun || '-');
+                        $('#rtrw').text(d.rtrw || '-');
+                        $('#address').text(d.alamat_jalan || '-');
 
-                        $('#mother_name').text(data.nama_ibu || '-');
-                        $('#mother_phone').text(data.telepon_ibu || '-');
-                        $('#father_name').text(data.nama_ayah || '-');
-                        $('#father_phone').text(data.telepon_ayah || '-');
-                        $('#guard_name').text(data.nama_wali || '-');
-                        $('#guard_phone').text(data.telepon_wali || '-');
+                        $('#mother_name').text(d.nama_ibu || '-');
+                        $('#mother_phone').text(d.telepon_ibu || '-');
+                        $('#father_name').text(d.nama_ayah || '-');
+                        $('#father_phone').text(d.telepon_ayah || '-');
+                        $('#guard_name').text(d.nama_wali || '-');
+                        $('#guard_phone').text(d.telepon_wali || '-');
                     },
                     error: function(xhr, status, error) {
                         console.error('gagal mendapatkan data.', status, error);

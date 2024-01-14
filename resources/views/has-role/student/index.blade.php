@@ -130,15 +130,15 @@
                     str.html('');
 
                     $.ajax({
-                        url: '/panel/siswa/json/search-nisn/' + snisn.val(),
+                        url: `/panel/siswa/json/search-nisn/${snisn.val()}`,
                         method: 'get',
                         dataType: 'json',
                         success: function(data) {
-                            if (data) {
-                                let html = `<td>${data.nama}</td>`;
-                                html += `<td class="text-success text-center">${data.nisn}</td>`;
-                                html += `<td>${data.sekolah_asal}</td>`;
-                                html += `<td class="text-end"><a href="/panel/siswa/${data.id}" class="btn btn-primary">Lihat Detail</a></td>`;
+                            if (data.data) {
+                                let html = `<td>${data.data.nama}</td>`;
+                                html += `<td class="text-success text-center">${data.data.nisn}</td>`;
+                                html += `<td>${data.data.sekolah_asal}</td>`;
+                                html += `<td class="text-end"><a href="/panel/siswa/${data.data.id}" class="btn btn-primary">Lihat Detail</a></td>`;
 
                                 str.append(html);
                             } else {

@@ -18,16 +18,10 @@
                     <div class="row">
                         <div class="col-md-5 col-9 mb-1 pe-1">
                             <x-select class="form-select select2 w-100" id="eduType" data-placeholder="Satuan Pendidikan" data-minimum-results-for-search="-1">
-                                <option value=""></option>
+                                <option value="all">Semua</option>
                                 <option value="SMA">SMA</option>
                                 <option value="SMK">SMK</option>
                             </x-select>
-                        </div>
-                        <div class="col-md-1 col-3 ps-0">
-                            <x-button class="w-100 btn-md" id="btnResetTypeFilter" type="button" variant="outline" color="secondary">
-                                <span class="d-lg-block d-none">Reset</span>
-                                <span class="d-lg-none">&#10005;</span>
-                            </x-button>
                         </div>
 
                         <div class="col-md-5 col-9 mb-1 pe-1">
@@ -44,8 +38,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body border-top">
-                    <table class="table" id="tableData">
+                <div class="card-body border-top px-0">
+                    <table class="table table-hover" id="tableData">
                         <thead>
                             <tr>
                                 <th>Nama Sekolah</th>
@@ -131,30 +125,46 @@
             // --------------------------------------------------
             // dataTable
             if (table.length) {
-                let filterType = fType.val();
                 let filterCity = fCity.val();
                 var datatable = table.DataTable({
                     ajax: {
-                        url: '/schools/get-list?t=' + filterType + '&c=' + filterCity,
-                        dataSrc: 'data'
+                        // url: '/schools/get-list?t=' + filterType + '&c=' + filterCity,
+                        url: '/schools/get-list',
+                        dataSrc: 'data.data'
                     },
                     columns: [{
-                            data: 'name'
+                            data: 'nama_sekolah'
                         },
                         {
-                            data: 'id'
+                            data: 'npsn'
                         },
                         {
-                            data: 'type'
+                            data: 'satuan_pendidikan',
+                            render: function(data, type, row) {
+                                switch (data) {
+                                    case 'smk':
+                                        return 'SMK';
+                                        break;
+                                    case 'hbs':
+                                        return 'SMA Semi Boarding School';
+                                        break;
+                                    case 'fbs':
+                                        return 'SMA Boarding School';
+                                        break;
+                                    case 'sma':
+                                    default:
+                                        return 'SMA';
+                                        break;
+                                }
+                            }
                         },
                         {
-                            data: 'address'
+                            data: 'alamat_jalan'
                         },
                         {
                             data: null,
                             render: function(data, type, row) {
-                                return '<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all=\'' + JSON.stringify(row) +
-                                    '\'>Lihat Detail</button>';
+                                return `<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all="${JSON.stringify(row)}">Lihat Detail</button>`;
                             }
                         }
                     ],
@@ -162,7 +172,14 @@
                         className: 'text-center',
                         targets: [1, 2, 4]
                     }, ],
+                    dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-12 px-2 d-flex"lf>>>
+                        <"table-responsive"<t>>
+                        <"row g-0"<"col-sm-12 col-md-5 px-2"i><"col-sm-12 px-2 col-md-7"p>>`,
                     language: {
+                        lengthMenu: "_MENU_",
+                        search: "",
+                        searchPlaceholder: "Cari Sekolah...",
+                        info: "Display _START_ to _END_ of _TOTAL_ entries",
                         paginate: {
                             // remove previous & next text from pagination
                             previous: '&nbsp;',
@@ -203,7 +220,7 @@
                 const t = fType.val();
                 const c = fCity.val();
 
-                datatable.ajax.url('/schools/get-list?t=' + t + '&c=' + c).load();
+                datatable.ajax.url(`/schools/get-list?t=${t}&c=${c}`).load();
             }
             $('#eduType, #city').change(function() {
                 filtering();
@@ -219,13 +236,13 @@
             $('#tableData tbody').on('click', '.btn-detail', function() {
                 var rowData = datatable.row($(this).closest('tr')).data();
 
-                $('#schoolName').text(rowData.name);
-                $('#schoolId').text(rowData.id);
-                $('#schoolAddress').text(rowData.address);
+                $('#schoolName').text(rowData.nama_sekolah);
+                $('#schoolId').text(rowData.npsn);
+                $('#schoolAddress').text(rowData.alamat_jalan);
 
                 $('#modalDepartment').html('');
 
-                if (rowData.type === 'SMK') {
+                if (rowData.satuan_pendidikan === 'smk') {
                     $('#modalDepartment').addClass('card-body border-top');
 
                     var title = $('<h5 class="mb-2">Daftar Jurusan</h5>').appendTo('#modalDepartment');
@@ -233,7 +250,7 @@
                     var rowElement = $('<div class="row"></div>').appendTo('#modalDepartment');
 
                     rowData.department.forEach(dep => {
-                        rowElement.append($('<div class="col-md-6 col-12"><p>&bull; ' + dep + '</p></div>'));
+                        rowElement.append($(`<div class="col-md-6 col-12"><p>&bull; ${dep}</p></div>`));
                     });
                 }
             });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use App\Models\HasRole\Schedule;
+use App\Models\Track;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\View\View;
 
 class ScheduleController extends Controller
 {
-    public function __construct(protected Schedule $schedule)
+    public function __construct(protected Schedule $schedule, protected Track $track)
     {
     }
 
@@ -44,235 +45,156 @@ class ScheduleController extends Controller
         return view('has-role.schedule.edit-phase', $data);
     }
 
-    // registration
-    public function editRegistration(string $id): View
+    public function editTime(string $type, string $id): View
     {
         $data = [
-            'id' => $id,
+            'type' => $type,
+            'id' => $id
         ];
 
-        return view('has-role.schedule.edit-regis', $data);
-    }
-
-    // verification
-    public function editVerification(string $id): View
-    {
-        $data = [
-            'id' => $id,
-        ];
-
-        return view('has-role.schedule.edit-verif', $data);
-    }
-
-    // announcement
-    public function editAnnouncement(string $id): View
-    {
-        $data = [
-            'id' => $id,
-        ];
-
-        return view('has-role.schedule.edit-announce', $data);
-    }
-
-    // re registration
-    public function editReRegistration(string $id): View
-    {
-        $data = [
-            'id' => $id,
-        ];
-
-        return view('has-role.schedule.edit-reregis', $data);
+        return match ($type) {
+            'pengumuman' => view('has-role.schedule.edit-announce')->with($data),
+            'pendaftaran', 'verifikasi', 'daftar_ulang' => view('has-role.schedule.edit-time')->with($data),
+            default => redirect()->back()
+        };
     }
 
     //------------------------------------------------------------FUNC
-    public function saveData(Request $request): RedirectResponse
+    public function saveData(Request $request): RedirectResponse // A.12.002
     {
-        $save = [
-            'statusCode' => 200,
-        ];
+        $save = $this->schedule->insertPhase($request);
 
-        if ($save['statusCode'] == 200) {
+        if ($save['statusCode'] == 200 || $save['statusCode'] == 201) {
             return to_route('schedules.index')->with(['msg' => 'Berhasil menambahkan data.']);
         }
 
         return redirect()->back()->with(['msg' => 'Gagal menyimpan data. Silakan coba lagi nanti.']);
     }
 
-    public function removeData(): RedirectResponse
+    public function removeData(Request $request): RedirectResponse // A.12.004
     {
-        $remove = [
-            'statusCode' => 200,
-        ];
+        $remove = $this->schedule->removePhase($request->remove_id);
 
         if ($remove['statusCode'] == 200) {
-            return to_route('schedules.index')->with(['stat' => 'success', 'msg' => 'Berhasil menghapus data.']);
+            return to_route('schedules.index')->with(['stat' => 'success', 'msg' => $remove['messages']]);
         }
 
         return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menghapus data. Silakan coba lagi nanti.']);
     }
 
-    public function updateData(Request $request): RedirectResponse
+    public function updateData(string $id, Request $request): RedirectResponse // A.12.006
     {
-        $remove = [
-            'statusCode' => 200,
-            // 'statusCode' => 404,
-        ];
+        $update = $this->schedule->updatePhase($request, $id);
 
-        if ($remove['statusCode'] == 200) {
-            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
+        if ($update['statusCode'] == 200) {
+            return to_route('schedules.detail', $id)->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
         }
 
         return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
     }
 
-    public function updateRegistration(Request $request): RedirectResponse
+    public function updateTime(string $type, string $id, Request $request): RedirectResponse // A.12.008
     {
-        $length = $request->length;
-
-        $data = [];
-
-        for ($i = 1; $i <= $length; $i++) {
-            $data[] = [
-                'id' => $request->post('id'.$i),
-                'tanggal' => $request->post('date'.$i),
-                'jam_mulai' => $request->post('sH'.$i).'.'.$request->post('sM'.$i),
-                'jam_selesai' => $request->post('eH'.$i).'.'.$request->post('eM'.$i),
-                'jenis' => 'pendaftaran',
+        if ($type == 'pengumuman') {
+            $data = [
+                'tahap_id' => $id,
+                'tanggal' => $request->post('date'),
+                'jam_mulai' => $request->post('time'),
+                'jam_selesai' => null,
+                'jenis' => 'pengumuman'
             ];
+
+            ($request->post('id') != null) ? $data['id'] = $request->post('id') : '';
+
+            if (substr($request->time, 0, 5) != substr($request->current_time, 0, 5)) {
+                $save = $this->schedule->updateTime($data);
+
+                if ($save) {
+                    $msg = ["stat" => "success", "msg" => "Berhasil menyimpan perubahan data."];
+                } else {
+                    $msg = ["stat" => "danger", "msg" => "Gagal menyimpan perubahan data."];
+                }
+            } else {
+                $msg = ["stat" => "info", "msg" => "Tidak ada perubahan data."];
+            }
+
+            return redirect()->back()->with($msg);
+        } else {
+            $length = $request->length;
+            $countSuccess = 0;
+            $dateFailed = [];
+
+            for ($i = 1; $i <= $length; $i++) {
+                $data = [
+                    'tahap_id'      => $id,
+                    'jam_mulai'     => $request->post("s_$i"),
+                    'jam_selesai'   => $request->post("e_$i"),
+                    'tanggal'       => $request->post("date_$i"),
+                    'jenis'         => $type,
+                ];
+
+                ($request->post("id_$i") != null) ? $data['id'] = $request->post("id_$i") : '';
+
+                $s  = substr($request->post("s_$i"), 0, 5); // start time changes
+                $cs = substr($request->post("current_s_$i"), 0, 5); // current start time
+                $e  = substr($request->post("e_$i"), 0, 5); // end time changes
+                $es = substr($request->post("current_e_$i"), 0, 5); // current end time
+
+                if ($s != $cs || $e != $es) {
+                    $save = $this->schedule->updateTime($data);
+                    if ($save) {
+                        $countSuccess++;
+                    } else {
+                        $dateFailed[] = date("d-m-Y", $request->post("date_$i"));
+                    }
+                }
+            }
+
+            $failed = (count($dateFailed) != 0) ? "data tanggal " . implode(", ", $dateFailed) : "0 data.";
+            $msg = "";
+
+            if ($countSuccess == 0 && $dateFailed == []) {
+                $msg .= "Tidak ada perubahan data";
+            } else {
+                if ($countSuccess != 0) {
+                    $msg .= "Berhasil memperbarui $countSuccess data.";
+                }
+
+                if ($dateFailed != []) {
+                    $msg .= "Gagal menyimpan $failed";
+                }
+            }
+
+            return redirect()->back()->with(['stat' => 'info', 'msg' => $msg]);
         }
-
-        $return = [
-            'statusCode' => 200,
-        ];
-
-        if ($return['statusCode'] == 200) {
-            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
-        }
-
-        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
     }
 
-    public function updateVerification(Request $request): RedirectResponse
-    {
-        $length = $request->length;
+    // public function updateAnnouncement(Request $request): RedirectResponse
+    // {
+    //     $data = [
+    //         'id' => $request->post('id'),
+    //         'tanggal' => $request->post('date'),
+    //         'jam_mulai' => $request->post('hour') . '.' . $request->post('minute'),
+    //         'jenis' => 'pengumuman'
+    //     ];
 
-        $data = [];
+    //     dd($data);
 
-        for ($i = 1; $i <= $length; $i++) {
-            $data[] = [
-                'id' => $request->post('id'.$i),
-                'tanggal' => $request->post('date'.$i),
-                'jam_mulai' => $request->post('sH'.$i).'.'.$request->post('sM'.$i),
-                'jam_selesai' => $request->post('eH'.$i).'.'.$request->post('eM'.$i),
-                'jenis' => 'verifikasi',
-            ];
-        }
+    //     $return = [
+    //         'statusCode' => 200,
+    //         // 'statusCode' => 404,
+    //     ];
 
-        $return = [
-            // 'statusCode' => 200,
-            'statusCode' => 404,
-        ];
+    //     if ($return['statusCode'] == 200) {
+    //         return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
+    //     }
 
-        if ($return['statusCode'] == 200) {
-            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
-        }
-
-        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
-    }
-
-    public function updateAnnouncement(Request $request): RedirectResponse
-    {
-        $data = [
-            'id' => $request->post('id'),
-            'tanggal' => $request->post('date'),
-            'jam_mulai' => $request->post('hour').'.'.$request->post('minute'),
-            'jenis' => 'pengumuman',
-        ];
-
-        $return = [
-            'statusCode' => 200,
-            // 'statusCode' => 404,
-        ];
-
-        if ($return['statusCode'] == 200) {
-            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
-        }
-
-        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
-    }
-
-    public function updateReRegistration(Request $request): RedirectResponse
-    {
-        $length = $request->length;
-
-        $data = [];
-
-        for ($i = 1; $i <= $length; $i++) {
-            $data[] = [
-                'id' => $request->post('id'.$i),
-                'tanggal' => $request->post('date'.$i),
-                'jam_mulai' => $request->post('sH'.$i).'.'.$request->post('sM'.$i),
-                'jam_selesai' => $request->post('eH'.$i).'.'.$request->post('eM'.$i),
-                'jenis' => 'verifikasi',
-            ];
-        }
-
-        $return = [
-            'statusCode' => 200,
-            // 'statusCode' => 404,
-        ];
-
-        if ($return['statusCode'] == 200) {
-            return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
-        }
-
-        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
-    }
+    //     return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
+    // }
 
     //------------------------------------------------------------JSON
     public function getDataSchedules(): JsonResponse
     {
-        // $data = [
-        //     'statusCode' => 200,
-        //     'status' => 'success',
-        //     'message' => 'Berhasil mendapatkan data.',
-        //     'data' => [
-        //         [
-        //             'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-        //             'tahap' => '1',
-        //             'pendaftaran_mulai' => '2024-01-01',
-        //             'pendaftaran_selesai' => '2024-01-04',
-        //             'verifikasi_mulai' => '2024-01-01',
-        //             'verifikasi_selesai' => '2024-01-04',
-        //             'pengumuman' => '2024-01-05',
-        //             'daftar_ulang_mulai' => '2024-01-05',
-        //             'daftar_ulang_selesai' => '2024-01-06',
-        //         ],
-        //         [
-        //             'tahap_id' => '55fdd760-7b58-437e-b8c1-638cbccb2a30',
-        //             'tahap' => '2',
-        //             'pendaftaran_mulai' => '2024-01-08',
-        //             'pendaftaran_selesai' => '2024-01-11',
-        //             'verifikasi_mulai' => '2024-01-08',
-        //             'verifikasi_selesai' => '2024-01-11',
-        //             'pengumuman' => '2024-01-12',
-        //             'daftar_ulang_mulai' => '2024-01-12',
-        //             'daftar_ulang_selesai' => '2024-01-13',
-        //         ],
-        //         [
-        //             'tahap_id' => 'f5793a90-4396-497f-af43-a7b0edd995fb',
-        //             'tahap' => '3',
-        //             'pendaftaran_mulai' => '2024-01-15',
-        //             'pendaftaran_selesai' => '2024-01-18',
-        //             'verifikasi_mulai' => '2024-01-15',
-        //             'verifikasi_selesai' => '2024-01-18',
-        //             'pengumuman' => '2024-01-19',
-        //             'daftar_ulang_mulai' => '2024-01-19',
-        //             'daftar_ulang_selesai' => '2024-01-20',
-        //         ],
-        //     ],
-        // ];
-
         $data = $this->schedule->getDataSchedules();
 
         return response()->json($data['response'], $data['status_code']);
@@ -432,225 +354,15 @@ class ScheduleController extends Controller
         return response()->json($data['response'], $data['status_code']);
     }
 
-    public function getDataRegisSchedule(string $id): JsonResponse
+    public function getDataTime(string $type, string $id): JsonResponse
     {
-        // $data = [
-        //     'statusCode' => 200,
-        //     'status' => 'success',
-        //     'message' => 'Berhasil mendapatkan data.',
-        //     'data' => [
-        //         'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-        //         'tahap' => '1',
-        //         'pendaftaran_mulai' => '2024-01-01',
-        //         'pendaftaran_selesai' => '2024-01-04',
-        //         'batas' => [
-        //             [
-        //                 'batas_id' => '1',
-        //                 'tanggal' => '2024-01-01',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //             [
-        //                 'batas_id' => '2',
-        //                 'tanggal' => '2024-01-02',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //             [
-        //                 'batas_id' => '3',
-        //                 'tanggal' => '2024-01-03',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //             [
-        //                 'batas_id' => '4',
-        //                 'tanggal' => '2024-01-04',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '12.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //         ]
-        //     ]
-        // ];
-
-        $data = $this->schedule->getDetailTime($id, 'pendaftaran');
-
+        $data = $this->schedule->getDetailTime($id, $type);
         return response()->json($data['response'], $data['status_code']);
-    }
-
-    public function getDataVerifSchedule(string $id): JsonResponse
-    {
-        // $data = [
-        //     'statusCode' => 200,
-        //     'status' => 'success',
-        //     'message' => 'Berhasil mendapatkan data.',
-        //     'data' => [
-        //         'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-        //         'tahap' => '1',
-        //         'verifikasi_mulai' => '2024-01-01',
-        //         'verifikasi_selesai' => '2024-01-04',
-        //         'batas' => [
-        //             [
-        //                 'batas_id' => '1',
-        //                 'tanggal' => '2024-01-01',
-        //                 'jam_mulai' => '09.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //             [
-        //                 'batas_id' => '2',
-        //                 'tanggal' => '2024-01-02',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //             [
-        //                 'batas_id' => '3',
-        //                 'tanggal' => '2024-01-03',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //             [
-        //                 'batas_id' => '4',
-        //                 'tanggal' => '2024-01-04',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '17.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //         ]
-        //     ]
-        // ];
-        $data = $this->schedule->getDetailTime($id, 'verifikasi');
-
-        return response()->json($data['response'], $data['status_code']);
-    }
-
-    public function getDataAnnounceSchedule(string $id): JsonResponse
-    {
-        $data = [
-            'statusCode' => 200,
-            'status' => 'success',
-            'message' => 'Berhasil mendapatkan data.',
-            'data' => [
-                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-                'tahap' => '1',
-                'pengumuman' => '2024-01-05',
-                'batas_id' => '5',
-                'jam_mulai' => '09.00',
-            ],
-        ];
-
-        return response()->json($data);
-    }
-
-    public function getDataReRegisSchedule(string $id): JsonResponse
-    {
-        $data = [
-            'statusCode' => 200,
-            'status' => 'success',
-            'message' => 'Berhasil mendapatkan data.',
-            'data' => [
-                'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-                'tahap' => '1',
-                'daftar_ulang_mulai' => '2024-01-05',
-                'daftar_ulang_selesai' => '2024-01-06',
-                'batas' => [
-                    [
-                        'batas_id' => '1',
-                        'tanggal' => '2024-01-05',
-                        'jam_mulai' => '07.00',
-                        'jam_selesai' => '15.00',
-                        'jenis' => 'daftar ulang',
-                    ],
-                    [
-                        'batas_id' => '2',
-                        'tanggal' => '2024-01-06',
-                        'jam_mulai' => '07.00',
-                        'jam_selesai' => '15.00',
-                        'jenis' => 'daftar ulang',
-                    ],
-                ],
-            ],
-        ];
-
-        return response()->json($data);
     }
 
     // tracks
     public function getTracks(string $type): JsonResponse
     {
-        if ($type == 'sma') {
-            $data = [
-                'data' => [
-                    [
-                        'kode_jalur' => 'AA',
-                        'nama_jalur' => 'Afirmasi',
-                    ],
-                    [
-                        'kode_jalur' => 'AB',
-                        'nama_jalur' => 'Perpindahan Tugas Orang Tua',
-                    ],
-                    [
-                        'kode_jalur' => 'AC',
-                        'nama_jalur' => 'Anak Guru',
-                    ],
-                    [
-                        'kode_jalur' => 'AD',
-                        'nama_jalur' => 'Prestasi Akademik',
-                    ],
-                    [
-                        'kode_jalur' => 'AE',
-                        'nama_jalur' => 'Prestasi Non Akademik',
-                    ],
-                    [
-                        'kode_jalur' => 'AF',
-                        'nama_jalur' => 'Zonasi',
-                    ],
-                    [
-                        'kode_jalur' => 'AG',
-                        'nama_jalur' => 'Boarding School',
-                    ],
-                ],
-            ];
-        } else {
-            $data = [
-                'data' => [
-                    [
-                        'kode_jalur' => 'KA',
-                        'nama_jalur' => 'Afirmasi',
-                    ],
-                    [
-                        'kode_jalur' => 'KB',
-                        'nama_jalur' => 'Perpindahan Tugas Orang Tua',
-                    ],
-                    [
-                        'kode_jalur' => 'KC',
-                        'nama_jalur' => 'Anak Guru',
-                    ],
-                    [
-                        'kode_jalur' => 'KD',
-                        'nama_jalur' => 'Prestasi Akademik',
-                    ],
-                    [
-                        'kode_jalur' => 'KE',
-                        'nama_jalur' => 'Prestasi Non Akademik',
-                    ],
-                    [
-                        'kode_jalur' => 'KF',
-                        'nama_jalur' => 'Domisili Terdekat',
-                    ],
-                    [
-                        'kode_jalur' => 'KG',
-                        'nama_jalur' => 'Anak DUDI',
-                    ],
-                ],
-            ];
-        }
-
-        return response()->json($data);
+        return response()->json($this->track->get($type));
     }
 }

@@ -44,7 +44,7 @@
     <div class="content-body row">
         <div class="col-12">
             <div class="card">
-                <form id="formData" action="{{ route('schedules.edit') }}" method="post">
+                <form id="formData" action="{{ route('schedules.edit', [$id]) }}" method="post">
                     @csrf
                     <div class="card-body">
                         <h5 class="text-primary mb-1">Pendaftaran Tahap</h5>
@@ -195,13 +195,14 @@
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
-                        let d = data.data;
-                        let smaList = d.sma.map(function(sma) {
+                        let d = data.data[0];
+                        console.log(d);
+                        let smaList = (d.sma) ? d.sma.map(function(sma) {
                             return sma.kode_jalur
-                        });
-                        let smkList = d.smk.map(function(smk) {
+                        }) : {};
+                        let smkList = (d.smk) ? d.smk.map(function(smk) {
                             return smk.kode_jalur
-                        });
+                        }) : {};
 
                         console.log(smaList);
 
@@ -223,64 +224,30 @@
             }
 
             if (form.length) {
-                form.validate({
-                    rules: {
-                        "sma[]": {
-                            requiredDepends: "#smk"
-                        },
-                        "smk[]": {
-                            requiredDepends: "#sma"
-                        },
-                        regisStart: {
-                            required: true
-                        },
-                        regisEnd: {
-                            required: true
-                        },
-                        verifStart: {
-                            required: true
-                        },
-                        verifEnd: {
-                            required: true
-                        },
-                        announcement: {
-                            required: true
-                        },
-                        reRegisStart: {
-                            required: true
-                        },
-                        reRegisEnd: {
-                            required: true
-                        },
-                    },
+                let fields = ["regisStart", "regisEnd", "verifStart", "verifEnd", "announcement", "reRegisStart", "reRegisEnd"];
+
+                let validationConf = {
+                    rules: {},
+                    messages: {}
+                };
+
+                fields.forEach(field => {
+                    validationConf.rules[field] = {required: true};
+                    validationConf.messages[field] = "Bidang ini tidak boleh dikosongkan."
+                });
+
+                form.validate(validationConf);
+
+                $('#sma').rules("add", {
+                    requiredDepends: "#smk",
                     messages: {
-                        "sma[]": {
-                            requiredDepends: "Harus dipilih minimal Jalur SMA atau SMK."
-                        },
-                        "smk[]": {
-                            requiredDepends: "Harus dipilih minimal Jalur SMA atau SMK"
-                        },
-                        regisStart: {
-                            required: "Bidang ini harus diisi."
-                        },
-                        regisEnd: {
-                            required: "Bidang ini harus diisi."
-                        },
-                        verifStart: {
-                            required: "Bidang ini harus diisi."
-                        },
-                        verifEnd: {
-                            required: "Bidang ini harus diisi."
-                        },
-                        announcement: {
-                            required: "Bidang ini harus diisi."
-                        },
-                        reRegisStart: {
-                            required: "Bidang ini harus diisi."
-                        },
-                        reRegisEnd: {
-                            required: "Bidang ini harus diisi."
-                        },
+                        requiredDepends: "Pilih minimal 1 Jalur SMA atau SMK."
+                    }
+                });
+                $('#smk').rules("add", {
+                    requiredDepends: "#sma",
+                    messages: {
+                        requiredDepends: "Pilih minimal 1 Jalur SMA atau SMK."
                     }
                 });
 
@@ -304,14 +271,14 @@
 
             function generateSchools(element, type, selected) {
                 $.ajax({
-                    url: `/panel/tahap-jadwal/jalur/${type}`,
+                    url: `/panel/tahap-jadwal/json/jalur/${type}`,
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
                         element.empty().append('<option value=""></option>');
 
-                        data.data.forEach(sch => {
-                            element.append(`<option value="${sch.kode_jalur}">${sch.nama_jalur}</option>`);
+                        data.forEach(sch => {
+                            element.append(`<option value="${sch.code}">${sch.name}</option>`);
                         });
 
                         element.val(selected).trigger('change');
