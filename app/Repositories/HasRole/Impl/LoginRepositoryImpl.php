@@ -26,6 +26,7 @@ class LoginRepositoryImpl implements LoginRepository
                 'nama_pengguna' => $authenticate['data']['nama_pengguna'],
                 'role_id' => $authenticate['data']['role_id'],
                 'roles' => $authenticate['data']['roles'],
+                'permissions' => $authenticate['data']['permissions'],
                 'cabdin_id' => $authenticate['data']['cabdin_id'],
                 'sekolah_asal_id' => $authenticate['data']['sekolah_asal_id'],
                 'status_aktif' => $authenticate['data']['status_aktif'],

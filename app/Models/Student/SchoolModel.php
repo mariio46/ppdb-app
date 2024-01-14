@@ -77,7 +77,7 @@ class SchoolModel
             return $query->where('city', $city);
         })->all();
 
-        if (!$type && !$city) {
+        if (! $type && ! $city) {
             $filtered = $collection->all();
         }
 

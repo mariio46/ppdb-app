@@ -3,11 +3,19 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HasRole\UserRepository as User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    public function __construct(protected User $user)
+    {
+        //
+    }
+
     public function index(): View
     {
         return view('has-role.users.index');
@@ -18,10 +26,33 @@ class UserController extends Controller
         return view('has-role.users.create');
     }
 
-    public function show(string $username): View
+    public function store(Request $request): RedirectResponse
     {
-        return view('has-role.users.show', [
-            'username' => $username,
+        // A.02.003
+        $response = $this->user->store($request);
+        if ($response['statusCode'] == 201) {
+            return back()->with([
+                'stat' => 'success',
+                'msg' => $response['messages'],
+            ]);
+        } else {
+            return back()->with([
+                'stat' => 'danger',
+                'msg' => $response['messages'],
+            ]);
+        }
+    }
+
+    public function show(string $id): View
+    {
+        return view('has-role.users.show', compact('id'));
+    }
+
+    public function update(string $id): RedirectResponse
+    {
+        return back()->withwith([
+            'stat' => 'success',
+            'msg' => 'Berhasil',
         ]);
     }
 
@@ -30,6 +61,41 @@ class UserController extends Controller
         return view('has-role.users.forgot-password', [
             'user' => $this->getSingleUser($id),
         ]);
+    }
+
+    public function destroy(string $id): RedirectResponse
+    {
+        // A.02.005
+        $response = $this->user->destroy(user_id: $id);
+
+        if ($response['statusCode'] == 200) {
+            return to_route('users.index')->with([
+                'stat' => 'success',
+                'msg' => $response['messages'],
+            ]);
+        } else {
+            return to_route('users.index')->with([
+                'stat' => 'danger',
+                'msg' => $response['messages'],
+            ]);
+        }
+    }
+
+    // --------------------------------------------------DATA JSON API--------------------------------------------------
+    protected function users(): JsonResponse
+    {
+        $role_name = session()->get('roles.name');
+        $users = $this->user->index(role_name: $role_name);
+
+        return response()->json($users['data']);
+    }
+
+    public function user(string $id): JsonResponse
+    {
+        // $user_id = session()->get('id');
+        $user = $this->user->show(user_id: $id);
+
+        return response()->json($user['data']);
     }
 
     // --------------------------------------------------DATA JSON--------------------------------------------------
@@ -181,6 +247,8 @@ class UserController extends Controller
     // --------------------------------------------------FORM DATA JSON--------------------------------------------------
     protected function rolesCollections(): JsonResponse
     {
+        $user = session()->get('role_id');
+
         $roles = [
             [
                 'id' => 1,
@@ -204,7 +272,13 @@ class UserController extends Controller
             ],
         ];
 
-        return response()->json($roles);
+        if ($user === 3) {
+            $roles = array_filter($roles, function ($role) {
+                return $role['id'] !== 1 && $role['id'] !== 2 && $role['id'] !== 3;
+            });
+        }
+
+        return response()->json(array_values($roles));
     }
 
     protected function regionsCollections(): JsonResponse

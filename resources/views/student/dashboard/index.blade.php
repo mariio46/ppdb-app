@@ -69,7 +69,7 @@
         <div id="user-profile">
             <div class="card profile-header mb-2 placeholder-glow">
                 <img class="card-img-top placeholder" src="/app-assets/images/profile/user-uploads/timeline.jpg" />
-    
+
                 <div class="position-relative">
                     <div class="profile-img-container d-flex align-items-center">
                         <div class="profile-img placeholder-glow">
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="profile-header-nav" style="min-height: 3rem;">
                     <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                         <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0 placeholder-glow">
@@ -175,7 +175,7 @@
                             <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
                                 <div class="profile-tabs d-flex justify-content-end flex-wrap mt-md-0">
                                     {{-- edit button  --}}
-                                    <x-link href="{{ route('student.personal.data') }}" class="d-none" color="success" withIcon="true" id="btnEditData">
+                                    <x-link class="d-none" id="btnEditData" href="{{ route('student.personal.data') }}" color="success" withIcon="true">
                                         <x-tabler-pencil style="width: 14px; height: 14px;" />
                                         <span class="fw-bold">Edit Data</span>
                                     </x-link>
@@ -193,19 +193,19 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <x-three-row-info label="Nama Lengkap" identifier="selfName" value="{{ session()->get('stu_name') }}" />
-                                        <x-three-row-info label="NISN" identifier="selfNisn" value="{{ session()->get('stu_nisn') }}" />
-                                        <x-three-row-info label="NIK" identifier="selfNik" />
-                                        <x-three-row-info label="Asal Sekolah" identifier="selfOriginSchool" />
-                                        <x-three-row-info label="Jenis Kelamin" identifier="selfGender" />
+                                        <x-three-row-info identifier="selfName" value="{{ session()->get('stu_name') }}" label="Nama Lengkap" />
+                                        <x-three-row-info identifier="selfNisn" value="{{ session()->get('stu_nisn') }}" label="NISN" />
+                                        <x-three-row-info identifier="selfNik" label="NIK" />
+                                        <x-three-row-info identifier="selfOriginSchool" label="Asal Sekolah" />
+                                        <x-three-row-info identifier="selfGender" label="Jenis Kelamin" />
                                     </table>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <x-three-row-info label="Tempat Lahir" identifier="selfBirthPlace" />
-                                        <x-three-row-info label="Tanggal Lahir" identifier="selfBirthDay" />
-                                        <x-three-row-info label="Nomor Telepon" identifier="selfPhoneNumber" />
-                                        <x-three-row-info label="Email" identifier="selfEmail" />
+                                        <x-three-row-info identifier="selfBirthPlace" label="Tempat Lahir" />
+                                        <x-three-row-info identifier="selfBirthDay" label="Tanggal Lahir" />
+                                        <x-three-row-info identifier="selfPhoneNumber" label="Nomor Telepon" />
+                                        <x-three-row-info identifier="selfEmail" label="Email" />
                                     </table>
                                 </div>
                             </div>
@@ -219,17 +219,17 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <x-three-row-info label="Provinsi" identifier="selfProvince" />
-                                        <x-three-row-info label="Kabupaten / Kota" identifier="selfCity" />
-                                        <x-three-row-info label="Kecamatan" identifier="selfSubDistrict" />
-                                        <x-three-row-info label="Desa / Kelurahan" identifier="selfVillage" />
+                                        <x-three-row-info identifier="selfProvince" label="Provinsi" />
+                                        <x-three-row-info identifier="selfCity" label="Kabupaten / Kota" />
+                                        <x-three-row-info identifier="selfSubDistrict" label="Kecamatan" />
+                                        <x-three-row-info identifier="selfVillage" label="Desa / Kelurahan" />
                                     </table>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <x-three-row-info label="Dusun / Lingkungan" identifier="selfHamlet" />
-                                        <x-three-row-info label="RT / RW" identifier="selfRtRw" />
-                                        <x-three-row-info label="Alamat Jalan" identifier="selfAddress" />
+                                        <x-three-row-info identifier="selfHamlet" label="Dusun / Lingkungan" />
+                                        <x-three-row-info identifier="selfRtRw" label="RT / RW" />
+                                        <x-three-row-info identifier="selfAddress" label="Alamat Jalan" />
                                     </table>
                                 </div>
                             </div>
@@ -243,14 +243,14 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <x-three-row-info label="Nama Ibu Kandung" identifier="selfMothersName" />
-                                        <x-three-row-info label="Nomor Telepon Ibu" identifier="selfMothersPhone" />
+                                        <x-three-row-info identifier="selfMothersName" label="Nama Ibu Kandung" />
+                                        <x-three-row-info identifier="selfMothersPhone" label="Nomor Telepon Ibu" />
                                     </table>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <x-three-row-info label="Nama Ayah" identifier="selfFathersName" />
-                                        <x-three-row-info label="Nomor Telepon Ayah" identifier="selfFathersPhone" />
+                                        <x-three-row-info identifier="selfFathersName" label="Nama Ayah" />
+                                        <x-three-row-info identifier="selfFathersPhone" label="Nomor Telepon Ayah" />
                                     </table>
                                 </div>
                             </div>
@@ -264,8 +264,8 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <table class="table table-borderless">
-                                        <x-three-row-info label="Nama Wali" identifier="selfGuardsName" />
-                                        <x-three-row-info label="Nomor Telepon Wali" identifier="selfGuardsPhone" />
+                                        <x-three-row-info identifier="selfGuardsName" label="Nama Wali" />
+                                        <x-three-row-info identifier="selfGuardsPhone" label="Nomor Telepon Wali" />
                                     </table>
                                 </div>
                             </div>
@@ -280,7 +280,7 @@
                             <div class="d-flex align-items-end mb-1">
                                 <h4 class="text-title mb-0">Data Nilai Rapor</h4>
 
-                                <x-link href="{{ route('student.personal.score', ['semester-1']) }}" class="ms-auto d-none" color="success" withIcon="true" id="btnEditScore">
+                                <x-link class="ms-auto d-none" id="btnEditScore" href="{{ route('student.personal.score', ['semester-1']) }}" color="success" withIcon="true">
                                     <x-tabler-pencil style="width: 14px; height: 14px;" />
                                     Edit Nilai
                                 </x-link>
@@ -424,7 +424,7 @@
 @push('scripts')
     {{-- <script src="/js/student/pages/dashboard/index-v1.0.7.js"></script> --}}
     <script>
-        $(function () {
+        $(function() {
             'use strict';
 
             var loader = $('#loader'),
@@ -523,7 +523,7 @@
                         } else if (d.pertama_login == 'y') {
                             $('#firstTimeLoginModal').modal('show');
                         }
-                        
+
                         $('#profileImage').attr('src', d.pasfoto || '/img/base-profile.png'); // profile image
                         $('#selfNik').text(d.nik); // personal's data
                         $('#selfOriginSchool').text(d.sekolah_asal);
@@ -581,7 +581,9 @@
                     },
                     error: function(x, s, e) {
                         console.error('gagal mendapatkan data.', s, e);
-                        let check = {score: null};
+                        let check = {
+                            score: null
+                        };
                         Object.assign(allData, check);
                     }
                 });

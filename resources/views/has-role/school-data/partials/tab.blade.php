@@ -20,4 +20,8 @@
             Jurusan dan Kuota
         </x-link>
     @endif
+    <x-link class="mb-2" :variant="request()->routeIs('school-data.document') ? 'default' : 'flat'" :color="request()->routeIs('school-data.document') ? 'primary' : 'secondary'" :href="route('school-data.document')">
+        <x-tabler-file />
+        Dokumen
+    </x-link>
 </div>

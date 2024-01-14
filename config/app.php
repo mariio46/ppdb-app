@@ -163,6 +163,7 @@ return [
         /*
          * Application Service Providers...
          */
+        App\Providers\Global\CheckRoleServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -175,6 +176,9 @@ return [
          */
         App\Providers\HasRole\LoginServiceProvider::class,
         App\Providers\HasRole\AgencyServiceProvider::class,
+        App\Providers\HasRole\RoleServiceProvider::class,
+        App\Providers\HasRole\UserServiceProvider::class,
+        App\Providers\HasRole\SchoolServiceProvider::class,
 
         // ------------------------------------------------------------------
         /*

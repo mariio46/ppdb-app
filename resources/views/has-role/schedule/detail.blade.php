@@ -263,7 +263,7 @@
                     }
                 })
             }
-            
+
             function checkingRow(s, e, data, element, color) {
                 let range = [];
                 let start = new Date(s);

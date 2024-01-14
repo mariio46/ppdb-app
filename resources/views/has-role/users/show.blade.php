@@ -27,8 +27,8 @@
                                 <x-label for="status">Status</x-label>
                                 <x-select class="select2 form-select" id="status" name="status" data-minimum-results-for-search="-1" data-placeholder="Pilih Status">
                                     <x-empty-option />
-                                    <option value="1">Aktif</option>
-                                    <option value="2">Tidak Aktif</option>
+                                    <option value="a">Aktif</option>
+                                    <option value="n">Tidak Aktif</option>
                                 </x-select>
                             </div>
                         </div>
@@ -88,15 +88,12 @@
                 <h5 class="card-title">Hapus User</h5>
             </div>
             <div class="card-body">
-                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                    <div class="alert-body p-2">
-                        <span>Apakah anda yakin ingin menghapus User ini?</span>
-                    </div>
-                </div>
+
+                <x-alert variant="danger">Apakah anda yakin ingin menghapus User ini?</x-alert>
 
                 <x-checkbox class="form-check-danger" identifier="confirmation" label="Saya yakin untuk menghapus User ini" variant="danger" />
 
-                <x-button class="mt-2" data-bs-toggle="modal" data-bs-target="#delete-user" type="button" color="danger">Hapus Data User</x-button>
+                <x-button class="mt-2" id="btn-delete-user" data-bs-toggle="modal" data-bs-target="#delete-user" type="button" color="danger" disabled>Hapus Data User</x-button>
                 <x-modal modal_id="delete-user" label_by="deleteUserModal">
                     <x-modal.header>
                         <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
@@ -106,7 +103,10 @@
                         <p>Apakah Anda yakin ingin menghapus user ini? Data yang sudah di hapus tidak bisa di kembalikan kembali</p>
                     </x-modal.body>
                     <x-modal.footer class="justify-content-center mb-3">
-                        <x-button color="danger">Ya, Hapus</x-button>
+                        <form action="{{ route('users.destroy', $id) }}" method="POST">
+                            @csrf
+                            <x-button color="danger">Ya, Hapus</x-button>
+                        </form>
                         <x-button data-bs-dismiss="modal" color="secondary">Batalkan</x-button>
                     </x-modal.footer>
                 </x-modal>
@@ -122,7 +122,7 @@
 
 @push('scripts')
     <script>
-        var username = '{{ $username ?? '' }}'
+        var id = '{{ $id ?? '' }}'
     </script>
     <script>
         $(function() {
@@ -147,15 +147,17 @@
             });
 
             $.ajax({
-                url: `/panel/users/json/single-user/${username}`,
+                // url: `/panel/users/json/single-user/${username}`,
+                url: `/panel/users/json/user/${id}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(user) {
-                    $('#name').val(user.name);
-                    $('#username').val(user.username);
-                    $('#status').val(user.status).trigger('change');
-                    loadRoles(user.role)
-                    switch (user.role) {
+                    $('#name').val(user.nama);
+                    $('#username').val(user.nama_pengguna);
+                    $('#status').val(user.status_aktif).trigger('change');
+                    // console.log(user);
+                    loadRoles(user.roles.id.toString())
+                    switch (user.roles.id.toString()) {
                         case '3':
                             $('#input-wilayah').show();
                             loadRegions(user.cabdin_id);
@@ -175,8 +177,8 @@
                 }
             });
 
+            // Data Roles Collections
             function loadRoles(value = '') {
-                // Data Roles Collections
                 $.ajax({
                     url: '/panel/users/json/rolesCollections',
                     method: 'get',
@@ -193,8 +195,8 @@
                 })
             }
 
+            // Data Wilayah Collections
             function loadRegions(value = '') {
-                // Data Wilayah Collections
                 $.ajax({
                     url: '/panel/users/json/regionsCollections',
                     method: 'get',
@@ -212,8 +214,8 @@
                 })
             }
 
+            // Data Sekolah Tujuan Collections
             function loadSchools(value = '') {
-                // Data Sekolah Tujuan Collections
                 $.ajax({
                     url: '/panel/users/json/schoolsCollections',
                     method: 'get',
@@ -231,8 +233,8 @@
                 })
             }
 
+            // Data Sekolah Asal Collections
             function loadOriginSchool(value = '') {
-                // Data Sekolah Asal Collections
                 $.ajax({
                     url: '/panel/users/json/originSchoolsCollections',
                     method: 'get',
@@ -271,6 +273,10 @@
                         break;
                 }
             })
+
+            $('#confirmation').change(function() {
+                $('#btn-delete-user').prop('disabled', !this.checked);
+            });
         })
     </script>
 @endpush

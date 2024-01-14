@@ -7,7 +7,7 @@
 
 @section('content')
     <x-breadcrumb title="Data Diri">
-        <x-breadcrumb-item to="{{ route('student.personal') }}" title="Data Diri" />
+        <x-breadcrumb-item title="Data Diri" to="{{ route('student.personal') }}" />
         <x-breadcrumb-active title="Edit Nilai" />
     </x-breadcrumb>
 
@@ -144,7 +144,7 @@
                 rulesConf = {
                     required: true,
                     number: true,
-                    min: 0, 
+                    min: 0,
                     max: 100
                 },
                 messagesConf = {
@@ -156,7 +156,7 @@
 
             if (formEditScore.length) {
                 let mrules = {},
-                mmessages = {};
+                    mmessages = {};
 
                 subjects.forEach(subject => {
                     mrules[subject] = rulesConf;
@@ -174,14 +174,14 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(scores) {
-                let score = scores.data;
-                let sm = "sm" + semester + "_";
+                    let score = scores.data;
+                    let sm = "sm" + semester + "_";
 
-                $('#math').val(score[sm + 'mtk']);
-                $('#indonesian').val(score[sm + 'bid']);
-                $('#english').val(score[sm + 'big']);
-                $('#science').val(score[sm + 'ipa']);
-                $('#social').val(score[sm + 'ips']);
+                    $('#math').val(score[sm + 'mtk']);
+                    $('#indonesian').val(score[sm + 'bid']);
+                    $('#english').val(score[sm + 'big']);
+                    $('#science').val(score[sm + 'ipa']);
+                    $('#social').val(score[sm + 'ips']);
                 }
             });
         });
