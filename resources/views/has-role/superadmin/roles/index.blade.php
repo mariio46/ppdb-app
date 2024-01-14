@@ -65,17 +65,17 @@
                         dataSrc: ''
                     },
                     columns: [{
-                            data: 'name'
+                            data: 'nama_role'
                         },
                         {
                             data: 'user_count'
                         },
                         {
-                            data: 'permissions',
-                            render: (data, type, row) => row.id === 1 ? '*' : data.length,
+                            data: 'permission_count',
+                            render: (data, type, row) => row.id_role === 1 ? '*' : data,
                         },
                         {
-                            data: 'id',
+                            data: 'id_role',
                             render: (data, type, row) => `<a href="/panel/roles/${data}" class="btn btn-primary">Lihat Detail</a>`,
                         },
                     ],

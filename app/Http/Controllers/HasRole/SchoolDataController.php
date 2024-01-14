@@ -15,10 +15,11 @@ class SchoolDataController extends Controller
 
     public function __construct()
     {
-        $this->id = 3;
-        $this->unit = 2;
-        // $this->id = 1;
-        // $this->unit = 1;
+        // $this->id = 3;
+        // $this->unit = 2;
+
+        $this->id = 1;
+        $this->unit = 1;
     }
 
     public function index(): View
@@ -44,6 +45,14 @@ class SchoolDataController extends Controller
         return $unit == 2
             ? view('has-role.school-data.quota-smk', compact('npsn', 'unit'))
             : view('has-role.school-data.quota', compact('npsn', 'unit'));
+    }
+
+    public function document(): View
+    {
+        $npsn = $this->id;
+        $unit = $this->unit;
+
+        return view('has-role.school-data.document', compact('npsn', 'unit'));
     }
 
     public function addQuota(): View

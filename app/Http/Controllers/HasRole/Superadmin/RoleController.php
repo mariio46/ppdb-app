@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\HasRole\Superadmin;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HasRole\SuperAdmin\RoleRepository as Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
 class RoleController extends Controller
 {
+    public function __construct(protected Role $role)
+    {
+    }
+
     public function index(): View
     {
         return view('has-role.superadmin.roles.index');
@@ -34,44 +39,7 @@ class RoleController extends Controller
 
     protected function roles(): JsonResponse
     {
-        $roles = [
-            [
-                'id' => 1,
-                'name' => 'Super Admin',
-                'user_count' => 10,
-                'permissions' => ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-            ],
-            [
-                'id' => 2,
-                'name' => 'Admin Provinsi',
-                'user_count' => 20,
-                'permissions' => ['6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
-            ],
-            [
-                'id' => 3,
-                'name' => 'Admin Cabang Dinas',
-                'user_count' => 50,
-                'permissions' => ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-            ],
-            [
-                'id' => 4,
-                'name' => 'Admin Sekolah',
-                'user_count' => 100,
-                'permissions' => ['13', '14', '15', '16', '17', '18', '19', '20'],
-            ],
-            [
-                'id' => 5,
-                'name' => 'Admin Sekolah Asal',
-                'user_count' => 150,
-                'permissions' => ['17', '18', '19', '20'],
-            ],
-            [
-                'id' => 6,
-                'name' => 'Operator Sekolah',
-                'user_count' => 200,
-                'permissions' => ['18', '19', '20'],
-            ],
-        ];
+        $roles = $this->role->getRoles()['data'];
 
         return response()->json($roles);
     }

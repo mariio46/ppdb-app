@@ -92,12 +92,13 @@ class StudentController extends Controller
 
         $upd = [
             'statusCode' => 200,
-            'messages' => "Lorem ipsum dolor sit, amet consectetur adipisicing elit."
+            'messages' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
         ];
 
         if ($upd['statusCode'] == 200) {
             return redirect()->back()->with(['scoreStatus' => 'success', 'scoreMsg' => $upd['messages']]);
         }
+
         return redirect()->back()->with(['scoreStatus' => 'danger', 'scoreMsg' => $upd['messages']]);
     }
 
@@ -392,33 +393,33 @@ class StudentController extends Controller
         // ]);
 
         $data = collect([
-            "id" => "1",
-            "siswa_id" => $id,
-            "sm1_mtk" => "90",
-            "sm1_ipa" => "98",
-            "sm1_ips" => "87",
-            "sm1_bid" => "98",
-            "sm1_big" => "94",
-            "sm2_mtk" => "87",
-            "sm2_ipa" => "78",
-            "sm2_ips" => "79",
-            "sm2_bid" => "76",
-            "sm2_big" => "87",
-            "sm3_mtk" => "70",
-            "sm3_ipa" => "99",
-            "sm3_ips" => "76",
-            "sm3_bid" => "98",
-            "sm3_big" => "98",
-            "sm4_mtk" => "78",
-            "sm4_ipa" => "89",
-            "sm4_ips" => "90",
-            "sm4_bid" => "85",
-            "sm4_big" => "90",
-            "sm5_mtk" => "95",
-            "sm5_ipa" => "76",
-            "sm5_ips" => "87",
-            "sm5_bid" => "93",
-            "sm5_big" => "71",
+            'id' => '1',
+            'siswa_id' => $id,
+            'sm1_mtk' => '90',
+            'sm1_ipa' => '98',
+            'sm1_ips' => '87',
+            'sm1_bid' => '98',
+            'sm1_big' => '94',
+            'sm2_mtk' => '87',
+            'sm2_ipa' => '78',
+            'sm2_ips' => '79',
+            'sm2_bid' => '76',
+            'sm2_big' => '87',
+            'sm3_mtk' => '70',
+            'sm3_ipa' => '99',
+            'sm3_ips' => '76',
+            'sm3_bid' => '98',
+            'sm3_big' => '98',
+            'sm4_mtk' => '78',
+            'sm4_ipa' => '89',
+            'sm4_ips' => '90',
+            'sm4_bid' => '85',
+            'sm4_big' => '90',
+            'sm5_mtk' => '95',
+            'sm5_ipa' => '76',
+            'sm5_ips' => '87',
+            'sm5_bid' => '93',
+            'sm5_big' => '71',
         ]);
 
         return response()->json($data);

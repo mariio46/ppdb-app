@@ -123,7 +123,7 @@
                             });
                         }
                     });
-                    $("div.add-button, div.add-button-sm").html('<a href="/panel/data-sekolah/quota/add-quota" class="btn btn-success">+ Tambah Jurusan</a>');
+                    $("div.add-button, div.add-button-sm").html('<a href="/panel/data-sekolah/quota/add-quota" class="btn btn-success">+ Tambah Kuota</a>');
                     $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
                     $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
                 }

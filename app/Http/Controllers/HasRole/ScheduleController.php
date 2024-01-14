@@ -39,7 +39,7 @@ class ScheduleController extends Controller
     public function edit(string $id): View
     {
         $data = [
-            'id' => $id
+            'id' => $id,
         ];
 
         return view('has-role.schedule.edit-phase', $data);
@@ -298,6 +298,7 @@ class ScheduleController extends Controller
         // ];
 
         $data = $this->schedule->getDetailData($id);
+
         return response()->json($data['response'], $data['status_code']);
     }
 

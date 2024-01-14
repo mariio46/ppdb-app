@@ -132,8 +132,7 @@
                         url: '/schools/get-list',
                         dataSrc: 'data.data'
                     },
-                    columns: [
-                        {
+                    columns: [{
                             data: 'nama_sekolah'
                         },
                         {
@@ -141,12 +140,12 @@
                         },
                         {
                             data: 'satuan_pendidikan',
-                            render: function (data, type, row) {
+                            render: function(data, type, row) {
                                 switch (data) {
                                     case 'smk':
                                         return 'SMK';
                                         break;
-                                    case 'hbs': 
+                                    case 'hbs':
                                         return 'SMA Semi Boarding School';
                                         break;
                                     case 'fbs':
@@ -169,12 +168,10 @@
                             }
                         }
                     ],
-                    columnDefs: [
-                        {
+                    columnDefs: [{
                         className: 'text-center',
                         targets: [1, 2, 4]
-                        },
-                    ],
+                    }, ],
                     dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-12 px-2 d-flex"lf>>>
                         <"table-responsive"<t>>
                         <"row g-0"<"col-sm-12 col-md-5 px-2"i><"col-sm-12 px-2 col-md-7"p>>`,
@@ -199,7 +196,7 @@
             // load city
             function loadCity() {
                 $.ajax({
-                url: '/json/cities/73',
+                    url: '/json/cities/73',
                     method: 'get',
                     dataType: 'json',
                     success: function(cities) {
@@ -246,15 +243,15 @@
                 $('#modalDepartment').html('');
 
                 if (rowData.satuan_pendidikan === 'smk') {
-                $('#modalDepartment').addClass('card-body border-top');
+                    $('#modalDepartment').addClass('card-body border-top');
 
-                var title = $('<h5 class="mb-2">Daftar Jurusan</h5>').appendTo('#modalDepartment');
+                    var title = $('<h5 class="mb-2">Daftar Jurusan</h5>').appendTo('#modalDepartment');
 
-                var rowElement = $('<div class="row"></div>').appendTo('#modalDepartment');
+                    var rowElement = $('<div class="row"></div>').appendTo('#modalDepartment');
 
-                rowData.department.forEach(dep => {
-                    rowElement.append($(`<div class="col-md-6 col-12"><p>&bull; ${dep}</p></div>`));
-                });
+                    rowData.department.forEach(dep => {
+                        rowElement.append($(`<div class="col-md-6 col-12"><p>&bull; ${dep}</p></div>`));
+                    });
                 }
             });
         });

@@ -56,11 +56,8 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Hapus Data Sekolah</h5>
-                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                    <div class="alert-body p-2">
-                        <span>Apakah anda yakin ingin menghapus data sekolah ini?</span>
-                    </div>
-                </div>
+
+                <x-alert variant="danger">Apakah anda yakin ingin menghapus data sekolah ini?</x-alert>
 
                 <x-checkbox class="form-check-danger" identifier="confirmation" label="Saya yakin untuk menghapus data sekolah ini" variant="danger" />
 

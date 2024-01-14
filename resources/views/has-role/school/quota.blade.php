@@ -59,7 +59,7 @@
 @push('scripts')
     <script src="/app-assets/js/scripts/pages/page-profile.js"></script>
     <script>
-        var npsn = '{{ $npsn }}',
+        var id = '{{ $id }}',
             unit = '{{ $unit }}'
     </script>
     <script>

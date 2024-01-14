@@ -277,7 +277,7 @@
                     }
                 })
             }
-            
+
             function checkingRow(s, e, data, element, color) {
                 element.empty();
                 let range = [];
