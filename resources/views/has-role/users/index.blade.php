@@ -86,7 +86,6 @@
                         {
                             data: 'status_aktif',
                             render: function(data, type, row) {
-                                console.log(row);
                                 if (data === 'a') {
                                     return ` <x-badge class="w-100" variant="light" color="success">Aktif</x-badge> `;
                                 } else {
