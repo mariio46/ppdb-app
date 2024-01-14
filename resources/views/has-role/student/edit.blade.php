@@ -50,7 +50,7 @@
                 <h4 class="card-title">Edit Siswa</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('siswa.update') }}" method="post" id="update-form">
+                <form action="{{ route('siswa.update', [$id]) }}" method="post" id="update-form">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6 ">
@@ -127,12 +127,14 @@
                     url: `/panel/siswa/json/get-single/${id}`,
                     method: 'get',
                     dataType: 'json',
-                    success: function(data) {
-                        console.log(data);
+                    success: function(response) {
+                        console.log(response);
+
+                        let data = response.data;
 
                         $('#nama_lengkap').val(data.nama);
                         $('#nisn').val(data.nisn);
-                        generateOriginSchool(data.id_sekolah_asal);
+                        generateOriginSchool(`${data.id_sekolah_asal}|${data.sekolah_asal}`);
                         $('#jenis_kelamin').val(data.jenis_kelamin).trigger('change');
                         $('#tempat_lahir').val(data.tempat_lahir);
                         $('#tanggal_lahir').val(data.tanggal_lahir);
@@ -144,6 +146,7 @@
             }
 
             function generateOriginSchool(old) {
+                console.log(old);
                 $.ajax({
                     url: '/panel/siswa/json/get-origin-school-list',
                     method: 'get',
@@ -151,8 +154,8 @@
                     success: function(data) {
                         originSchool.empty().append('<option value=""></option>');
                         
-                        data.forEach(os => {
-                            originSchool.append(`<option value="${os.id}|${os.npsn}|${os.nama}">${os.npsn} - ${os.nama}</option>`);
+                        data.data.forEach(os => {
+                            originSchool.append(`<option value="${os.id}|${os.nama}">${os.npsn} - ${os.nama}</option>`);
                         });
 
                         originSchool.append('<option value="other">Lainnya</option>');
