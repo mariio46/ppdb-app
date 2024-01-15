@@ -49,7 +49,7 @@ class ScheduleController extends Controller
     {
         $data = [
             'type' => $type,
-            'id' => $id
+            'id' => $id,
         ];
 
         return match ($type) {
@@ -101,7 +101,7 @@ class ScheduleController extends Controller
                 'tanggal' => $request->post('date'),
                 'jam_mulai' => $request->post('time'),
                 'jam_selesai' => null,
-                'jenis' => 'pengumuman'
+                'jenis' => 'pengumuman',
             ];
 
             ($request->post('id') != null) ? $data['id'] = $request->post('id') : '';
@@ -110,12 +110,12 @@ class ScheduleController extends Controller
                 $save = $this->schedule->updateTime($data);
 
                 if ($save) {
-                    $msg = ["stat" => "success", "msg" => "Berhasil menyimpan perubahan data."];
+                    $msg = ['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.'];
                 } else {
-                    $msg = ["stat" => "danger", "msg" => "Gagal menyimpan perubahan data."];
+                    $msg = ['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data.'];
                 }
             } else {
-                $msg = ["stat" => "info", "msg" => "Tidak ada perubahan data."];
+                $msg = ['stat' => 'info', 'msg' => 'Tidak ada perubahan data.'];
             }
 
             return redirect()->back()->with($msg);
@@ -126,18 +126,18 @@ class ScheduleController extends Controller
 
             for ($i = 1; $i <= $length; $i++) {
                 $data = [
-                    'tahap_id'      => $id,
-                    'jam_mulai'     => $request->post("s_$i"),
-                    'jam_selesai'   => $request->post("e_$i"),
-                    'tanggal'       => $request->post("date_$i"),
-                    'jenis'         => $type,
+                    'tahap_id' => $id,
+                    'jam_mulai' => $request->post("s_$i"),
+                    'jam_selesai' => $request->post("e_$i"),
+                    'tanggal' => $request->post("date_$i"),
+                    'jenis' => $type,
                 ];
 
                 ($request->post("id_$i") != null) ? $data['id'] = $request->post("id_$i") : '';
 
-                $s  = substr($request->post("s_$i"), 0, 5); // start time changes
+                $s = substr($request->post("s_$i"), 0, 5); // start time changes
                 $cs = substr($request->post("current_s_$i"), 0, 5); // current start time
-                $e  = substr($request->post("e_$i"), 0, 5); // end time changes
+                $e = substr($request->post("e_$i"), 0, 5); // end time changes
                 $es = substr($request->post("current_e_$i"), 0, 5); // current end time
 
                 if ($s != $cs || $e != $es) {
@@ -145,16 +145,16 @@ class ScheduleController extends Controller
                     if ($save) {
                         $countSuccess++;
                     } else {
-                        $dateFailed[] = date("d-m-Y", $request->post("date_$i"));
+                        $dateFailed[] = date('d-m-Y', $request->post("date_$i"));
                     }
                 }
             }
 
-            $failed = (count($dateFailed) != 0) ? "data tanggal " . implode(", ", $dateFailed) : "0 data.";
-            $msg = "";
+            $failed = (count($dateFailed) != 0) ? 'data tanggal '.implode(', ', $dateFailed) : '0 data.';
+            $msg = '';
 
             if ($countSuccess == 0 && $dateFailed == []) {
-                $msg .= "Tidak ada perubahan data";
+                $msg .= 'Tidak ada perubahan data';
             } else {
                 if ($countSuccess != 0) {
                     $msg .= "Berhasil memperbarui $countSuccess data.";
@@ -357,6 +357,7 @@ class ScheduleController extends Controller
     public function getDataTime(string $type, string $id): JsonResponse
     {
         $data = $this->schedule->getDetailTime($id, $type);
+
         return response()->json($data['response'], $data['status_code']);
     }
 

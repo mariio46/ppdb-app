@@ -1,15 +1,10 @@
 @extends('layouts.has-role.guest', ['title' => 'Login'])
 
 @section('styles')
-    {{-- <link type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css" rel="stylesheet" />
-    <link type="text/css" href="../../../app-assets/css/plugins/forms/form-validation.css" rel="stylesheet" /> --}}
     <link type="text/css" href="../../../app-assets/css/pages/authentication.css" rel="stylesheet" />
 @endsection
 
 @section('content')
-    {{-- <div class="app-content content">
-
-    </div> --}}
     <div class="app-content">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
@@ -40,23 +35,21 @@
                                     @csrf
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="username">Username</x-label>
-                                        <x-input id="username" name="username" type="text" value="{{ old('username', 'rio') }}" placeholder="Masukkan username" autofocus required />
+                                        <x-input id="username" name="username" type="text" value="{{ old('username', 'mario2296_') }}" placeholder="Masukkan username" autofocus required />
                                     </div>
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="password">Password</x-label>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <x-input id="password" name="password" type="password" value="123.dmn" placeholder="Masukkan password" required />
+                                            <x-input id="password" name="password" type="password" value="password" placeholder="Masukkan password" required />
                                             <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         </div>
                                     </div>
                                     <x-button class="w-100" type="submit">Login</x-button>
-                                    {{-- <a class="btn btn-primary w-100" href="{{ route('dashboard') }}">Login</a> --}}
                                 </form>
                             </div>
                         </div>
                         <!-- /Login card -->
                     </div>
-                    {{-- </div> --}}
                 </div>
             </div>
         </div>

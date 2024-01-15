@@ -36,7 +36,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
             if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
                 foreach ($data['data'][$schoolType] as &$track) {
                     $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
-                    $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
+                    $track['jalur'] = str_replace(['SMA', 'SMK'], '', $track['jalur']);
                     $track['info'] = $this->registrationModel->informations[$track['kode']];
                 }
             }
@@ -63,14 +63,14 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         switch ($trackCode) {
             case 'AA':
                 $data = [
-                    "siswa_id" => session()->get("stu_id"),
-                    "tahap" => $request->phaseCode,
-                    "jenis_afirmasi" => $request->affirmationType,
-                    "no_pkh" => $request->affirmationNumber,
-                    "sekolah1_id" => $request->school1,
-                    "sekolah2_id" => $request->school2,
-                    "sekolah3_id" => $request->school3,
-                    "sekolah_verif_id" => $request->schoolVerif
+                    'siswa_id' => session()->get('stu_id'),
+                    'tahap' => $request->phaseCode,
+                    'jenis_afirmasi' => $request->affirmationType,
+                    'no_pkh' => $request->affirmationNumber,
+                    'sekolah1_id' => $request->school1,
+                    'sekolah2_id' => $request->school2,
+                    'sekolah3_id' => $request->school3,
+                    'sekolah_verif_id' => $request->schoolVerif,
                     // 'code' => $trackCode,
                     // 'affType' => $request->post('affirmationType'),
                     // 'affNum' => $request->post('affirmationNumber'),

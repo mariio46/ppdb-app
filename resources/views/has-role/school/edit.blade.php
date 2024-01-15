@@ -107,14 +107,14 @@
                 });
             });
 
-
             $.ajax({
                 url: `/panel/sekolah/json/single-school/${npsn}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(school) {
+                    console.log(school);
                     // console.log(school.unit.value);
-                    $('#nama_sekolah').val(school.name)
+                    $('#nama_sekolah').val(school.nama_sekolah)
                     $('#npsn').val(school.npsn)
                     $('#kabupaten').val(school.kabupaten)
                     loadUnit(school.unit.value)

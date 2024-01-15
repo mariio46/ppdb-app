@@ -68,7 +68,7 @@
                                 </thead>
                                 <tbody id="registrationTable">
                                     <tr>
-                                        <td colspan="2" class="text-center"><i>loading..</i></td>
+                                        <td class="text-center" colspan="2"><i>loading..</i></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -93,7 +93,7 @@
                                 </thead>
                                 <tbody id="verificationTable">
                                     <tr>
-                                        <td colspan="2" class="text-center"><i>loading..</i></td>
+                                        <td class="text-center" colspan="2"><i>loading..</i></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -118,7 +118,7 @@
                                 </thead>
                                 <tbody id="announcementTable">
                                     <tr>
-                                        <td colspan="2" class="text-center"><i>loading..</i></td>
+                                        <td class="text-center" colspan="2"><i>loading..</i></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -143,7 +143,7 @@
                                 </thead>
                                 <tbody id="reRegistrationTable">
                                     <tr>
-                                        <td colspan="2" class="text-center"><i>loading..</i></td>
+                                        <td class="text-center" colspan="2"><i>loading..</i></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -215,20 +215,20 @@
                 announcementTable = $('#announcementTable'),
                 reRegistrationTable = $('#reRegistrationTable'),
                 tracks = {
-                    "AA"  : "Afirmasi",
-                    "AB"  : "Perpindahan Tugas Orang Tua",
-                    "AC"  : "Anak Guru",
-                    "AD"  : "Prestasi Akademik",
-                    "AE"  : "Prestasi Non Akademik",
-                    "AF"  : "Zonasi",
-                    "AG"  : "Boarding School",
-                    "KA"  : "Afirmasi",
-                    "KB"  : "Perpindahan Tugas Orang Tua",
-                    "KC"  : "Anak Guru",
-                    "KD"  : "Prestasi Akademik",
-                    "KE"  : "Prestasi Non Akademik",
-                    "KF"  : "Domisili Terdekat",
-                    "KG"  : "Anak DUDI"
+                    "AA": "Afirmasi",
+                    "AB": "Perpindahan Tugas Orang Tua",
+                    "AC": "Anak Guru",
+                    "AD": "Prestasi Akademik",
+                    "AE": "Prestasi Non Akademik",
+                    "AF": "Zonasi",
+                    "AG": "Boarding School",
+                    "KA": "Afirmasi",
+                    "KB": "Perpindahan Tugas Orang Tua",
+                    "KC": "Anak Guru",
+                    "KD": "Prestasi Akademik",
+                    "KE": "Prestasi Non Akademik",
+                    "KF": "Domisili Terdekat",
+                    "KG": "Anak DUDI"
                 },
                 months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
                 days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
