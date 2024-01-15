@@ -28,15 +28,16 @@ class UserController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        // return dd($request->all());
         // A.02.003
         $response = $this->user->store($request);
         if ($response['statusCode'] == 201) {
-            return back()->with([
+            return to_route('users.index')->with([
                 'stat' => 'success',
                 'msg' => $response['messages'],
             ]);
         } else {
-            return back()->with([
+            return to_route('users.index')->with([
                 'stat' => 'danger',
                 'msg' => $response['messages'],
             ]);
@@ -48,12 +49,21 @@ class UserController extends Controller
         return view('has-role.users.show', compact('id'));
     }
 
-    public function update(string $id): RedirectResponse
+    public function update(Request $request, string $id)
     {
-        return back()->withwith([
-            'stat' => 'success',
-            'msg' => 'Berhasil',
-        ]);
+        // A.02.003
+        $response = $this->user->update(request: $request, user_id: $id);
+        if ($response['statusCode'] == 200) {
+            return back()->with([
+                'stat' => 'success',
+                'msg' => 'Berhasil',
+            ]);
+        } else {
+            return back()->with([
+                'stat' => 'error',
+                'msg' => $response['messages'].$response['statusCode'],
+            ]);
+        }
     }
 
     public function forgotPassword($id): View
@@ -84,6 +94,7 @@ class UserController extends Controller
     // --------------------------------------------------DATA JSON API--------------------------------------------------
     protected function users(): JsonResponse
     {
+        // A.02.001
         $role_name = session()->get('roles.name');
         $users = $this->user->index(role_name: $role_name);
 
@@ -92,7 +103,7 @@ class UserController extends Controller
 
     public function user(string $id): JsonResponse
     {
-        // $user_id = session()->get('id');
+        // A.02.002
         $user = $this->user->show(user_id: $id);
 
         return response()->json($user['data']);

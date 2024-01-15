@@ -23,9 +23,9 @@ class UserRepositoryImpl implements UserRepository
         return $this->user->getSingleUser(user_id: $user_id);
     }
 
-    public function update(Request $request): array
+    public function update(Request $request, string $user_id): array
     {
-        return [];
+        return $this->user->updateUser(request: $request, user_id: $user_id);
     }
 
     public function store(Request $request): array

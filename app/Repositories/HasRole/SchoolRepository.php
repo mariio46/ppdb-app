@@ -11,4 +11,6 @@ interface SchoolRepository
     public function store(Request $request): array;
 
     public function show(string $school_id): array;
+
+    public function update(Request $request, string $user_id): array;
 }

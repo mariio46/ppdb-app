@@ -10,7 +10,7 @@ interface UserRepository
 
     public function show(string $user_id): array;
 
-    public function update(Request $request): array;
+    public function update(Request $request, string $user_id): array;
 
     public function store(Request $request): array;
 

@@ -20,7 +20,8 @@ class LoginRepositoryImpl implements LoginRepository
         $authenticate = $this->login->store($username, $password);
 
         if ($authenticate['statusCode'] == 200) {
-            session()->put([
+
+            $data = [
                 'id' => $authenticate['data']['id'],
                 'nama' => $authenticate['data']['nama'],
                 'nama_pengguna' => $authenticate['data']['nama_pengguna'],
@@ -29,10 +30,20 @@ class LoginRepositoryImpl implements LoginRepository
                 'permissions' => $authenticate['data']['permissions'],
                 'cabdin_id' => $authenticate['data']['cabdin_id'],
                 'sekolah_asal_id' => $authenticate['data']['sekolah_asal_id'],
+                'sekolah_id' => $authenticate['data']['sekolah_id'],
                 'status_aktif' => $authenticate['data']['status_aktif'],
                 'token' => $authenticate['data']['remember_token'],
                 'logged_in' => true,
-            ]);
+            ];
+            if ($authenticate['data']['role_id'] != 4) {
+                // If login is not AdminSekolah
+                session()->put($data);
+            } else {
+                // If login is AdminSekolah
+                $unit = ['satuan_pendidikan' => $authenticate['data']['satuan_pendidikan']];
+                session()->put(array_merge($data, $unit));
+            }
+
             $result = [
                 'status' => 'success',
                 'code' => 200,
