@@ -7,12 +7,6 @@
 @endsection
 
 @section('content')
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
     <div class="content-body">
         <div class="d-flex mb-2">
             <x-link class="ms-auto" href="{{ route('siswa.create') }}" color="success">+ Tambah Siswa</x-link>
@@ -134,6 +128,7 @@
                         method: 'get',
                         dataType: 'json',
                         success: function(data) {
+                            console.log(data);
                             if (data.data) {
                                 let html = `<td>${data.data.nama}</td>`;
                                 html += `<td class="text-success text-center">${data.data.nisn}</td>`;
@@ -163,7 +158,7 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/siswa/json/get-list',
-                        dataSrc: ""
+                        dataSrc: "data"
                     },
                     columns: [{
                             data: "nama"

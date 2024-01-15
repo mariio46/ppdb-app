@@ -65,12 +65,11 @@ class Student extends Base
             "jenis_kelamin"     => $request->jenis_kelamin,
             "tempat_lahir"      => $request->tempat_lahir,
             "tanggal_lahir"     => $request->tanggal_lahir,
-            "created_by"        => session()->get("id"),
-            "nik" => "1234567890123455", // mau dihapus nanti
+            "created_by"        => session()->get("id")
         ];
 
         $save = $this->postWithToken("siswa/create", $data);
-        dd($save);
+        // dd($save);
 
         if ($save['status_code'] == 201 || $save['status_code'] == 200) {
             return $save['response'];
