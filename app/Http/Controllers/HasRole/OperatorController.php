@@ -25,7 +25,7 @@ class OperatorController extends Controller
 
     public function edit(string $username): View
     {
-        return view('has-role.operator.edit', compact('username'));
+        return view('has-role.operator.edit', ["id" => $username]);
     }
 
     // --------------------------------------------------DATA JSON--------------------------------------------------

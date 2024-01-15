@@ -50,13 +50,13 @@
                             <div class="mb-2">
                                 <x-label for="password">Password</x-label>
                                 <x-input-password>
-                                    <x-input id="password" name="password" type="password" autocomplete="password" />
+                                    <x-input id="password" name="password" type="password" autocomplete="password" placeholder="password" />
                                 </x-input-password>
                             </div>
                             <div class="mb-2">
                                 <x-label for="password_confirmation">Masukkan Ulang Password</x-label>
                                 <x-input-password>
-                                    <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="password_confirmation" />
+                                    <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="password_confirmation" placeholder="konfirmasi password" />
                                 </x-input-password>
                             </div>
                         </div>
