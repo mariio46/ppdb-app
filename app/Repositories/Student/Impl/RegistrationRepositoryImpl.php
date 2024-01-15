@@ -58,21 +58,22 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         return $data;
     }
 
-    public function postSaveRegistration(string $trackCode, Request $request): array
+    public function postSaveRegistration(string $phase, string $phaseId, string $trackCode, Request $request): array
     {
         switch ($trackCode) {
             case 'AA':
                 $data = [
-                    "siswa_id" => session()->get("stu_id"),
-                    "tahap" => $request->phaseCode,
-                    'jalur' => $trackCode,
-                    "jenis_afirmasi" => $request->affirmationType,
-                    "no_pkh" => $request->affirmationNumber,
-                    "sekolah1_id" => $request->school1,
-                    "sekolah2_id" => $request->school2,
-                    "sekolah3_id" => $request->school3,
-                    "sekolah_verif_id" => $request->schoolVerif,
-                  
+                    "siswa_id"          => session()->get("stu_id"),
+                    "tahap_id"          => $phaseId,
+                    "tahap"             => $phase,
+                    'jalur'             => $trackCode,
+                    "jenis_afirmasi"    => $request->affirmationType,
+                    "no_pkh"            => $request->affirmationNumber,
+                    "sekolah1_id"       => $request->school1,
+                    "sekolah2_id"       => $request->school2,
+                    "sekolah3_id"       => $request->school3,
+                    "sekolah_verif_id"  => $request->schoolVerif,
+
                     // 'affType' => $request->post('affirmationType'),
                     // 'affNum' => $request->post('affirmationNumber'),
                     // 'city1' => $request->post('city1'),

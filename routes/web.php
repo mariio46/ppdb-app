@@ -52,7 +52,7 @@ Route::group(['middleware' => 'student.auth'], function () {
 
         Route::get('json/registration/get-schedules', 'getSchedules')->name('student.regis.get-schedule');
         Route::get('json/registration/get-schedule-by-phase/{phase}', 'getScheduleByPhase')->name('student.regis.get-phase');
-        Route::get('/registration/get-data/{phase}', 'getDataByPhase')->name('student.regis.get-registration'); // student registration data
+        Route::get('json/registration/get-data/{phase}', 'getDataByPhase')->name('student.regis.get-registration'); // student registration data
     });
 
     // Status

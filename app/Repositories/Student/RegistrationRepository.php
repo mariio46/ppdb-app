@@ -10,7 +10,7 @@ interface RegistrationRepository
 
     public function getScheduleByPhaseCode(string $code): array;
 
-    public function postSaveRegistration(string $track, Request $request): array;
+    public function postSaveRegistration(string $phase, string $phaseId, string $track, Request $request): array;
 
     public function getRegistrationDataByPhase(string $phase): array;
 }

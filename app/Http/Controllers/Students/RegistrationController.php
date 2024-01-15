@@ -63,9 +63,10 @@ class RegistrationController extends Controller
         } else {
             $data = [
                 // 'code' => $decCode->track,
-                'track' => $track_code,
-                'phase_id' => $phase_id,
-                'phase' => $phase,
+                'track'     => $track_code,
+                'track_code' => $track_code,
+                'phase_id'  => $phase_id,
+                'phase'     => $phase,
             ];
 
             return view('student.registration.track', $data);
@@ -77,29 +78,28 @@ class RegistrationController extends Controller
      * ketika halaman bukti pendaftaran di akses, maka yang diminta sebenarnya adalah data pendaftaran
      * siswa berdasarkan tahap ke berapa yang aktif.
      */
-    public function proof(string $phaseCode): View
+    public function proof(string $phase, string $phaseId): View
     {
-        $decCode = json_decode(Crypt::decryptString($phaseCode));
         $data = [
-            'phaseCode' => $phaseCode,
-            'phase' => $decCode->phase,
+            'phase_id'  => $phaseId,
+            'phase'     => $phase,
         ];
 
         return view('student.registration.proof', $data);
     }
 
     //------------------------------------------------------------FUNC
-    public function postSchoolRegistration(string $trackCode, Request $request): RedirectResponse
+    public function postSchoolRegistration(string $phase, string $phaseId, string $trackCode, Request $request): RedirectResponse
     {
-        $code = Crypt::encryptString(json_encode(['phase' => $request->get('phaseCode')]));
+        // $code = Crypt::encryptString(json_encode(['phase' => $request->get('phaseCode')]));
 
         if (session()->get('stu_status_regis')) {
             return redirect()->to('/pendaftaran');
         } else {
-            $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
+            $save = $this->registrationRepo->postSaveRegistration($phase, $phaseId, $trackCode, $request);
 
             if ($save['statusCode'] == 201) {
-                return redirect()->to("/pendaftaran/bukti/$code")->with(['stat' => 'success', 'msg' => $save['messages']]);
+                return to_route("student.regis.proof", [$phase, $phaseId])->with(['stat' => 'success', 'msg' => $save['messages']]);
             } else {
                 return redirect()->back()->with(['stat' => 'error', 'msg' => 'Gagal menyimpan data.']);
             }
