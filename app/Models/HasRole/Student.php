@@ -56,21 +56,23 @@ class Student extends Base
     public function store(Request $request): array
     {
         $sekolah_asal = explode('|', $request->sekolah_asal);
+        $password = rand(100000, 999999);
 
         $data = [
-            'nama' => $request->nama_lengkap,
-            'nisn' => $request->nisn,
-            'id_sekolah_asal' => $sekolah_asal[0],
-            'sekolah_asal' => $sekolah_asal[1],
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'created_by' => session()->get('id'),
-            'nik' => '1234567890123455', // mau dihapus nanti
+            "nama"              => $request->nama_lengkap,
+            "nisn"              => $request->nisn,
+            "kata_sandi"        => $password,
+            "sandi_awal"        => $password,
+            "id_sekolah_asal"   => $sekolah_asal[0],
+            "sekolah_asal"      => $sekolah_asal[1],
+            "jenis_kelamin"     => $request->jenis_kelamin,
+            "tempat_lahir"      => $request->tempat_lahir,
+            "tanggal_lahir"     => $request->tanggal_lahir,
+            "created_by"        => session()->get("id")
         ];
 
-        $save = $this->postWithToken('siswa/create', $data);
-        dd($save);
+        $save = $this->postWithToken("siswa/create", $data);
+        // dd($save);
 
         if ($save['status_code'] == 201 || $save['status_code'] == 200) {
             return $save['response'];

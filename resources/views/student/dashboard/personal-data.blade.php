@@ -557,8 +557,8 @@
                         }
                     },
                     errorPlacement: function(error, element) {
-                        console.log(error);
-                        console.log(element);
+                        console.log("error", error);
+                        console.log("element", element);
                         $('#profilePictureErrorMsg').html('<p class="text-center mb-0"><small>' + error.text() + '</small></p>');
                         $('#profilePictureErrorMsg').show();
                     },
