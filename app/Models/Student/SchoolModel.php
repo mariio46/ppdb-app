@@ -85,15 +85,15 @@ class SchoolModel extends Base
 
         // return array_values($filtered);
 
-        $get = $this->swGetWithToken("sekolah");
+        $get = $this->swGetWithToken('sekolah');
         if ($get['status_code'] == 200) {
             return $get['response'];
         } else {
             return [
-                "statusCode"    => $get['status_code'],
-                "status"        => "failed",
-                "messages"      => "Terjadi kesalahan. Gagal mendapatkan data.",
-                "data"          => []
+                'statusCode' => $get['status_code'],
+                'status' => 'failed',
+                'messages' => 'Terjadi kesalahan. Gagal mendapatkan data.',
+                'data' => [],
             ];
         }
     }
@@ -154,10 +154,10 @@ class SchoolModel extends Base
             return $data['response'];
         } else {
             return [
-                "statusCode"    => $data['status_code'],
-                "status"        => "failed",
-                "messages"      => "Gagal mendapatkan data.",
-                "data"          => []
+                'statusCode' => $data['status_code'],
+                'status' => 'failed',
+                'messages' => 'Gagal mendapatkan data.',
+                'data' => [],
             ];
         }
     }

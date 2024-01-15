@@ -52,7 +52,7 @@ class School extends Base
     {
         $school = $this->getWithToken(endpoint: "sekolah/detail?id={$school_id}");
 
-        if ($school['status_code'] == 200 || $school['status_code'] == 400) {
+        if ($school['status_code'] == 200) {
             return $school['response'];
         } else {
             return [

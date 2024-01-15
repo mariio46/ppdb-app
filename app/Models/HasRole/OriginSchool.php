@@ -10,7 +10,7 @@ class OriginSchool extends Base
     //------------------------------------------------------------GET
     public function getAll(): array // A.03.001
     {
-        $get = $this->getWithToken("sekolah/asal/all");
+        $get = $this->getWithToken('sekolah/asal/all');
         if ($get['status_code'] == 200) {
             return $get['response'];
         } else {
@@ -18,7 +18,7 @@ class OriginSchool extends Base
                 'statusCode' => $get['status_code'],
                 'status' => 'failed',
                 'messages' => 'Gagal memdapatkan data.',
-                'data' => []
+                'data' => [],
             ];
         }
     }
@@ -34,7 +34,7 @@ class OriginSchool extends Base
                 'statusCode' => $get['status_code'],
                 'status' => 'failed',
                 'messages' => 'Gagal memdapatkan data.',
-                'data' => []
+                'data' => [],
             ];
         }
     }
@@ -43,11 +43,11 @@ class OriginSchool extends Base
     public function store(Request $request): array //
     {
         $data = [
-            "npsn" => $request->npsn,
-            "nama" => $request->nama
+            'npsn' => $request->npsn,
+            'nama' => $request->nama,
         ];
 
-        $post = $this->postWithToken("sekolah/asal/add", $data);
+        $post = $this->postWithToken('sekolah/asal/add', $data);
 
         if ($post['status_code'] == 201) {
             return $post['response'];
@@ -56,7 +56,7 @@ class OriginSchool extends Base
                 'statusCode' => $post['status_code'],
                 'status' => 'failed',
                 'messages' => 'Gagal menyimpan data.',
-                'data' => []
+                'data' => [],
             ];
         }
     }
@@ -64,12 +64,12 @@ class OriginSchool extends Base
     public function update(Request $request): array
     {
         $data = [
-            "id" => $request->id,
-            "npsn" => $request->npsn,
-            "nama" => $request->nama
+            'id' => $request->id,
+            'npsn' => $request->npsn,
+            'nama' => $request->nama,
         ];
 
-        $update = $this->postWithToken("sekolah/asal/update", $data);
+        $update = $this->postWithToken('sekolah/asal/update', $data);
 
         if ($update['status_code'] == 200) {
             return $update['response'];
@@ -78,7 +78,7 @@ class OriginSchool extends Base
                 'statusCode' => $update['status_code'],
                 'status' => 'failed',
                 'messages' => 'Gagal menyimpan data.',
-                'data' => []
+                'data' => [],
             ];
         }
     }

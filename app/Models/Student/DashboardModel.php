@@ -65,11 +65,6 @@ class DashboardModel extends Base
         return $get;
     }
 
-    /**
-     * @param $newPassword
-     *
-     * $id = student ID
-     */
     public function postFirstTimeLogin(string $id, string $email, string $phone, string $newPassword): array
     {
         $data = [

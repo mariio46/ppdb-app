@@ -192,12 +192,14 @@
                 };
 
                 fields.forEach(field => {
-                    validationConf.rules[field] = {required: true},
-                    validationConf.messages[field] = "Bidang ini tidak boleh dikosongkan."
+                    validationConf.rules[field] = {
+                            required: true
+                        },
+                        validationConf.messages[field] = "Bidang ini tidak boleh dikosongkan."
                 });
 
                 form.validate(validationConf);
-                
+
                 $('#sma').rules("add", {
                     requiredDepends: '#smk',
                     messages: {
