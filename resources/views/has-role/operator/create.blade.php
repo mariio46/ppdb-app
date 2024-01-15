@@ -50,13 +50,13 @@
                             <div class="mb-2">
                                 <x-label for="password">Password</x-label>
                                 <x-input-password>
-                                    <x-input id="password" name="password" type="password" autocomplete="password" />
+                                    <x-input id="password" name="password" type="password" autocomplete="password" placeholder="password" />
                                 </x-input-password>
                             </div>
                             <div class="mb-2">
                                 <x-label for="password_confirmation">Masukkan Ulang Password</x-label>
                                 <x-input-password>
-                                    <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="password_confirmation" />
+                                    <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="password_confirmation" placeholder="konfirmasi password" />
                                 </x-input-password>
                             </div>
                         </div>
@@ -73,8 +73,7 @@
                             </x-label>
                             <x-input id="dokumen" name="dokumen" type="file" accept=".pdf" hidden required />
                         </div>
-                        {{-- <div class="alert alert-danger p-1 w-100" id="profilePictureErrorMsg" style="display: none;"></div> --}}
-                        <x-alert id="dokumen-error-message" style="display: none;" variant="danger"></x-alert>
+                        
                         <x-alert variant="warning">Upload pakta integritas yang telah ditanda tangani dan distempel.</x-alert>
                     </div>
 
@@ -103,6 +102,7 @@
             // Form Validation
             if (form.length) {
                 form.validate({
+                    ignore: [],
                     rules: {
                         nama: {
                             required: true,
@@ -148,12 +148,6 @@
                         dokumen: {
                             required: 'Dokumen tidak boleh kosong.',
                         }
-                    },
-                    errorPlacement: function(error, element) {
-                        // console.log(error);
-                        console.log(element);
-                        $('#dokumen-error-message').html('<p class="text-center mb-0"><small>' + error.text() + '</small></p>');
-                        $('#dokumen-error-message').show();
                     },
                 })
             }
