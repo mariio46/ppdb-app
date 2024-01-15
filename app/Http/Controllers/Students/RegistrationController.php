@@ -93,7 +93,7 @@ class RegistrationController extends Controller
     {
         // $code = Crypt::encryptString(json_encode(['phase' => $request->get('phaseCode')]));
 
-        if (session()->get('stu_status_regis')) {
+        if (session()->get('stu_is_regis')) {
             return redirect()->to('/pendaftaran');
         } else {
             $save = $this->registrationRepo->postSaveRegistration($phase, $phaseId, $trackCode, $request);

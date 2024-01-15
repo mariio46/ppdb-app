@@ -29,7 +29,6 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="text-center card-title mt-2">BUKTI PENDAFTARAN PPDB ONLINE SULAWESI SELATAN TAHUN 2024</h3>
-                        {{ session()->get("stu_id") }}
                     </div>
                     <div class="card-body border-top">
                         <h4 class="mb-2">Pendaftaran <span id="schoolType"></span> Jalur <span id="chosenTrack"></span></h4>
@@ -108,7 +107,7 @@
 
 @push('scripts')
     <script>
-        var phase = '{{ $phase }}';
+        var phaseId = '{{ $phase_id }}';
     </script>
     {{-- <script src="/js/student/pages/registration/proof-v1.0.1.js"></script> --}}
     <script>
@@ -153,23 +152,24 @@
                 ];
 
             $.ajax({
-                url: `/json/registration/get-data/${phase}`,
+                url: `/json/registration/get-data/${phaseId}`,
                 method: 'get',
                 dataType: 'json',
-                success: function(data) {
+                success: function(datas) {
+                    let data = datas.data[0];
                     console.log(data);
-                    let t = data.track;
+                    let t = data.kode_jalur;
                     let j = t.charAt(0);
-                    let d = new Date(data.end_verif);
+                    let d = new Date(data.verifikasi_selesai);
 
                     schoolType.text(j === 'A' ? 'SMA' : 'SMK');
                     chosenTrack.text(tracks[t]);
 
                     if (t == 'AA' || t == 'KA') { // if the track is sma or smk affirmation
-                        let a = [{"label" : "Jenis Afirmasi", "value" : data.affirmation_type}];
+                        let a = [{"label" : "Jenis Afirmasi", "value" : data.jenis_afirmasi}];
 
-                        if (data.affirmation_type == 'pkh') {
-                        a.push({"label" : "Nomor PKH", "value" : data.affirmation_number});
+                        if (data.jenis_afirmasi == 'pkh') {
+                        a.push({"label" : "Nomor PKH", "value" : data.no_pkh});
                         }
 
                         addDataSect.append(addDataHtml(a));
@@ -177,10 +177,10 @@
 
                     if (t == 'AE' || t == 'KE') {
                         let a = [
-                        {"label" : "Jenis Prestasi", "value" : data.achievement_type},
-                        {"label" : "Tingkatan Prestasi", "value" : data.achievement_level},
-                        {"label" : "Juara", "value" : data.achievement_champ},
-                        {"label" : "Nama Prestasi", "value" : data.achievement_name}
+                        {"label" : "Jenis Prestasi", "value" : data.prestasi_jenis},
+                        {"label" : "Tingkatan Prestasi", "value" : data.prestasi_tingkat},
+                        {"label" : "Juara", "value" : data.prestasi_juara},
+                        {"label" : "Nama Prestasi", "value" : data.prestasi_nama}
                         ];
 
                         addDataSect.append(addDataHtml(a));
@@ -189,19 +189,19 @@
                     chosenSchoolSect.html('');
                     if (j == 'A') { // if the type of school is high school (SMA)
                         if (t == 'AC' || t == 'AG') { // if the track is teacher's child or boarding school
-                        chosenSchoolSect.append(chosenSchoolHtml(data.school1));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1));
                         } else {
-                        chosenSchoolSect.append(chosenSchoolHtml(data.school1, '1'));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.school2, '2'));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.school3, '3'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_id, '1'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_id, '2'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_id, '3'));
                         }
                     } else if (j == 'K') { // if the type of school is vocational school (SMK)
-                        chosenSchoolSect.append(chosenSchoolHtml(data.school1, '1', 'y', data.department1));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.school2, '2', 'y', data.department2));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.school3, '3', 'y', data.department3));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1, '1', 'y', data.jurusan1));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2, '2', 'y', data.jurusan2));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3, '3', 'y', data.jurusan3));
                     }
 
-                    schoolVerif.text(data.school_verif);
+                    schoolVerif.text(data.sekolah_verif_id);
                     endVerif.text(d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear());
                     },
                     error: function(xhr, status, error) {

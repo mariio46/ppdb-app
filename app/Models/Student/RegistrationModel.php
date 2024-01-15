@@ -222,7 +222,7 @@ class RegistrationModel extends Base
     public function getRegistrationDataByPhase(string $phase): array
     {
         $studentId = session()->get('stu_id');
-        $get = $this->swGetWithToken("pendaftaran/get?siswa_id=$studentId&tahap=$phase");
+        $get = $this->swGetWithToken("pendaftaran/get?siswa_id=$studentId&tahap_id=$phase");
 
         if ($get['status_code'] == 200) {
             return $get['response'];

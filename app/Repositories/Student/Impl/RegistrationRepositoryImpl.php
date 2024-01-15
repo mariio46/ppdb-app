@@ -66,13 +66,18 @@ class RegistrationRepositoryImpl implements RegistrationRepository
                     "siswa_id"          => session()->get("stu_id"),
                     "tahap_id"          => $phaseId,
                     "tahap"             => $phase,
-                    'jalur'             => $trackCode,
+                    "kode_jalur"        => $trackCode,
                     "jenis_afirmasi"    => $request->affirmationType,
                     "no_pkh"            => $request->affirmationNumber,
                     "sekolah1_id"       => $request->school1,
+                    "sekolah1_nama"     => $request->school1Name,
                     "sekolah2_id"       => $request->school2,
+                    "sekolah2_nama"     => $request->school2Name,
                     "sekolah3_id"       => $request->school3,
+                    "sekolah3_nama"     => $request->school3Name,
                     "sekolah_verif_id"  => $request->schoolVerif,
+                    "nama_siswa"        => session()->get('stu_name'),
+                    "nisn"              => session()->get('stu_nisn'),
 
                     // 'affType' => $request->post('affirmationType'),
                     // 'affNum' => $request->post('affirmationNumber'),
@@ -329,7 +334,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         $save = $this->registrationModel->saveRegistration($data);
 
         if ($save['statusCode'] == 201) {
-            session()->put('stu_status_regis', true);
+            session()->put('stu_is_regis', true);
         }
 
         return $save;
