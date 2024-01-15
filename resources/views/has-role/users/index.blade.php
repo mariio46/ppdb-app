@@ -88,6 +88,8 @@
                             render: function(data, type, row) {
                                 if (data === 'a') {
                                     return ` <x-badge class="w-100" variant="light" color="success">Aktif</x-badge> `;
+                                } else if (data === 'v') {
+                                    return ` <x-badge class="w-100" variant="light" color="warning">Belum Diverifikasi</x-badge> `;
                                 } else {
                                     return ` <x-badge class="w-100" variant="light" color="danger">Tidak Aktif</x-badge> `;
                                 }

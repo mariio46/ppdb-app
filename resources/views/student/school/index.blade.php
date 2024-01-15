@@ -164,6 +164,7 @@
                         {
                             data: null,
                             render: function(data, type, row) {
+
                                 return `<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all="${JSON.stringify(row)}">Lihat Detail</button>`;
                             }
                         }

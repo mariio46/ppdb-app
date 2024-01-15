@@ -36,7 +36,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
             if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
                 foreach ($data['data'][$schoolType] as &$track) {
                     $track['slug'] = $phase . '_' . $data['data']['tahap_id'] . '_' . $track['kode'];
-                    $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
+                    $track['jalur'] = str_replace(['SMA', 'SMK'], '', $track['jalur']);
                     $track['info'] = $this->registrationModel->informations[$track['kode']];
                 }
             }

@@ -232,7 +232,7 @@
                             for (let n = 1; n <= 3; n++) {
                                 if ($(`#school${n}`).length) {
                                     $(`#school${n}`).empty().append('<option value=""></option>');
-                            
+
                                     schools.forEach(school => {
                                         $(`#school${n}`).append(`<option value="${school.id}">${school.name}</option>`);
 
@@ -348,11 +348,11 @@
                         if (sch2.length && sch3.length) { // form can choose multiple school
                             schVerif.empty().append('<option value=""></option>')
                             for (let i = 1; i <= 3; i++) {
-                            let school = $('#school' + i);
-                            let schoolCode = school.val();
-                            let schoolName = school.children(':selected').text();
+                                let school = $('#school' + i);
+                                let schoolCode = school.val();
+                                let schoolName = school.children(':selected').text();
 
-                            $(`#school${i}Show`).text(schoolName);
+                                $(`#school${i}Show`).text(schoolName);
                                 if (schoolCode) {
                                     schVerif.append(`<option value="${schoolCode}">${schoolName}</option>`);
                                 }

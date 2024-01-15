@@ -8,7 +8,8 @@
 @section('content')
     <div class="content-body">
         <div class="card">
-            <form action="#" method="POST">
+            <form id="form-edit-user" action="{{ route('users.update', $id) }}" method="POST">
+                @csrf
                 <div class="card-header">
                     <h4 class="card-title">Detail User</h4>
                 </div>
@@ -16,16 +17,16 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-2">
-                                <x-label for="name">Nama</x-label>
-                                <x-input id="name" name="name" />
+                                <x-label for="nama">Nama</x-label>
+                                <x-input id="nama" name="nama" />
                             </div>
                             <div class="mb-2">
-                                <x-label for="username">Username</x-label>
-                                <x-input id="username" name="username" />
+                                <x-label for="nama_pengguna">Username</x-label>
+                                <x-input id="nama_pengguna" name="nama_pengguna" />
                             </div>
                             <div class="mb-2">
-                                <x-label for="status">Status</x-label>
-                                <x-select class="select2 form-select" id="status" name="status" data-minimum-results-for-search="-1" data-placeholder="Pilih Status">
+                                <x-label for="status_aktif">Status</x-label>
+                                <x-select class="select2 form-select" id="status_aktif" name="status_aktif" data-minimum-results-for-search="-1" data-placeholder="Pilih Status">
                                     <x-empty-option />
                                     <option value="a">Aktif</option>
                                     <option value="n">Tidak Aktif</option>
@@ -132,6 +133,7 @@
                 wilayah = $('#wilayah'),
                 role = $('#role'),
                 sekolah = $('#sekolah'),
+                form = $('#form-edit-user'),
                 sekolah_asal = $('#sekolah_asal');
 
             select.each(function() {
@@ -146,15 +148,66 @@
                 });
             });
 
+            // Custom Validation
+            $.validator.addMethod('noSpace', (value, element) => value.indexOf(" ") < 0 && value != "")
+
+            // Form Validation
+            if (form.length) {
+                form.validate({
+                    rules: {
+                        nama: {
+                            required: true,
+                            minlength: 6,
+                        },
+                        nama_pengguna: {
+                            required: true,
+                            minlength: 6,
+                            noSpace: true
+                        },
+                        status_aktif: {
+                            required: true
+                        },
+                        role: {
+                            required: true
+                        },
+                        password: {
+                            required: true,
+                            minlength: 6,
+                        },
+                    },
+                    messages: {
+                        nama: {
+                            required: 'Nama tidak boleh kosong.',
+                            minlength: 'Nama harus lebih dari 6 karakter.',
+                        },
+                        nama_pengguna: {
+                            required: 'Nama Pengguna tidak boleh kosong.',
+                            minlength: 'Nama Pengguna harus lebih dari 6 karakter.',
+                            noSpace: 'Nama Pengguna tidak mengandung spasi.'
+                        },
+                        status_aktif: {
+                            required: 'Pilih salah satu status.'
+                        },
+                        role: {
+                            required: 'Pilih salah satu role.'
+                        },
+                        password: {
+                            required: 'Password tidak boleh kosong.',
+                            minlength: 'Panjang Password minimal 6 Karater.',
+                        },
+                    },
+                });
+            }
+
             $.ajax({
-                // url: `/panel/users/json/single-user/${username}`,
                 url: `/panel/users/json/user/${id}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(user) {
-                    $('#name').val(user.nama);
-                    $('#username').val(user.nama_pengguna);
-                    $('#status').val(user.status_aktif).trigger('change');
+                    console.log(user);
+                    $('#nama').val(user.nama);
+                    $('#nama_pengguna').val(user.nama_pengguna);
+                    $('#status_aktif').val(user.status_aktif).trigger('change');
                     // console.log(user);
                     loadRoles(user.roles.id.toString())
                     switch (user.roles.id.toString()) {
@@ -217,14 +270,14 @@
             // Data Sekolah Tujuan Collections
             function loadSchools(value = '') {
                 $.ajax({
-                    url: '/panel/users/json/schoolsCollections',
+                    url: '/panel/sekolah/json/schools-collections',
                     method: 'get',
                     dataType: 'json',
                     success: function(schools) {
                         sekolah.empty().append('<option value=""></option>');
                         schools.forEach(school => {
                             let selected = school.id.toString() === value ? 'selected' : '';
-                            sekolah.append(`<option value="${school.id}" ${selected}>${school.name}</option>`)
+                            sekolah.append(`<option value="${school.id}" ${selected}>${school.nama_sekolah}</option>`)
                         })
                     },
                     error: function(xhr, status, error) {
