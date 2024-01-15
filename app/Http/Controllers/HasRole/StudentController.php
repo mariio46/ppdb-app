@@ -39,9 +39,6 @@ class StudentController extends Controller
     {
         return view('has-role.student.edit', [
             'id' => $id,
-            // 'student' => $this->getSingleStudent($username),
-            // 'months' => $this->getMoths(),
-            // 'years' => $this->getYears(),
         ]);
     }
 

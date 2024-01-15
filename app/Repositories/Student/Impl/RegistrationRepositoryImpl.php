@@ -35,7 +35,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         foreach (['sma', 'smk'] as $schoolType) {
             if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
                 foreach ($data['data'][$schoolType] as &$track) {
-                    $track['slug'] = $phase.'_'.$data['data']['tahap_id'].'_'.$track['kode'];
+                    $track['slug'] = $phase . '_' . $data['data']['tahap_id'] . '_' . $track['kode'];
                     $track['jalur'] = str_replace(['SMA', 'SMK'], '', $track['jalur']);
                     $track['info'] = $this->registrationModel->informations[$track['kode']];
                 }
@@ -58,20 +58,26 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         return $data;
     }
 
-    public function postSaveRegistration(string $trackCode, Request $request): array
+    public function postSaveRegistration(string $phase, string $phaseId, string $trackCode, Request $request): array
     {
         switch ($trackCode) {
             case 'AA':
                 $data = [
-                    'siswa_id' => session()->get('stu_id'),
-                    'tahap' => $request->phaseCode,
-                    'jalur' => $trackCode,
-                    'jenis_afirmasi' => $request->affirmationType,
-                    'no_pkh' => $request->affirmationNumber,
-                    'sekolah1_id' => $request->school1,
-                    'sekolah2_id' => $request->school2,
-                    'sekolah3_id' => $request->school3,
-                    'sekolah_verif_id' => $request->schoolVerif,
+                    "siswa_id"          => session()->get("stu_id"),
+                    "tahap_id"          => $phaseId,
+                    "tahap"             => $phase,
+                    "kode_jalur"        => $trackCode,
+                    "jenis_afirmasi"    => $request->affirmationType,
+                    "no_pkh"            => $request->affirmationNumber,
+                    "sekolah1_id"       => $request->school1,
+                    "sekolah1_nama"     => $request->school1Name,
+                    "sekolah2_id"       => $request->school2,
+                    "sekolah2_nama"     => $request->school2Name,
+                    "sekolah3_id"       => $request->school3,
+                    "sekolah3_nama"     => $request->school3Name,
+                    "sekolah_verif_id"  => $request->schoolVerif,
+                    "nama_siswa"        => session()->get('stu_name'),
+                    "nisn"              => session()->get('stu_nisn'),
 
                     // 'affType' => $request->post('affirmationType'),
                     // 'affNum' => $request->post('affirmationNumber'),
@@ -328,7 +334,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         $save = $this->registrationModel->saveRegistration($data);
 
         if ($save['statusCode'] == 201) {
-            session()->put('stu_status_regis', true);
+            session()->put('stu_is_regis', true);
         }
 
         return $save;
