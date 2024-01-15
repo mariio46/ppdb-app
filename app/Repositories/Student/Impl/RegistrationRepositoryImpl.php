@@ -72,6 +72,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
                     "sekolah2_id" => $request->school2,
                     "sekolah3_id" => $request->school3,
                     "sekolah_verif_id" => $request->schoolVerif,
+                  
                     // 'affType' => $request->post('affirmationType'),
                     // 'affNum' => $request->post('affirmationNumber'),
                     // 'city1' => $request->post('city1'),

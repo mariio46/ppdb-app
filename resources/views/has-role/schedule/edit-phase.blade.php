@@ -232,7 +232,9 @@
                 };
 
                 fields.forEach(field => {
-                    validationConf.rules[field] = {required: true};
+                    validationConf.rules[field] = {
+                        required: true
+                    };
                     validationConf.messages[field] = "Bidang ini tidak boleh dikosongkan."
                 });
 

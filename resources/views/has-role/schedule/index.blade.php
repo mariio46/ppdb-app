@@ -71,18 +71,21 @@
                             data.forEach(d => {
                                 let ds = new Date(d.pendaftaran_mulai);
                                 let de = new Date(d.pendaftaran_selesai);
-                                let dr = `${ds.getDate()} ${(ds.getMonth() !== de.getMonth()) ? months[ds.getMonth()] : ''} - ${de.getDate()} ${months[de.getMonth()]} ${de.getFullYear()}`;
+                                let dr =
+                                    `${ds.getDate()} ${(ds.getMonth() !== de.getMonth()) ? months[ds.getMonth()] : ''} - ${de.getDate()} ${months[de.getMonth()]} ${de.getFullYear()}`;
 
                                 let vs = new Date(d.verifikasi_mulai);
                                 let ve = new Date(d.verifikasi_selesai);
-                                let vr = `${vs.getDate()}  ${(vs.getMonth() !== ve.getMonth()) ? months[vs.getMonth()] : ''} -  ${ve.getDate()} ${months[ve.getMonth()]} ${ve.getFullYear()}`;
+                                let vr =
+                                    `${vs.getDate()}  ${(vs.getMonth() !== ve.getMonth()) ? months[vs.getMonth()] : ''} -  ${ve.getDate()} ${months[ve.getMonth()]} ${ve.getFullYear()}`;
 
                                 let p = new Date(d.pengumuman);
                                 let pr = `${p.getDate()} ${months[p.getMonth()]} ${p.getFullYear()}`;
 
                                 let us = new Date(d.daftar_ulang_mulai);
                                 let ue = new Date(d.daftar_ulang_selesai);
-                                let ur = `${us.getDate()} ${(us.getMonth() !== ue.getMonth()) ? months[us.getMonth()] : ''} - ${ue.getDate()} ${months[ue.getMonth()]} ${ue.getFullYear()}`;
+                                let ur =
+                                    `${us.getDate()} ${(us.getMonth() !== ue.getMonth()) ? months[us.getMonth()] : ''} - ${ue.getDate()} ${months[ue.getMonth()]} ${ue.getFullYear()}`;
 
                                 table.append(generateRow(d.tahap, dr, vr, pr, ur, d.sma, d.smk, d.tahap_id));
                             });
@@ -98,14 +101,15 @@
             }
 
             function generateRow(phase, registration, verification, announcement, reregistration, sma, smk, id) {
-                let sma_html = '', smk_html = '';
+                let sma_html = '',
+                    smk_html = '';
                 // console.log('sma', sma);
                 if (sma != null) {
                     sma.forEach(a => {
                         sma_html += `<span class="badge bg-primary">${a.jalur.replace('SMA ', '')}</span><br />`;
                     });
                 }
-                
+
                 // console.log('smk', sma);
                 if (smk != null) {
                     smk.forEach(k => {

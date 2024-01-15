@@ -65,18 +65,18 @@
                         case 'pre':
                             btnHtml = `<button class="btn btn-outline-secondary disabled" disabled>Tahap ${schedule.tahap} Belum Dibuka</button>`;
                             cdr = 'pre';
-                        break;
+                            break;
                         case 'now':
                             btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.tahap}_${schedule.tahap_id}">Lihat Tahap ${schedule.tahap}</a>`;
                             cdr = 'now';
-                        regisProofBtn.attr('href', `/pendaftaran/bukti/${schedule.tahap}_${schedule.tahap_id}`);
-                        break;
+                            regisProofBtn.attr('href', `/pendaftaran/bukti/${schedule.tahap}_${schedule.tahap_id}`);
+                            break;
                         case 'post':
                             btnHtml = `<button class="btn btn-outline-secondary disabled">Tahap ${schedule.tahap} Sudah Ditutup</button>`;
                             cdr = 'post';
-                        break;
-                            default:
-                        break;
+                            break;
+                        default:
+                            break;
                     }
 
                     var cardHtml = `

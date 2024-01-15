@@ -17,12 +17,12 @@
     <div class="content-body row">
         <div class="col-12">
             <div class="card">
-                <form action="{{ route('schedules.update.time', [$type, $id]) }}" method="post" id="formData">
+                <form id="formData" action="{{ route('schedules.update.time', [$type, $id]) }}" method="post">
                     @csrf
                     <div class="card-body px-0">
                         <h5 class="card-title text-primary mb-2 px-2">Jadwal {{ ucwords(strtr($type, '_', ' ')) }} Tahap <span id="phs"></span></h5>
 
-                        <input type="hidden" name="length" id="length">
+                        <input id="length" name="length" type="hidden">
 
                         <table class="table table-striped border-bottom">
                             <thead>
@@ -45,7 +45,7 @@
                         </table>
 
                         <div class="px-2 mt-2">
-                            <x-button type="submit" id="btnSubmit" color="success">Simpan Perubahan</x-button>
+                            <x-button id="btnSubmit" type="submit" color="success">Simpan Perubahan</x-button>
                             <x-link href="{{ route('schedules.detail', [$id]) }}" color="secondary" variant="outline">Batalkan</x-link>
                         </div>
                     </div>

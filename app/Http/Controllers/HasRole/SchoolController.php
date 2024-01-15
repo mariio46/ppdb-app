@@ -35,7 +35,7 @@ class SchoolController extends Controller
             ]);
         } else {
             return back()->with([
-                'stat' => 'danger',
+                'stat' => 'error',
                 'msg' => $response['messages'],
             ]);
         }

@@ -235,6 +235,7 @@
                             
                                     schools.forEach(school => {
                                         $(`#school${n}`).append(`<option value="${school.id}">${school.name}</option>`);
+
                                     });
                                 }
                             }
@@ -378,6 +379,7 @@
                                 }
 
                                 let schoolName = $(`#school${i}`).children(':selected').text();
+
                                 $(`#school${i}Name`).val(schoolName);
                             }
 
@@ -417,7 +419,7 @@
                     // --------------------------------------------------------------------
                     for (let i = 1; i <= 3; i++) {
                         loadCity(i);
-                        
+
                         $('#city' + i).change(function() {
                             loadSchool(i, $(this).val());
                         });

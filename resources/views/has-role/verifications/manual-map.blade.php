@@ -6,8 +6,8 @@
 
 @section('content')
     <x-breadcrumb title="Verifikasi Manual">
-        <x-breadcrumb-item to="{{ route('verifikasi.manual') }}" title="Verifikasi Manual" />
-        <x-breadcrumb-item to="{{ route('verifikasi.manual.detail', [$id]) }}" title="Lihat Detail Siswa" />
+        <x-breadcrumb-item title="Verifikasi Manual" to="{{ route('verifikasi.manual') }}" />
+        <x-breadcrumb-item title="Lihat Detail Siswa" to="{{ route('verifikasi.manual.detail', [$id]) }}" />
         <x-breadcrumb-active title="Edit Titik Ruma Siswa" />
     </x-breadcrumb>
 
@@ -20,15 +20,15 @@
                 <div class="card-body">
                     <div class="bg-secondary mb-2" style="width: 100%; height: 10rem;"></div>
 
-                    <form action="" method="post" id="form">
+                    <form id="form" action="" method="post">
                         <div class="row">
                             <div class="mb-2 col-lg-4 col-12">
                                 <x-label for="lintang">Lintang</x-label>
-                                <x-input type="text" name="lintang" id="lintang" placeholder="lintang.." readonly></x-input>
+                                <x-input id="lintang" name="lintang" type="text" placeholder="lintang.." readonly></x-input>
                             </div>
                             <div class="mb-2 col-lg-4 col-12">
                                 <x-label for="bujur">Bujur</x-label>
-                                <x-input type="text" name="bujur" id="bujur" placeholder="bujur.." readonly></x-input>
+                                <x-input id="bujur" name="bujur" type="text" placeholder="bujur.." readonly></x-input>
                             </div>
                         </div>
                         <div class="mb-2">

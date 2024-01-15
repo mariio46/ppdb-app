@@ -32,21 +32,21 @@ class Schedule extends Base
     public function insertPhase(Request $request): array // A.12.002
     {
         $data = [
-            "tahap" => $request->phase,
-            "pendaftaran_mulai" => $request->regis_start,
-            "pendaftaran_selesai" => $request->regis_end,
-            "verifikasi_mulai" => $request->verif_start,
-            "verifikasi_selesai" => $request->verif_end,
-            "pengumuman" => $request->announcement,
-            "daftar_ulang_mulai" => $request->re_regis_start,
-            "daftar_ulang_selesai" => $request->re_regis_end,
-            "sma" => $request->sma,
-            "smk" => $request->smk
+            'tahap' => $request->phase,
+            'pendaftaran_mulai' => $request->regis_start,
+            'pendaftaran_selesai' => $request->regis_end,
+            'verifikasi_mulai' => $request->verif_start,
+            'verifikasi_selesai' => $request->verif_end,
+            'pengumuman' => $request->announcement,
+            'daftar_ulang_mulai' => $request->re_regis_start,
+            'daftar_ulang_selesai' => $request->re_regis_end,
+            'sma' => $request->sma,
+            'smk' => $request->smk,
         ];
 
-        $save = $this->postWithToken("tahap/create", $data);
+        $save = $this->postWithToken('tahap/create', $data);
 
-        if ($save["status_code"] == 201 || $save['status_code'] == 200) {
+        if ($save['status_code'] == 201 || $save['status_code'] == 200) {
             return $save['response'];
         } else {
             return [
@@ -60,16 +60,16 @@ class Schedule extends Base
     public function updatePhase(Request $request, string $id): array // A.12.006
     {
         $data = [
-            "tahap_id" => $id,
-            "pendaftaran_mulai" =>  $request->regisStart,
-            "pendaftaran_selesai" =>  $request->regisEnd,
-            "verifikasi_mulai"  =>  $request->verifStart,
-            "verifikasi_selesai"  =>  $request->verifEnd,
-            "pengumuman"  =>  $request->announcement,
-            "daftar_ulang_mulai"  =>  $request->reRegisStart,
-            "daftar_ulang_selesai"  =>  $request->reRegisEnd,
-            "sma" => $request->post('sma'),
-            "smk" => $request->post('smk')
+            'tahap_id' => $id,
+            'pendaftaran_mulai' => $request->regisStart,
+            'pendaftaran_selesai' => $request->regisEnd,
+            'verifikasi_mulai' => $request->verifStart,
+            'verifikasi_selesai' => $request->verifEnd,
+            'pengumuman' => $request->announcement,
+            'daftar_ulang_mulai' => $request->reRegisStart,
+            'daftar_ulang_selesai' => $request->reRegisEnd,
+            'sma' => $request->post('sma'),
+            'smk' => $request->post('smk'),
         ];
 
         $upd = $this->postWithToken('tahap/update', $data);
@@ -87,8 +87,8 @@ class Schedule extends Base
 
     public function removePhase(string $id) // A.12.004
     {
-        $del = $this->postWithToken("tahap/hapus", [
-            "id" => $id
+        $del = $this->postWithToken('tahap/hapus', [
+            'id' => $id,
         ]);
 
         if ($del['status_code'] == 200) {
@@ -104,7 +104,7 @@ class Schedule extends Base
 
     public function updateTime(array $data): bool // A.12.008
     {
-        $upd = $this->postWithToken("batas/create", $data);
+        $upd = $this->postWithToken('batas/create', $data);
         // dd($upd);
 
         if ($upd['status_code'] == 200 || $upd['status_code'] == 201) {

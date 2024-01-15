@@ -45,8 +45,8 @@
                                         <input id="date" name="date" type="hidden">
                                     </td>
                                     <td>
-                                        <x-input type="hidden" name="current_time" id="current_time" />
-                                        <x-input type="time" name="time" id="time" placeholder="hh.mm" step="60" />
+                                        <x-input id="current_time" name="current_time" type="hidden" />
+                                        <x-input id="time" name="time" type="time" placeholder="hh.mm" step="60" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -117,12 +117,12 @@
                         console.log(data);
                         let d = data.data;
                         $('#phs').text(d.tahap);
-                        
+
                         let dt = new Date(d.pengumuman);
 
                         $('#dateShow').text(`${days[dt.getDay()]}, ${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`);
                         $('#date').val(d.pengumuman);
-                        
+
                         if (d.batas.length) {
                             $('#id').val(d.batas[0].batas_id);
                             $('#time').val(d.batas[0].jam_mulai);

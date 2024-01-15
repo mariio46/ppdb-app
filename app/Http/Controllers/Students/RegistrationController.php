@@ -8,7 +8,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Crypt;
 
 class RegistrationController extends Controller
@@ -100,9 +99,9 @@ class RegistrationController extends Controller
             $save = $this->registrationRepo->postSaveRegistration($trackCode, $request);
 
             if ($save['statusCode'] == 201) {
-                return redirect()->to("/pendaftaran/bukti/$code")->with(["stat" => "success", "msg" => $save['messages']]);
+                return redirect()->to("/pendaftaran/bukti/$code")->with(['stat' => 'success', 'msg' => $save['messages']]);
             } else {
-                return redirect()->back()->with(["stat" => "error", "msg" => "Gagal menyimpan data."]);
+                return redirect()->back()->with(['stat' => 'error', 'msg' => 'Gagal menyimpan data.']);
             }
         }
     }
