@@ -12,29 +12,35 @@
 
 @section('content')
     <div class="content-body">
+        @if (session()->get('stat'))
+            <div class="alert alert-{{ session()->get('stat') }} p-1">
+                <p class="text-center mb-0">{{ session()->get('msg') }}</p>
+            </div>
+        @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Tambah User</h4>
             </div>
             <div class="card-body">
 
-                <form action="#">
+                <form id="form-users" action="{{ route('users.store') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-2">
-                                <x-label for="name">Nama</x-label>
-                                <x-input id="name" name="name" placeholder="Masukkan nama" />
+                                <x-label for="nama">Nama</x-label>
+                                <x-input id="nama" name="nama" placeholder="Masukkan nama" />
                             </div>
                             <div class="mb-2">
-                                <x-label for="username">Username</x-label>
-                                <x-input id="username" name="username" placeholder="Masukkan username" />
+                                <x-label for="nama_pengguna">Username</x-label>
+                                <x-input id="nama_pengguna" name="nama_pengguna" placeholder="Masukkan username" />
                             </div>
                             <div class="mb-2">
-                                <x-label for="status">Status</x-label>
-                                <x-select class="select2 form-select" id="status" name="status" data-placeholder="Pilih Status">
+                                <x-label for="status_aktif">Status</x-label>
+                                <x-select class="select2 form-select" id="status_aktif" name="status_aktif" data-placeholder="Pilih Status">
                                     <x-empty-option />
-                                    <option value="aktif">Aktif</option>
-                                    <option value="tidak_aktif">Tidak Aktif</option>
+                                    <option value="a">Aktif</option>
+                                    <option value="n">Tidak Aktif</option>
                                 </x-select>
                             </div>
                         </div>
@@ -69,14 +75,18 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <h4 class="card-title"> Password </h4>
-                            <x-label for="password">Password</x-label>
-                            <x-input-password>
-                                <x-input id="password" name="password" type="password" autocomplete="password" />
-                            </x-input-password>
-                            <x-label for="password_confirmation">Masukkan Ulang Password</x-label>
-                            <x-input-password>
-                                <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="password_confirmation" />
-                            </x-input-password>
+                            <div class="mb-2">
+                                <x-label for="password">Password</x-label>
+                                <x-input-password>
+                                    <x-input id="password" name="password" type="password" autocomplete="password" />
+                                </x-input-password>
+                            </div>
+                            <div class="mb-2">
+                                <x-label for="password_confirmation">Masukkan Ulang Password</x-label>
+                                <x-input-password>
+                                    <x-input id="password_confirmation" name="password_confirmation" type="password" autocomplete="password_confirmation" />
+                                </x-input-password>
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
@@ -99,7 +109,8 @@
                 select = $('.select2'),
                 wilayah = $('#wilayah'),
                 sekolah = $('#sekolah'),
-                sekolah_asal = $('#sekolah_asal')
+                sekolah_asal = $('#sekolah_asal'),
+                form = $('#form-users');
 
             select.each(function() {
                 var $this = $(this);
@@ -112,6 +123,67 @@
                     dropdownParent: $this.parent()
                 });
             });
+
+            // Custom Validation
+            $.validator.addMethod('noSpace', (value, element) => value.indexOf(" ") < 0 && value != "")
+
+            // Form Validation
+            if (form.length) {
+                form.validate({
+                    rules: {
+                        nama: {
+                            required: true,
+                            minlength: 6,
+                        },
+                        nama_pengguna: {
+                            required: true,
+                            minlength: 6,
+                            noSpace: true
+                        },
+                        status_aktif: {
+                            required: true
+                        },
+                        role: {
+                            required: true
+                        },
+                        password: {
+                            required: true,
+                            minlength: 6,
+                        },
+                        password_confirmation: {
+                            required: true,
+                            minlength: 6,
+                            equalTo: '#password'
+                        },
+                    },
+                    messages: {
+                        nama: {
+                            required: 'Nama tidak boleh kosong.',
+                            minlength: 'Nama harus lebih dari 6 karakter.',
+                        },
+                        nama_pengguna: {
+                            required: 'Nama Pengguna tidak boleh kosong.',
+                            minlength: 'Nama Pengguna harus lebih dari 6 karakter.',
+                            noSpace: 'Nama Pengguna tidak mengandung spasi.'
+                        },
+                        status_aktif: {
+                            required: 'Pilih salah satu status.'
+                        },
+                        role: {
+                            required: 'Pilih salah satu role.'
+                        },
+                        password: {
+                            required: 'Password tidak boleh kosong.',
+                            minlength: 'Panjang Password minimal 6 Karater.',
+                        },
+                        password_confirmation: {
+                            required: 'Password tidak boleh kosong.',
+                            minlength: 'Panjang Password minimal 6 Karater.',
+                            equalTo: 'Password tidak sama dengan Konfirmasi Password.',
+                        },
+                    },
+                });
+            }
 
             $.ajax({
                 url: '/panel/users/json/rolesCollections',
@@ -138,17 +210,33 @@
                 switch (value) {
                     case '3':
                         $('#input-wilayah').show();
+                        wilayah.rules('add', {
+                            required: true,
+                            messages: {
+                                required: 'Pilih salah satu wilayah.'
+                            }
+                        });
                         break;
                     case '4':
                         $('#input-sekolah').show();
+                        sekolah.rules('add', {
+                            required: true,
+                            messages: {
+                                required: 'Pilih salah satu sekolah.'
+                            }
+                        });
                         break;
                     case '5':
                         $('#input-sekolah-asal').show();
+                        sekolah_asal.rules('add', {
+                            required: true,
+                            messages: {
+                                required: 'Pilih salah satu sekolah asal.'
+                            }
+                        });
                         break;
                 }
-                // Handle other cases or defaults if needed
             })
-
 
             $.ajax({
                 url: '/panel/users/json/regionsCollections',
@@ -166,13 +254,13 @@
             })
 
             $.ajax({
-                url: '/panel/users/json/schoolsCollections',
+                url: '/panel/sekolah/json/schools-collections',
                 method: 'get',
                 dataType: 'json',
                 success: function(schools) {
                     sekolah.empty().append('<option value=""></option>');
                     schools.forEach(school => {
-                        sekolah.append(`<option value="${school.id}">${school.name}</option>`)
+                        sekolah.append(`<option value="${school.id}">${school.nama_sekolah}</option>`)
                     })
                 },
                 error: function(xhr, status, error) {
@@ -181,13 +269,13 @@
             })
 
             $.ajax({
-                url: '/panel/users/json/originSchoolsCollections',
+                url: '/panel/sekolah-asal/json/get-all-data',
                 method: 'get',
                 dataType: 'json',
                 success: function(origin_schools) {
                     sekolah_asal.empty().append('<option value=""></option>');
-                    origin_schools.forEach(school => {
-                        sekolah_asal.append(`<option value="${school.id}">${school.name}</option>`)
+                    origin_schools.data.forEach(school => {
+                        sekolah_asal.append(`<option value="${school.id}">${school.nama}</option>`)
                     })
                 },
                 error: function(xhr, status, error) {

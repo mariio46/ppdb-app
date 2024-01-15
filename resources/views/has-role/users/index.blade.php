@@ -26,6 +26,11 @@
 
 @section('content')
     <div class="content-body">
+        @if (session()->get('stat'))
+            <div class="alert alert-{{ session()->get('stat') }} p-1">
+                <p class="text-center mb-0">{{ session()->get('msg') }}</p>
+            </div>
+        @endif
         <div class="card">
             <div class="card-body p-0">
                 <table class="table table-users">
@@ -34,7 +39,7 @@
                             <th scope="col">NAMA</th>
                             <th scope="col">USERNAME</th>
                             <th scope="col">ROLE</th>
-                            <th scope="col">ID</th>
+                            {{-- <th scope="col">ID</th> --}}
                             <th scope="col">STATUS</th>
                             <th scope="col">DETAIL</th>
                         </tr>
@@ -63,33 +68,35 @@
             if (table.length) {
                 var tb = table.DataTable({
                     ajax: {
-                        url: '/panel/users/json/collections',
+                        url: '/panel/users/json/users',
                         dataSrc: ''
                     },
                     columns: [{
-                            data: 'name'
+                            data: 'nama'
                         },
                         {
-                            data: 'username'
+                            data: 'nama_pengguna'
                         },
                         {
-                            data: 'role'
-                        },
-                        {
-                            data: 'unique_id'
-                        },
-                        {
-                            data: 'status',
+                            data: 'role_id',
                             render: function(data, type, row) {
-                                if (data === 1) {
+                                return getRoleName(data);
+                            }
+                        },
+                        {
+                            data: 'status_aktif',
+                            render: function(data, type, row) {
+                                if (data === 'a') {
                                     return ` <x-badge class="w-100" variant="light" color="success">Aktif</x-badge> `;
+                                } else if (data === 'v') {
+                                    return ` <x-badge class="w-100" variant="light" color="warning">Belum Diverifikasi</x-badge> `;
                                 } else {
                                     return ` <x-badge class="w-100" variant="light" color="danger">Tidak Aktif</x-badge> `;
                                 }
                             }
                         },
                         {
-                            data: 'username',
+                            data: 'id',
                             render: function(data, type, row) {
                                 return `<a href="/panel/users/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
@@ -98,7 +105,7 @@
 
                     // Styling Table
                     columnDefs: [{
-                        targets: [4, 5],
+                        targets: [3, 4],
                         className: 'text-center'
                     }],
 
@@ -137,6 +144,32 @@
                 $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
                 $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
 
+            }
+
+            function getRoleName(role_id) {
+                switch (role_id) {
+                    case 1:
+                        return 'Super Admin'
+                        break;
+                    case 2:
+                        return 'Admin Provinsi'
+                        break;
+                    case 3:
+                        return 'Admin Cabang Dinas'
+                        break;
+                    case 4:
+                        return 'Admin Sekolah'
+                        break;
+                    case 5:
+                        return 'Admin Sekolah Asal'
+                        break;
+                    case 6:
+                        return 'Operator Sekolah'
+                        break;
+                    default:
+                        return 'Role Tidak Ada!'
+                        break;
+                }
             }
         })
     </script>

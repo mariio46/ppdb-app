@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Tambah user'])
+@extends('layouts.has-role.auth', ['title' => 'Tambah Sekolah'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
@@ -18,7 +18,8 @@
             </div>
             <div class="card-body">
 
-                <form action="#">
+                <form id="form-create-school" action="{{ route('sekolah.store') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-2">
@@ -32,8 +33,10 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="mb-2">
-                                <x-label for="kabupaten">Kabupaten/Kota</x-label>
-                                <x-input id="kabupaten" name="kabupaten" placeholder="Masukkan Kabupaten/Kota" />
+                                <x-label for="kabupaten">Kota/Kabupaten</x-label>
+                                <x-select class="select2 form-select" id="kabupaten" name="kabupaten" data-placeholder="Pilih Kota/Kabupaten">
+                                    <x-empty-option />
+                                </x-select>
                             </div>
                             <div class="mb-2">
                                 <x-label for="satuan_pendidikan">Satuan Pendidikan</x-label>
@@ -61,7 +64,9 @@
             'use strict';
 
             var select = $('.select2'),
-                unit = $('#satuan_pendidikan')
+                unit = $('#satuan_pendidikan'),
+                form = $('#form-create-school'),
+                kabupaten = $('#kabupaten');
 
             select.each(function() {
                 var $this = $(this);
@@ -75,6 +80,65 @@
                 });
             });
 
+            // Form Validation
+            if (form.length) {
+                form.validate({
+                    rules: {
+                        nama_sekolah: {
+                            required: true,
+                        },
+                        npsn: {
+                            required: true,
+                            digits: true,
+                            maxlength: 8,
+                        },
+                        kabupaten: {
+                            required: true,
+                        },
+                        satuan_pendidikan: {
+                            required: true,
+                        },
+                    },
+                    messages: {
+                        nama_sekolah: {
+                            required: 'Nama Sekolah tidak boleh kosong.',
+                        },
+                        npsn: {
+                            required: 'NPSN tidak boleh kosong.',
+                            digits: 'NPSN hanya mengandung angka.',
+                            maxlength: 'NPSN tidak boleh lebih dari 8 digit.'
+                        },
+                        kabupaten: {
+                            required: 'Pilih salah satu Kabupaten.',
+                        },
+                        satuan_pendidikan: {
+                            required: 'Pilih salah satu Satuan Pendidikan.',
+                        },
+                    }
+                })
+            }
+
+
+            // Get Data Kota / Kabupaten
+            $.ajax({
+                url: '/panel/get-city',
+                method: 'get',
+                dataType: 'json',
+                success: function(cities) {
+                    kabupaten.empty().append('<option value=""></option>');
+
+                    cities.forEach(item => {
+                        console.log(item);
+                        kabupaten.append(`<option value="${item.code}|${item.name}">${item.name}</option>`)
+                    })
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to get data units.', status, error);
+                }
+            })
+
+            // Get Satuan Pendidikan
             $.ajax({
                 url: '/panel/sekolah/json/units',
                 method: 'get',
@@ -83,7 +147,7 @@
                     unit.empty().append('<option value=""></option>');
 
                     units.forEach(item => {
-                        unit.append(`<option value="${item.id}">${item.label}</option>`)
+                        unit.append(`<option value="${item.value}">${item.label}</option>`)
                     })
 
                 },

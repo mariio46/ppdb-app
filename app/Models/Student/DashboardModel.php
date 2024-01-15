@@ -11,14 +11,14 @@ class DashboardModel extends Base
     // 01.001
     public function getDataStudentById(string $id): array
     {
-        $get = $this->swGetWithToken('siswa/byid?id=' . $id);
+        $get = $this->swGetWithToken('siswa/byid?id='.$id);
 
         return $get;
     }
 
     public function getDataScoreAll(string $id): array
     {
-        $get = $this->swGetWithToken('siswa/nilai?id=' . $id);
+        $get = $this->swGetWithToken('siswa/nilai?id='.$id);
 
         if ($get['status_code'] == '400') {
             return [
@@ -60,16 +60,11 @@ class DashboardModel extends Base
 
     public function getDataScoreBySemester(string $id, int $semester): array
     {
-        $get = $this->swGetWithToken('siswa/nilai?id=' . $id . '&semester=' . $semester);
+        $get = $this->swGetWithToken('siswa/nilai?id='.$id.'&semester='.$semester);
 
         return $get;
     }
 
-    /**
-     * @param $newPassword
-     *
-     * $id = student ID
-     */
     public function postFirstTimeLogin(string $id, string $email, string $phone, string $newPassword): array
     {
         $data = [
@@ -93,7 +88,7 @@ class DashboardModel extends Base
 
         $data = [
             'nik' => $request->post('nik'),
-            'tanggal_lahir' => $request->post('birthYear') . '-' . $request->post('birthMonth') . '-' . $request->post('birthDay'),
+            'tanggal_lahir' => $request->post('birthYear').'-'.$request->post('birthMonth').'-'.$request->post('birthDay'),
             'tempat_lahir' => $request->post('birthPlace'),
             'jenis_kelamin' => $request->post('gender'),
             'email' => $request->post('email'),
@@ -132,7 +127,7 @@ class DashboardModel extends Base
 
         $response = Http::withHeaders(['waktu' => 1, 'sw-code' => session()->get('stu_token')])
             ->attach('pasfoto', file_get_contents($file->path()), $file->getClientOriginalName())
-            ->post($this->BASE_API_URL . 'siswa/update/profil', $data);
+            ->post($this->BASE_API_URL.'siswa/update/profil', $data);
 
         return [
             'status_code' => $response->status(),
@@ -142,15 +137,15 @@ class DashboardModel extends Base
 
     public function postUpdateStudentScore(int $semester, Request $request): array
     {
-        $sm = 'sm' . $semester . '_';
+        $sm = 'sm'.$semester.'_';
 
         $data = [
             'id' => session()->get('stu_id'),
-            $sm . 'mtk' => $request->post('math'),
-            $sm . 'ipa' => $request->post('science'),
-            $sm . 'ips' => $request->post('social'),
-            $sm . 'bid' => $request->post('indonesian'),
-            $sm . 'big' => $request->post('english'),
+            $sm.'mtk' => $request->post('math'),
+            $sm.'ipa' => $request->post('science'),
+            $sm.'ips' => $request->post('social'),
+            $sm.'bid' => $request->post('indonesian'),
+            $sm.'big' => $request->post('english'),
         ];
 
         $result = $this->swPostWithToken('siswa/nilai/update', $data);

@@ -44,14 +44,15 @@ Route::group(['middleware' => 'student.auth'], function () {
     // Registration as Pendaftaran
     Route::controller(RegistrationController::class)->group(function () {
         Route::get('/pendaftaran', 'index')->name('student.regis');
-        Route::get('/pendaftaran/tahap/{code}', 'phase')->name('student.regis.phase');
-        Route::get('/pendaftaran/jalur/{code}', 'track')->name('student.regis.track');
-        Route::get('/pendaftaran/bukti/{phaseCode}', 'proof')->name('student.regis.proof');
+        Route::get('/pendaftaran/tahap/{phase}_{phase_id}', 'phase')->name('student.regis.phase');
+        Route::get('/pendaftaran/jalur/{phase}_{phase_id}_{track}', 'track')->name('student.regis.track');
+        Route::get('/pendaftaran/bukti/{phase}_{phase_id}', 'proof')->name('student.regis.proof');
 
-        Route::get('/registration/get-schedules', 'getSchedules')->name('student.regis.get-schedule');
-        Route::get('/registration/get-schedule-by-phase-code/{code}', 'getScheduleByPhaseCode')->name('student.regis.get-phase');
-        Route::post('/registration/{trackCode}/register', 'postSchoolRegistration')->name('student.regis.save-registration');
-        Route::get('/registration/get-data/{phase}', 'getDataByPhase')->name('student.regis.get-registration'); // student registration data
+        Route::post('/registration/{phase}/{phase_id}/{trackCode}/register', 'postSchoolRegistration')->name('student.regis.save-registration');
+
+        Route::get('json/registration/get-schedules', 'getSchedules')->name('student.regis.get-schedule');
+        Route::get('json/registration/get-schedule-by-phase/{phase}', 'getScheduleByPhase')->name('student.regis.get-phase');
+        Route::get('json/registration/get-data/{phase}', 'getDataByPhase')->name('student.regis.get-registration'); // student registration data
     });
 
     // Status

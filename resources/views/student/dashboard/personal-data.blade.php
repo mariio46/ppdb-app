@@ -11,7 +11,7 @@
 
 @section('content')
     <x-breadcrumb title="Data Diri">
-        <x-breadcrumb-item to="{{ route('student.personal') }}" title="Data Diri" />
+        <x-breadcrumb-item title="Data Diri" to="{{ route('student.personal') }}" />
         <x-breadcrumb-active title="Edit Data" />
     </x-breadcrumb>
 
@@ -368,204 +368,204 @@
             // cleave
             if (nik.length) {
                 new Cleave(nik, {
-                numericOnly: true,
-                blocks: [16]
+                    numericOnly: true,
+                    blocks: [16]
                 });
             }
 
             if (associations.length) {
                 new Cleave(associations, {
-                numericOnly: true,
-                delimiters: ['/'],
-                blocks: [3, 3]
+                    numericOnly: true,
+                    delimiters: ['/'],
+                    blocks: [3, 3]
                 });
             }
 
             if (phone.length) {
                 phone.toArray().forEach(function(field) {
-                new Cleave(field, {
-                    numericOnly: true,
-                    delimiters: [' ', ' '],
-                    blocks: [4, 4, 5]
-                });
+                    new Cleave(field, {
+                        numericOnly: true,
+                        delimiters: [' ', ' '],
+                        blocks: [4, 4, 5]
+                    });
                 });
             }
 
             // jquery validation
             if (formEditData.length) {
                 formEditData.validate({
-                rules: {
-                    'nik': {
-                    required: true,
-                    minlength: 16
+                    rules: {
+                        'nik': {
+                            required: true,
+                            minlength: 16
+                        },
+                        'gender': {
+                            required: true
+                        },
+                        'birthPlace': {
+                            required: true
+                        },
+                        'birthDay': {
+                            required: true
+                        },
+                        'birthMonth': {
+                            required: true
+                        },
+                        'birthYear': {
+                            required: true
+                        },
+                        'phone': {
+                            required: true,
+                            minlength: 12,
+                            maxlength: 15
+                        },
+                        'email': {
+                            required: true,
+                            email: true
+                        },
+                        'province': {
+                            required: true
+                        },
+                        'city': {
+                            required: true
+                        },
+                        'district': {
+                            required: true
+                        },
+                        'village': {
+                            required: true
+                        },
+                        'hamlet': {
+                            required: true
+                        },
+                        'associations': {
+                            required: true
+                        },
+                        'address': {
+                            required: true
+                        },
+                        'mothersName': {
+                            required: true
+                        },
+                        'mothersPhone': {
+                            required: true,
+                            minlength: 12,
+                            maxlength: 15
+                        },
+                        'fathersName': {
+                            required: true
+                        },
+                        'fathersPhone': {
+                            required: true,
+                            minlength: 12,
+                            maxlength: 15
+                        },
+                        'guardsPhone': {
+                            minlength: 12,
+                            maxlength: 15
+                        }
                     },
-                    'gender': {
-                    required: true
-                    },
-                    'birthPlace': {
-                    required: true
-                    },
-                    'birthDay': {
-                    required: true
-                    },
-                    'birthMonth': {
-                    required: true
-                    },
-                    'birthYear': {
-                    required: true
-                    },
-                    'phone': {
-                    required: true,
-                    minlength: 12,
-                    maxlength: 15
-                    },
-                    'email': {
-                    required: true,
-                    email: true
-                    },
-                    'province': {
-                    required: true
-                    },
-                    'city': {
-                    required: true
-                    },
-                    'district': {
-                    required: true
-                    },
-                    'village': {
-                    required: true
-                    },
-                    'hamlet': {
-                    required: true
-                    },
-                    'associations': {
-                    required: true
-                    },
-                    'address': {
-                    required: true
-                    },
-                    'mothersName': {
-                    required: true
-                    },
-                    'mothersPhone': {
-                    required: true,
-                    minlength: 12,
-                    maxlength: 15
-                    },
-                    'fathersName': {
-                    required: true
-                    },
-                    'fathersPhone': {
-                    required: true,
-                    minlength: 12,
-                    maxlength: 15
-                    },
-                    'guardsPhone': {
-                    minlength: 12,
-                    maxlength: 15
+                    messages: {
+                        'nik': {
+                            required: '*Bidang ini harus diisi.',
+                            minlength: '*NIK terdiri atas 16 digit angka'
+                        },
+                        'gender': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'birthPlace': {
+                            required: '*Bidang ini harus diisi.'
+                        },
+                        'birthDay': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'birthMonth': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'birthYear': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'phone': {
+                            required: '*Bidang ini harus diisi.',
+                            minlength: '*Mohon masukkan nomor telepon yang valid.',
+                            maxlength: '*Mohon masukkan nomor telepon yang valid.',
+                        },
+                        'email': {
+                            required: '*Bidang ini harus diisi.',
+                            email: '*Mohon masukkan alamat email yang valid.'
+                        },
+                        'province': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'city': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'district': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'village': {
+                            required: '*Bidang ini harus dipilih.'
+                        },
+                        'hamlet': {
+                            required: '*Bidang ini harus diisi.'
+                        },
+                        'associations': {
+                            required: '*Bidang ini harus diisi.'
+                        },
+                        'address': {
+                            required: '*Bidang ini harus diisi.'
+                        },
+                        'mothersName': {
+                            required: '*Bidang ini harus diisi.'
+                        },
+                        'mothersPhone': {
+                            required: '*Bidang ini harus diisi.',
+                            minlength: '*Mohon masukkan nomor telepon yang valid.',
+                            maxlength: '*Mohon masukkan nomor telepon yang valid.',
+                        },
+                        'fathersName': {
+                            required: '*Bidang ini harus diisi.'
+                        },
+                        'fathersPhone': {
+                            required: '*Bidang ini harus diisi.',
+                            minlength: '*Mohon masukkan nomor telepon yang valid.',
+                            maxlength: '*Mohon masukkan nomor telepon yang valid.',
+                        },
+                        'guardsPhone': {
+                            minlength: '*Mohon masukkan nomor telepon yang valid.',
+                            maxlength: '*Mohon masukkan nomor telepon yang valid.',
+                        }
                     }
-                },
-                messages: {
-                    'nik': {
-                    required: '*Bidang ini harus diisi.',
-                    minlength: '*NIK terdiri atas 16 digit angka'
-                    },
-                    'gender': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'birthPlace': {
-                    required: '*Bidang ini harus diisi.'
-                    },
-                    'birthDay': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'birthMonth': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'birthYear': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'phone': {
-                    required: '*Bidang ini harus diisi.',
-                    minlength: '*Mohon masukkan nomor telepon yang valid.',
-                    maxlength: '*Mohon masukkan nomor telepon yang valid.',
-                    },
-                    'email': {
-                    required: '*Bidang ini harus diisi.',
-                    email: '*Mohon masukkan alamat email yang valid.'
-                    },
-                    'province': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'city': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'district': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'village': {
-                    required: '*Bidang ini harus dipilih.'
-                    },
-                    'hamlet': {
-                    required: '*Bidang ini harus diisi.'
-                    },
-                    'associations': {
-                    required: '*Bidang ini harus diisi.'
-                    },
-                    'address': {
-                    required: '*Bidang ini harus diisi.'
-                    },
-                    'mothersName': {
-                    required: '*Bidang ini harus diisi.'
-                    },
-                    'mothersPhone': {
-                    required: '*Bidang ini harus diisi.',
-                    minlength: '*Mohon masukkan nomor telepon yang valid.',
-                    maxlength: '*Mohon masukkan nomor telepon yang valid.',
-                    },
-                    'fathersName': {
-                    required: '*Bidang ini harus diisi.'
-                    },
-                    'fathersPhone': {
-                    required: '*Bidang ini harus diisi.',
-                    minlength: '*Mohon masukkan nomor telepon yang valid.',
-                    maxlength: '*Mohon masukkan nomor telepon yang valid.',
-                    },
-                    'guardsPhone': {
-                    minlength: '*Mohon masukkan nomor telepon yang valid.',
-                    maxlength: '*Mohon masukkan nomor telepon yang valid.',
-                    }
-                }
                 });
             }
 
             if (formEditProfile.length) {
                 formEditProfile.validate({
-                ignore: [],
-                rules: {
-                    profilePictureInput: {
-                    required: true,
-                    extension: "jpg|jpeg|png",
-                    filesize: 500 * 1024,
-                    }
-                },
-                messages: {
-                    profilePictureInput: {
-                    required: "*Gambar harus diisi.",
-                    extension: "*Hanya menerima file gambar dengan format jpg, jpeg atau png.",
-                    filesize: "*Ukuran gambar tidak boleh lebih dari 500 KB."
-                    }
-                },
-                errorPlacement: function(error, element) {
-                    console.log(error);
-                    console.log(element);
-                    $('#profilePictureErrorMsg').html('<p class="text-center mb-0"><small>' + error.text() + '</small></p>');
-                    $('#profilePictureErrorMsg').show();
-                },
+                    ignore: [],
+                    rules: {
+                        profilePictureInput: {
+                            required: true,
+                            extension: "jpg|jpeg|png",
+                            filesize: 500 * 1024,
+                        }
+                    },
+                    messages: {
+                        profilePictureInput: {
+                            required: "*Gambar harus diisi.",
+                            extension: "*Hanya menerima file gambar dengan format jpg, jpeg atau png.",
+                            filesize: "*Ukuran gambar tidak boleh lebih dari 500 KB."
+                        }
+                    },
+                    errorPlacement: function(error, element) {
+                        console.log("error", error);
+                        console.log("element", element);
+                        $('#profilePictureErrorMsg').html('<p class="text-center mb-0"><small>' + error.text() + '</small></p>');
+                        $('#profilePictureErrorMsg').show();
+                    },
                 });
             }
-            
-            $.validator.addMethod('filesize', function (value, element, param) {
+
+            $.validator.addMethod('filesize', function(value, element, param) {
                 return this.optional(element) || (element.files[0].size <= param);
             }, 'File size must be less than {0}');
 
@@ -578,7 +578,7 @@
 
             // --------------------------------------------------------------------CALL
             getData();
-            
+
             provinceElement.change(function() {
                 districtElement.empty().append('<option value=""></value>');
                 villageElement.empty().append('<option value=""></value>');
@@ -586,15 +586,17 @@
                 generateSelectCity(this.value)
             });
 
-            cityElement.change(function() { 
+            cityElement.change(function() {
                 villageElement.empty().append('<option value=""></value>');
                 generateSelectDistrict(this.value)
             });
 
-            districtElement.change(function() { generateSelectVillage(this.value) });
+            districtElement.change(function() {
+                generateSelectVillage(this.value)
+            });
 
             // when modal dismiss
-            ppModal.on("hidden.bs.modal", function () {
+            ppModal.on("hidden.bs.modal", function() {
                 ppInput.val('');
                 ppPreview.attr("src", profilePicture ? profilePicture : "/img/base-profile.png");
                 $('#profilePictureErrorMsg').css("display", "none");
@@ -613,7 +615,7 @@
                         provinces.forEach(province => {
                             let v = `${province.code}|${province.name}`;
                             let s = (v == selected) ? 'selected' : '';
-                            
+
                             provinceElement.append(`<option value="${v}" ${s}>${province.name}</option>`);
                         });
                     },
@@ -626,7 +628,7 @@
             // cities
             function generateSelectCity(provinceCode, selected = null) {
                 cityElement.empty().append('<option value=""></value>');
-                
+
                 let code = provinceCode.split('|');
 
                 $.ajax({
@@ -640,7 +642,8 @@
 
                             cityElement.append(`<option value="${v}" ${s}>${city.name}</option>`);
                         });
-                    }, error: function(xhr, status, error) {
+                    },
+                    error: function(xhr, status, error) {
                         console.error('gagal mendapatkan data.', status, error);
                     }
                 });
@@ -702,9 +705,9 @@
                     success: function(studentData) {
                         let d = studentData.data;
                         date = new Date(d.tanggal_lahir);
-    
+
                         $('#profilePreview, #profilePicturePrev').attr('src', d.pasfoto || '/img/base-profile.png');
-    
+
                         $('#nik').val(d.nik);
                         $('#gender').val(d.jenis_kelamin).change();
                         $('#birthPlace').val(d.tempat_lahir);
@@ -722,14 +725,14 @@
                         $('#hamlet').val(d.dusun);
                         $('#associations').val(d.rtrw);
                         $('#address').val(d.alamat_jalan);
-    
+
                         $('#mothersName').val(d.nama_ibu);
                         $('#mothersPhone').val(d.telepon_ibu);
                         $('#fathersName').val(d.nama_ayah);
                         $('#fathersPhone').val(d.telepon_ayah);
                         $('#guardsName').val(d.nama_wali);
                         $('#guardsPhone').val(d.telepon_wali);
-    
+
                         $('#placeholder').hide();
                         $('#content').show();
                     },
@@ -742,15 +745,15 @@
 
             function previewProfilePict() {
                 let input = ppInput[0],
-                preview = ppPreview[0];
-                
+                    preview = ppPreview[0];
+
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
-                    
-                    reader.onload = function (e) {
+
+                    reader.onload = function(e) {
                         preview.src = e.target.result;
                     };
-                    
+
                     reader.readAsDataURL(input.files[0]);
                 }
             }

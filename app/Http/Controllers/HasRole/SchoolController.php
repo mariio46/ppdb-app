@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HasRole\SchoolRepository as School;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SchoolController extends Controller
 {
+    public function __construct(protected School $school)
+    {
+    }
+
     public function index(): View
     {
         return view('has-role.school.index');
@@ -18,9 +25,41 @@ class SchoolController extends Controller
         return view('has-role.school.create');
     }
 
-    public function edit($npsn): View
+    public function store(Request $request)
     {
-        return view('has-role.school.edit', compact('npsn'));
+        $response = $this->school->store(request: $request);
+        if ($response['statusCode'] == 201) {
+            return back()->with([
+                'stat' => 'success',
+                'msg' => $response['messages'],
+            ]);
+        } else {
+            return back()->with([
+                'stat' => 'error',
+                'msg' => $response['messages'],
+            ]);
+        }
+    }
+
+    public function edit(string $id): View
+    {
+        return view('has-role.school.edit', compact('id'));
+    }
+
+    public function update(Request $request, string $id): RedirectResponse
+    {
+        $response = $this->school->update(request: $request, user_id: $id);
+        if ($response['statusCode'] == 200) {
+            return back()->with([
+                'stat' => 'success',
+                'msg' => $response['messages'],
+            ]);
+        } else {
+            return back()->with([
+                'stat' => 'error',
+                'msg' => $response['messages'],
+            ]);
+        }
     }
 
     public function schoolMajorQuota($npsn): View
@@ -31,14 +70,14 @@ class SchoolController extends Controller
         ]);
     }
 
-    public function schoolDetail($npsn, $unit): View
+    public function schoolDetail($id, $unit): View
     {
-        return view('has-role.school.detail', compact('npsn', 'unit'));
+        return view('has-role.school.detail', compact('id', 'unit'));
     }
 
-    public function schoolQuota($npsn, $unit): View
+    public function schoolQuota($id, $unit): View
     {
-        return view('has-role.school.quota', compact('npsn', 'unit'));
+        return view('has-role.school.quota', compact('id', 'unit'));
     }
 
     public function schoolZone($npsn, $unit): View
@@ -54,19 +93,19 @@ class SchoolController extends Controller
         $units = [
             [
                 'label' => 'SMA',
-                'value' => 1,
+                'value' => 'sma',
             ],
             [
                 'label' => 'SMK',
-                'value' => 2,
+                'value' => 'smk',
             ],
             [
                 'label' => 'SMA Boarding',
-                'value' => 3,
+                'value' => 'fbs',
             ],
             [
                 'label' => 'SMA Half Boarding',
-                'value' => 4,
+                'value' => 'hbs',
             ],
         ];
 
@@ -285,93 +324,18 @@ class SchoolController extends Controller
         }
     }
 
-    protected function getSingleSchool($npsn): JsonResponse
-    {
-        $school = [
-            'id' => 1,
-            'name' => 'SMAN 1 Parepare',
-            'npsn' => 40311914,
-            'unit' => [
-                'label' => 'SMA',
-                'value' => 1,
-            ],
-            'alamat_jalan' => 'Jl. Bau Massepe No. 24',
-            'nama_kepsek' => 'H. Ryan Rafli, S.T, M.Kom, Ph.D',
-            'nip_kepsek' => '12345678909',
-            'nama_kappdb' => 'Muhammad Al Muqtadir, S.kom',
-            'nip_kappdb' => '9876543212',
-            'kabupaten' => 'Parepare',
-            'kecamatan' => 'Bacukiki',
-            'desa' => 'Galung Maloang',
-            'rtrw' => '001/002',
-            'bujur' => '-2.649099922180',
-            'lintang' => '-2.649099922180',
-        ];
-
-        return response()->json($school);
-    }
-
+    // --------------------------------------------------DATA API JSON--------------------------------------------------
     protected function schools(): JsonResponse
     {
-        $schools = [
-            [
-                'id' => 1,
-                'name' => 'SMAN 1 Parepare',
-                'npsn' => 40311914,
-                'unit' => 'SMA',
-                'address' => 'Jl. Bau Massepe No. 24',
-            ],
-            [
-                'id' => 2,
-                'name' => 'SMKN 2 Parepare',
-                'npsn' => 4342314,
-                'unit' => 'SMK',
-                'address' => 'Jl. Karaeng Burane No. 18',
-            ],
-            [
-                'id' => 3,
-                'name' => 'SMKN 8 Parepare',
-                'npsn' => 6545346,
-                'unit' => 'SMA Boarding',
-                'address' => 'Jl. Muhammadiyah No. 8',
-            ],
-            [
-                'id' => 4,
-                'name' => 'SMAN 1 Makassar',
-                'npsn' => 8767566,
-                'unit' => 'SMA Half Boarding',
-                'address' => 'Jl. Pesantren No. 10',
-            ],
-            [
-                'id' => 5,
-                'name' => 'SMAN 2 Parepare',
-                'npsn' => 7567563,
-                'unit' => 'SMA Boarding',
-                'address' => 'Jl. Poros Rappang Parepare',
-            ],
-            [
-                'id' => 6,
-                'name' => 'SMKN 12 Makassar',
-                'npsn' => 4232456,
-                'unit' => 'SMA Half Boarding',
-                'address' => 'Industri Kecil No 99',
-            ],
-            [
-                'id' => 7,
-                'name' => 'SMAN 20 Maros',
-                'npsn' => 9673521,
-                'unit' => 'SMA',
-                'address' => 'Jl.Daeng Siraju No.58',
-            ],
-            [
-                'id' => 8,
-                'name' => 'SMAN 3 Enrekang',
-                'npsn' => 5378654,
-                'unit' => 'SMA',
-                'address' => 'Jl. Jenderal Sudirman No. 70',
-            ],
-        ];
+        $schools = $this->school->index();
 
-        return response()->json($schools);
+        return response()->json($schools['data']);
+    }
+
+    protected function school(string $school_id): JsonResponse
+    {
+        $school = $this->school->show(school_id: $school_id)['data'];
+
+        return response()->json($school);
     }
 }

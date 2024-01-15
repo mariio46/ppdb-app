@@ -6,33 +6,33 @@
 @endsection
 
 @section('content')
-<div class="content-header row">
-  <div class="content-header-left col-md-9 col-12 mb-2">
-      <div class="row breadcrumbs-top">
-          <div class="col-12">
-              <h2 class="content-header-title float-start mb-0">Tahap & Jadwal</h2>
-              <div class="breadcrumb-wrapper">
-                  <ol class="breadcrumb">
-                      <li class="breadcrumb-item">
-                          <a href="{{ route('schedules.index') }}">
-                              Tahap & Jadwal
-                          </a>
-                      </li>
-                      <li class="breadcrumb-item active">
-                          Tambah Tahap
-                      </li>
-                  </ol>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
-
-@if (session()->get('msg'))
-    <div class="alert alert-danger p-1">
-      <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
+    <div class="content-header row">
+        <div class="content-header-left col-md-9 col-12 mb-2">
+            <div class="row breadcrumbs-top">
+                <div class="col-12">
+                    <h2 class="content-header-title float-start mb-0">Tahap & Jadwal</h2>
+                    <div class="breadcrumb-wrapper">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('schedules.index') }}">
+                                    Tahap & Jadwal
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Tambah Tahap
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-@endif
+
+    @if (session()->get('msg'))
+        <div class="alert alert-danger p-1">
+            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
+        </div>
+    @endif
 
     <div class="content-body row">
         <div class="col-12">
@@ -64,20 +64,16 @@
                             <div class="col-lg-6 col-12">
                                 <div class="mb-2">
                                     <x-label for="sma">SMA</x-label>
-                                    <x-select class="form-select select2" id="sma" name="sma" data-placeholder="Pilih Jalur SMA" multiple>
+                                    <x-select class="form-select select2" id="sma" name="sma[]" data-placeholder="Pilih Jalur SMA" multiple>
                                         <option value=""></option>
-                                        <option value="smaafirmasi">Afirmasi</option>
-                                        <option value="boardingschool">Boarding School</option>
                                     </x-select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12">
                                 <div class="mb-2">
                                     <x-label for="smk">SMK</x-label>
-                                    <x-select class="form-select select2" id="smk" name="smk" data-placeholder="Pilih Jalur SMK" multiple>
+                                    <x-select class="form-select select2" id="smk" name="smk[]" data-placeholder="Pilih Jalur SMK" multiple>
                                         <option value=""></option>
-                                        <option value="smkafirmasi">Afirmasi</option>
-                                        <option value="smkanakdudi">Anak DUDI</option>
                                     </x-select>
                                 </div>
                             </div>
@@ -89,14 +85,14 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="mb-2">
-                                    <x-label for="regisStart">Tanggal Mulai Pendaftaran</x-label>
-                                    <x-input id="regisStart" name="regisStart" type="date" placeholder="Tanggal mulai" />
+                                    <x-label for="regis_start">Tanggal Mulai Pendaftaran</x-label>
+                                    <x-input id="regis_start" name="regis_start" type="date" placeholder="Tanggal mulai" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="mb-2">
-                                    <x-label for="regisEnd">Tanggal Selesai Pendaftaran</x-label>
-                                    <x-input id="regisEnd" name="regisEnd" type="date" placeholder="Tanggal selesai" />
+                                    <x-label for="regis_end">Tanggal Selesai Pendaftaran</x-label>
+                                    <x-input id="regis_end" name="regis_end" type="date" placeholder="Tanggal selesai" />
                                 </div>
                             </div>
                         </div>
@@ -107,14 +103,14 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="mb-2">
-                                    <x-label for="verifStart">Tanggal Mulai Verifikasi</x-label>
-                                    <x-input id="verifStart" name="verifStart" type="date" placeholder="Tanggal mulai" />
+                                    <x-label for="verif_start">Tanggal Mulai Verifikasi</x-label>
+                                    <x-input id="verif_start" name="verif_start" type="date" placeholder="Tanggal mulai" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="mb-2">
-                                    <x-label for="verifEnd">Tanggal Selesai Verifikasi</x-label>
-                                    <x-input id="verifEnd" name="verifEnd" type="date" placeholder="Tanggal selesai" />
+                                    <x-label for="verif_end">Tanggal Selesai Verifikasi</x-label>
+                                    <x-input id="verif_end" name="verif_end" type="date" placeholder="Tanggal selesai" />
                                 </div>
                             </div>
                         </div>
@@ -137,14 +133,14 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="mb-2">
-                                    <x-label for="reRegisStart">Tanggal Mulai Daftar Ulang</x-label>
-                                    <x-input id="reRegisStart" name="reRegisStart" type="date" placeholder="Tanggal mulai" />
+                                    <x-label for="re_regis_start">Tanggal Mulai Daftar Ulang</x-label>
+                                    <x-input id="re_regis_start" name="re_regis_start" type="date" placeholder="Tanggal mulai" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="mb-2">
-                                    <x-label for="reRegisEnd">Tanggal Selesai Daftar Ulang</x-label>
-                                    <x-input id="reRegisEnd" name="reRegisEnd" type="date" placeholder="Tanggal selesai" />
+                                    <x-label for="re_regis_end">Tanggal Selesai Daftar Ulang</x-label>
+                                    <x-input id="re_regis_end" name="re_regis_end" type="date" placeholder="Tanggal selesai" />
                                 </div>
                             </div>
                         </div>
@@ -188,72 +184,56 @@
             }
 
             if (form.length) {
-                form.validate({
-                    rules: {
-                        phase: {
-                            required: true,
-                        },
-                        regisStart: {
+                let fields = ["phase", "regis_start", "regis_end", "verif_start", "verif_end", "announcement", "re_regis_start", "re_regis_end"];
+
+                let validationConf = {
+                    rules: {},
+                    messages: {}
+                };
+
+                fields.forEach(field => {
+                    validationConf.rules[field] = {
                             required: true
                         },
-                        regisEnd: {
-                            required: true
-                        },
-                        verifStart: {
-                            required: true
-                        },
-                        verifEnd: {
-                            required: true
-                        },
-                        announcement: {
-                            required: true
-                        },
-                        reRegisStart: {
-                            required: true
-                        },
-                        reRegisEnd: {
-                            required: true
-                        }
-                    },
+                        validationConf.messages[field] = "Bidang ini tidak boleh dikosongkan."
+                });
+
+                form.validate(validationConf);
+
+                $('#sma').rules("add", {
+                    requiredDepends: '#smk',
                     messages: {
-                        phase: {
-                            required: '*Bidang ini wajib dipilih.',
-                        },
-                        regisStart: {
-                            required: '*Bidang ini wajib diisi.'
-                        },
-                        regisEnd: {
-                            required: '*Bidang ini wajib diisi.'
-                        },
-                        verifStart: {
-                            required: '*Bidang ini wajib diisi.'
-                        },
-                        verifEnd: {
-                            required: '*Bidang ini wajib diisi.'
-                        },
-                        announcement: {
-                            required: '*Bidang ini wajib diisi.'
-                        },
-                        reRegisStart: {
-                            required: '*Bidang ini wajib diisi.'
-                        },
-                        reRegisEnd: {
-                            required: '*Bidang ini wajib diisi.'
-                        }
+                        requiredDepends: "Pilih minimal 1 Jalur SMA atau SMK."
                     }
                 });
+
+                $('#smk').rules("add", {
+                    requiredDepends: '#sma',
+                    messages: {
+                        requiredDepends: "Pilih minimal 1 Jalur SMA atau SMK."
+                    }
+                });
+
+                $.validator.addMethod("requiredDepends", function(value, element, params) {
+                    var dependsValue = $(params).val();
+
+                    var isDependsEmpty = (Array.isArray(dependsValue) && dependsValue.length === 0) || dependsValue === null;
+
+                    // Jika nilai depends kosong, maka nilai saat ini harus diisi
+                    return isDependsEmpty ? value.length !== 0 : true;
+                }, "This field is required when the other select is empty.");
             }
 
             if (tracksma.length) {
                 $.ajax({
-                    url: '/panel/tahap-jadwal/jalur/sma',
+                    url: '/panel/tahap-jadwal/json/jalur/sma',
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
                         tracksma.empty().append('<option value=""></option>');
 
-                        data.data.forEach(sma => {
-                            tracksma.append(`<option value="${sma.kode_jalur}">${sma.nama_jalur}</option>`);
+                        data.forEach(sma => {
+                            tracksma.append(`<option value="${sma.code}">${sma.name}</option>`);
                         });
                     },
                     error: function(xhr, status, error) {
@@ -264,14 +244,14 @@
 
             if (tracksmk.length) {
                 $.ajax({
-                    url: '/panel/tahap-jadwal/jalur/smk',
+                    url: '/panel/tahap-jadwal/json/jalur/smk',
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
                         tracksmk.empty().append('<option value=""></option>');
 
-                        data.data.forEach(smk => {
-                            tracksmk.append(`<option value="${smk.kode_jalur}">${smk.nama_jalur}</option>`);
+                        data.forEach(smk => {
+                            tracksmk.append(`<option value="${smk.code}">${smk.name}</option>`);
                         });
                     },
                     error: function(xhr, status, error) {

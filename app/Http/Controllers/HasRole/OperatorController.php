@@ -20,13 +20,12 @@ class OperatorController extends Controller
 
     public function show(string $username): View
     {
-        // return collect($this->operators()->original)->firstWhere('username', 'mawar58468');
         return view('has-role.operator.show', compact('username'));
     }
 
     public function edit(string $username): View
     {
-        return view('has-role.operator.edit', compact('username'));
+        return view('has-role.operator.edit', ["id" => $username]);
     }
 
     // --------------------------------------------------DATA JSON--------------------------------------------------
@@ -42,42 +41,37 @@ class OperatorController extends Controller
         $operators = [
             [
                 'id' => 1,
-                'name' => 'Mawardi',
-                'username' => 'mawar58468',
-                'role' => 'Operator',
-                'dokumen' => 1,
+                'nama' => 'Mawardi',
+                'nama_pengguna' => 'mawar58468',
+                'sekolah_nama' => 'hehe',
                 'status_aktif' => 1,
             ],
             [
                 'id' => 2,
-                'name' => 'Rais',
-                'username' => 'rais23078',
-                'role' => 'Operator',
-                'dokumen' => 0,
+                'nama' => 'Rais',
+                'nama_pengguna' => 'rais23078',
+                'sekolah_nama' => 'hehe',
                 'status_aktif' => 3,
             ],
             [
                 'id' => 3,
-                'name' => 'Edi Siswanto',
-                'username' => 'edi23078',
-                'role' => 'Operator',
-                'dokumen' => 1,
+                'nama' => 'Edi Siswanto',
+                'nama_pengguna' => 'edi23078',
+                'sekolah_nama' => 'hehe',
                 'status_aktif' => 1,
             ],
             [
                 'id' => 4,
-                'name' => 'Aldi Taher',
-                'username' => 'taher23078',
-                'role' => 'Operator',
-                'dokumen' => 0,
+                'nama' => 'Aldi Taher',
+                'nama_pengguna' => 'taher23078',
+                'sekolah_nama' => 'hehe',
                 'status_aktif' => 3,
             ],
             [
                 'id' => 5,
-                'name' => 'Ainun Amirah',
-                'username' => 'ainun23078',
-                'role' => 'Operator',
-                'dokumen' => 1,
+                'nama' => 'Ainun Amirah',
+                'nama_pengguna' => 'ainun23078',
+                'sekolah_nama' => 'hehe',
                 'status_aktif' => 2,
             ],
         ];

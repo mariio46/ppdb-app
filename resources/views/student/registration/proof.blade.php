@@ -12,7 +12,7 @@
                                 <a href="{{ route('student.regis') }}">Pendaftaran</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('student.regis.phase', [$phaseCode]) }}">Pendaftaran Tahap {{ $phase }}</a>
+                                <a href="{{ route('student.regis.phase', [$phase, $phase_id]) }}">Pendaftaran Tahap {{ $phase }}</a>
                             </li>
                             <li class="breadcrumb-item active">
                                 Cetak Bukti Pendaftaran
@@ -107,7 +107,150 @@
 
 @push('scripts')
     <script>
-        var phase = '{{ $phase }}';
+        var phaseId = '{{ $phase_id }}';
     </script>
-    <script src="/js/student/pages/registration/proof-v1.0.1.js"></script>
+    {{-- <script src="/js/student/pages/registration/proof-v1.0.1.js"></script> --}}
+    <script>
+        $(function() {
+            'use strict';
+
+            var schoolType = $('#schoolType'),
+                chosenTrack = $('#chosenTrack'),
+                addDataSect = $('#additionalDataSect'),
+                chosenSchoolSect = $('#chosenSchoolSect'),
+                schoolVerif = $('#schoolVerif'),
+                endVerif = $('#endVerif'),
+                tracks = {
+                'AA': 'Afirmasi',
+                'AB': 'Perpindahan Tugas Orang Tua',
+                'AC': 'Anak Guru',
+                'AD': 'Prestasi Akademik',
+                'AE': 'Prestasi Non Akademik',
+                'AF': 'Zonasi',
+                'AG': 'Boarding School',
+                'KA': 'Afirmasi',
+                'KB': 'Perpindahan Tugas Orang Tua',
+                'KC': 'Anak Guru',
+                'KD': 'Prestasi Akademik',
+                'KE': 'Prestasi Non Akademik',
+                'KF': 'Domisili Terdekat',
+                'KG': 'Anak DUDI',
+                },
+                months = [
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember"
+                ];
+
+            $.ajax({
+                url: `/json/registration/get-data/${phaseId}`,
+                method: 'get',
+                dataType: 'json',
+                success: function(datas) {
+                    let data = datas.data[0];
+                    console.log(data);
+                    let t = data.kode_jalur;
+                    let j = t.charAt(0);
+                    let d = new Date(data.verifikasi_selesai);
+
+                    schoolType.text(j === 'A' ? 'SMA' : 'SMK');
+                    chosenTrack.text(tracks[t]);
+
+                    if (t == 'AA' || t == 'KA') { // if the track is sma or smk affirmation
+                        let a = [{"label" : "Jenis Afirmasi", "value" : data.jenis_afirmasi}];
+
+                        if (data.jenis_afirmasi == 'pkh') {
+                        a.push({"label" : "Nomor PKH", "value" : data.no_pkh});
+                        }
+
+                        addDataSect.append(addDataHtml(a));
+                    }
+
+                    if (t == 'AE' || t == 'KE') {
+                        let a = [
+                        {"label" : "Jenis Prestasi", "value" : data.prestasi_jenis},
+                        {"label" : "Tingkatan Prestasi", "value" : data.prestasi_tingkat},
+                        {"label" : "Juara", "value" : data.prestasi_juara},
+                        {"label" : "Nama Prestasi", "value" : data.prestasi_nama}
+                        ];
+
+                        addDataSect.append(addDataHtml(a));
+                    }
+
+                    chosenSchoolSect.html('');
+                    if (j == 'A') { // if the type of school is high school (SMA)
+                        if (t == 'AC' || t == 'AG') { // if the track is teacher's child or boarding school
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1));
+                        } else {
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_id, '1'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_id, '2'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_id, '3'));
+                        }
+                    } else if (j == 'K') { // if the type of school is vocational school (SMK)
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1, '1', 'y', data.jurusan1));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2, '2', 'y', data.jurusan2));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3, '3', 'y', data.jurusan3));
+                    }
+
+                    schoolVerif.text(data.sekolah_verif_id);
+                    endVerif.text(d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear());
+                    },
+                    error: function(xhr, status, error) {
+                    console.error('Failed to get data.', status, error);
+                }
+            });
+
+            function addDataHtml(arrayData) {
+                let data = '';
+                arrayData.forEach(d => {
+                data +=  `
+                <div class="col-md-6 col-12">
+                    <div class="d-flex align-items-center mb-1">
+                    <div style="width: 35%;">${d.label}</div>
+                    <div class="mx-1">:</div>
+                    <div style="width: 60%;">${d.value}</div>
+                    </div>
+                </div>`;
+                });
+
+                return `
+                <div class="card-body border-top">
+                <h5 class="mb-2">Data Penunjang</h5>
+                <div class="row">
+                    ${data}
+                </div>
+                </div>
+                `;
+            }
+
+            function chosenSchoolHtml(schoolName, n = '', withDept = 'n', deptName = '') {
+                let dept = (withDept == 'y') ?
+                `<div class="d-flex align-items-center mb-2">
+                    <div style="width: 35%;">Jurusan</div>
+                    <div class="mx-1">:</div>
+                    <div style="width: 60%;">${deptName}</div>
+                </div>` : '';
+
+                return `
+                <h5 class="text-warning">Pilihan ${n}</h5>
+
+                <div class="d-flex align-items-center mb-1">
+                <div style="width: 35%;">Sekolah Pilihan</div>
+                <div class="mx-1">:</div>
+                <div style="width: 60%;">${schoolName}</div>
+                </div>
+                
+                ${dept}`;
+            }
+        });
+    </script>
 @endpush

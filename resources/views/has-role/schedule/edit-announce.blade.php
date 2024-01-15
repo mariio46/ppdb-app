@@ -7,32 +7,11 @@
 
 @section('content')
     {{-- breadcrumbs --}}
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Tahap & Jadwal</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('schedules.index') }}">
-                                    Tahap & Jadwal
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('schedules.detail', [$id]) }}">
-                                    Detail Tahap
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Edit Jadwal Pengumuman
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-breadcrumb title="Tahap & Jadwal">
+        <x-breadcrumb-item title="Tahap & Jadwal" to="{{ route('schedules.index') }}" />
+        <x-breadcrumb-item title="Detail Tahap" to="{{ route('schedules.detail', [$id]) }}" />
+        <x-breadcrumb-active title="Edit Jadwal Pengumuman" />
+    </x-breadcrumb>
 
     @if (session()->get('msg'))
         <div class="alert alert-{{ session()->get('stat') }} p-1">
@@ -45,18 +24,17 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body px-0">
-                    <form id="formData" action="{{ route('schedules.update.announce', [$id]) }}" method="post">
+                    <form id="formData" action="{{ route('schedules.update.time', ['pengumuman', $id]) }}" method="post">
                         @csrf
-                        <h5 class="card-title text-primary mb-2 px-2">Jadwal Verifikasi Manual Tahap <span id="phase"></span></h5>
+                        <h5 class="card-title text-primary mb-2 px-2">Jadwal Verifikasi Manual Tahap <span id="phs"></span></h5>
 
-                        <input id="phase" name="phase" type="hidden" value="{{ $id }}">
                         <input id="length" name="length" type="hidden">
 
                         <table class="table table-striped border-bottom">
                             <thead>
                                 <tr>
-                                    <th class="py-2">Hari, Tanggal</th>
-                                    <th class="py-2 text-end">Jam Pengumuman</th>
+                                    <th class="py-2 col-9">Hari, Tanggal</th>
+                                    <th class="py-2 text-end col-3">Jam Pengumuman</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,24 +45,8 @@
                                         <input id="date" name="date" type="hidden">
                                     </td>
                                     <td>
-                                        <div class="row">
-                                            <div class="col-md-6 col-12">
-                                                <select class="form-select select2" id="hour" name="hour" data-placeholder="Jam" data-minimum-results-for-search="-1">
-                                                    <option value=""></option>
-                                                    @for ($h = 0; $h < 24; $h++)
-                                                        <option value="{{ $h < 10 ? '0' . $h : $h }}">{{ $h < 10 ? '0' . $h : $h }}</option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 col-12">
-                                                <select class="form-select select2" id="minute" name="minute" data-placeholder="Menit" data-minimum-results-for-search="-1">
-                                                    <option value=""></option>
-                                                    @for ($m = 0; $m < 60; $m++)
-                                                        <option value="{{ $m < 10 ? '0' . $m : $m }}">{{ $m < 10 ? '0' . $m : $m }}</option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                        </div>
+                                        <x-input id="current_time" name="current_time" type="hidden" />
+                                        <x-input id="time" name="time" type="time" placeholder="hh.mm" step="60" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -108,7 +70,8 @@
 
 @push('scripts')
     <script>
-        var idSchedule = '{{ $id }}';
+        var id_schedule = '{{ $id }}',
+            type_schedule = '{{ $type }}';
     </script>
     <script>
         $(function() {
@@ -133,18 +96,12 @@
             if (form.length) {
                 form.validate({
                     rules: {
-                        hour: {
-                            required: true
-                        },
-                        minute: {
+                        time: {
                             required: true
                         }
                     },
                     messages: {
-                        hour: {
-                            required: 'Harus diisi.'
-                        },
-                        minute: {
+                        time: {
                             required: 'Harus diisi.'
                         }
                     }
@@ -153,20 +110,24 @@
 
             function generate() {
                 $.ajax({
-                    url: '/panel/tahap-jadwal/e-announce/' + idSchedule + '/get-data',
+                    url: `/panel/tahap-jadwal/json/e-${type_schedule}/${id_schedule}/get-data`,
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
                         console.log(data);
                         let d = data.data;
-                        let dt = new Date(d.pengumuman);
-                        let tm = d.jam_mulai.split(".");
+                        $('#phs').text(d.tahap);
 
-                        $('#dateShow').text(days[dt.getDay()] + ', ' + dt.getDate() + ' ' + months[dt.getMonth()] + ' ' + dt.getFullYear());
-                        $('#id').val(d.batas_id);
+                        let dt = new Date(d.pengumuman);
+
+                        $('#dateShow').text(`${days[dt.getDay()]}, ${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`);
                         $('#date').val(d.pengumuman);
-                        $('#hour').val(tm[0]).trigger('change');
-                        $('#minute').val(tm[1]).trigger('change');
+
+                        if (d.batas.length) {
+                            $('#id').val(d.batas[0].batas_id);
+                            $('#time').val(d.batas[0].jam_mulai);
+                            $('#current_time').val(d.batas[0].jam_mulai);
+                        }
                     },
                     error: function(xhr, status, error) {
                         console.error("get data failed.", status, error);

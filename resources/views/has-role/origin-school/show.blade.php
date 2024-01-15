@@ -21,11 +21,11 @@
         </div>
     </div>
 
-    @if (session()->get('msg'))
+    {{-- @if (session()->get('msg'))
         <div class="alert alert-{{ session()->get('stat') }} p-1">
             <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
         </div>
-    @endif
+    @endif --}}
 
     <div class="content-body">
         <div class="card">
@@ -66,8 +66,8 @@
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
-                        $('#npsn').text(data.npsn);
-                        $('#nama').text(data.name);
+                        $('#npsn').text(data.data.npsn);
+                        $('#nama').text(data.data.nama);
                     },
                     error: function(xhr, status, error) {
                         console.error('gagal mendapatkan data.', status, error);

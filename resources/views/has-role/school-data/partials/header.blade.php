@@ -9,7 +9,7 @@
                     <!-- profile picture -->
                     <div class="profile-img-container d-flex align-items-center">
                         <div class="profile-img">
-                            <img class="rounded img-fluid" id="logo-sekolah" src="" alt="Profil Sekolah" />
+                            <img class="rounded img-fluid" id="logo-sekolah" src="{{ Storage::url('images/static/default-upload.png') }}" alt="Profil Sekolah" />
                         </div>
                         <!-- profile title -->
                     </div>
@@ -24,6 +24,10 @@
                                 <x-link href="{{ route('school-data.edit') }}" color="success">
                                     <x-tabler-pencil />
                                     Edit Info Sekolah
+                                </x-link>
+                                <x-link color="warning">
+                                    <x-tabler-lock-square-rounded />
+                                    Kunci Sekolah
                                 </x-link>
                             </div>
                         </div>

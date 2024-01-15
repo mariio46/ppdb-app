@@ -33,8 +33,7 @@
                         <tr class="table-light">
                             <th scope="col">NAMA</th>
                             <th scope="col">USERNAME</th>
-                            <th scope="col">ROLE</th>
-                            <th scope="col">Dokumen</th>
+                            <th scope="col">SEKOLAH</th>
                             <th scope="col">STATUS</th>
                             <th scope="col">DETAIL</th>
                         </tr>
@@ -67,33 +66,23 @@
                         dataSrc: ''
                     },
                     columns: [{
-                            data: 'name'
+                            data: 'nama'
                         },
                         {
-                            data: 'username'
+                            data: 'nama_pengguna'
                         },
                         {
-                            data: 'role'
-                        },
-                        {
-                            data: 'dokumen',
-                            render: function(data, type, row) {
-                                if (data === 1) {
-                                    return ` <x-badge class="w-100" variant="light" color="success">Ada</x-badge> `
-                                } else {
-                                    return ` <x-badge class="w-100" variant="light" color="danger">Tidak Ada</x-badge> `
-                                }
-                            }
+                            data: 'sekolah_nama'
                         },
                         {
                             data: 'status_aktif',
                             render: function(data, type, row) {
                                 if (data === 1) {
-                                    return ` <x-badge class="w-100" variant="light" color="warning">Menunggu Verifikasi</x-badge> `;
+                                    return ` <x-badge class="w-75" variant="light" color="warning">Menunggu Verifikasi</x-badge> `;
                                 } else if (data === 2) {
-                                    return ` <x-badge class="w-100" variant="light" color="success">Aktif</x-badge> `;
+                                    return ` <x-badge class="w-75" variant="light" color="success">Aktif</x-badge> `;
                                 } else {
-                                    return ` <x-badge class="w-100" variant="light" color="danger">Tidak Aktif</x-badge> `;
+                                    return ` <x-badge class="w-75" variant="light" color="danger">Tidak Aktif</x-badge> `;
                                 }
                             }
                         },
@@ -107,7 +96,7 @@
 
                     // Styling Table
                     columnDefs: [{
-                        targets: [3, 4, 5],
+                        targets: [2, 3, 4],
                         className: 'text-center'
                     }],
 

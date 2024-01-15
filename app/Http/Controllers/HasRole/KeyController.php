@@ -3,87 +3,79 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
 class KeyController extends Controller
 {
     public function index(): View
     {
-        return view('has-role.key.index', [
-            'collections' => $this->getSchools(),
-        ]);
+        return view('has-role.key.index');
     }
 
-    protected function getSingleSchool(?int $npsn)
-    {
-        $schools = $this->getSchools()->where('npsn', $npsn);
-        $data = json_decode($schools, true);
-        foreach ($data as $key => $item) {
-            $school = (object) $item;
-        }
+    // --------------------------------------------------DATA JSON--------------------------------------------------
 
-        return $school;
-    }
-
-    protected function getSchools()
+    protected function schools(): JsonResponse
     {
-        return collect([
-            (object) [
+        $schools = [
+            [
                 'id' => 1,
                 'name' => 'SMAN 1 Parepare',
                 'npsn' => 40311914,
                 'unit' => 'SMA',
                 'address' => 'Jl. Bau Massepe No. 24',
             ],
-            (object) [
+            [
                 'id' => 2,
                 'name' => 'SMKN 2 Parepare',
                 'npsn' => 4342314,
                 'unit' => 'SMK',
                 'address' => 'Jl. Karaeng Burane No. 18',
             ],
-            (object) [
+            [
                 'id' => 3,
                 'name' => 'SMKN 8 Parepare',
                 'npsn' => 6545346,
-                'unit' => 'SMK',
+                'unit' => 'SMA Boarding',
                 'address' => 'Jl. Muhammadiyah No. 8',
             ],
-            (object) [
+            [
                 'id' => 4,
                 'name' => 'SMAN 1 Makassar',
                 'npsn' => 8767566,
                 'unit' => 'SMA Half Boarding',
                 'address' => 'Jl. Pesantren No. 10',
             ],
-            (object) [
+            [
                 'id' => 5,
-                'name' => 'SMKN 1 Parepare',
+                'name' => 'SMAN 2 Parepare',
                 'npsn' => 7567563,
-                'unit' => 'SMA',
+                'unit' => 'SMA Boarding',
                 'address' => 'Jl. Poros Rappang Parepare',
             ],
-            (object) [
+            [
                 'id' => 6,
                 'name' => 'SMKN 12 Makassar',
                 'npsn' => 4232456,
                 'unit' => 'SMA Half Boarding',
                 'address' => 'Industri Kecil No 99',
             ],
-            (object) [
+            [
                 'id' => 7,
                 'name' => 'SMAN 20 Maros',
                 'npsn' => 9673521,
                 'unit' => 'SMA',
                 'address' => 'Jl.Daeng Siraju No.58',
             ],
-            (object) [
+            [
                 'id' => 8,
                 'name' => 'SMAN 3 Enrekang',
                 'npsn' => 5378654,
                 'unit' => 'SMA',
                 'address' => 'Jl. Jenderal Sudirman No. 70',
             ],
-        ]);
+        ];
+
+        return response()->json($schools);
     }
 }

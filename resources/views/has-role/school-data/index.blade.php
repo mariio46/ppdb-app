@@ -59,36 +59,34 @@
 @push('scripts')
     <script src="/app-assets/js/scripts/pages/page-profile.js"></script>
     <script>
-        // 40311914/SMA
-        var npsn = '{{ $npsn }}',
-            unit = '{{ $unit }}'
+        var school_id = '{{ $sekolah_id }}',
+            unit = '{{ $satuan_pendidikan }}';
     </script>
     <script>
         $(function() {
             'use strict';
 
             $.ajax({
-                url: `/panel/data-sekolah/json/school/${npsn}`,
+                url: `/panel/data-sekolah/json/school/${school_id}`,
                 method: 'get',
                 dataType: 'json',
-                success: function(data) {
-                    $('#logo-sekolah').attr('src', data.logo)
+                success: function(school) {
+                    console.log('Data Sekolah : ', school);
+                    // // Column 1
+                    $('#nama_sekolah').text(school.nama_sekolah)
+                    $('#nama_kepsek').text(school.nama_kepsek)
+                    $('#nip_kepsek').text(school.nip_kepsek)
+                    $('#nama_kappdb').text(school.nama_kappdb)
+                    $('#nip_kappdb').text(school.nip_kappdb)
+                    $('#alamat_jalan').text(school.alamat_jalan)
 
-                    // Column 1
-                    $('#nama_sekolah').text(data.nama_sekolah)
-                    $('#nama_kepsek').text(data.nama_kepsek)
-                    $('#nip_kepsek').text(data.nip_kepsek)
-                    $('#nama_kappdb').text(data.nama_kappdb)
-                    $('#nip_kappdb').text(data.nip_kappdb)
-                    $('#alamat_jalan').text(data.alamat_jalan)
-
-                    // Column 2
-                    $('#npsn').text(data.npsn)
-                    $('#kabupaten').text(data.kabupaten)
-                    $('#kecamatan').text(data.kecamatan)
-                    $('#desa').text(data.desa)
-                    $('#rtrw').text(data.rtrw)
-                    $('#koordinat_sekolah').text(`${data.bujur} , ${data.lintang}`)
+                    // // Column 2
+                    $('#npsn').text(school.npsn)
+                    $('#kabupaten').text(school.kabupaten)
+                    $('#kecamatan').text(school.kecamatan)
+                    $('#desa').text(school.desa)
+                    $('#rtrw').text(school.rtrw)
+                    $('#koordinat_sekolah').text(`${school.bujur} , ${school.lintanh}`)
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);

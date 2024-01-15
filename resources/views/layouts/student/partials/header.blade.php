@@ -11,8 +11,7 @@
             <li class="nav-item dropdown dropdown-user">
                 <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
                     <span class="avatar">
-                        <img class="round" src="{{ session()->get('stu_profile_img') ?? '/img/base-profile.png' }}" alt="avatar" style="object-fit: cover;" height="40"
-                            width="40">
+                        <img class="round" src="{{ session()->get('stu_profile_img') ?? '/img/base-profile.png' }}" alt="avatar" style="object-fit: cover;" height="40" width="40">
                     </span>
                 </a>
             </li>

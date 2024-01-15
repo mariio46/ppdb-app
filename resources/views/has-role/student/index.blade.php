@@ -7,12 +7,6 @@
 @endsection
 
 @section('content')
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
     <div class="content-body">
         <div class="d-flex mb-2">
             <x-link class="ms-auto" href="{{ route('siswa.create') }}" color="success">+ Tambah Siswa</x-link>
@@ -130,15 +124,16 @@
                     str.html('');
 
                     $.ajax({
-                        url: '/panel/siswa/json/search-nisn/' + snisn.val(),
+                        url: `/panel/siswa/json/search-nisn/${snisn.val()}`,
                         method: 'get',
                         dataType: 'json',
                         success: function(data) {
-                            if (data) {
-                                let html = `<td>${data.nama}</td>`;
-                                html += `<td class="text-success text-center">${data.nisn}</td>`;
-                                html += `<td>${data.sekolah_asal}</td>`;
-                                html += `<td class="text-end"><a href="/panel/siswa/${data.id}" class="btn btn-primary">Lihat Detail</a></td>`;
+                            console.log(data);
+                            if (data.data) {
+                                let html = `<td>${data.data.nama}</td>`;
+                                html += `<td class="text-success text-center">${data.data.nisn}</td>`;
+                                html += `<td>${data.data.sekolah_asal}</td>`;
+                                html += `<td class="text-end"><a href="/panel/siswa/${data.data.id}" class="btn btn-primary">Lihat Detail</a></td>`;
 
                                 str.append(html);
                             } else {
@@ -163,7 +158,7 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/siswa/json/get-list',
-                        dataSrc: ""
+                        dataSrc: "data"
                     },
                     columns: [{
                             data: "nama"

@@ -66,31 +66,30 @@
                         dataSrc: ''
                     },
                     columns: [{
-                            data: 'name'
+                            data: 'nama_sekolah'
                         },
                         {
                             data: 'npsn'
                         },
                         {
-                            data: 'unit'
+                            data: 'satuan_pendidikan'
                         },
                         {
-                            data: 'address'
+                            data: 'alamat_jalan'
                         },
                         {
-                            data: 'npsn',
+                            data: 'id',
                             render: function(data, type, row) {
-                                // console.log('Data Row', row);
-                                return `<a href="/panel/sekolah/${data}/${row.unit}/info-sekolah" class="btn btn-primary">Lihat Detail</a>`;
+                                return `<a href="/panel/sekolah/${data}/${row.satuan_pendidikan}/info-sekolah" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         },
                     ],
 
                     // Styling Table
-                    // columnDefs: [{
-                    //     targets: 3,
-                    //     className: 'text-center'
-                    // }],
+                    columnDefs: [{
+                        targets: [2, 4],
+                        className: 'text-center'
+                    }],
 
                     dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-6 d-flex"lf><"col-6"<"add-button">>>>
                     <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>

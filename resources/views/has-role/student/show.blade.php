@@ -88,30 +88,32 @@
                             Edit Data
                         </x-link>
                     </div>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Lengkap" identifier="fullname" />
+                                <x-three-row-info identifier="fullname" label="Nama Lengkap" />
 
-                                <x-three-row-info label="NISN" identifier="nisn" />
-                                
-                                <x-three-row-info label="NIK" identifier="nik" />
-                                
-                                <x-three-row-info label="Asal Sekolah" identifier="origin_school" />
-                                
-                                <x-three-row-info label="Jenis Kelamin" identifier="gender" />
-                                
+                                <x-three-row-info identifier="nisn" label="NISN" />
+
+                                <x-three-row-info identifier="nik" label="NIK" />
+
+                                <x-three-row-info identifier="origin_school" label="Asal Sekolah" />
+
+                                <x-three-row-info identifier="gender" label="Jenis Kelamin" />
+
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Tempat Lahir" identifier="birth_place" />
-                                
-                                <x-three-row-info label="Tanggal Lahir" identifier="birth_day" />
-                                
-                                <x-three-row-info label="Nomor HP" identifier="phone" />
-                                
-                                <x-three-row-info label="Email" identifier="email" />
+                                <x-three-row-info identifier="birth_place" label="Tempat Lahir" />
+
+                                <x-three-row-info identifier="birth_day" label="Tanggal Lahir" />
+
+                                <x-three-row-info identifier="phone" label="Nomor HP" />
+
+                                <x-three-row-info identifier="email" label="Email" />
+
+                                <x-three-row-info identifier="login_code" label="Kode Masuk" />
                             </table>
                         </div>
                     </div>
@@ -119,25 +121,25 @@
                 <x-separator marginY="3" />
                 <section id="data-alamat">
                     <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Alamat</h4>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Provinsi" identifier="province" />
+                                <x-three-row-info identifier="province" label="Provinsi" />
 
-                                <x-three-row-info label="Kabupaten / kota" identifier="city" />
-                                
-                                <x-three-row-info label="Kecamatan" identifier="district" />
-                                
-                                <x-three-row-info label="Desa / Kelurahan" identifier="village" />
+                                <x-three-row-info identifier="city" label="Kabupaten / kota" />
+
+                                <x-three-row-info identifier="district" label="Kecamatan" />
+
+                                <x-three-row-info identifier="village" label="Desa / Kelurahan" />
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Dusun / Lingkungan" identifier="hamlet" />
+                                <x-three-row-info identifier="hamlet" label="Dusun / Lingkungan" />
 
-                                <x-three-row-info label="RT / RW" identifier="rtrw" />
-                                
-                                <x-three-row-info label="Alamat Jalan" identifier="address" />
+                                <x-three-row-info identifier="rtrw" label="RT / RW" />
+
+                                <x-three-row-info identifier="address" label="Alamat Jalan" />
                             </table>
                         </div>
                     </div>
@@ -145,20 +147,20 @@
                 <x-separator marginY="3" />
                 <section id="data-orang-tua">
                     <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Orang Tua</h4>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Ibu Kandung" identifier="mother_name" />
-                            
-                                <x-three-row-info label="Nomor HP" identifier="mother_phone" />
+                                <x-three-row-info identifier="mother_name" label="Nama Ibu Kandung" />
+
+                                <x-three-row-info identifier="mother_phone" label="Nomor HP" />
                                 </tr>
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Ayah" identifier="father_name" />
-                                
-                                <x-three-row-info label="Nomor HP" identifier="father_phone" />
+                                <x-three-row-info identifier="father_name" label="Nama Ayah" />
+
+                                <x-three-row-info identifier="father_phone" label="Nomor HP" />
                             </table>
                         </div>
                     </div>
@@ -166,12 +168,12 @@
                 <x-separator marginY="3" />
                 <section id="data-orang-tua">
                     <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Data Wali</h4>
-                    <div class="row">
+                    <div class="row px-3">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info label="Nama Wali" identifier="guard_name" />
-                                
-                                <x-three-row-info label="Nomor HP" identifier="guard_phone" />
+                                <x-three-row-info identifier="guard_name" label="Nama Wali" />
+
+                                <x-three-row-info identifier="guard_phone" label="Nomor HP" />
                             </table>
                         </div>
                     </div>
@@ -184,7 +186,7 @@
                     <div class="d-flex align-items-center justify-content-between px-2 mb-2">
                         <h4 class="text-primary mb-0">Data Nilai Rapor</h4>
                         <x-link href="{{ route('siswa.score', [$id, 'semester-1']) }}" color="success">
-                            <x-tabler-pencil style="width: 1rem; height: 1rem;" /> 
+                            <x-tabler-pencil style="width: 1rem; height: 1rem;" />
                             Edit Nilai
                         </x-link>
                     </div>
@@ -325,32 +327,35 @@
                     dataType: 'json',
                     success: function(data) {
                         console.log(data);
-                        let tl = new Date(data.tanggal_lahir);
+                        let d = data.data;
+                        let tl = new Date(d.tanggal_lahir);
 
-                        $('#fullname').text(data.nama);
-                        $('#nisn').text(data.nisn);
-                        $('#nik').text(data.nik || '-');
-                        $('#origin_school').text(data.sekolah_asal);
+                        $('#fullname').text(d.nama);
+                        $('#nisn').text(d.nisn);
+                        $('#nik').text(d.nik || '-');
+                        $('#origin_school').text(d.sekolah_asal);
 
-                        $('#gender').text(data.jenis_kelamin == 'p' ? 'Perempuan' : (data.jenis_kelamin == 'l' ? "Laki-laki" : "-"));
-                        $('#birth_place').text(data.tempat_lahir || '-');
+                        $('#gender').text(d.jenis_kelamin == 'p' ? 'Perempuan' : (d.jenis_kelamin == 'l' ? "Laki-laki" : "-"));
+                        $('#birth_place').text(d.tempat_lahir || '-');
                         $('#birth_day').text(`${tl.getDate()} ${months[tl.getMonth()]} ${tl.getFullYear()}`);
-                        $('#phone').text(data.telepon || '-');
-                        $('#email').text(data.email || '-');
-                        $('#province').text(data.provinsi || '-');
-                        $('#city').text(data.kabupaten || '-');
-                        $('#district').text(data.kecamatan || '-');
-                        $('#village').text(data.desa || '-');
-                        $('#hamlet').text(data.dusun || '-');
-                        $('#rtrw').text(data.rtrw || '-');
-                        $('#address').text(data.alamat_jalan || '-');
+                        $('#phone').text(d.telepon || '-');
+                        $('#email').text(d.email || '-');
+                        $("#login_code").text(d.pertama_login == "y" ? d.sandi_awal : "-" )
 
-                        $('#mother_name').text(data.nama_ibu || '-');
-                        $('#mother_phone').text(data.telepon_ibu || '-');
-                        $('#father_name').text(data.nama_ayah || '-');
-                        $('#father_phone').text(data.telepon_ayah || '-');
-                        $('#guard_name').text(data.nama_wali || '-');
-                        $('#guard_phone').text(data.telepon_wali || '-');
+                        $('#province').text(d.provinsi || '-');
+                        $('#city').text(d.kabupaten || '-');
+                        $('#district').text(d.kecamatan || '-');
+                        $('#village').text(d.desa || '-');
+                        $('#hamlet').text(d.dusun || '-');
+                        $('#rtrw').text(d.rtrw || '-');
+                        $('#address').text(d.alamat_jalan || '-');
+
+                        $('#mother_name').text(d.nama_ibu || '-');
+                        $('#mother_phone').text(d.telepon_ibu || '-');
+                        $('#father_name').text(d.nama_ayah || '-');
+                        $('#father_phone').text(d.telepon_ayah || '-');
+                        $('#guard_name').text(d.nama_wali || '-');
+                        $('#guard_phone').text(d.telepon_wali || '-');
                     },
                     error: function(xhr, status, error) {
                         console.error('gagal mendapatkan data.', status, error);

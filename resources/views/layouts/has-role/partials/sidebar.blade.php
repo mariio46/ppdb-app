@@ -3,36 +3,28 @@
         <ul class="nav navbar-nav flex-row">
             <li class="nav-item me-auto">
                 <div class="navbar-brand">
-                    {{-- <a class="brand-logo" href="#"> --}}
-                    {{-- <x-application-logo /> --}}
                     <img class="img-fluid h-80" src="/img/logo-ppdb-sulsel-full.png" alt="Logo PPDB">
-                    {{-- </a> --}}
-
                 </div>
             </li>
-            {{-- <li class="nav-item nav-toggle">
-                <a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse">
-                    <i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i>
-                    <i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i>
-                </a>
-            </li> --}}
         </ul>
     </div>
     <div class="shadow-bottom"></div>
-    <div class="main-menu-content mt-3">
-        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+    <div class="main-menu-content mt-1">
+        <ul class="navigation navigation-main mb-5" id="main-menu-navigation" data-menu="menu-navigation">
             <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('dashboard') }}">
                     <x-tabler-chart-pie-3 />
                     <span class="menu-title text-truncate">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('users.index') }}">
-                    <x-tabler-users-group />
-                    <span class="menu-title text-truncate">User</span>
-                </a>
-            </li>
+            @issuperadmin
+                <li class="nav-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('users.index') }}">
+                        <x-tabler-users-group />
+                        <span class="menu-title text-truncate">User</span>
+                    </a>
+                </li>
+            @endissuperadmin
             <li class="nav-item {{ request()->routeIs('sekolah-asal.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('sekolah-asal.index') }}">
                     <x-tabler-compass />
@@ -45,12 +37,14 @@
                     <span class="menu-title text-truncate">Akun Siswa</span>
                 </a>
             </li>
+            {{-- @iscabdin --}}
             <li class="nav-item {{ request()->routeIs('sekolah.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('sekolah.index') }}">
                     <x-tabler-map-pin />
                     <span class="menu-title text-truncate">Sekolah</span>
                 </a>
             </li>
+            {{-- @endiscabdin --}}
             <li class="nav-item {{ request()->routeIs('school-data.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('school-data.index') }}">
                     <x-tabler-file-database />
@@ -69,8 +63,8 @@
                     <span class="menu-title text-truncate">Verifikasi Manual</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('verifikasi.daftar-ulang') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('verifikasi.daftar-ulang') }}">
+            <li class="nav-item {{ request()->routeIs('daftar-ulang.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('daftar-ulang.index') }}">
                     <x-tabler-file-plus />
                     <span class="menu-title text-truncate">Daftar Ulang</span>
                 </a>
@@ -100,13 +94,6 @@
                 </a>
             </li>
 
-            {{-- <li class="nav-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
-                    <x-tabler-id-badge-2 />
-                    <span class="menu-title text-truncate">Role & Permission</span>
-                </a>
-            </li> --}}
-
             <li class=" nav-item">
                 <a class="d-flex align-items-center" href="#">
                     <x-tabler-shield />
@@ -134,8 +121,8 @@
                 </ul>
             </li>
 
-            <li class="nav-item {{ request()->routeIs('faq.index') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('faq.index') }}">
+            <li class="nav-item {{ request()->routeIs('faqs.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('faqs.index') }}">
                     <x-tabler-message-question />
                     <span class="menu-title text-truncate">FAQ</span>
                 </a>

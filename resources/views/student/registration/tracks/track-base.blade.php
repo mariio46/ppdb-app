@@ -1,4 +1,4 @@
-<form id="formSchoolRegister" action="{{ route('student.regis.save-registration', [$code]) }}" method="post" enctype="multipart/form-data">
+<form id="formSchoolRegister" action="{{ route('student.regis.save-registration', [$phase, $phase_id, $track_code]) }}" method="post" enctype="multipart/form-data">
     @csrf
     <input id="phaseCode" name="phaseCode" type="hidden" value="{{ $phase }}" />
     <div class="card">
