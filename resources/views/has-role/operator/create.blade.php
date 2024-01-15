@@ -33,8 +33,8 @@
             </div>
             <div class="card-body">
 
-                <form id="form-operator" action="#" enctype="multipart/form-data" method="POST">
-                    @csrf
+                <form id="form-operator" enctype="multipart/form-data">
+                    {{-- @csrf --}}
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-2">
@@ -67,19 +67,20 @@
                     <div class="w-100">
                         <h4 class="card-title"> Dokumen </h4>
                         <div class="w-100">
-                            <x-label class="btn btn-primary cursor-pointer" for="dokumen" style="display: inline-flex; align-items: center">
-                                <x-tabler-upload style="margin-right: 0.25rem;" />
-                                Upload Pakta Integritas Baru
+                            <x-label class="btn btn-primary cursor-pointer" for="dokumen">
+                                <span style="display: inline-flex; align-items: center">
+                                    <x-tabler-upload style="margin-right: 0.25rem;" />
+                                    Upload Pakta Integritas Baru
+                                </span>
                             </x-label>
-                            <x-input id="dokumen" name="dokumen" type="file" accept=".pdf" hidden required />
+                            <x-input id="dokumen" name="dokumen" type="file" hidden required />
                         </div>
-                        {{-- <div class="alert alert-danger p-1 w-100" id="profilePictureErrorMsg" style="display: none;"></div> --}}
-                        <x-alert id="dokumen-error-message" style="display: none;" variant="danger"></x-alert>
+                        <div class="fw-bold text-success" id="selectedFileInfo"></div>
                         <x-alert variant="warning">Upload pakta integritas yang telah ditanda tangani dan distempel.</x-alert>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
-                        <x-button color="success">Simpan Perubahan</x-button>
+                        <x-button type="submit" color="success">Simpan Perubahan</x-button>
                         <x-link href="{{ route('operators.index') }}" color="secondary">Batalkan</x-link>
                     </div>
                 </form>
@@ -96,13 +97,13 @@
 
             var form = $('#form-operator');
 
-
             // Custom Validation For Username
-            $.validator.addMethod('noSpace', (value, element) => value.indexOf(" ") < 0 && value != "")
+            $.validator.addMethod('noSpace', (value, element) => value.indexOf(" ") < 0 && value != "");
 
             // Form Validation
             if (form.length) {
                 form.validate({
+                    ignore: [],
                     rules: {
                         nama: {
                             required: true,
@@ -123,7 +124,9 @@
                             equalTo: '#password'
                         },
                         dokumen: {
-                            required: true
+                            required: true,
+                            extension: "pdf",
+                            maxsize: 500,
                         }
                     },
                     messages: {
@@ -134,7 +137,7 @@
                         nama_pengguna: {
                             required: 'Nama Pengguna tidak boleh kosong.',
                             minlength: 'Nama Pengguna harus lebih dari 6 karakter.',
-                            noSpace: 'Nama Pengguna tidak mengandung spasi.'
+                            noSpace: 'Nama Pengguna tidak mengandung spasi.',
                         },
                         password: {
                             required: 'Password tidak boleh kosong.',
@@ -147,16 +150,17 @@
                         },
                         dokumen: {
                             required: 'Dokumen tidak boleh kosong.',
-                        }
-                    },
-                    errorPlacement: function(error, element) {
-                        // console.log(error);
-                        console.log(element);
-                        $('#dokumen-error-message').html('<p class="text-center mb-0"><small>' + error.text() + '</small></p>');
-                        $('#dokumen-error-message').show();
+                            extension: "Hanya menerima dokumen dengan format pdf.",
+                            filesize: "*Ukuran dokumen tidak boleh lebih dari 500 KB.",
+                        },
                     },
                 })
             }
+
+            $('#dokumen').on('change', function() {
+                var fileName = $(this).val().split('\\').pop(); // Get the file name
+                $('#selectedFileInfo').text('Selected file: ' + fileName);
+            });
         })
     </script>
 @endpush

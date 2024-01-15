@@ -14,11 +14,19 @@ class CheckRoleServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // ----- Admin -----
+        // ----- Super Admin -----
         Blade::directive('issuperadmin', function ($expression) {
-            return "<?php if(session()->get('roles.name') == 'Admin') : ?>";
+            return "<?php if(session()->get('roles.name') == 'SuperAdmin' && session()->get('roles.id') == 1) : ?>";
         });
         Blade::directive('endissuperadmin', function ($expression) {
+            return '<?php endif; ?>';
+        });
+        // ----- /Super Admin -----
+        // ----- Admin -----
+        Blade::directive('isadmin', function ($expression) {
+            return "<?php if(session()->get('roles.name') == 'Admin') : ?>";
+        });
+        Blade::directive('endisadmin', function ($expression) {
             return '<?php endif; ?>';
         });
         // ----- /Admin -----

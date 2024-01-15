@@ -80,7 +80,6 @@
                         {
                             data: 'id',
                             render: function(data, type, row) {
-                                // console.log('Data Row : ', row);
                                 return `<a href="/panel/sekolah/${data}/${row.satuan_pendidikan}/info-sekolah" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         },
@@ -88,7 +87,7 @@
 
                     // Styling Table
                     columnDefs: [{
-                        targets: 2,
+                        targets: [2, 4],
                         className: 'text-center'
                     }],
 

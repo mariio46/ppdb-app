@@ -17,12 +17,14 @@
                     <span class="menu-title text-truncate">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                <a class="d-flex align-items-center" href="{{ route('users.index') }}">
-                    <x-tabler-users-group />
-                    <span class="menu-title text-truncate">User</span>
-                </a>
-            </li>
+            @issuperadmin
+                <li class="nav-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('users.index') }}">
+                        <x-tabler-users-group />
+                        <span class="menu-title text-truncate">User</span>
+                    </a>
+                </li>
+            @endissuperadmin
             <li class="nav-item {{ request()->routeIs('sekolah-asal.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('sekolah-asal.index') }}">
                     <x-tabler-compass />

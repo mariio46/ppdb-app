@@ -8,11 +8,11 @@
 @section('content')
     {{-- breadcrumbs --}}
     <x-breadcrumb title="Akun Siswa">
-        <x-breadcrumb-item to="{{ route('siswa.index') }}" title="Akun Siswa" />
-        <x-breadcrumb-item to="{{ route('siswa.show', [$id]) }}" title="Detail Siswa" />
+        <x-breadcrumb-item title="Akun Siswa" to="{{ route('siswa.index') }}" />
+        <x-breadcrumb-item title="Detail Siswa" to="{{ route('siswa.show', [$id]) }}" />
         <x-breadcrumb-active title="Edit Data Siswa" />
     </x-breadcrumb>
-    
+
     {{-- content --}}
     <div class="content-body row">
         <div class="col-12">

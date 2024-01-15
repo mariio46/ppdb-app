@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HasRole;
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\SchoolRepository as School;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -26,7 +27,6 @@ class SchoolController extends Controller
 
     public function store(Request $request)
     {
-        // return dd($request->all());
         $response = $this->school->store(request: $request);
         if ($response['statusCode'] == 201) {
             return back()->with([
@@ -41,9 +41,25 @@ class SchoolController extends Controller
         }
     }
 
-    public function edit($npsn): View
+    public function edit(string $id): View
     {
-        return view('has-role.school.edit', compact('npsn'));
+        return view('has-role.school.edit', compact('id'));
+    }
+
+    public function update(Request $request, string $id): RedirectResponse
+    {
+        $response = $this->school->update(request: $request, user_id: $id);
+        if ($response['statusCode'] == 200) {
+            return back()->with([
+                'stat' => 'success',
+                'msg' => $response['messages'],
+            ]);
+        } else {
+            return back()->with([
+                'stat' => 'error',
+                'msg' => $response['messages'],
+            ]);
+        }
     }
 
     public function schoolMajorQuota($npsn): View

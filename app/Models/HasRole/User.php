@@ -16,6 +16,7 @@ class User extends Base
             'cabdin_id' => $request->input('wilayah'),
             'sekolah_id' => $request->input('sekolah'),
             'sekolah_asal_id' => $request->input('sekolah_asal'),
+            'status_aktif' => $request->input('status_aktif'),
             'kata_sandi' => $request->input('password'),
         ];
 
@@ -65,19 +66,20 @@ class User extends Base
     public function updateUser(Request $request, string $user_id): array
     {
         $body = [
+            'id' => $user_id,
+            'uid' => session()->get('id'),
             'nama' => $request->input('nama'),
             'nama_pengguna' => $request->input('nama_pengguna'),
             'role_id' => $request->input('role'),
             'cabdin_id' => $request->input('wilayah'),
             'sekolah_id' => $request->input('sekolah'),
             'sekolah_asal_id' => $request->input('sekolah_asal'),
-            'id' => $user_id,
             'password' => $request->input('password'),
         ];
 
         $data = $this->postWithToken('admin/edit', $body);
 
-        if ($data['status_code'] == 201 || $data['status_code'] == 200) {
+        if ($data['status_code'] == 200) {
             $response = $data['response'];
         } else {
             $response = [

@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Tambah user'])
+@extends('layouts.has-role.auth', ['title' => 'Tambah Sekolah'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">

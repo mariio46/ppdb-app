@@ -180,6 +180,7 @@ return [
         App\Providers\HasRole\RoleServiceProvider::class,
         App\Providers\HasRole\UserServiceProvider::class,
         App\Providers\HasRole\SchoolServiceProvider::class,
+        App\Providers\HasRole\SchoolDataServiceProvider::class,
 
         // ------------------------------------------------------------------
         /*

@@ -27,4 +27,9 @@ class SchoolRepositoryImpl implements SchoolRepository
     {
         return $this->school->getSingleSchool(school_id: $school_id);
     }
+
+    public function update(Request $request, string $user_id): array
+    {
+        return $this->school->updateSchool(request: $request, user_id: $user_id);
+    }
 }
