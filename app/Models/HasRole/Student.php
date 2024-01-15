@@ -56,10 +56,13 @@ class Student extends Base
     public function store(Request $request): array
     {
         $sekolah_asal = explode('|', $request->sekolah_asal);
+        $password = rand(100000, 999999);
 
         $data = [
             "nama"              => $request->nama_lengkap,
             "nisn"              => $request->nisn,
+            "kata_sandi"        => $password,
+            "sandi_awal"        => $password,
             "id_sekolah_asal"   => $sekolah_asal[0],
             "sekolah_asal"      => $sekolah_asal[1],
             "jenis_kelamin"     => $request->jenis_kelamin,
