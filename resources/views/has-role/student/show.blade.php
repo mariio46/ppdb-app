@@ -112,6 +112,8 @@
                                 <x-three-row-info identifier="phone" label="Nomor HP" />
 
                                 <x-three-row-info identifier="email" label="Email" />
+
+                                <x-three-row-info identifier="login_code" label="Kode Masuk" />
                             </table>
                         </div>
                     </div>
@@ -338,6 +340,8 @@
                         $('#birth_day').text(`${tl.getDate()} ${months[tl.getMonth()]} ${tl.getFullYear()}`);
                         $('#phone').text(d.telepon || '-');
                         $('#email').text(d.email || '-');
+                        $("#login_code").text(d.pertama_login == "y" ? d.sandi_awal : "-" )
+
                         $('#province').text(d.provinsi || '-');
                         $('#city').text(d.kabupaten || '-');
                         $('#district').text(d.kecamatan || '-');

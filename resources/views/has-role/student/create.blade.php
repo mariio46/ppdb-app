@@ -12,26 +12,11 @@
 @endsection
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Akun Siswa</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('siswa.index') }}">Akun Siswa</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Tambah Akun Siswa
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <x-breadcrumb title="Akun Siswa">
+        <x-breadcrumb-item title="Akun Siswa" to="{{ route('siswa.index') }}" />
+        <x-breadcrumb-active title="Tambah Akun Siswa" />
+    </x-breadcrumb>
+    
     <div class="content-body">
         {{-- <div class="card">
             <div class="card-header">
