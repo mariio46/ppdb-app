@@ -44,29 +44,29 @@ class RegistrationController extends Controller
     /**
      * This page contains a list of phase tracks based on the phase code.
      */
-    public function phase(string $code): View
+    public function phase(string $phase, string $phase_id): View
     {
         $data = [
-            'phase_code' => $code,
-            'phase' => json_decode(Crypt::decryptString($code))->phase,
+            'phase_id' => $phase_id,
+            'phase' => $phase,
         ];
 
         return view('student.registration.phase', $data);
     }
 
-    public function track(string $code): View|RedirectResponse
+    public function track(string $phase, string $phase_id, string $track_code): View|RedirectResponse
     {
-        $decCode = json_decode(Crypt::decryptString($code));
-        $phaseCode = Crypt::encryptString(json_encode(['phase' => $decCode->phase]));
+        // $decCode = json_decode(Crypt::decryptString($code));
+        // $phaseCode = Crypt::encryptString(json_encode(['phase' => $decCode->phase]));
 
         if (session()->get('stu_status_regis')) {
-            return redirect()->to('/pendaftaran/tahap/' . $phaseCode);
+            return to_route('student.regis.phase', [$phase, $phase_id]);
         } else {
             $data = [
-                'code' => $decCode->track,
-                'track' => $this->tracks[$decCode->track],
-                'phaseCode' => $phaseCode,
-                'phase' => $decCode->phase,
+                // 'code' => $decCode->track,
+                'track' => $track_code,
+                'phase_id' => $phase_id,
+                'phase' => $phase,
             ];
 
             return view('student.registration.track', $data);
@@ -115,9 +115,9 @@ class RegistrationController extends Controller
         return response()->json($get['response'], $get['status_code']);
     }
 
-    public function getScheduleByPhaseCode(string $code): JsonResponse
+    public function getScheduleByPhase(string $phase): JsonResponse
     {
-        $get = $this->registrationRepo->getScheduleByPhaseCode($code);
+        $get = $this->registrationRepo->getScheduleByPhaseCode($phase);
 
         return response()->json($get);
     }

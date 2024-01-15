@@ -67,9 +67,9 @@
                             cdr = 'pre';
                         break;
                         case 'now':
-                            btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.code}">Lihat Tahap ${schedule.tahap}</a>`;
+                            btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.tahap}_${schedule.tahap_id}">Lihat Tahap ${schedule.tahap}</a>`;
                             cdr = 'now';
-                        regisProofBtn.attr('href', `/pendaftaran/bukti/${schedule.code}`);
+                        regisProofBtn.attr('href', `/pendaftaran/bukti/${schedule.tahap}_${schedule.tahap_id}`);
                         break;
                         case 'post':
                             btnHtml = `<button class="btn btn-outline-secondary disabled">Tahap ${schedule.tahap} Sudah Ditutup</button>`;

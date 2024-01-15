@@ -47,7 +47,7 @@
 
 @push('scripts')
     <script>
-        var code = '{{ $phase_code ?? 0 }}',
+        var phase = '{{ $phase ?? 0 }}',
             isRegis = "{{ session()->get('stu_is_regis') ? 'y' : 'n' }}";
     </script>
     {{-- <script src="/js/student/pages/registration/phase-v1.1.5.js"></script> --}}
@@ -106,7 +106,7 @@
                 ]);
 
             $.ajax({
-                url: '/json/registration/get-schedule-by-phase-code/' + code,
+                url: `/json/registration/get-schedule-by-phase/${phase}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(data) {
