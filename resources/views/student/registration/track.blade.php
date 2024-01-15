@@ -17,7 +17,7 @@
                                 <a href="{{ route('student.regis') }}">Pendaftaran</a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('student.regis.phase', [$phaseCode]) }}">Pendaftaran Tahap {{ $phase }}</a>
+                                <a href="{{ route('student.regis.phase', [$phase, $phase_id]) }}">Pendaftaran Tahap {{ $phase }}</a>
                             </li>
                             <li class="breadcrumb-item active">
                                 Pendaftaran Jalur {{ $track }}
@@ -32,7 +32,7 @@
     <div class="content-body">
         <div class="row">
             <div class="col-12">
-                @switch($code)
+                @switch($track)
                     @case('AA')
                         @include('student.registration.tracks.sma-affirmation');
                     @break
@@ -103,9 +103,9 @@
 
 @push('scripts')
     <script>
-        var track = '{{ $code }}';
+        var track = '{{ $track }}';
     </script>
-    @if (substr($code, 0, 1) == 'A')
+    @if (substr($track, 0, 1) == 'A')
         {{-- <script src="/js/student/pages/registration/track-base-sma-v1.0.1.js"></script> --}}
         <script>
             $(function() {
@@ -190,10 +190,10 @@
                         method: 'get',
                         dataType: 'json',
                         success: function(cities) {
-                            $('#city' + i).empty().append('<option value=""></option>');
+                            $(`#city${i}`).empty().append('<option value=""></option>');
 
                             cities.forEach(city => {
-                                $('#city' + i).append('<option value="' + city.code + '">' + city.name + '</option>');
+                                $(`#city${i}`).append(`<option value="${city.code}">${city.name}</option>`);
                             });
                         },
                         error: function(xhr, status, error) {
@@ -230,11 +230,12 @@
                         dataType: 'json',
                         success: function(schools) {
                             for (let n = 1; n <= 3; n++) {
-                                if ($('#school' + n).length) {
-                                    $('#school' + n).empty().append('<option value=""></option>');
-
+                                if ($(`#school${n}`).length) {
+                                    $(`#school${n}`).empty().append('<option value=""></option>');
+                            
                                     schools.forEach(school => {
-                                        $('#school' + n).append('<option value="' + school.id + '">' + school.name + '</option>');
+                                        $(`#school${n}`).append(`<option value="${school.id}">${school.name}</option>`);
+
                                     });
                                 }
                             }
@@ -254,7 +255,7 @@
                             $('#school1').empty().append('<option value=""></option>');
 
                             schools.forEach(school => {
-                                $('#school1').append('<option value="' + school.id + '">' + school.name + '</option>');
+                                $('#school1').append(`<option value="${school.id}">${school.name}</option>`);
                             });
                         },
                         error: function(xhr, status, error) {
@@ -322,7 +323,7 @@
                     var otherInputs = params.split(",");
 
                     for (var i = 0; i < otherInputs.length; i++) {
-                        var otherInputValue = $("#" + otherInputs[i]).val();
+                        var otherInputValue = $(`#${otherInputs[i]}`).val();
 
                         // Abaikan nilai null dan string kosong
                         if (value !== null && value !== "" && otherInputValue !== null && otherInputValue !== "" && value === otherInputValue) {
@@ -347,13 +348,13 @@
                         if (sch2.length && sch3.length) { // form can choose multiple school
                             schVerif.empty().append('<option value=""></option>')
                             for (let i = 1; i <= 3; i++) {
-                                let school = $('#school' + i);
-                                let schoolCode = school.val();
-                                let schoolName = school.children(':selected').text();
+                            let school = $('#school' + i);
+                            let schoolCode = school.val();
+                            let schoolName = school.children(':selected').text();
 
-                                $(`#school${i}Show`).text(schoolName);
+                            $(`#school${i}Show`).text(schoolName);
                                 if (schoolCode) {
-                                    schVerif.append('<option value="' + schoolCode + '">' + schoolName + '</option>');
+                                    schVerif.append(`<option value="${schoolCode}">${schoolName}</option>`);
                                 }
                             }
                         } else { // form only choose one school
@@ -372,12 +373,13 @@
                     if (schVerif.length) {
                         if (schVerif.valid()) { // select in modal required
                             for (let i = 1; i <= 3; i++) {
-                                if ($('#city' + i).length) {
-                                    let cityName = $('#city' + i).children(':selected').text();
+                                if ($(`#city${i}`).length) {
+                                    let cityName = $(`#city${i}`).children(':selected').text();
                                     $(`#city${i}Name`).val(cityName);
                                 }
 
-                                let schoolName = $('#school' + i).children(':selected').text();
+                                let schoolName = $(`#school${i}`).children(':selected').text();
+
                                 $(`#school${i}Name`).val(schoolName);
                             }
 

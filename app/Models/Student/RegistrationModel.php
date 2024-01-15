@@ -175,13 +175,13 @@ class RegistrationModel extends Base
 
         $get = $this->swGetWithToken('tahap/schedule');
 
-        foreach ($get['response']['data'] as &$item) {
-            $kodeValue = $item['tahap'];
+        // foreach ($get['response']['data'] as &$item) {
+        //     $kodeValue = $item['tahap'];
 
-            $item['code'] = Crypt::encryptString(json_encode(['phase' => $kodeValue]));
-        }
+        //     $item['code'] = Crypt::encryptString(json_encode(['phase' => $kodeValue]));
+        // }
 
-        unset($item);
+        // unset($item);
 
         return $get;
     }

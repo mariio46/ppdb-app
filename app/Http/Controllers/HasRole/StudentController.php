@@ -64,7 +64,7 @@ class StudentController extends Controller
             return to_route('siswa.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
         }
 
-        return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages']]);
+        return redirect()->back()->withInput()->with(['stat' => 'error', 'msg' => $save['messages']]);
     }
 
     public function update(string $id, Request $request): RedirectResponse

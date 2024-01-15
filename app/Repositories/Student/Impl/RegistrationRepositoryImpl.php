@@ -26,17 +26,17 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         return $this->registrationModel->getRegistrationDataByPhase($phase);
     }
 
-    public function getScheduleByPhaseCode(string $code): array
+    public function getScheduleByPhaseCode(string $phase): array
     {
-        $phase = json_decode(Crypt::decryptString($code))->phase;
+        // $phase = json_decode(Crypt::decryptString($code))->phase;
 
         $data = $this->registrationModel->getScheduleByPhaseCode($phase);
 
         foreach (['sma', 'smk'] as $schoolType) {
             if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
                 foreach ($data['data'][$schoolType] as &$track) {
-                    $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
-                    $track['jalur'] = str_replace(['SMA', 'SMK'], '', $track['jalur']);
+                    $track['slug'] = $phase . '_' . $data['data']['tahap_id'] . '_' . $track['kode'];
+                    $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
                     $track['info'] = $this->registrationModel->informations[$track['kode']];
                 }
             }
@@ -63,15 +63,16 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         switch ($trackCode) {
             case 'AA':
                 $data = [
-                    'siswa_id' => session()->get('stu_id'),
-                    'tahap' => $request->phaseCode,
-                    'jenis_afirmasi' => $request->affirmationType,
-                    'no_pkh' => $request->affirmationNumber,
-                    'sekolah1_id' => $request->school1,
-                    'sekolah2_id' => $request->school2,
-                    'sekolah3_id' => $request->school3,
-                    'sekolah_verif_id' => $request->schoolVerif,
-                    // 'code' => $trackCode,
+                    "siswa_id" => session()->get("stu_id"),
+                    "tahap" => $request->phaseCode,
+                    'jalur' => $trackCode,
+                    "jenis_afirmasi" => $request->affirmationType,
+                    "no_pkh" => $request->affirmationNumber,
+                    "sekolah1_id" => $request->school1,
+                    "sekolah2_id" => $request->school2,
+                    "sekolah3_id" => $request->school3,
+                    "sekolah_verif_id" => $request->schoolVerif,
+                  
                     // 'affType' => $request->post('affirmationType'),
                     // 'affNum' => $request->post('affirmationNumber'),
                     // 'city1' => $request->post('city1'),
