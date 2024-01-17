@@ -13,7 +13,7 @@
                 {{-- achievement type --}}
                 <x-student.select id="achievementType" label="Jenis Prestasi" search="n">
                     <option value="berjenjang">Berjenjang Individu</option>
-                    <option value="nonberjenjang">Tidak Berjenjang Individu</option>
+                    <option value="tidak_berjenjang">Tidak Berjenjang Individu</option>
                     <option value="beregu">Beregu</option>
                 </x-student.select>
             </div>

@@ -106,77 +106,77 @@
         var track = '{{ $track }}';
         function countBobot(type, level, n) {
             let bobot = 0;
-            if (type == 1 && level == 1 && n == 1) {
+            if (type == "berjenjang" && level == "internasional" && n == 1) {
                 bobot = 100;
-            } else if (type == 1 && level == 1 && n == 2) {
+            } else if (type == "berjenjang" && level == "internasional" && n == 2) {
                 bobot = 95;
-            } else if (type == 1 && level == 1 && n == 3) {
+            } else if (type == "berjenjang" && level == "internasional" && n == 3) {
                 bobot = 90;
-            } else if (type == 1 && level == 2 && n == 1) {
+            } else if (type == "berjenjang" && level == "nasional" && n == 1) {
                 bobot = 85;
-            } else if (type == 1 && level == 2 && n == 2) {
+            } else if (type == "berjenjang" && level == "nasional" && n == 2) {
                 bobot = 80;
-            } else if (type == 1 && level == 2 && n == 3) {
+            } else if (type == "berjenjang" && level == "nasional" && n == 3) {
                 bobot = 75;
-            } else if (type == 1 && level == 3 && n == 1) {
+            } else if (type == "berjenjang" && level == "provinsi" && n == 1) {
                 bobot = 70;
-            } else if (type == 1 && level == 3 && n == 2) {
+            } else if (type == "berjenjang" && level == "provinsi" && n == 2) {
                 bobot = 65;
-            } else if (type == 1 && level == 3 && n == 3) {
+            } else if (type == "berjenjang" && level == "provinsi" && n == 3) {
                 bobot = 60;
-            } else if (type == 1 && level == 4 && n == 1) {
+            } else if (type == "berjenjang" && level == "kabupaten" && n == 1) {
                 bobot = 55;
-            } else if (type == 1 && level == 4 && n == 2) {
+            } else if (type == "berjenjang" && level == "kabupaten" && n == 2) {
                 bobot = 50;
-            } else if (type == 1 && level == 4 && n == 3) {
+            } else if (type == "berjenjang" && level == "kabupaten" && n == 3) {
                 bobot = 45;
-            } else if (type == 2 && level == 1 && n == 1) {
+            } else if (type == "tidak_berjenjang" && level == "internasional" && n == 1) {
                 bobot = 85;
-            } else if (type == 2 && level == 1 && n == 2) {
+            } else if (type == "tidak_berjenjang" && level == "internasional" && n == 2) {
                 bobot = 80;
-            } else if (type == 2 && level == 1 && n == 3) {
+            } else if (type == "tidak_berjenjang" && level == "internasional" && n == 3) {
                 bobot = 75;
-            } else if (type == 2 && level == 2 && n == 1) {
+            } else if (type == "tidak_berjenjang" && level == "nasional" && n == 1) {
                 bobot = 70;
-            } else if (type == 2 && level == 2 && n == 2) {
+            } else if (type == "tidak_berjenjang" && level == "nasional" && n == 2) {
                 bobot = 65;
-            } else if (type == 2 && level == 2 && n == 3) {
+            } else if (type == "tidak_berjenjang" && level == "nasional" && n == 3) {
                 bobot = 60;
-            } else if (type == 2 && level == 3 && n == 1) {
+            } else if (type == "tidak_berjenjang" && level == "provinsi" && n == 1) {
                 bobot = 55;
-            } else if (type == 2 && level == 3 && n == 2) {
+            } else if (type == "tidak_berjenjang" && level == "provinsi" && n == 2) {
                 bobot = 50;
-            } else if (type == 2 && level == 3 && n == 3) {
+            } else if (type == "tidak_berjenjang" && level == "provinsi" && n == 3) {
                 bobot = 45;
-            } else if (type == 2 && level == 4 && n == 1) {
+            } else if (type == "tidak_berjenjang" && level == "kabupaten" && n == 1) {
                 bobot = 40;
-            } else if (type == 2 && level == 4 && n == 2) {
+            } else if (type == "tidak_berjenjang" && level == "kabupaten" && n == 2) {
                 bobot = 35;
-            } else if (type == 2 && level == 4 && n == 3) {
+            } else if (type == "tidak_berjenjang" && level == "kabupaten" && n == 3) {
                 bobot = 30;
-            } else if (type == 3 && level == 1 && n == 1) {
+            } else if (type == "beregu" && level == "internasional" && n == 1) {
                 bobot = 70;
-            } else if (type == 3 && level == 1 && n == 2) {
+            } else if (type == "beregu" && level == "internasional" && n == 2) {
                 bobot = 65;
-            } else if (type == 3 && level == 1 && n == 3) {
+            } else if (type == "beregu" && level == "internasional" && n == 3) {
                 bobot = 60;
-            } else if (type == 3 && level == 2 && n == 1) {
+            } else if (type == "beregu" && level == "nasional" && n == 1) {
                 bobot = 55;
-            } else if (type == 3 && level == 2 && n == 2) {
+            } else if (type == "beregu" && level == "nasional" && n == 2) {
                 bobot = 50;
-            } else if (type == 3 && level == 2 && n == 3) {
+            } else if (type == "beregu" && level == "nasional" && n == 3) {
                 bobot = 45;
-            } else if (type == 3 && level == 3 && n == 1) {
+            } else if (type == "beregu" && level == "provinsi" && n == 1) {
                 bobot = 40;
-            } else if (type == 3 && level == 3 && n == 2) {
+            } else if (type == "beregu" && level == "provinsi" && n == 2) {
                 bobot = 35;
-            } else if (type == 3 && level == 3 && n == 3) {
+            } else if (type == "beregu" && level == "provinsi" && n == 3) {
                 bobot = 30;
-            } else if (type == 3 && level == 4 && n == 1) {
+            } else if (type == "beregu" && level == "kabupaten" && n == 1) {
                 bobot = 25;
-            } else if (type == 3 && level == 4 && n == 2) {
+            } else if (type == "beregu" && level == "kabupaten" && n == 2) {
                 bobot = 20;
-            } else if (type == 3 && level == 4 && n == 3) {
+            } else if (type == "beregu" && level == "kabupaten" && n == 3) {
                 bobot = 15;
             }
 

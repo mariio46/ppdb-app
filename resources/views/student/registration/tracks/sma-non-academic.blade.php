@@ -12,19 +12,19 @@
             <div class="col-md-6 col-12">
                 {{-- achievement type --}}
                 <x-student.select id="achievementType" label="Jenis Prestasi" search="n">
-                    <option value="1">Berjenjang Individu</option>
-                    <option value="2">Tidak Berjenjang Individu</option>
-                    <option value="3">Beregu</option>
+                    <option value="berjenjang">Berjenjang Individu</option>
+                    <option value="tidak_berjenjang">Tidak Berjenjang Individu</option>
+                    <option value="beregu">Beregu</option>
                 </x-student.select>
             </div>
 
             <div class="col-md-6 col-12">
                 {{-- achievement level --}}
                 <x-student.select id="achievementLevel" label="Tingkatan Prestasi" search="n">
-                    <option value="1">Internasional</option>
-                    <option value="2">Nasional</option>
-                    <option value="3">Provinsi</option>
-                    <option value="4">Kabupaten/Kota</option>
+                    <option value="internasional">Internasional</option>
+                    <option value="nasional">Nasional</option>
+                    <option value="provinsi">Provinsi</option>
+                    <option value="Kabupaten">Kabupaten/Kota</option>
                 </x-student.select>
             </div>
 
