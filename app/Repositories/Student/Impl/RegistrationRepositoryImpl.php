@@ -55,7 +55,8 @@ class RegistrationRepositoryImpl implements RegistrationRepository
             "sekolah1_id"   => $request->school1,
             "sekolah1_nama" => $request->school1Name,
             "nama_siswa"    => session()->get("stu_name"),
-            "nisn"          => session()->get("stu_nisn")
+            "nisn"          => session()->get("stu_nisn"),
+            "jenis_kelamin" => session()->get("stu_gender"),
         ];
 
         switch ($trackCode) {
@@ -83,8 +84,8 @@ class RegistrationRepositoryImpl implements RegistrationRepository
                 break;
             case 'AE': // prestasi non akademik
                 $data["prestasi_jenis"]   = $request->achievementType;
-                $data["tingkat_prestasi"] = $request->achievementLevel;
-                $data["juara"]            = $request->achievementChamp;
+                $data["prestasi_tingkat"] = $request->achievementLevel;
+                $data["prestasi_juara"]   = $request->achievementChamp;
                 $data["prestasi_nama"]    = $request->achievementName;
                 $data["bobot"]            = $request->achievementWeight;
                 $data["sekolah2_id"]      = $request->school2;
@@ -139,8 +140,8 @@ class RegistrationRepositoryImpl implements RegistrationRepository
                 break;
             case 'KE': // prestasi non akademik
                 $data["prestasi_jenis"]   = $request->achievementType;
-                $data["tingkat_prestasi"] = $request->achievementLevel;
-                $data["juara"]            = $request->achievementChamp;
+                $data["prestasi_tingkat"] = $request->achievementLevel;
+                $data["prestasi_juara"]   = $request->achievementChamp;
                 $data["prestasi_nama"]    = $request->achievementName;
                 $data["bobot"]            = $request->achievementWeight;
                 $data['jurusan1_id']      = $request->department1;

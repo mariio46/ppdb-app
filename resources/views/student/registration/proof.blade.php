@@ -177,10 +177,11 @@
 
                     if (t == 'AE' || t == 'KE') {
                         let a = [
-                        {"label" : "Jenis Prestasi", "value" : data.prestasi_jenis},
-                        {"label" : "Tingkatan Prestasi", "value" : data.prestasi_tingkat},
-                        {"label" : "Juara", "value" : data.prestasi_juara},
-                        {"label" : "Nama Prestasi", "value" : data.prestasi_nama}
+                            {"label" : "Jenis Prestasi", "value" : capitalizeEachWord(data.prestasi_jenis)},
+                            {"label" : "Tingkatan Prestasi", "value" : capitalizeEachWord(data.prestasi_tingkat)},
+                            {"label" : "Juara", "value" : data.prestasi_juara},
+                            {"label" : "Nama Prestasi", "value" : data.prestasi_nama},
+                            {"label" : "Bobot", "value" : `${data.bobot} poin`}
                         ];
 
                         addDataSect.append(addDataHtml(a));
@@ -251,6 +252,12 @@
                 </div>
                 
                 ${dept}`;
+            }
+
+            function capitalizeEachWord(inputString) {
+                let words = inputString.split("_");
+                let capWord = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+                return capWord;
             }
         });
     </script>

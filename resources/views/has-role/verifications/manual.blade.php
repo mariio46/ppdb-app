@@ -128,10 +128,10 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/verifikasi-manual/get-data',
-                        dataSrc: ""
+                        dataSrc: "data"
                     },
                     columns: [{
-                            data: "nama"
+                            data: "nama_siswa"
                         },
                         {
                             data: "nisn",
@@ -140,7 +140,7 @@
                             }
                         },
                         {
-                            data: "jalur",
+                            data: "kode_jalur",
                             render: function(data, type, row) {
                                 return tracks[data];
                             }
@@ -169,7 +169,7 @@
                             }
                         },
                         {
-                            data: "id",
+                            data: "pendaftaran_id",
                             render: function(data, type, row) {
                                 return `<a href="/panel/verifikasi-manual/d/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
