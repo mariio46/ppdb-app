@@ -104,6 +104,84 @@
 @push('scripts')
     <script>
         var track = '{{ $track }}';
+        function countBobot(type, level, n) {
+            let bobot = 0;
+            if (type == 1 && level == 1 && n == 1) {
+                bobot = 100;
+            } else if (type == 1 && level == 1 && n == 2) {
+                bobot = 95;
+            } else if (type == 1 && level == 1 && n == 3) {
+                bobot = 90;
+            } else if (type == 1 && level == 2 && n == 1) {
+                bobot = 85;
+            } else if (type == 1 && level == 2 && n == 2) {
+                bobot = 80;
+            } else if (type == 1 && level == 2 && n == 3) {
+                bobot = 75;
+            } else if (type == 1 && level == 3 && n == 1) {
+                bobot = 70;
+            } else if (type == 1 && level == 3 && n == 2) {
+                bobot = 65;
+            } else if (type == 1 && level == 3 && n == 3) {
+                bobot = 60;
+            } else if (type == 1 && level == 4 && n == 1) {
+                bobot = 55;
+            } else if (type == 1 && level == 4 && n == 2) {
+                bobot = 50;
+            } else if (type == 1 && level == 4 && n == 3) {
+                bobot = 45;
+            } else if (type == 2 && level == 1 && n == 1) {
+                bobot = 85;
+            } else if (type == 2 && level == 1 && n == 2) {
+                bobot = 80;
+            } else if (type == 2 && level == 1 && n == 3) {
+                bobot = 75;
+            } else if (type == 2 && level == 2 && n == 1) {
+                bobot = 70;
+            } else if (type == 2 && level == 2 && n == 2) {
+                bobot = 65;
+            } else if (type == 2 && level == 2 && n == 3) {
+                bobot = 60;
+            } else if (type == 2 && level == 3 && n == 1) {
+                bobot = 55;
+            } else if (type == 2 && level == 3 && n == 2) {
+                bobot = 50;
+            } else if (type == 2 && level == 3 && n == 3) {
+                bobot = 45;
+            } else if (type == 2 && level == 4 && n == 1) {
+                bobot = 40;
+            } else if (type == 2 && level == 4 && n == 2) {
+                bobot = 35;
+            } else if (type == 2 && level == 4 && n == 3) {
+                bobot = 30;
+            } else if (type == 3 && level == 1 && n == 1) {
+                bobot = 70;
+            } else if (type == 3 && level == 1 && n == 2) {
+                bobot = 65;
+            } else if (type == 3 && level == 1 && n == 3) {
+                bobot = 60;
+            } else if (type == 3 && level == 2 && n == 1) {
+                bobot = 55;
+            } else if (type == 3 && level == 2 && n == 2) {
+                bobot = 50;
+            } else if (type == 3 && level == 2 && n == 3) {
+                bobot = 45;
+            } else if (type == 3 && level == 3 && n == 1) {
+                bobot = 40;
+            } else if (type == 3 && level == 3 && n == 2) {
+                bobot = 35;
+            } else if (type == 3 && level == 3 && n == 3) {
+                bobot = 30;
+            } else if (type == 3 && level == 4 && n == 1) {
+                bobot = 25;
+            } else if (type == 3 && level == 4 && n == 2) {
+                bobot = 20;
+            } else if (type == 3 && level == 4 && n == 3) {
+                bobot = 15;
+            }
+
+            return bobot;
+        }
     </script>
     @if (substr($track, 0, 1) == 'A')
         {{-- <script src="/js/student/pages/registration/track-base-sma-v1.0.1.js"></script> --}}
@@ -261,6 +339,15 @@
                         error: function(xhr, status, error) {
                             console.error("Gagal mendapatkan data: ", status, error);
                         }
+                    });
+                }
+
+                // pembobotan
+                if (achType.length && achLevel.length && achChamp.length) {
+                    $('#achievementType, #achievementLevel, #achievementChamp').change(function() {
+                        let bobot = countBobot(achType.val(), achLevel.val(), achChamp.val());
+                        $('#bobotx').text(bobot);
+                        $('#achievementWeight').val(bobot);
                     });
                 }
 

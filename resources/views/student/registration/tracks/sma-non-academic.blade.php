@@ -12,19 +12,19 @@
             <div class="col-md-6 col-12">
                 {{-- achievement type --}}
                 <x-student.select id="achievementType" label="Jenis Prestasi" search="n">
-                    <option value="a">Berjenjang Individu</option>
-                    <option value="b">Tidak Berjenjang Individu</option>
-                    <option value="c">Beregu</option>
+                    <option value="1">Berjenjang Individu</option>
+                    <option value="2">Tidak Berjenjang Individu</option>
+                    <option value="3">Beregu</option>
                 </x-student.select>
             </div>
 
             <div class="col-md-6 col-12">
                 {{-- achievement level --}}
                 <x-student.select id="achievementLevel" label="Tingkatan Prestasi" search="n">
-                    <option value="i">Internasional</option>
-                    <option value="n">Nasional</option>
-                    <option value="p">Provinsi</option>
-                    <option value="c">Kabupaten/Kota</option>
+                    <option value="1">Internasional</option>
+                    <option value="2">Nasional</option>
+                    <option value="3">Provinsi</option>
+                    <option value="4">Kabupaten/Kota</option>
                 </x-student.select>
             </div>
 
@@ -42,6 +42,14 @@
                 <div class="mb-1">
                     <x-label for="achievementName">Nama Prestasi/Kejuaraan</x-label>
                     <x-input id="achievementName" name="achievementName" placeholder="Nama Prestasi/Kejuaraan" />
+                </div>
+            </div>
+
+            <div class="col-md-6 col-12">
+                <p>Bobot: <span class="" id="bobotx">0</span> poin</p>
+                <x-input type="hidden" id="achievementWeight" name="achievementWeight" />
+                <div class="alert alert-secondary p-1">
+                    <p class="mb-0">Nilai bobot paling sedikit adalah 15 dan paling banyak adalah 100.</p>
                 </div>
             </div>
         </div>

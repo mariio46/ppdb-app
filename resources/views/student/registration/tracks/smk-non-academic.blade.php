@@ -41,6 +41,13 @@
                     <x-input id="achievementName" name="achievementName" placeholder="Nama Prestasi/Kejuaraan" />
                 </div>
             </div>
+            <div class="col-md-6 col-12">
+                <p>Bobot: <span class="" id="bobotx">0</span> poin</p>
+                <x-input type="hidden" id="achievementWeight" name="achievementWeight" />
+                <div class="alert alert-secondary p-1">
+                    <p class="mb-0">Nilai bobot paling sedikit adalah 15 dan paling banyak adalah 100.</p>
+                </div>
+            </div>
         </div>
 
     </div>
