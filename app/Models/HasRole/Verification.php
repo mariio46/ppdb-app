@@ -110,4 +110,53 @@ class Verification extends Base
             ];
         }
     }
+
+    public function acceptRegistration(string $registration_id, Request $request): array
+    {
+        $data = [
+            'rerata_rapor'          => $request->avg_total,
+            'rerata_mtk'            => $request->avg_mtk,
+            'rerata_ipa'            => $request->avg_ipa,
+            'rerata_ips'            => $request->avg_ips,
+            'rerata_bid'            => $request->avg_bid,
+            'rerata_big'            => $request->avg_big,
+            'pendaftaran_id'        => $registration_id,
+            'operator_verifikasi'   => session()->get('id'),
+        ];
+
+        $acc = $this->postWithToken("pendaftaran/update/verifikasi", $data);
+
+        if ($acc['status_code'] == 200) {
+            return $acc['response'];
+        } else {
+            return [
+                "statusCode" => $acc['status_code'],
+                "status"     => "failed",
+                "messages"   => "Terjadi kesalahan. Gagal memverifikasi data.",
+                "data"       => []
+            ];
+        }
+    }
+
+    public function declineRegistration(string $registration_id, Request $request): array
+    {
+        $data = [
+            "pendaftaran_id" => $registration_id,
+            "operator_verifikasi" => session()->get('id'),
+            "alasan_tolak" => $request->declineMsg
+        ];
+
+        $dec = $this->postWithToken("pendaftaran/update/tolak", $data);
+
+        if ($dec['status_code'] == 200) {
+            return $dec['response'];
+        } else {
+            return [
+                "statusCode" => $dec['status_code'],
+                "status"     => "failed",
+                "messages"   => "Terjadi kesalahan. Gagal mengupdate data.",
+                "data"       => []
+            ];
+        }
+    }
 }

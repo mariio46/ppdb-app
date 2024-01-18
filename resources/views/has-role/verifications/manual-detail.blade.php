@@ -236,7 +236,7 @@
                         </div>
                     </div>
 
-                    <div class="px-2 mt-1">
+                    <div class="px-2 mt-1" style="display: none;" id="editAchievementBtn">
                         <x-link href="{{ route('verifikasi.manual.achievement', [$id]) }}" color="success">Edit Data Prestasi</x-link>
                     </div>
                 </div>
@@ -328,6 +328,12 @@
                                             <div class="d-flex justify-content-center mb-3">
                                                 <form id="acceptForm" action="{{ route('verifikasi.manual.accept', [$id]) }}" method="post">
                                                     @csrf
+                                                    <x-input type="hidden" name="avg_total" id="avg_total" />
+                                                    <x-input type="hidden" name="avg_mtk" id="avg_mtk" />
+                                                    <x-input type="hidden" name="avg_bid" id="avg_bid" />
+                                                    <x-input type="hidden" name="avg_big" id="avg_big" />
+                                                    <x-input type="hidden" name="avg_ipa" id="avg_ipa" />
+                                                    <x-input type="hidden" name="avg_ips" id="avg_ips" />
 
                                                     <x-button class="me-1" type="submit" color="success">Ya, Verifikasi</x-button>
                                                 </form>
@@ -501,7 +507,7 @@
                         }
                     }
                     if (d.kode_jalur == 'AE' || d.kode_jalur == 'KE') { // non academic achievement
-                        $('#trachType, #trachLevel, #trachChamp, #trachName, #trachWeight').show();
+                        $('#trachType, #trachLevel, #trachChamp, #trachName, #trachWeight, #editAchievementBtn').show();
                         $('#achType').text(capitalizeEachWord(d.prestasi_jenis));
                         $('#achLevel').text(capitalizeEachWord(d.prestasi_tingkat));
                         $('#achChamp').text(d.prestasi_juara);
@@ -556,13 +562,28 @@
                     dataType: 'json',
                     success: function(data) {
                         let score = data.data;
+                        let total = 0, sum_bid = 0, sum_big = 0, sum_ipa = 0, sum_ips = 0, sum_mtk = 0;
                         for (let i = 1; i <= 5; i++) {
                             $(`#sm${i}_bid`).text(score[`sm${i}_bid`]);
                             $(`#sm${i}_big`).text(score[`sm${i}_big`]);
                             $(`#sm${i}_mtk`).text(score[`sm${i}_mtk`]);
                             $(`#sm${i}_ipa`).text(score[`sm${i}_ipa`]);
                             $(`#sm${i}_ips`).text(score[`sm${i}_ips`]);
+
+                            sum_bid += parseInt(score[`sm${i}_bid`]);
+                            sum_big += parseInt(score[`sm${i}_big`]);
+                            sum_mtk += parseInt(score[`sm${i}_mtk`]);
+                            sum_ipa += parseInt(score[`sm${i}_ipa`]);
+                            sum_ips += parseInt(score[`sm${i}_ips`]);
+                            total += parseInt(score[`sm${i}_bid`]) + parseInt(score[`sm${i}_big`]) + parseInt(score[`sm${i}_mtk`]) + parseInt(score[`sm${i}_ipa`]) + parseInt(score[`sm${i}_ips`]);
                         }
+
+                        $('#avg_bid').val(sum_bid / 5);
+                        $('#avg_big').val(sum_big / 5);
+                        $('#avg_mtk').val(sum_mtk / 5);
+                        $('#avg_ipa').val(sum_ipa / 5);
+                        $('#avg_ips').val(sum_ips / 5);
+                        $('#avg_total').val(total / 25);
                     },
                     error: function(xhr, status, error) {
                         console.error('gagal mendapatkan data.', status, error);

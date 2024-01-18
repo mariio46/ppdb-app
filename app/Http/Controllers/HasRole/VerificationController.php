@@ -92,16 +92,22 @@ class VerificationController extends Controller
         }
     }
 
-    public function manualAcceptVerification(string $id)
+    public function manualAcceptVerification(string $id, Request $request): RedirectResponse
     {
-        return redirect()->back();
+        $acc = $this->verification->acceptRegistration($id, $request);
+
+        $stat = ($acc['statusCode'] == 200) ? 'success' : 'error';
+        return redirect()->back()->with(['stat' => $stat, "msg" => $acc['messages']]);
     }
 
-    public function manualDeclineVerification(string $id, Request $request)
+    public function manualDeclineVerification(string $id, Request $request): RedirectResponse
     {
-        $reason = $request->post('declineMsg');
-
-        return redirect()->back();
+        $dec = $this->verification->declineRegistration($id, $request);
+        if ($dec['statusCode'] == 200) {
+            return to_route("verifikasi.manual")->with(['stat' => 'success', 'msg' => $dec['messages']]);
+        } else {
+            return redirect()->back()->with(['stat' => "error", "msg" => $dec['messages']]);
+        }
     }
 
     //------------------------------------------------------------JSON
