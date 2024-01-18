@@ -21,7 +21,8 @@
                     <div class="rounded shadow-md" id="map" style="width: 100%; height: 400px;"></div>
                     <x-input class="w-50 mt-1" type="text" id="search-input" placeholder="cari tempat.." />
 
-                    <form id="form" action="" method="post">
+                    <form id="form" action="{{ route("verifikasi.manual.update-map", [$id]) }}" method="post">
+                        @csrf
                         <div class="row mt-2">
                             <div class="mb-2 col-lg-4 col-12">
                                 <x-label for="lintang">Lintang</x-label>
@@ -34,7 +35,7 @@
                         </div>
                         <div class="mb-2">
                             <x-button type="submit" color="success">Simpan Koordinat</x-button>
-                            <x-link href="{{ route('verifikasi.manual.detail', [$id]) }}" variant="outline" color="secondary">Kembali</x-link>
+                            <x-link type="button" href="{{ route('verifikasi.manual.detail', [$id]) }}" variant="outline" color="secondary">Kembali</x-link>
                         </div>
                     </form>
                 </div>
@@ -81,7 +82,7 @@
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -7.265757, lng: 112.734146}, // Koordinat pusat peta awal
+                center: {lat: -5.1384917, lng: 119.4893742}, // Koordinat pusat peta awal
                 zoom: 13,
                 streetViewControl: false
             });

@@ -52,6 +52,36 @@ class Student extends Base
         }
     }
 
+    public function getScores(string $student_id): array
+    {
+        $get = $this->getWithToken("siswa/nilai?id=$student_id");
+        if ($get['status_code'] == 200) {
+            return $get['response'];
+        } else {
+            return [
+                "statusCode" => $get["status_code"],
+                "status"     => "failed",
+                "messages"   => "Terjadi kesalahan.",
+                "data"       => []
+            ];
+        }
+    }
+
+    public function getScore(string $student_id, string $semester): array
+    {
+        $get = $this->swGetWithToken("siswa/nilai?id=$student_id&semester=$semester");
+        if ($get['status_code'] == 200) {
+            return $get['response'];
+        } else {
+            return [
+                "statusCode" => $get["status_code"],
+                "status"     => "failed",
+                "messages"   => "Terjadi kesalahan.",
+                "data"       => []
+            ];
+        }
+    }
+
     //------------------------------------------------------------POST
     public function store(Request $request): array
     {
@@ -72,7 +102,6 @@ class Student extends Base
         ];
 
         $save = $this->postWithToken('siswa/create', $data);
-        // dd($save);
 
         if ($save['status_code'] == 201 || $save['status_code'] == 200) {
             return $save['response'];

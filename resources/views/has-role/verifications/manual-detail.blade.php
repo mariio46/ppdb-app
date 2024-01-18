@@ -35,7 +35,7 @@
                 <div class="card-body">
                     <h4 class="text-primary mb-2 ms-2">Data Diri</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="name" label="Nama Lengkap" />
@@ -66,7 +66,7 @@
                 <div class="card-body border-top">
                     <h4 class="text-primary mb-2 ms-2">Data Alamat</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="province" label="Provinsi" />
@@ -93,7 +93,7 @@
                 <div class="card-body border-top">
                     <h4 class="text-primary mb-2 ms-2">Data Orang Tua</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="motherName" label="Nama Ibu Kandung" />
@@ -114,7 +114,7 @@
                 <div class="card-body border-top">
                     <h4 class="text-primary mb-2 ms-2">Data Wali</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="guardName" label="Nama Wali" />
@@ -201,15 +201,19 @@
                 <div class="card-body">
                     <h4 class="text-primary ms-2 mb-2">Pendaftaran</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="track" label="Jalur Pendaftaran" />
+                            </table>
+                        </div>
+                    </div>
 
+                    <div class="row px-2">
+                        <div class="col-lg-6 col-12">
+                            <table class="table table-borderless">
                                 {{-- for affirmation --}}
                                 <x-three-row-info identifier="affType" label="Jenis Afirmasi" hide="y" />
-
-                                <x-three-row-info identifier="affNum" label="Nomor PKH" hide="y" />
 
                                 {{-- for non academic achievement --}}
                                 <x-three-row-info identifier="achType" label="Jenis Prestasi" hide="y" />
@@ -217,16 +221,29 @@
                                 <x-three-row-info identifier="achLevel" label="Tingkatan Prestasi" hide="y" />
 
                                 <x-three-row-info identifier="achChamp" label="Juara" hide="y" />
-
-                                <x-three-row-info identifier="achName" label="Nama Prestasi" hide="y" />
                             </table>
                         </div>
+                        <div class="col-lg-6 col-12">
+                            <table class="table table-borderless">
+                                {{-- affirmation --}}
+                                <x-three-row-info identifier="affNum" label="Nomor PKH" hide="y" />
+
+                                {{-- non academic --}}
+                                <x-three-row-info identifier="achName" label="Nama Prestasi" hide="y" />
+                                
+                                <x-three-row-info identifier="achWeight" label="Bobot" hide="y" />
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="px-2 mt-1">
+                        <x-link href="{{ route('verifikasi.manual.achievement', [$id]) }}" color="success">Edit Data Prestasi</x-link>
                     </div>
                 </div>
                 <div class="card-body border-top">
                     <h4 class="text-primary ms-2 mb-2">Sekolah Pilihan</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="school1" label="Sekolah Pilihan 1" />
@@ -251,8 +268,8 @@
                 <div class="card-body">
                     <h4 class="text-primary mb-2 ms-2">Tambah Titik Rumah Calon Peserta Didik</h4>
 
-                    <div class="row mb-2">
-                        <div class="col-lg-6 col-12 ps-3">
+                    <div class="row mb-2 px-2">
+                        <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="coordinate" label="Koordinat Rumah" />
 
@@ -287,9 +304,9 @@
             {{-- verification's check --}}
             <div class="card">
                 <div class="card-body">
-                    <h4 class="mb-2">Verifikasi Pendaftaran</h4>
+                    <h4 class="mb-2 ms-2">Verifikasi Pendaftaran</h4>
 
-                    <div id="verification" style="display: none;">
+                    <div class="px-2" id="verification" style="display: none;">
                         <div class="alert alert-primary p-1">
                             <p class="mb-0">Periksa kembali data calon peserta didik, Pastikan semuanya benar. Data yang sudah diverifikasi tidak dapat diubah lagi.</p>
                         </div>
@@ -354,7 +371,7 @@
                         </div>
                     </div>
 
-                    <div id="verified" style="display: none;">
+                    <div class="px-2" id="verified" style="display: none;">
                         <div class="row mb-2">
                             <div class="col-lg-6 col-12">
                                 <table class="table table-borderless">
@@ -373,7 +390,7 @@
                         </a>
                     </div>
 
-                    <div id="declined" style="display: none;">
+                    <div class="px-2" id="declined" style="display: none;">
                         <div class="row mb-2">
                             <div class="col-lg-6 col-12">
                                 <table class="table table-borderless">
@@ -484,11 +501,12 @@
                         }
                     }
                     if (d.kode_jalur == 'AE' || d.kode_jalur == 'KE') { // non academic achievement
-                        $('#trachType, #trachLevel, #trachChamp, #trachName').show();
+                        $('#trachType, #trachLevel, #trachChamp, #trachName, #trachWeight').show();
                         $('#achType').text(capitalizeEachWord(d.prestasi_jenis));
                         $('#achLevel').text(capitalizeEachWord(d.prestasi_tingkat));
                         $('#achChamp').text(d.prestasi_juara);
                         $('#achName').text(d.prestasi_nama);
+                        $('#achWeight').text(`${d.bobot} poin`);
                     }
 
                     $('#school1').text(d.sekolah1);
@@ -510,9 +528,9 @@
                         let coor = (d.lintang.length && d.bujur.length) ? `${d.lintang}, ${d.bujur}` : "-";
 
                         $('#coordinate').text(coor);
-                        $('#distance1').text(d.jarak1 ? `${d.jarak1} m` : '-');
-                        $('#distance2').text(d.jarak2 ? `${d.jarak2} m` : '-');
-                        $('#distance3').text(d.jarak3 ? `${d.jarak3} m` : '-');
+                        $('#distance1').text(d.jarak1 ? `${toKm(d.jarak1)} km` : '-');
+                        $('#distance2').text(d.jarak2 ? `${toKm(d.jarak2)} km` : '-');
+                        $('#distance3').text(d.jarak3 ? `${toKm(d.jarak3)} km` : '-');
                     }
 
                     if (d.status == 'mendaftar') {
@@ -533,16 +551,17 @@
 
             function getScore(student_id) {
                 $.ajax({
-                    url: `/panel/siswa/json/get-grades/${student_id}`,
+                    url: `/panel/siswa/json/get-scores/${student_id}`,
                     method: 'get',
                     dataType: 'json',
                     success: function(data) {
+                        let score = data.data;
                         for (let i = 1; i <= 5; i++) {
-                            $(`#sm${i}_bid`).text(data[`sm${i}_bid`]);
-                            $(`#sm${i}_big`).text(data[`sm${i}_big`]);
-                            $(`#sm${i}_mtk`).text(data[`sm${i}_mtk`]);
-                            $(`#sm${i}_ipa`).text(data[`sm${i}_ipa`]);
-                            $(`#sm${i}_ips`).text(data[`sm${i}_ips`]);
+                            $(`#sm${i}_bid`).text(score[`sm${i}_bid`]);
+                            $(`#sm${i}_big`).text(score[`sm${i}_big`]);
+                            $(`#sm${i}_mtk`).text(score[`sm${i}_mtk`]);
+                            $(`#sm${i}_ipa`).text(score[`sm${i}_ipa`]);
+                            $(`#sm${i}_ips`).text(score[`sm${i}_ips`]);
                         }
                     },
                     error: function(xhr, status, error) {
@@ -552,9 +571,16 @@
             }
 
             function capitalizeEachWord(inputString) {
+                console.log(inputString);
                 let words = inputString.split("_");
                 let capWord = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
                 return capWord;
+            }
+
+            function toKm(distanceInMeters) {
+                var distanceInKilometers = distanceInMeters / 1000;
+                var formattedDistance = distanceInKilometers.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                return formattedDistance;
             }
         });
     </script>

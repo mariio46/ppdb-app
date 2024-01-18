@@ -150,19 +150,18 @@
                             render: function(data, type, row) {
                                 let color, status;
                                 switch (data) {
-                                    case 'b':
+                                    case 'mendaftar':
                                         color = 'warning';
                                         status = 'Belum diverifikasi';
                                         break;
-                                    case 's':
-                                        color = 'success';
-                                        status = 'Sudah diverifikasi';
-                                        break;
-                                    case 't':
+                                    case 'dikembalikan':
                                         color = 'danger';
                                         status = 'Verifikasi ditolak';
                                         break;
+                                    case 'verifikasi':
                                     default:
+                                        color = 'success';
+                                        status = 'Sudah diverifikasi';
                                         break;
                                 }
                                 return `<span class="mb-0 d-inline-block border-${color} text-${color} rounded" style="padding: 0.5rem; width: 150px;">${status}</span>`;

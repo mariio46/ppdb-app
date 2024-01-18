@@ -237,7 +237,12 @@
                         var $this = $(this);
                         $this.wrap('<div class="position-relative"></div>');
                         $this.select2({
-                            dropdownParent: $this.parent()
+                            dropdownParent: $this.parent(),
+                            language: {
+                                noResults: function () {
+                                   return "Tidak ada data ditemukan.";
+                                }
+                            }
                         });
                     });
                 }
@@ -283,6 +288,7 @@
                 // load school
                 // --------------------------------------------------------------------
                 function loadSchool(n, cityCode = '0') {
+                    $(`#school${n}`).empty().append('<option value="0" selected disabled>memuat...</option>');
                     $.ajax({
                         url: `/schools/by-city/${cityCode}/sma`,
                         method: 'get',
@@ -297,6 +303,7 @@
                         },
                         error: function(xhr, status, error) {
                             console.error("Gagal mendapatkan data: ", status, error);
+                            $(`#school${n}`).empty().append('<option value=""></option>');
                         }
                     })
                 }

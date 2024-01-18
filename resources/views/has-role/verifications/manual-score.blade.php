@@ -39,27 +39,17 @@
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <table class="table table-borderless">
-                            <tr>
-                                <td class="pe-0" style="width: 35%;">Nama Siswa</td>
-                                <td style="width: 5%;">:</td>
-                                <td class="ps-0" style="width: 60%;">Freyanashifa Jayawardhana</td>
-                            </tr>
-                            <tr>
-                                <td class="pe-0" style="width: 35%;">NISN</td>
-                                <td style="width: 5%;">:</td>
-                                <td class="ps-0" style="width: 60%;">0123456789</td>
-                            </tr>
-                            <tr>
-                                <td class="pe-0" style="width: 35%;">Asal Sekolah</td>
-                                <td style="width: 5%;">:</td>
-                                <td class="ps-0" style="width: 60%;">SMP NEGERI 1 SUKAMAJU</td>
-                            </tr>
+                            <x-three-row-info label="Nama Siswa" identifier="name" />
+                            <x-three-row-info label="NISN" identifier="nisn" />
+                            <x-three-row-info label="Asal Sekolah" identifier="origin_school" />
                         </table>
                     </div>
                 </div>
             </div>
-            <form id="formEditScore" action="" method="post">
+            <form id="formEditScore" action="{{ route('verifikasi.manual.update-score', [$id]) }}" method="post">
                 @csrf
+                <x-input type="hidden" name="student_id" id="student_id" />
+                <x-input type="hidden" name="semester" id="semester" value="{{ $semester }}" />
                 <div class="card-body border-top border-bottom p-0">
                     <div class="row">
                         <div class="col-md-4 col-xl-3 col-sm-12 border-md-end pe-0">
@@ -109,8 +99,8 @@
                                                 Matematika
                                             </td>
                                             <td style="width: 50%;">
-                                                <x-label for="math">Nilai</x-label>
-                                                <x-input id="math" name="math" type="number" placeholder="0" autofocus />
+                                                <x-label for="mtk">Nilai</x-label>
+                                                <x-input id="mtk" name="mtk" type="number" placeholder="0" autofocus />
                                             </td>
                                         </tr>
                                         <tr>
@@ -118,8 +108,8 @@
                                                 Bahasa Indonesia
                                             </td>
                                             <td style="width: 50%;">
-                                                <x-label for="indonesian">Nilai</x-label>
-                                                <x-input id="indonesian" name="indonesian" type="number" placeholder="0" />
+                                                <x-label for="bid">Nilai</x-label>
+                                                <x-input id="bid" name="bid" type="number" placeholder="0" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -127,8 +117,8 @@
                                                 Bahasa Inggris
                                             </td>
                                             <td style="width: 50%;">
-                                                <x-label for="english">Nilai</x-label>
-                                                <x-input id="english" name="english" type="number" placeholder="0" />
+                                                <x-label for="big">Nilai</x-label>
+                                                <x-input id="big" name="big" type="number" placeholder="0" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -136,8 +126,8 @@
                                                 Ilmu Pengetahuan Alam
                                             </td>
                                             <td style="width: 50%;">
-                                                <x-label for="science">Nilai</x-label>
-                                                <x-input id="science" name="science" type="number" placeholder="0" />
+                                                <x-label for="ipa">Nilai</x-label>
+                                                <x-input id="ipa" name="ipa" type="number" placeholder="0" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -145,8 +135,8 @@
                                                 Ilmu Pengetahuan Sosial
                                             </td>
                                             <td style="width: 50%;">
-                                                <x-label for="social">Nilai</x-label>
-                                                <x-input id="social" name="social" type="number" placeholder="0" />
+                                                <x-label for="ips">Nilai</x-label>
+                                                <x-input id="ips" name="ips" type="number" placeholder="0" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -170,6 +160,10 @@
 
 @push('scripts')
     <script>
+        var id = "{{ $id }}",
+            semester = "{{ $semester }}";
+    </script>
+    <script>
         $(function() {
             ('use strict');
 
@@ -179,31 +173,31 @@
             if (formEditScore.length) {
                 formEditScore.validate({
                     rules: {
-                        math: {
+                        mtk: {
                             required: true,
                             number: true,
                             min: 0,
                             max: 100
                         },
-                        indonesian: {
+                        bid: {
                             required: true,
                             number: true,
                             min: 0,
                             max: 100
                         },
-                        english: {
+                        big: {
                             required: true,
                             number: true,
                             min: 0,
                             max: 100
                         },
-                        science: {
+                        ipa: {
                             required: true,
                             number: true,
                             min: 0,
                             max: 100
                         },
-                        social: {
+                        ips: {
                             required: true,
                             number: true,
                             min: 0,
@@ -211,31 +205,31 @@
                         }
                     },
                     messages: {
-                        math: {
+                        mtk: {
                             required: '*Nilai harus diisi.',
                             number: '*Nilai harus dalam bentuk angka.',
                             min: '*Masukkan minimal 0.',
                             max: '*Masukkan maksimal 100.'
                         },
-                        indonesian: {
+                        bid: {
                             required: '*Nilai harus diisi.',
                             number: '*Nilai harus dalam bentuk angka.',
                             min: '*Masukkan minimal 0.',
                             max: '*Masukkan maksimal 100.'
                         },
-                        english: {
+                        big: {
                             required: '*Nilai harus diisi.',
                             number: '*Nilai harus dalam bentuk angka.',
                             min: '*Masukkan minimal 0.',
                             max: '*Masukkan maksimal 100.'
                         },
-                        science: {
+                        ipa: {
                             required: '*Nilai harus diisi.',
                             number: '*Nilai harus dalam bentuk angka.',
                             min: '*Masukkan minimal 0.',
                             max: '*Masukkan maksimal 100.'
                         },
-                        social: {
+                        ips: {
                             required: '*Nilai harus diisi.',
                             number: '*Nilai harus dalam bentuk angka.',
                             min: '*Masukkan minimal 0.',
@@ -245,19 +239,40 @@
                 })
             }
 
-            // get scores
             $.ajax({
-                url: 'URL_HERE',
+                url: `/panel/verifikasi-manual/d/${id}/get-data-detail`,
                 method: 'get',
                 dataType: 'json',
-                success: function(scores) {
-                    $('#math').val(scores.mtk);
-                    $('#indonesian').val(scores.bid);
-                    $('#english').val(scores.big);
-                    $('#science').val(scores.ipa);
-                    $('#social').val(scores.ips);
+                success: function(data) {
+                    console.log(data);
+                    $('#name').text(data.data.nama);
+                    $('#nisn').text(data.data.nisn);
+                    $('#origin_school').text(data.data.sekolah_asal);
+                    $('#student_id').val(data.data.siswa_id);
+
+                    getScore(data.data.siswa_id);
+                },
+                error: function(xhr, status, error) {
+                    console.error('gagal mendapatkan data.', status, error);
                 }
             });
+
+            // get scores
+            function getScore(student_id) {
+                $.ajax({
+                    url: `/panel/siswa/json/get-score/${student_id}/${semester}`,
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(scores) {
+                        let score = scores.data;
+                        $('#mtk').val(score[`sm${semester}_mtk`]);
+                        $('#bid').val(score[`sm${semester}_bid`]);
+                        $('#big').val(score[`sm${semester}_big`]);
+                        $('#ipa').val(score[`sm${semester}_ipa`]);
+                        $('#ips').val(score[`sm${semester}_ips`]);
+                    }
+                });
+            }
         });
     </script>
 @endpush

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HasRole;
 use App\Http\Controllers\Controller;
 use App\Models\HasRole\Verification;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -19,58 +20,6 @@ class VerificationController extends Controller
         return view('has-role.verifications.manual');
     }
 
-    public function manualGetData(): JsonResponse
-    {
-        $data = $this->verification->getAll(session()->get("sekolah_id"));
-
-        // $data = [
-        //     [
-        //         'id' => '1',
-        //         'nama' => 'Muhammad Al Muqtadir',
-        //         'nisn' => '6564553453',
-        //         'jalur' => 'AA',
-        //         'status' => 's',
-        //     ],
-        //     [
-        //         'id' => '2',
-        //         'nama' => 'Ryan Rafli',
-        //         'nisn' => '5454224678',
-        //         'jalur' => 'AC',
-        //         'status' => 'b',
-        //     ],
-        //     [
-        //         'id' => '3',
-        //         'nama' => 'Ainun Putri',
-        //         'nisn' => '10302913833',
-        //         'jalur' => 'AE',
-        //         'status' => 'b',
-        //     ],
-        //     [
-        //         'id' => '4',
-        //         'nama' => 'Edy Siswanto Syarif',
-        //         'nisn' => '43242354815',
-        //         'jalur' => 'AG',
-        //         'status' => 'b',
-        //     ],
-        //     [
-        //         'id' => '5',
-        //         'nama' => 'Muh Rafie Muis',
-        //         'nisn' => '42342356788',
-        //         'jalur' => 'AE',
-        //         'status' => 'b',
-        //     ],
-        //     [
-        //         'id' => '6',
-        //         'nama' => 'Vicky Giovaldi',
-        //         'nisn' => '8787575645',
-        //         'jalur' => 'AE',
-        //         'status' => 't',
-        //     ],
-        // ];
-
-        return response()->json($data);
-    }
-
     public function manualDetail(string $id): View
     {
         $data = [
@@ -78,92 +27,6 @@ class VerificationController extends Controller
         ];
 
         return view('has-role.verifications.manual-detail', $data);
-    }
-
-    public function manualGetDetailData(string $id): JsonResponse
-    {
-        // return response()->json([
-        //     'status_code' => '200',
-        //     'message' => 'success',
-        //     'data' => [
-        //         'id' => '1',
-        //         'nama' => 'Freyanashifa Jayawardhana',
-        //         'nisn' => '0123456789',
-        //         'nik' => '1234567890123456',
-        //         'asal_sekolah' => 'SMP NEGERI 2 SUKAMAJU',
-        //         'pasfoto' => '/app-assets/images/profile.png',
-        //         'jenis_kelamin' => 'p',
-        //         'tempat_lahir' => 'Sukamaju',
-        //         'tanggal_lahir' => '2009-11-10',
-        //         'telepon' => '081234567890',
-        //         'email' => 'freya.jayawardhana@email.com',
-        //         'provinsi' => 'SULAWESI SELATAN',
-        //         'kabupaten' => 'LUWU UTARA',
-        //         'kecamatan' => 'SUKAMAJU SELATAN',
-        //         'desa' => 'MULYOREJO',
-        //         'dusun' => 'DS. PURWOSARI',
-        //         'rtrw' => '001/001',
-        //         'alamat_jalan' => 'jln. Sedap Malam No. 5 A',
-        //         'nama_ibu_kandung' => 'Fulanah',
-        //         'telepon_ibu' => '081234567891',
-        //         'nama_ayah' => 'Fulan',
-        //         'telepon_ayah' => '081234567892',
-        //         'nama_wali' => '',
-        //         'telepon_wali' => '',
-        //         'sm1_bid' => '79',
-        //         'sm1_big' => '69',
-        //         'sm1_mtk' => '70',
-        //         'sm1_ipa' => '92',
-        //         'sm1_ips' => '94',
-        //         'sm2_bid' => '73',
-        //         'sm2_big' => '77',
-        //         'sm2_mtk' => '95',
-        //         'sm2_ipa' => '75',
-        //         'sm2_ips' => '85',
-        //         'sm3_bid' => '73',
-        //         'sm3_big' => '82',
-        //         'sm3_mtk' => '89',
-        //         'sm3_ipa' => '66',
-        //         'sm3_ips' => '71',
-        //         'sm4_bid' => '90',
-        //         'sm4_big' => '79',
-        //         'sm4_mtk' => '92',
-        //         'sm4_ipa' => '69',
-        //         'sm4_ips' => '89',
-        //         'sm5_bid' => '91',
-        //         'sm5_big' => '89',
-        //         'sm5_mtk' => '77',
-        //         'sm5_ipa' => '66',
-        //         'sm5_ips' => '76',
-        //         'jalur' => 'AE',
-        //         'jenis_afirmasi' => 'disabilitas',
-        //         'no_pkh' => '',
-        //         'prestasi_jenis' => 'Beregu',
-        //         'prestasi_tingkat' => 'Internasional',
-        //         'prestasi_juara' => '1',
-        //         'prestasi_nama' => 'Lomba Panjat Pinang Se Asia',
-        //         'sekolah1' => 'SMA NEGERI 1 SUKAMAJU',
-        //         'jurusan1' => 'Teknik Komputer dan Jaringan',
-        //         'sekolah2' => 'SMA NEGERI 2 SUKAMAJU',
-        //         'jurusan2' => 'Tata Boga',
-        //         'sekolah3' => '',
-        //         'jurusan3' => '',
-        //         'verifikator' => 'Burhan',
-        //         'sekolah_verif' => 'SMA NEGERI 2 SUKAMAJU',
-        //         'lintang' => '-2.649099922180',
-        //         'bujur' => '120.320098876953',
-        //         'jarak1' => '',
-        //         'jarak2' => '',
-        //         'jarak3' => '',
-        //         'syarat_butawarna' => 'n',
-        //         'syarat_tinggibadan' => 'n',
-        //         'status' => 'mendaftar',
-        //         'alasan_tolak' => 'Mukanya menyebalkan.',
-        //     ],
-        // ]);
-
-        $get = $this->verification->getSingle($id);
-        return response()->json($get);
     }
 
     public function manualScore(string $id, Request $request): View
@@ -191,6 +54,44 @@ class VerificationController extends Controller
         return view('has-role.verifications.manual-map', $data);
     }
 
+    public function manualAchievement(string $id): View
+    {
+        return view('has-role.verifications.manual-achievement', [
+            "id" => $id
+        ]);
+    }
+
+    //------------------------------------------------------------FUNC
+    public function manualUpdateAchievement(string $registration_id, Request $request): RedirectResponse
+    {
+        $upd = $this->verification->updateAchievement($registration_id, $request);
+
+        if ($upd['statusCode'] == 200 || $upd['statusCode'] == 201) {
+            return to_route("verifikasi.manual.detail", [$registration_id])->with(['stat' => "success", 'msg' => $upd['messages']]);
+        } else {
+            return redirect()->back()->with(['stat' => "error", 'msg' => $upd['messages']]);
+        }
+    }
+
+    public function manualUpdateScore(Request $request): RedirectResponse
+    {
+        $upd = $this->verification->updateScore($request);
+
+        $stat = ($upd['statusCode'] == 200 || $upd['statusCode'] == 201) ? "success" : "error";
+        return redirect()->back()->with(["stat" => $stat, "msg" => $upd["messages"]]);
+    }
+
+    public function manualUpdateMap(string $id, Request $request): RedirectResponse
+    {
+        $save = $this->verification->updateCoordinate($id, $request);
+
+        if ($save['statusCode'] == 200 || $save['statusCode'] == 201) {
+            return to_route("verifikasi.manual.detail", [$id])->with(["stat" => "success", "msg" => $save['messages']]);
+        } else {
+            return redirect()->back()->with(["stat" => "error", "msg" => $save["messages"]]);
+        }
+    }
+
     public function manualAcceptVerification(string $id)
     {
         return redirect()->back();
@@ -201,5 +102,18 @@ class VerificationController extends Controller
         $reason = $request->post('declineMsg');
 
         return redirect()->back();
+    }
+
+    //------------------------------------------------------------JSON
+    public function manualGetData(): JsonResponse
+    {
+        $data = $this->verification->getAll(session()->get("sekolah_id"));
+        return response()->json($data);
+    }
+
+    public function manualGetDetailData(string $id): JsonResponse
+    {
+        $get = $this->verification->getSingle($id);
+        return response()->json($get);
     }
 }

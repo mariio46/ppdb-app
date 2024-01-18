@@ -3,6 +3,7 @@
 namespace App\Models\HasRole;
 
 use App\Models\Base;
+use Illuminate\Http\Request;
 
 class Verification extends Base
 {
@@ -33,6 +34,79 @@ class Verification extends Base
                 "status" => "failed",
                 "messages" => "Terjadi kesalahan. Gagal mendapatkan data.",
                 "data" => []
+            ];
+        }
+    }
+
+    //------------------------------------------------------------POST
+    public function updateAchievement(string $registration_id, Request $request): array
+    {
+        $data = [
+            "pendaftaran_id"    => $registration_id,
+            "prestasi_jenis"    => $request->prestasi_jenis,
+            "prestasi_tingkat"  => $request->prestasi_tingkat,
+            "prestasi_juara"    => $request->prestasi_juara,
+            "prestasi_nama"     => $request->prestasi_nama,
+            "bobot"             => $request->bobot
+        ];
+
+        $upd = $this->postWithToken("pendaftaran/update/prestasi", $data);
+
+        if ($upd['status_code'] == 200 || $upd['status_code'] == 201) {
+            return $upd['response'];
+        } else {
+            return [
+                "statusCode" => $upd['status_code'],
+                "status"     => "failed",
+                "messages"   => "Terjadi kesalahan. Gagal menyimpan data.",
+                "data"       => []
+            ];
+        }
+    }
+
+    public function updateScore(Request $request): array
+    {
+        $data = [
+            "id"                                => $request->student_id,
+            "sm" . $request->semester . "_mtk"  => $request->mtk,
+            "sm" . $request->semester . "_ipa"  => $request->ipa,
+            "sm" . $request->semester . "_ips"  => $request->ips,
+            "sm" . $request->semester . "_bid"  => $request->bid,
+            "sm" . $request->semester . "_big"  => $request->big,
+        ];
+
+        $upd = $this->postWithToken("siswa/nilai/update", $data);
+
+        if ($upd['status_code'] == 200 || $upd['status_code'] == 201) {
+            return $upd['response'];
+        } else {
+            return [
+                "statusCode" => $upd['status_code'],
+                "status"     => "failed",
+                "messages"   => "Terjadi kesalahan.",
+                "data"       => []
+            ];
+        }
+    }
+
+    public function updateCoordinate(string $id, Request $request): array
+    {
+        $data = [
+            "pendaftaran_id"    => $id,
+            "lintang"           => $request->lintang,
+            "bujur"             => $request->bujur,
+        ];
+
+        $upd = $this->postWithToken("pendaftaran/update/titik/siswa", $data);
+
+        if ($upd['status_code'] == 200 || $upd['status_code'] == 201) {
+            return $upd['response'];
+        } else {
+            return [
+                "statusCode" => $upd['status_code'],
+                "status"     => "failed",
+                "messages"   => "Terjadi kesalahan.",
+                "data"       => []
             ];
         }
     }
