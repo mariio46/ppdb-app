@@ -16,14 +16,13 @@
             <form action="#" method="POST">
                 <div class="card-header">
                     <h4 class="card-title">Detail User</h4>
-                    <x-link :href="route('operators.edit', $username)">Edit Operator</x-link>
                 </div>
                 <div class="card-body pb-1">
                     <div class="row">
                         <div class="col-sm-6">
                             <table class="table table-borderless">
-                                <x-three-row-info identifier="name" label="Nama" />
-                                <x-three-row-info identifier="username" label="Username" />
+                                <x-three-row-info identifier="nama" label="Nama" />
+                                <x-three-row-info identifier="nama_pengguna" label="Username" />
                                 <x-three-row-info identifier="role" label="Role" />
                             </table>
                         </div>
@@ -42,32 +41,45 @@
                 </div>
             </form>
         </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Dokumen</h4>
+            </div>
+            <div class="card-body">
+                <div class="w-75" id="pdf-container">
+                    {{-- <iframe id="dokumen" src="https://api-ppdb.labkraf.id/storage/dokumen/admin/verifikasi/dok-verif20240117-174832.pdf"></iframe> --}}
+                    <embed src="https://api-ppdb.labkraf.id/storage/dokumen/admin/verifikasi/dok-verif20240117-174832.pdf" type="application/pdf" width="100%" height="100%">
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
 @push('scripts')
     <script>
-        var username = '{{ $username }}';
+        var param = '{{ $param }}';
     </script>
     <script>
         $(function() {
             'use strict';
 
             $.ajax({
-                url: `/panel/operators/json/singleOperator/${username}`,
+                url: `/panel/operators/json/operator/${param}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(operator) {
-                    $('#name').text(operator.name);
-                    $('#username').text(operator.username);
-                    $('#role').text(operator.role);
+                    console.log(operator);
+                    $('#nama').text(operator.nama);
+                    $('#nama_pengguna').text(operator.nama_pengguna);
+                    $('#role').text('Operator');
+                    // $('#dokumen').attr('src', operator.dokumen);
                     renderDokumenBadge(operator.dokumen);
                     renderStatusBadge(operator.status_aktif);
-                    if (operator.status_aktif !== 1) {
-                        $('#update-status').show()
-                        $('#separator-id').show()
-                        renderUpdateStatusButton(operator.status_aktif)
-                    }
+                    // if (operator.status_aktif !== 1) {
+                    //     $('#update-status').show()
+                    //     $('#separator-id').show()
+                    //     renderUpdateStatusButton(operator.status_aktif)
+                    // }
                 },
                 error: function(xhr, status, error) {
                     console.error("Failed to get data single operator.", status, error);
@@ -76,7 +88,7 @@
 
             function renderDokumenBadge(value) {
                 let badge = '';
-                if (value === 1) {
+                if (value !== null) {
                     badge = ` <x-badge class="" variant="light" color="success">Ada</x-badge>`;
                 } else {
                     badge = ` <x-badge class="" variant="light" color="danger">Tidak Ada</x-badge>`;
@@ -86,9 +98,9 @@
 
             function renderStatusBadge(status) {
                 let badge = '';
-                if (status === 1) {
+                if (status === 'v') {
                     badge = ` <x-badge class="" variant="light" color="warning">Menunggu Verifikasi</x-badge>`;
-                } else if (status === 2) {
+                } else if (status === 'a') {
                     badge = ` <x-badge class="" variant="light" color="success">Aktif</x-badge>`;
                 } else {
                     badge = ` <x-badge class="" variant="light" color="danger">Tidak Aktif</x-badge>`;

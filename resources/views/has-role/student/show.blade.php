@@ -340,7 +340,7 @@
                         $('#birth_day').text(`${tl.getDate()} ${months[tl.getMonth()]} ${tl.getFullYear()}`);
                         $('#phone').text(d.telepon || '-');
                         $('#email').text(d.email || '-');
-                        $("#login_code").text(d.pertama_login == "y" ? d.sandi_awal : "-" )
+                        $("#login_code").text(d.pertama_login == "y" ? d.sandi_awal : "-")
 
                         $('#province').text(d.provinsi || '-');
                         $('#city').text(d.kabupaten || '-');

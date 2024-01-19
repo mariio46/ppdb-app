@@ -33,8 +33,8 @@
             </div>
             <div class="card-body">
 
-                <form id="form-operator" enctype="multipart/form-data">
-                    {{-- @csrf --}}
+                <form id="form-operator" action="{{ route('operators.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-2">
@@ -126,7 +126,7 @@
                         dokumen: {
                             required: true,
                             extension: "pdf",
-                            maxsize: 500,
+                            maxsize: 500 * 1024,
                         }
                     },
                     messages: {

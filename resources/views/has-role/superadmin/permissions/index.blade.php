@@ -72,16 +72,16 @@
                         {
                             data: 'id',
                             render: function(data, type, row) {
-                                return `<a href="/panel/permissions/edit/${data}" class="btn btn-primary">Lihat Detail</a>`;
+                                return `<a href="/panel/permissions/${data}/edit" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         },
                     ],
 
                     // Styling Table
-                    // columnDefs: [{
-                    //     targets: 3,
-                    //     className: 'text-center'
-                    // }],
+                    columnDefs: [{
+                        targets: [2],
+                        className: 'text-center'
+                    }],
 
                     dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-6 d-flex"lf><"col-6"<"add-button">>>>
                     <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>

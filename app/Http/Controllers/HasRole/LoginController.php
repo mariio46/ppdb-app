@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\HasRole\LoginRepository;
+use App\Repositories\HasRole\LoginRepository as Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class LoginController extends Controller
 {
-    public function __construct(protected LoginRepository $loginRepository)
+    public function __construct(protected Auth $auth)
     {
         //
     }
@@ -22,7 +22,7 @@ class LoginController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $authenticate = $this->loginRepository->login($request->username, $request->password);
+        $authenticate = $this->auth->login($request->username, $request->password);
         if ($authenticate->get('status') == 'success') {
             return to_route('dashboard');
         } else {
@@ -32,10 +32,12 @@ class LoginController extends Controller
 
     public function destroy(): RedirectResponse
     {
-        $logout = $this->loginRepository->logout();
+        $logout = $this->auth->logout();
         if ($logout['success']) {
-            // code...
-            return to_route('login')->withErrors(['login_error' => 'You are already logout!']);
+            return to_route('login')->with([
+                'stat' => 'success',
+                'msg' => 'Anda berhasil keluar!',
+            ]);
         } else {
             return back();
         }

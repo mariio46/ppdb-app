@@ -29,93 +29,93 @@ class RegistrationModel extends Base
 
     public $informations = [
         'AA' => 'sma afirmasi'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'AB' => 'sma mutasi / perpindahan tugas orang tua'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'AC' => 'sma anak guru'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'AD' => 'sma prestasi akademik'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'AE' => 'sma prestasi non akademik'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'AF' => 'sma zonasi'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'AG' => 'sma boarding school'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         //  *
         'KA' => 'smk afirmasi'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'KB' => 'smk mutasi / perpindahan tugas orang tua'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'KC' => 'smk anak guru'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'KD' => '<p>Jalur prestasi nilai akademik diperuntukkan bagi calon peserta didik baru jenjang SMA/SMK, yang sistem penilaiannya merupakan gabungan rerata nilai rapor SMP/sederajat semester 1 sampai dengan semester 5, nilai akreditasi dari SMP/sederajat, dan indeks sekolah SMP/sederajat asal yang dimiliki oleh Dinas Pendidikan</p>'
-            . '<p>Mata pelajaran yang digunakan untuk Jalur Prestasi Nilai Akademik adalah</p>'
-            . '<ol>'
-            . '<li>Matematika</li>'
-            . '<li>Bahasa Indonesia</li>'
-            . '<li>Bahasa Inggris</li>'
-            . '<li>Ilmu Pengetahuan Alam</li>'
-            . '<li>Ilmu Pengetahuan Sosial</li>'
-            . '</ol>',
+            .'<p>Mata pelajaran yang digunakan untuk Jalur Prestasi Nilai Akademik adalah</p>'
+            .'<ol>'
+            .'<li>Matematika</li>'
+            .'<li>Bahasa Indonesia</li>'
+            .'<li>Bahasa Inggris</li>'
+            .'<li>Ilmu Pengetahuan Alam</li>'
+            .'<li>Ilmu Pengetahuan Sosial</li>'
+            .'</ol>',
         'KE' => 'smk prestasi non akademik'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'KF' => 'smk domisili'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
         'KG' => 'smk anak dudi'
-            . '<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
-            . '<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
-            . '<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
-            . '<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
-            . '<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
+            .'<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>'
+            .'<p>Eaque quam accusantium fugiat ipsa deleniti corporis at, distinctio accusamus error aliquam eos dolore ut necessitatibus possimus vero recusandae ratione voluptatibus commodi enim ullam dolores repellendus quod, architecto dolorem.</p>'
+            .'<p>Perspiciatis error optio mollitia consequatur, reprehenderit dolorem veritatis vel velit enim impedit et quaerat inventore minima accusantium esse quis, fuga ullam dicta odio nemo harum quisquam dolorum natus modi.</p>'
+            .'<p>Doloribus molestiae ducimus officiis ipsam aperiam numquam distinctio ex iste quam.</p>'
+            .'<p>Asperiores corrupti, sit alias distinctio magnam itaque officia nisi perspiciatis mollitia reprehenderit numquam voluptas quo aspernatur, architecto repudiandae nostrum dolorem culpa, praesentium nihil!</p>',
     ];
 
     private $p1 = ['start' => '2023-11-01', 'end' => '2023-11-30'];

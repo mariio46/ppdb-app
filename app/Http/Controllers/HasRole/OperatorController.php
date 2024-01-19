@@ -3,14 +3,44 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HasRole\OperatorRepository as Operator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class OperatorController extends Controller
 {
+    public function __construct(protected Operator $operator)
+    {
+        //
+    }
+
+    protected function authenticatedUserRoleId(): int
+    {
+        return session()->get('role_id');
+    }
+
     public function index(): View
     {
-        return view('has-role.operator.index');
+
+        $key = match ($this->authenticatedUserRoleId()) {
+            1 => 'id',
+            3 => 'cabdin_id',
+            4 => 'sekolah_id',
+            default => null,
+        };
+        $param = match ($this->authenticatedUserRoleId()) {
+            1 => session()->get('id'),
+            3 => session()->get('cabdin_id'),
+            4 => session()->get('sekolah_id'),
+            default => null,
+        };
+
+        return view('has-role.operator.index', [
+            'key' => $key,
+            'param' => $param,
+        ]);
     }
 
     public function create(): view
@@ -18,64 +48,42 @@ class OperatorController extends Controller
         return view('has-role.operator.create');
     }
 
-    public function show(string $username): View
+    public function store(Request $request): RedirectResponse
     {
-        return view('has-role.operator.show', compact('username'));
+        $sekolah_id = session()->get('sekolah_id');
+
+        $response = $this->operator->store(request: $request, param: $sekolah_id);
+
+        if ($response['statusCode'] == 201) {
+            return to_route('operators.index')->with([
+                'stat' => 'success',
+                'msg' => $response['messages'],
+            ]);
+        } else {
+            return to_route('operators.index')->with([
+                'stat' => 'error',
+                'msg' => $response['messages'],
+            ]);
+        }
     }
 
-    public function edit(string $username): View
+    public function show(string $param): View
     {
-        return view('has-role.operator.edit', ["id" => $username]);
+        return view('has-role.operator.show', compact('param'));
     }
 
-    // --------------------------------------------------DATA JSON--------------------------------------------------
-    protected function singleOperator(string $username): JsonResponse
+    // --------------------------------------------------DATA API JSON--------------------------------------------------
+    protected function operators(string $key, string $param): JsonResponse
     {
-        $operator = collect($this->operators()->original)->firstWhere('username', $username);
+        $operators = $this->operator->index(key: $key, param: $param);
 
-        return response()->json($operator);
+        return response()->json($operators['data']);
     }
 
-    protected function operators(): JsonResponse
+    public function operator(string $param): JsonResponse
     {
-        $operators = [
-            [
-                'id' => 1,
-                'nama' => 'Mawardi',
-                'nama_pengguna' => 'mawar58468',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 1,
-            ],
-            [
-                'id' => 2,
-                'nama' => 'Rais',
-                'nama_pengguna' => 'rais23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 3,
-            ],
-            [
-                'id' => 3,
-                'nama' => 'Edi Siswanto',
-                'nama_pengguna' => 'edi23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 1,
-            ],
-            [
-                'id' => 4,
-                'nama' => 'Aldi Taher',
-                'nama_pengguna' => 'taher23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 3,
-            ],
-            [
-                'id' => 5,
-                'nama' => 'Ainun Amirah',
-                'nama_pengguna' => 'ainun23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 2,
-            ],
-        ];
+        $operator = $this->operator->show(param: $param);
 
-        return response()->json($operators);
+        return response()->json($operator['data']);
     }
 }

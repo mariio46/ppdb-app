@@ -76,7 +76,7 @@
 
 @push('scripts')
     <script>
-        var id = '{{ $id }}'
+        var sekolah_id = '{{ $sekolah_id }}'
     </script>
     <script>
         $(function() {
@@ -99,10 +99,11 @@
             });
 
             $.ajax({
-                url: `/panel/data-sekolah/json/school/${id}`,
+                url: `/panel/data-sekolah/json/school/${sekolah_id}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(school) {
+                    // console.log('Data Sekolah : ', school);
                     let city_code = `${school.kode_provinsi}.${school.kode_kabupaten}`;
                     let district_code = `${school.kode_provinsi}.${school.kode_kabupaten}.${school.kode_kecamatan}`;
 
@@ -113,7 +114,7 @@
                     $('#alamat_jalan').val(school.alamat_jalan);
                     $('#desa').val(school.desa);
 
-                    loadCities(city_code);
+                    loadCities(school.kode_labupaten, school.kabupaten);
                     loadDistrict(city_code, district_code);
                 },
                 error: function(xhr, status, error) {
@@ -121,18 +122,20 @@
                 }
             });
 
-            function loadCities(params = '') {
+            function loadCities(code, name) {
                 $.ajax({
                     url: '/panel/get-city',
                     method: 'get',
                     dataType: 'json',
                     success: function(cities) {
+
                         kabupaten.empty().append('<option value=""></option>');
 
                         cities.forEach(item => {
-                            let selected = item.code === params ? 'selected' : '';
+                            let merge = `${code}|${name}`;
                             let value = `${item.code}|${item.name}`;
-                            kabupaten.append(`<option value="${value}" ${selected}>${item.name}</option>`)
+                            let selected_item = value === merge ? 'selected' : '';
+                            kabupaten.append(`<option value="${value}" ${selected_item}>${item.name}</option>`)
                         })
                     },
                     error: function(xhr, status, error) {

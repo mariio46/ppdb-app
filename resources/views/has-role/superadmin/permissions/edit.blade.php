@@ -14,7 +14,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="form-permission" action="#" method="POST">
+                <form id="form-permission" action="{{ route('permissions.update', $id) }}" method="POST">
+                    @csrf
                     <div class="mb-2">
                         <x-label for="name" value="Nama Permission" />
                         <x-input id="name" name="name" placeholder="Masukkan Nama Permission" />
@@ -59,7 +60,10 @@
                         </p>
                     </x-modal.body>
                     <x-modal.footer class="justify-content-center mb-3">
-                        <x-button color="danger">Ya, Hapus</x-button>
+                        <form action="{{ route('permissions.delete', $id) }}" method="post">
+                            @csrf
+                            <x-button color="danger">Ya, Hapus</x-button>
+                        </form>
                         <x-button data-bs-dismiss="modal" color="secondary">Batalkan</x-button>
                     </x-modal.footer>
                 </x-modal>
@@ -90,6 +94,7 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(permission) {
+                    console.log('Permission Result : ', permission);
                     $('#name').val(permission.name);
                     $('#keterangan').val(permission.keterangan);
                     $('#modal-heading-1').text(`Hapus Permission ${permission.name}?`);

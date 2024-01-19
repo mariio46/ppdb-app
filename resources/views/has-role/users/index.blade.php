@@ -26,11 +26,11 @@
 
 @section('content')
     <div class="content-body">
-        @if (session()->get('stat'))
+        {{-- @if (session()->get('stat'))
             <div class="alert alert-{{ session()->get('stat') }} p-1">
                 <p class="text-center mb-0">{{ session()->get('msg') }}</p>
             </div>
-        @endif
+        @endif --}}
         <div class="card">
             <div class="card-body p-0">
                 <table class="table table-users">

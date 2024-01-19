@@ -18,8 +18,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 @endsection
@@ -88,7 +93,7 @@
                     </div>
 
                     <div class="d-flex align-items-center justify-content-start gap-2">
-                        <x-button type="submit" color="success" id="submitbtn" disabled>Simpan Perubahan</x-button>
+                        <x-button id="submitbtn" type="submit" color="success" disabled>Simpan Perubahan</x-button>
                         <x-link type="button" href="{{ route('siswa.show', [$id]) }}" variant="outline" color="secondary">Batalkan</x-link>
                     </div>
                 </form>
@@ -110,7 +115,7 @@
         $(function() {
             'use strict';
 
-            var select = $('.select2'), 
+            var select = $('.select2'),
                 originSchool = $("#sekolah_asal");
 
             if (select) {
