@@ -86,4 +86,9 @@ class Track
     {
         return collect($this->collection())->where('type', '=', $type)->values();
     }
+
+    public function getCodeName(): Collection
+    {
+        return collect(collect($this->collection())->pluck('name', 'code')->all());
+    }
 }

@@ -64,13 +64,13 @@ Route::controller(StudentController::class)->group(function () {
     Route::post('siswa/{id}/update', 'update')->name('siswa.update');
     Route::post('siswa/{id}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
 
-    Route::get('siswa/get-scores/{id}/{semester}', 'getScores');
-
     Route::get('siswa/json/get-list', 'getStudents')->name('siswa.json.all');
     Route::get('siswa/json/get-single/{id}', 'getSingleStudent')->name('siswa.json.single');
     Route::get('siswa/json/search-nisn/{nisn}', 'getSingleStudentByNisn')->name('siswa.json.search');
     Route::get('siswa/json/get-origin-school-list', 'getOriginSchools')->name('siswa.json.origin-school');
     Route::get('siswa/json/get-grades/{id}', 'getGrades')->name('siswa.json.grades');
+    Route::get('siswa/json/get-scores/{id}', 'getScores')->name('siswa.json.scores');
+    Route::get('siswa/json/get-score/{id}/{semester}', 'getScore')->name('siswa.json.score');
 });
 
 Route::controller(SchoolController::class)->group(function () {
@@ -118,13 +118,19 @@ Route::controller(OperatorController::class)->group(function () {
 
 Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual', 'manual')->name('verifikasi.manual');
-    Route::get('verifikasi-manual/get-data', 'manualGetData');
     Route::get('verifikasi-manual/d/{id}', 'manualDetail')->name('verifikasi.manual.detail');
-    Route::get('verifikasi-manual/d/{id}/get-data-detail', 'manualgetDetailData')->name('verifikasi.manual.getdetail');
     Route::get('verifikasi-manual/d/{id}/edit-nilai', 'manualScore')->name('verifikasi.manual.score');
     Route::get('verifikasi-manual/d/{id}/edit-titik-rumah', 'manualMap')->name('verifikasi.manual.map');
+    Route::get('verifikasi-manual/d/{id}/edit-prestasi', 'manualAchievement')->name('verifikasi.manual.achievement');
+
+    Route::post('verifikasi-manual/d/{id}/update-score', 'manualUpdateScore')->name('verifikasi.manual.update-score');
+    Route::post('verifikasi-manual/d/{id}/update-map', 'manualUpdateMap')->name('verifikasi.manual.update-map');
+    Route::post('verifikasi-manual/d/{id}/update-achievement', 'manualUpdateAchievement')->name('verifikasi.manual.update-achievement');
     Route::post('verifikasi-manual/d/{id}/accept-verication', 'manualAcceptVerification')->name('verifikasi.manual.accept');
     Route::post('verifikasi-manual/d/{id}/decline-verication', 'manualDeclineVerification')->name('verifikasi.manual.decline');
+
+    Route::get('verifikasi-manual/get-data', 'manualGetData');
+    Route::get('verifikasi-manual/d/{id}/get-data-detail', 'manualgetDetailData')->name('verifikasi.manual.getdetail');
 
     // Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar-ulang');
     // Route::get('verifikasi-daftar-ulang/{nisn}', 'reregistrationShow')->name('verifikasi.daftar-ulang.show');

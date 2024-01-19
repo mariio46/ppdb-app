@@ -177,10 +177,11 @@
 
                     if (t == 'AE' || t == 'KE') {
                         let a = [
-                        {"label" : "Jenis Prestasi", "value" : data.prestasi_jenis},
-                        {"label" : "Tingkatan Prestasi", "value" : data.prestasi_tingkat},
-                        {"label" : "Juara", "value" : data.prestasi_juara},
-                        {"label" : "Nama Prestasi", "value" : data.prestasi_nama}
+                            {"label" : "Jenis Prestasi", "value" : capitalizeEachWord(data.prestasi_jenis)},
+                            {"label" : "Tingkatan Prestasi", "value" : capitalizeEachWord(data.prestasi_tingkat)},
+                            {"label" : "Juara", "value" : data.prestasi_juara},
+                            {"label" : "Nama Prestasi", "value" : data.prestasi_nama},
+                            {"label" : "Bobot", "value" : `${data.bobot} poin`}
                         ];
 
                         addDataSect.append(addDataHtml(a));
@@ -189,11 +190,11 @@
                     chosenSchoolSect.html('');
                     if (j == 'A') { // if the type of school is high school (SMA)
                         if (t == 'AC' || t == 'AG') { // if the track is teacher's child or boarding school
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama));
                         } else {
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_id, '1'));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_id, '2'));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_id, '3'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama, '1'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_nama ?? '-', '2'));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3'));
                         }
                     } else if (j == 'K') { // if the type of school is vocational school (SMK)
                         chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1, '1', 'y', data.jurusan1));
@@ -201,7 +202,8 @@
                         chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3, '3', 'y', data.jurusan3));
                     }
 
-                    schoolVerif.text(data.sekolah_verif_id);
+                    let schver = (data.sekolah_verif_id == data.sekolah1_id) ? data.sekolah1_nama : ((data.sekolah_verif_id == data.sekolah2_id) ? data.sekolah2_nama : data.sekolah3_nama);
+                    schoolVerif.text(schver);
                     endVerif.text(d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear());
                     },
                     error: function(xhr, status, error) {
@@ -250,6 +252,12 @@
                 </div>
                 
                 ${dept}`;
+            }
+
+            function capitalizeEachWord(inputString) {
+                let words = inputString.split("_");
+                let capWord = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+                return capWord;
             }
         });
     </script>

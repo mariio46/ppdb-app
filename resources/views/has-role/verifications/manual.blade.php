@@ -128,10 +128,10 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/verifikasi-manual/get-data',
-                        dataSrc: ""
+                        dataSrc: "data"
                     },
                     columns: [{
-                            data: "nama"
+                            data: "nama_siswa"
                         },
                         {
                             data: "nisn",
@@ -140,7 +140,7 @@
                             }
                         },
                         {
-                            data: "jalur",
+                            data: "kode_jalur",
                             render: function(data, type, row) {
                                 return tracks[data];
                             }
@@ -150,26 +150,25 @@
                             render: function(data, type, row) {
                                 let color, status;
                                 switch (data) {
-                                    case 'b':
+                                    case 'mendaftar':
                                         color = 'warning';
                                         status = 'Belum diverifikasi';
                                         break;
-                                    case 's':
-                                        color = 'success';
-                                        status = 'Sudah diverifikasi';
-                                        break;
-                                    case 't':
+                                    case 'dikembalikan':
                                         color = 'danger';
                                         status = 'Verifikasi ditolak';
                                         break;
+                                    case 'verifikasi':
                                     default:
+                                        color = 'success';
+                                        status = 'Sudah diverifikasi';
                                         break;
                                 }
                                 return `<span class="mb-0 d-inline-block border-${color} text-${color} rounded" style="padding: 0.5rem; width: 150px;">${status}</span>`;
                             }
                         },
                         {
-                            data: "id",
+                            data: "pendaftaran_id",
                             render: function(data, type, row) {
                                 return `<a href="/panel/verifikasi-manual/d/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }

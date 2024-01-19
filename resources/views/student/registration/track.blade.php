@@ -104,6 +104,84 @@
 @push('scripts')
     <script>
         var track = '{{ $track }}';
+        function countBobot(type, level, n) {
+            let bobot = 0;
+            if (type == "berjenjang" && level == "internasional" && n == 1) {
+                bobot = 100;
+            } else if (type == "berjenjang" && level == "internasional" && n == 2) {
+                bobot = 95;
+            } else if (type == "berjenjang" && level == "internasional" && n == 3) {
+                bobot = 90;
+            } else if (type == "berjenjang" && level == "nasional" && n == 1) {
+                bobot = 85;
+            } else if (type == "berjenjang" && level == "nasional" && n == 2) {
+                bobot = 80;
+            } else if (type == "berjenjang" && level == "nasional" && n == 3) {
+                bobot = 75;
+            } else if (type == "berjenjang" && level == "provinsi" && n == 1) {
+                bobot = 70;
+            } else if (type == "berjenjang" && level == "provinsi" && n == 2) {
+                bobot = 65;
+            } else if (type == "berjenjang" && level == "provinsi" && n == 3) {
+                bobot = 60;
+            } else if (type == "berjenjang" && level == "kabupaten" && n == 1) {
+                bobot = 55;
+            } else if (type == "berjenjang" && level == "kabupaten" && n == 2) {
+                bobot = 50;
+            } else if (type == "berjenjang" && level == "kabupaten" && n == 3) {
+                bobot = 45;
+            } else if (type == "tidak_berjenjang" && level == "internasional" && n == 1) {
+                bobot = 85;
+            } else if (type == "tidak_berjenjang" && level == "internasional" && n == 2) {
+                bobot = 80;
+            } else if (type == "tidak_berjenjang" && level == "internasional" && n == 3) {
+                bobot = 75;
+            } else if (type == "tidak_berjenjang" && level == "nasional" && n == 1) {
+                bobot = 70;
+            } else if (type == "tidak_berjenjang" && level == "nasional" && n == 2) {
+                bobot = 65;
+            } else if (type == "tidak_berjenjang" && level == "nasional" && n == 3) {
+                bobot = 60;
+            } else if (type == "tidak_berjenjang" && level == "provinsi" && n == 1) {
+                bobot = 55;
+            } else if (type == "tidak_berjenjang" && level == "provinsi" && n == 2) {
+                bobot = 50;
+            } else if (type == "tidak_berjenjang" && level == "provinsi" && n == 3) {
+                bobot = 45;
+            } else if (type == "tidak_berjenjang" && level == "kabupaten" && n == 1) {
+                bobot = 40;
+            } else if (type == "tidak_berjenjang" && level == "kabupaten" && n == 2) {
+                bobot = 35;
+            } else if (type == "tidak_berjenjang" && level == "kabupaten" && n == 3) {
+                bobot = 30;
+            } else if (type == "beregu" && level == "internasional" && n == 1) {
+                bobot = 70;
+            } else if (type == "beregu" && level == "internasional" && n == 2) {
+                bobot = 65;
+            } else if (type == "beregu" && level == "internasional" && n == 3) {
+                bobot = 60;
+            } else if (type == "beregu" && level == "nasional" && n == 1) {
+                bobot = 55;
+            } else if (type == "beregu" && level == "nasional" && n == 2) {
+                bobot = 50;
+            } else if (type == "beregu" && level == "nasional" && n == 3) {
+                bobot = 45;
+            } else if (type == "beregu" && level == "provinsi" && n == 1) {
+                bobot = 40;
+            } else if (type == "beregu" && level == "provinsi" && n == 2) {
+                bobot = 35;
+            } else if (type == "beregu" && level == "provinsi" && n == 3) {
+                bobot = 30;
+            } else if (type == "beregu" && level == "kabupaten" && n == 1) {
+                bobot = 25;
+            } else if (type == "beregu" && level == "kabupaten" && n == 2) {
+                bobot = 20;
+            } else if (type == "beregu" && level == "kabupaten" && n == 3) {
+                bobot = 15;
+            }
+
+            return bobot;
+        }
     </script>
     @if (substr($track, 0, 1) == 'A')
         {{-- <script src="/js/student/pages/registration/track-base-sma-v1.0.1.js"></script> --}}
@@ -159,7 +237,12 @@
                         var $this = $(this);
                         $this.wrap('<div class="position-relative"></div>');
                         $this.select2({
-                            dropdownParent: $this.parent()
+                            dropdownParent: $this.parent(),
+                            language: {
+                                noResults: function () {
+                                   return "Tidak ada data ditemukan.";
+                                }
+                            }
                         });
                     });
                 }
@@ -205,6 +288,7 @@
                 // load school
                 // --------------------------------------------------------------------
                 function loadSchool(n, cityCode = '0') {
+                    $(`#school${n}`).empty().append('<option value="0" selected disabled>memuat...</option>');
                     $.ajax({
                         url: `/schools/by-city/${cityCode}/sma`,
                         method: 'get',
@@ -219,6 +303,7 @@
                         },
                         error: function(xhr, status, error) {
                             console.error("Gagal mendapatkan data: ", status, error);
+                            $(`#school${n}`).empty().append('<option value=""></option>');
                         }
                     })
                 }
@@ -261,6 +346,15 @@
                         error: function(xhr, status, error) {
                             console.error("Gagal mendapatkan data: ", status, error);
                         }
+                    });
+                }
+
+                // pembobotan
+                if (achType.length && achLevel.length && achChamp.length) {
+                    $('#achievementType, #achievementLevel, #achievementChamp').change(function() {
+                        let bobot = countBobot(achType.val(), achLevel.val(), achChamp.val());
+                        $('#bobotx').text(bobot);
+                        $('#achievementWeight').val(bobot);
                     });
                 }
 
