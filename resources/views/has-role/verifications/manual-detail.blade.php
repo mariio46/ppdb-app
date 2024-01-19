@@ -547,7 +547,7 @@
                         $('#reason').text(d.alasan_tolak);
                     } else {
                         $('#verified').show();
-                        $('#verificator').text(d.verifikator);
+                        $('#verificator').text(d.operator_nama);
                     }
                 },
                 error: function(xhr, status, error) {

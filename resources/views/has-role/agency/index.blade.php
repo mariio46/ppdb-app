@@ -102,7 +102,8 @@
                     <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>
                     <"table-responsive"<t>>
                     <"row g-0"<"col-sm-12 col-md-5 ps-1"i><"col-sm-12 pe-1 col-md-7"p>>`,
-                    ordering: false,
+                    // ordering: false,
+                    order: [[0, 'asc']],
                     lengthMenu: [
                         [10, 25, 50, 100],
                         [10, 25, 50, "100"]
