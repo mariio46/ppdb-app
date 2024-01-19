@@ -10,7 +10,7 @@ class Base
 
     protected function postWithoutToken(string $endpoint, array $data): array
     {
-        $response = Http::post($this->BASE_API_URL.$endpoint, $data);
+        $response = Http::post($this->BASE_API_URL . $endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -22,8 +22,8 @@ class Base
     {
         $response = Http::withHeaders([
             'waktu' => 5,
-            'dn-code' => session()->get('token'),
-        ])->post($this->BASE_API_URL.$endpoint, $data);
+            'Dn-Code' => session()->get('token'),
+        ])->post($this->BASE_API_URL . $endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -35,8 +35,8 @@ class Base
     {
         $response = Http::withHeaders([
             'waktu' => 5,
-            'dn-code' => session()->get('token'),
-        ])->get($this->BASE_API_URL.$endpoint);
+            'Dn-Code' => session()->get('token'),
+        ])->get($this->BASE_API_URL . $endpoint);
 
         return [
             'status_code' => $response->status(),
@@ -48,8 +48,8 @@ class Base
     {
         $response = Http::withHeaders([
             'waktu' => 5,
-            'sw-code' => session()->get('stu_token'),
-        ])->get($this->BASE_API_URL.$endpoint);
+            'Sw-Code' => session()->get('stu_token'),
+        ])->get($this->BASE_API_URL . $endpoint);
 
         return [
             'status_code' => $response->status(),
@@ -61,8 +61,8 @@ class Base
     {
         $response = Http::withHeaders([
             'waktu' => 5,
-            'sw-code' => session()->get('stu_token'),
-        ])->post($this->BASE_API_URL.$endpoint, $data);
+            'Sw-Code' => session()->get('stu_token'),
+        ])->post($this->BASE_API_URL . $endpoint, $data);
 
         return [
             'status_code' => $response->status(),
