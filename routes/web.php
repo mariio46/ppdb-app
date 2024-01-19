@@ -59,7 +59,7 @@ Route::group(['middleware' => 'student.auth'], function () {
     Route::controller(StatusController::class)->group(function () {
         Route::get('/status', 'index')->name('student.status');
 
-        Route::get('/status/get-status', 'getStatus')->name('student.status.get-data');
+        Route::get('json/status/get-status', 'getStatus')->name('student.status.get-data');
     });
 
     // School

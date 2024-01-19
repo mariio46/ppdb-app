@@ -26,12 +26,6 @@
         </div>
     </div>
 
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ json_encode(session()->get('data')) }}</p>
-        </div>
-    @endif
-
     <div class="content-body row">
         <div class="col-12">
             <div class="card">

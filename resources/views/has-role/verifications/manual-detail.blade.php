@@ -35,7 +35,7 @@
                 <div class="card-body">
                     <h4 class="text-primary mb-2 ms-2">Data Diri</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="name" label="Nama Lengkap" />
@@ -66,7 +66,7 @@
                 <div class="card-body border-top">
                     <h4 class="text-primary mb-2 ms-2">Data Alamat</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="province" label="Provinsi" />
@@ -93,7 +93,7 @@
                 <div class="card-body border-top">
                     <h4 class="text-primary mb-2 ms-2">Data Orang Tua</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="motherName" label="Nama Ibu Kandung" />
@@ -114,7 +114,7 @@
                 <div class="card-body border-top">
                     <h4 class="text-primary mb-2 ms-2">Data Wali</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="guardName" label="Nama Wali" />
@@ -201,15 +201,19 @@
                 <div class="card-body">
                     <h4 class="text-primary ms-2 mb-2">Pendaftaran</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="track" label="Jalur Pendaftaran" />
+                            </table>
+                        </div>
+                    </div>
 
+                    <div class="row px-2">
+                        <div class="col-lg-6 col-12">
+                            <table class="table table-borderless">
                                 {{-- for affirmation --}}
                                 <x-three-row-info identifier="affType" label="Jenis Afirmasi" hide="y" />
-
-                                <x-three-row-info identifier="affNum" label="Nomor PKH" hide="y" />
 
                                 {{-- for non academic achievement --}}
                                 <x-three-row-info identifier="achType" label="Jenis Prestasi" hide="y" />
@@ -217,16 +221,29 @@
                                 <x-three-row-info identifier="achLevel" label="Tingkatan Prestasi" hide="y" />
 
                                 <x-three-row-info identifier="achChamp" label="Juara" hide="y" />
-
-                                <x-three-row-info identifier="achName" label="Nama Prestasi" hide="y" />
                             </table>
                         </div>
+                        <div class="col-lg-6 col-12">
+                            <table class="table table-borderless">
+                                {{-- affirmation --}}
+                                <x-three-row-info identifier="affNum" label="Nomor PKH" hide="y" />
+
+                                {{-- non academic --}}
+                                <x-three-row-info identifier="achName" label="Nama Prestasi" hide="y" />
+                                
+                                <x-three-row-info identifier="achWeight" label="Bobot" hide="y" />
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="px-2 mt-1" style="display: none;" id="editAchievementBtn">
+                        <x-link href="{{ route('verifikasi.manual.achievement', [$id]) }}" color="success">Edit Data Prestasi</x-link>
                     </div>
                 </div>
                 <div class="card-body border-top">
                     <h4 class="text-primary ms-2 mb-2">Sekolah Pilihan</h4>
 
-                    <div class="row">
+                    <div class="row px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="school1" label="Sekolah Pilihan 1" />
@@ -251,13 +268,16 @@
                 <div class="card-body">
                     <h4 class="text-primary mb-2 ms-2">Tambah Titik Rumah Calon Peserta Didik</h4>
 
-                    <div class="row mb-2">
+                    <div class="row mb-2 px-2">
                         <div class="col-lg-6 col-12">
                             <table class="table table-borderless">
                                 <x-three-row-info identifier="coordinate" label="Koordinat Rumah" />
 
                                 <x-three-row-info identifier="distance1" label="Jarak Rumah ke Sekolah 1" />
-
+                            </table>
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <table class="table table-borderless">
                                 <x-three-row-info identifier="distance2" label="Jarak Rumah ke Sekolah 2" />
 
                                 <x-three-row-info identifier="distance3" label="Jarak Rumah ke Sekolah 3" />
@@ -284,9 +304,9 @@
             {{-- verification's check --}}
             <div class="card">
                 <div class="card-body">
-                    <h4 class="mb-2">Verifikasi Pendaftaran</h4>
+                    <h4 class="mb-2 ms-2">Verifikasi Pendaftaran</h4>
 
-                    <div id="verification" style="display: none;">
+                    <div class="px-2" id="verification" style="display: none;">
                         <div class="alert alert-primary p-1">
                             <p class="mb-0">Periksa kembali data calon peserta didik, Pastikan semuanya benar. Data yang sudah diverifikasi tidak dapat diubah lagi.</p>
                         </div>
@@ -308,6 +328,12 @@
                                             <div class="d-flex justify-content-center mb-3">
                                                 <form id="acceptForm" action="{{ route('verifikasi.manual.accept', [$id]) }}" method="post">
                                                     @csrf
+                                                    <x-input type="hidden" name="avg_total" id="avg_total" />
+                                                    <x-input type="hidden" name="avg_mtk" id="avg_mtk" />
+                                                    <x-input type="hidden" name="avg_bid" id="avg_bid" />
+                                                    <x-input type="hidden" name="avg_big" id="avg_big" />
+                                                    <x-input type="hidden" name="avg_ipa" id="avg_ipa" />
+                                                    <x-input type="hidden" name="avg_ips" id="avg_ips" />
 
                                                     <x-button class="me-1" type="submit" color="success">Ya, Verifikasi</x-button>
                                                 </form>
@@ -351,7 +377,7 @@
                         </div>
                     </div>
 
-                    <div id="verified" style="display: none;">
+                    <div class="px-2" id="verified" style="display: none;">
                         <div class="row mb-2">
                             <div class="col-lg-6 col-12">
                                 <table class="table table-borderless">
@@ -370,7 +396,7 @@
                         </a>
                     </div>
 
-                    <div id="declined" style="display: none;">
+                    <div class="px-2" id="declined" style="display: none;">
                         <div class="row mb-2">
                             <div class="col-lg-6 col-12">
                                 <table class="table table-borderless">
@@ -443,11 +469,12 @@
                 dataType: 'json',
                 success: function(data) {
                     let d = data.data;
+                    console.log(d);
 
                     $('#name').text(d.nama);
                     $('#nisn').text(d.nisn);
                     $('#nik').text(d.nik);
-                    $('#originSchool').text(d.asal_sekolah);
+                    $('#originSchool').text(d.sekolah_asal);
                     $('#gender').text(d.jenis_kelamin == 'p' ? 'Perempuan' : 'Laki-laki');
                     $('#birthplace').text(d.tempat_lahir);
                     $('#birthday').text(d.tanggal_lahir);
@@ -460,41 +487,17 @@
                     $('#hamlet').text(d.dusun);
                     $('#rtrw').text(d.rtrw);
                     $('#address').text(d.alamat_jalan);
-                    $('#motherName').text(d.nama_ibu_kandung);
+                    $('#motherName').text(d.nama_ibu);
                     $('#motherPhone').text(d.telepon_ibu);
                     $('#fatherName').text(d.nama_ayah);
                     $('#fatherPhone').text(d.telepon_ayah);
                     $('#guardName').text(d.nama_wali || '-');
                     $('#guardPhone').text(d.telepon_wali || '-');
 
-                    $('#sm1_bid').text(d.sm1_bid);
-                    $('#sm2_bid').text(d.sm2_bid);
-                    $('#sm3_bid').text(d.sm3_bid);
-                    $('#sm4_bid').text(d.sm4_bid);
-                    $('#sm5_bid').text(d.sm5_bid);
-                    $('#sm1_big').text(d.sm1_big);
-                    $('#sm2_big').text(d.sm2_big);
-                    $('#sm3_big').text(d.sm3_big);
-                    $('#sm4_big').text(d.sm4_big);
-                    $('#sm5_big').text(d.sm5_big);
-                    $('#sm1_mtk').text(d.sm1_mtk);
-                    $('#sm2_mtk').text(d.sm2_mtk);
-                    $('#sm3_mtk').text(d.sm3_mtk);
-                    $('#sm4_mtk').text(d.sm4_mtk);
-                    $('#sm5_mtk').text(d.sm5_mtk);
-                    $('#sm1_ipa').text(d.sm1_ipa);
-                    $('#sm2_ipa').text(d.sm2_ipa);
-                    $('#sm3_ipa').text(d.sm3_ipa);
-                    $('#sm4_ipa').text(d.sm4_ipa);
-                    $('#sm5_ipa').text(d.sm5_ipa);
-                    $('#sm1_ips').text(d.sm1_ips);
-                    $('#sm2_ips').text(d.sm2_ips);
-                    $('#sm3_ips').text(d.sm3_ips);
-                    $('#sm4_ips').text(d.sm4_ips);
-                    $('#sm5_ips').text(d.sm5_ips);
+                    getScore(d.siswa_id);
 
-                    $('#track').text(tracks[d.jalur]);
-                    if (d.jalur == 'AA' || d.jalur == 'KA') { // affirmation
+                    $('#track').text(tracks[d.kode_jalur]);
+                    if (d.kode_jalur == 'AA' || d.kode_jalur == 'KA') { // affirmation
                         $('#traffType').show();
                         $('#affType').text(d.jenis_afirmasi);
 
@@ -503,34 +506,37 @@
                             $('#affNum').text(d.no_pkh);
                         }
                     }
-                    if (d.jalur == 'AE' || d.jalur == 'KE') { // non academic achievement
-                        $('#trachType, #trachLevel, #trachChamp, #trachName').show();
-                        $('#achType').text(d.prestasi_jenis);
-                        $('#achLevel').text(d.prestasi_tingkat);
+                    if (d.kode_jalur == 'AE' || d.kode_jalur == 'KE') { // non academic achievement
+                        $('#trachType, #trachLevel, #trachChamp, #trachName, #trachWeight, #editAchievementBtn').show();
+                        $('#achType').text(capitalizeEachWord(d.prestasi_jenis));
+                        $('#achLevel').text(capitalizeEachWord(d.prestasi_tingkat));
                         $('#achChamp').text(d.prestasi_juara);
                         $('#achName').text(d.prestasi_nama);
+                        $('#achWeight').text(`${d.bobot} poin`);
                     }
 
                     $('#school1').text(d.sekolah1);
-                    if (d.jalur != 'AC' && d.jalur != 'AG' && d.jalur != 'KC' && d.jalur != 'KG') { // not teacher's child (A & K) and boarding school (A) and partner's child (K)
+                    if (d.kode_jalur != 'AC' && d.kode_jalur != 'AG' && d.kode_jalur != 'KC' && d.kode_jalur != 'KG') { // not teacher's child (A & K) and boarding school (A) and partner's child (K)
                         $('#trschool2, #trschool3').show();
                         $('#school2').text(d.sekolah2 || '-');
                         $('#school3').text(d.sekolah3 || '-');
                     }
-                    if (d.jalur.charAt(0) == 'K') {
+                    if (d.kode_jalur.charAt(0) == 'K') {
                         $('#trdep1, #trdep2, #trdep3').show();
                         $('#dep1').text(d.jurusan1);
                         $('#dep2').text(d.jurusan2 || '-');
                         $('#dep3').text(d.jurusan3 || '-');
                     }
 
-                    if (d.jalur === 'AA' || d.jalur === 'AB' || d.jalur === 'AF' || d.jalur === 'KF') {
+                    if (d.kode_jalur === 'AA' || d.kode_jalur === 'AB' || d.kode_jalur === 'AF' || d.kode_jalur === 'KF') {
                         $('#cardMap').show();
 
-                        $('#coordinate').text(d.lintang + ', ' + d.bujur || '0, 0');
-                        $('#distance1').text(d.jarak1 ? d.jarak1 + ' m' : '-');
-                        $('#distance2').text(d.jarak2 ? d.jarak2 + ' m' : '-');
-                        $('#distance3').text(d.jarak3 ? d.jarak3 + ' m' : '-');
+                        let coor = (d.lintang.length && d.bujur.length) ? `${d.lintang}, ${d.bujur}` : "-";
+
+                        $('#coordinate').text(coor);
+                        $('#distance1').text(d.jarak1 ? `${toKm(d.jarak1)} km` : '-');
+                        $('#distance2').text(d.jarak2 ? `${toKm(d.jarak2)} km` : '-');
+                        $('#distance3').text(d.jarak3 ? `${toKm(d.jarak3)} km` : '-');
                     }
 
                     if (d.status == 'mendaftar') {
@@ -541,13 +547,62 @@
                         $('#reason').text(d.alasan_tolak);
                     } else {
                         $('#verified').show();
-                        $('#verificator').text(d.verifikator);
+                        $('#verificator').text(d.operator_nama);
                     }
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
                 }
-            })
+            });
+
+            function getScore(student_id) {
+                $.ajax({
+                    url: `/panel/siswa/json/get-scores/${student_id}`,
+                    method: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                        let score = data.data;
+                        let total = 0, sum_bid = 0, sum_big = 0, sum_ipa = 0, sum_ips = 0, sum_mtk = 0;
+                        for (let i = 1; i <= 5; i++) {
+                            $(`#sm${i}_bid`).text(score[`sm${i}_bid`]);
+                            $(`#sm${i}_big`).text(score[`sm${i}_big`]);
+                            $(`#sm${i}_mtk`).text(score[`sm${i}_mtk`]);
+                            $(`#sm${i}_ipa`).text(score[`sm${i}_ipa`]);
+                            $(`#sm${i}_ips`).text(score[`sm${i}_ips`]);
+
+                            sum_bid += parseInt(score[`sm${i}_bid`]);
+                            sum_big += parseInt(score[`sm${i}_big`]);
+                            sum_mtk += parseInt(score[`sm${i}_mtk`]);
+                            sum_ipa += parseInt(score[`sm${i}_ipa`]);
+                            sum_ips += parseInt(score[`sm${i}_ips`]);
+                            total += parseInt(score[`sm${i}_bid`]) + parseInt(score[`sm${i}_big`]) + parseInt(score[`sm${i}_mtk`]) + parseInt(score[`sm${i}_ipa`]) + parseInt(score[`sm${i}_ips`]);
+                        }
+
+                        $('#avg_bid').val(sum_bid / 5);
+                        $('#avg_big').val(sum_big / 5);
+                        $('#avg_mtk').val(sum_mtk / 5);
+                        $('#avg_ipa').val(sum_ipa / 5);
+                        $('#avg_ips').val(sum_ips / 5);
+                        $('#avg_total').val(total / 25);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('gagal mendapatkan data.', status, error);
+                    }
+                });
+            }
+
+            function capitalizeEachWord(inputString) {
+                console.log(inputString);
+                let words = inputString.split("_");
+                let capWord = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+                return capWord;
+            }
+
+            function toKm(distanceInMeters) {
+                var distanceInKilometers = distanceInMeters / 1000;
+                var formattedDistance = distanceInKilometers.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                return formattedDistance;
+            }
         });
     </script>
 @endpush
