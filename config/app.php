@@ -177,10 +177,16 @@ return [
          */
         App\Providers\HasRole\LoginServiceProvider::class,
         App\Providers\HasRole\AgencyServiceProvider::class,
-        App\Providers\HasRole\RoleServiceProvider::class,
         App\Providers\HasRole\UserServiceProvider::class,
         App\Providers\HasRole\SchoolServiceProvider::class,
         App\Providers\HasRole\SchoolDataServiceProvider::class,
+        App\Providers\HasRole\OperatorServiceProvider::class,
+        App\Providers\HasRole\FaqServiceProvider::class,
+        /*
+         * SuperAdmin Service Providers...
+         */
+        App\Providers\HasRole\SuperAdmin\RoleServiceProvider::class,
+        App\Providers\HasRole\SuperAdmin\PermissionServiceProvider::class,
 
         // ------------------------------------------------------------------
         /*

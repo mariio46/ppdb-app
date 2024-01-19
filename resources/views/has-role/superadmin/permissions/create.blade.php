@@ -19,7 +19,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="form-permission" action="#" method="POST">
+                <form id="form-permission" action="{{ route('permissions.store') }}" method="POST">
+                    @csrf
                     <div class="mb-2">
                         <x-label for="name" value="Nama Permission" />
                         <x-input id="name" name="name" placeholder="Masukkan Nama Permission" />

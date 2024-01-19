@@ -30,13 +30,11 @@ Route::controller(UserController::class)->group(function () {
     Route::get('users/{id}/lupa-password', 'forgotPassword')->name('users.lupa-password');
 
     Route::get('users/json/users', 'users');
-    Route::get('users/json/collections', 'usersCollections');
-    Route::get('users/json/rolesCollections', 'rolesCollections');
-    Route::get('users/json/regionsCollections', 'regionsCollections');
-    Route::get('users/json/schoolsCollections', 'schoolsCollections');
-    Route::get('users/json/originSchoolsCollections', 'originSchoolsCollections');
+    Route::get('users/json/roles', 'roles');
+    Route::get('users/json/regions', 'regions');
+    Route::get('users/json/schools', 'schools');
+    Route::get('users/json/origin-schools', 'originSchools');
     Route::get('users/json/user/{id}', 'user');
-    Route::get('users/json/single-user/{username}', 'singleUser');
 });
 
 Route::controller(OriginSchoolController::class)->group(function () {
@@ -109,11 +107,11 @@ Route::controller(SchoolDataController::class)->group(function () {
 Route::controller(OperatorController::class)->group(function () {
     Route::get('operators', 'index')->name('operators.index');
     Route::get('operators/create', 'create')->name('operators.create');
-    Route::get('operators/{username}', 'show')->name('operators.show');
-    Route::get('operators/{username}/edit', 'edit')->name('operators.edit');
+    Route::post('operators/store', 'store')->name('operators.store');
+    Route::get('operators/{param}', 'show')->name('operators.show');
 
-    Route::get('operators/json/operators', 'operators');
-    Route::get('operators/json/singleOperator/{username}', 'singleOperator');
+    Route::get('operators/json/operator/{param}', 'operator');
+    Route::get('operators/json/operators/{key}/{param}', 'operators');
 });
 
 Route::controller(VerificationController::class)->group(function () {
@@ -125,9 +123,6 @@ Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual/d/{id}/edit-titik-rumah', 'manualMap')->name('verifikasi.manual.map');
     Route::post('verifikasi-manual/d/{id}/accept-verication', 'manualAcceptVerification')->name('verifikasi.manual.accept');
     Route::post('verifikasi-manual/d/{id}/decline-verication', 'manualDeclineVerification')->name('verifikasi.manual.decline');
-
-    // Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar-ulang');
-    // Route::get('verifikasi-daftar-ulang/{nisn}', 'reregistrationShow')->name('verifikasi.daftar-ulang.show');
 });
 
 Route::controller(ReregistrationController::class)->group(function () {
@@ -187,10 +182,13 @@ Route::controller(ScheduleController::class)->group(function () {
 Route::controller(FaqController::class)->group(function () {
     Route::get('faqs', 'index')->name('faqs.index');
     Route::get('faqs/create', 'create')->name('faqs.create');
-    Route::get('faqs/{slug}/edit', 'edit')->name('faqs.edit');
+    Route::post('faqs/store', 'store')->name('faqs.store');
+    Route::get('faqs/{id}/edit', 'edit')->name('faqs.edit');
+    Route::post('faqs/{id}/update', 'update')->name('faqs.update');
+    Route::post('faqs/{id}/destroy', 'destroy')->name('faqs.destroy');
 
     Route::get('faqs/json/faqs', 'faqs');
-    Route::get('faqs/json/faq/{slug}', 'faq');
+    Route::get('faqs/json/faq/{id}', 'faq');
 });
 
 Route::controller(RegionController::class)->group(function () {

@@ -4,6 +4,7 @@ namespace App\Models\HasRole;
 
 use App\Models\Base;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class User extends Base
 {
@@ -22,45 +23,21 @@ class User extends Base
 
         $data = $this->postWithToken('admin/create', $body);
 
-        if ($data['status_code'] == 201 || $data['status_code'] == 200) {
-            $response = $data['response'];
-        } else {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'messages' => 'Gagal Menyimpan Data!',
-                'data' => [],
-            ];
-        }
-
-        return $response;
+        return $this->serverResponseWithPostMethod(data: $data);
     }
 
     public function getUsers(string $role_name): array
     {
         $users = $this->getWithToken("admin/list?role={$role_name}");
 
-        if ($users['status_code'] == 200) {
-            return $users['response'];
-        } else {
-            return [
-                'statusCode' => $users['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
+        return $this->serverResponseWithGetMethod(response: $users);
     }
 
     public function getSingleUser(string $user_id): array
     {
         $user = $this->getWithToken("admin/detail?id={$user_id}");
 
-        if ($user['status_code'] == 200) {
-            return $user['response'];
-        } else {
-            return [
-                'statusCode' => $user['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
+        return $this->serverResponseWithGetMethod(response: $user);
     }
 
     public function updateUser(Request $request, string $user_id): array
@@ -79,33 +56,79 @@ class User extends Base
 
         $data = $this->postWithToken('admin/edit', $body);
 
-        if ($data['status_code'] == 200) {
-            $response = $data['response'];
-        } else {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'messages' => 'Gagal Menyimpan Data!',
-                'data' => [],
-            ];
-        }
-
-        return $response;
+        return $this->serverResponseWithPostMethod(data: $data);
     }
 
     public function deleteUser(string $user_id): array
     {
-        $user = $this->postWithToken('admin/hapus', ['id' => $user_id]);
+        $data = $this->postWithToken('admin/hapus', ['id' => $user_id]);
 
-        if ($user['status_code'] == 200) {
-            $response = $user['response'];
-        } else {
-            $response = [
-                'statusCode' => $user['status_code'],
-                'messages' => 'Gagal Menghapus Data!',
-                'data' => [],
-            ];
-        }
+        return $this->serverResponseWithPostMethod(data: $data);
+    }
 
-        return $response;
+    // -------------------------FORM DATA-------------------------
+
+    public function getRegionsList(): Collection
+    {
+        $regions = $this->getWithToken(endpoint: 'cabdin/index');
+
+        $results = collect($regions['response']['data'])->map(fn ($region) => [
+            'value' => $region['id'],
+            'label' => $region['nama'],
+        ]);
+
+        return $regions['status_code'] == 200 ? $results : $this->serverFailedResponse(error: $regions);
+    }
+
+    public function getSchoolList(): Collection
+    {
+        $schools = $this->getWithToken(endpoint: 'sekolah');
+
+        $results = collect($schools['response']['data'])->map(fn ($school) => [
+            'value' => $school['id'],
+            'label' => $school['nama_sekolah'],
+        ]);
+
+        return $schools['status_code'] == 200 ? $results : $this->serverFailedResponse(error: $schools);
+    }
+
+    public function getRolesList(): Collection
+    {
+        $roles = [
+            [
+                'value' => 1,
+                'label' => 'Super Admin',
+            ],
+            [
+                'value' => 2,
+                'label' => 'Admin Provinsi',
+            ],
+            [
+                'value' => 3,
+                'label' => 'Admin Cabang Dinas',
+            ],
+            [
+                'value' => 4,
+                'label' => 'Admin Sekolah',
+            ],
+            [
+                'value' => 5,
+                'label' => 'Admin Sekolah Asal',
+            ],
+        ];
+
+        return collect($roles);
+    }
+
+    public function getOriginSchoolsList(): Collection
+    {
+        $origin_schools = $this->getWithToken(endpoint: 'sekolah/asal/all');
+
+        $results = collect($origin_schools['response']['data'])->map(fn ($school) => [
+            'value' => $school['id'],
+            'label' => $school['nama'],
+        ]);
+
+        return $origin_schools['status_code'] == 200 ? $results : $this->serverFailedResponse(error: $origin_schools);
     }
 }

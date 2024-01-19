@@ -5,14 +5,13 @@ namespace App\Http\Controllers\HasRole;
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\SchoolDataRepository as SchoolData;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class SchoolDataController extends Controller
 {
     public function __construct(protected SchoolData $school_data)
     {
-        //
+        // School Data Repository
     }
 
     public function index(): View
@@ -24,6 +23,24 @@ class SchoolDataController extends Controller
         return view('has-role.school-data.index', compact('sekolah_id', 'satuan_pendidikan'));
     }
 
+    public function edit(): View
+    {
+        $sekolah_id = session()->get('sekolah_id');
+
+        return view('has-role.school-data.edit', compact('sekolah_id'));
+    }
+
+    // public function quota(): View
+    // {
+    //     $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
+
+    //     $sekolah_id = session()->get('sekolah_id');
+
+    //     return $unit == 2
+    //         ? view('has-role.school-data.quota-smk', compact('npsn', 'unit'))
+    //         : view('has-role.school-data.quota', compact('npsn', 'unit'));
+    // }
+
     // --------------------------------------------------DATA API JSON--------------------------------------------------
 
     protected function school(string $school_id): JsonResponse
@@ -32,23 +49,6 @@ class SchoolDataController extends Controller
 
         return response()->json($school['data']);
     }
-
-    // public function edit(): View
-    // {
-    //     $id = $this->id;
-
-    //     return view('has-role.school-data.edit', compact('id'));
-    // }
-
-    // public function quota(): View
-    // {
-    //     $npsn = $this->id;
-    //     $unit = $this->unit;
-
-    //     return $unit == 2
-    //         ? view('has-role.school-data.quota-smk', compact('npsn', 'unit'))
-    //         : view('has-role.school-data.quota', compact('npsn', 'unit'));
-    // }
 
     // public function document(): View
     // {

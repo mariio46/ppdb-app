@@ -94,32 +94,34 @@
                 </a>
             </li>
 
-            <li class=" nav-item">
-                <a class="d-flex align-items-center" href="#">
-                    <x-tabler-shield />
-                    <span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">
-                        Roles &amp; Permission
-                    </span>
-                </a>
-                <ul class="menu-content">
-                    <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
-                            <i data-feather="circle"></i>
-                            <span class="menu-item text-truncate" data-i18n="Roles">
-                                Roles
-                            </span>
-                        </a>
-                    </li>
-                    <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" href="{{ route('permissions.index') }}">
-                            <i data-feather="circle"></i>
-                            <span class="menu-item text-truncate" data-i18n="Roles">
-                                Permission
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            @issuperadmin
+                <li class=" nav-item">
+                    <a class="d-flex align-items-center" href="#">
+                        <x-tabler-shield />
+                        <span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">
+                            Roles &amp; Permission
+                        </span>
+                    </a>
+                    <ul class="menu-content">
+                        <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                            <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
+                                <i data-feather="circle"></i>
+                                <span class="menu-item text-truncate" data-i18n="Roles">
+                                    Roles
+                                </span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}">
+                            <a class="d-flex align-items-center" href="{{ route('permissions.index') }}">
+                                <i data-feather="circle"></i>
+                                <span class="menu-item text-truncate" data-i18n="Roles">
+                                    Permission
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endissuperadmin
 
             <li class="nav-item {{ request()->routeIs('faqs.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('faqs.index') }}">

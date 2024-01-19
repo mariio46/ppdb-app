@@ -70,9 +70,8 @@
                             data: 'answer'
                         },
                         {
-                            data: 'slug',
+                            data: 'id',
                             render: function(data, type, row) {
-                                // console.log('Data Row', row);
                                 return `<a href="/panel/faqs/${data}/edit" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         },
@@ -80,9 +79,18 @@
 
                     // Styling Table
                     columnDefs: [{
-                        targets: [2],
-                        className: 'w-25 text-center'
-                    }],
+                            targets: [0],
+                            className: 'w-25'
+                        },
+                        {
+                            targets: [1],
+                            className: 'w-50'
+                        },
+                        {
+                            targets: [2],
+                            className: 'w-25 text-center'
+                        },
+                    ],
 
                     dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-6 d-flex"lf><"col-6"<"add-button">>>>
                     <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>
@@ -118,6 +126,15 @@
                 $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
                 $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
             }
+
+            // $.ajax({
+            //     url: '/panel/faqs/json/faqs',
+            //     method: 'get',
+            //     dataType: 'json',
+            //     success: function(faqs) {
+            //         console.log(faqs);
+            //     }
+            // })
         })
     </script>
 @endpush
