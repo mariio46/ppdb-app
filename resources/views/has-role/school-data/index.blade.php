@@ -43,14 +43,14 @@
                     </div>
                 </section>
 
-                <x-separator marginY="3" />
+                {{-- <x-separator marginY="3" /> --}}
 
-                <section id="lokasi-sekolah">
+                {{-- <section id="lokasi-sekolah">
                     <h4 class="text-primary" style="margin-left: 2rem; margin-top: 1.5rem">Lokasi Sekolah</h4>
                     <div class="w-100 p-2">
                         <img class="w-100" src="{{ Storage::url('images/static/lokasi-sekolah.png') }}" alt="Lokasi Sekolah">
                     </div>
-                </section>
+                </section> --}}
             </div>
         </div>
     </div>

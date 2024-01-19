@@ -3,6 +3,7 @@
 namespace App\Repositories\HasRole;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 interface UserRepository
 {
@@ -15,4 +16,14 @@ interface UserRepository
     public function store(Request $request): array;
 
     public function destroy(string $user_id): array;
+
+    // -------------------------FORM DATA-------------------------
+
+    public function regions(): Collection;
+
+    public function schools(): Collection;
+
+    public function originSchools(): Collection;
+
+    public function roles(): Collection;
 }

@@ -119,14 +119,14 @@ class Student extends Base
     {
         $origin_school = explode('|', $request->sekolah_asal);
         $data = [
-            'id'                => $id,
-            'nama'              => $request->nama_lengkap,
-            'nisn'              => $request->nisn,
-            'id_sekolah_asal'   => $origin_school[0],
-            'sekolah_asal'      => $origin_school[1],
-            'jenis_kelamin'     => $request->jenis_kelamin,
-            'tempat_lahir'      => $request->tempat_lahir,
-            'tanggal_lahir'     => $request->tanggal_lahir,
+            'id' => $id,
+            'nama' => $request->nama_lengkap,
+            'nisn' => $request->nisn,
+            'id_sekolah_asal' => $origin_school[0],
+            'sekolah_asal' => $origin_school[1],
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
         ];
 
         $update = $this->postWithToken('siswa/update', $data);

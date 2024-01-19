@@ -5,6 +5,12 @@
     <link type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css" rel="stylesheet">
 @endsection
 
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+@endsection
+
 @section('styles')
     <style>
         div.dataTables_wrapper div.dataTables_filter input {
@@ -33,7 +39,7 @@
                         <tr class="table-light">
                             <th scope="col">NAMA</th>
                             <th scope="col">USERNAME</th>
-                            <th scope="col">SEKOLAH</th>
+                            <th scope="col">NAMA SEKOLAH</th>
                             <th scope="col">STATUS</th>
                             <th scope="col">DETAIL</th>
                         </tr>
@@ -45,13 +51,11 @@
     </div>
 @endsection
 
-@section('vendorScripts')
-    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
-    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-@endsection
-
 @push('scripts')
+    <script>
+        var key = '{{ $key }}',
+            param = '{{ $param }}';
+    </script>
     <script>
         $(function() {
             'use strict';
@@ -62,7 +66,7 @@
             if (table.length) {
                 var tb = table.DataTable({
                     ajax: {
-                        url: '/panel/operators/json/operators',
+                        url: `/panel/operators/json/operators/${key}/${param}`,
                         dataSrc: ''
                     },
                     columns: [{
@@ -72,14 +76,14 @@
                             data: 'nama_pengguna'
                         },
                         {
-                            data: 'sekolah_nama'
+                            data: 'nama_sekolah'
                         },
                         {
                             data: 'status_aktif',
                             render: function(data, type, row) {
-                                if (data === 1) {
+                                if (data === 'v') {
                                     return ` <x-badge class="w-75" variant="light" color="warning">Menunggu Verifikasi</x-badge> `;
-                                } else if (data === 2) {
+                                } else if (data === 'a') {
                                     return ` <x-badge class="w-75" variant="light" color="success">Aktif</x-badge> `;
                                 } else {
                                     return ` <x-badge class="w-75" variant="light" color="danger">Tidak Aktif</x-badge> `;
@@ -87,7 +91,7 @@
                             }
                         },
                         {
-                            data: 'username',
+                            data: 'id',
                             render: function(data, type, row) {
                                 return `<a href="/panel/operators/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
@@ -96,7 +100,7 @@
 
                     // Styling Table
                     columnDefs: [{
-                        targets: [2, 3, 4],
+                        targets: [2, 3],
                         className: 'text-center'
                     }],
 

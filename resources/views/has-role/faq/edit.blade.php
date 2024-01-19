@@ -17,7 +17,8 @@
             </div>
             <div class="card-body">
 
-                <form id="form-question" action="#">
+                <form id="form-question" action="{{ route('faqs.update', $id) }}" method="POST">
+                    @csrf
                     <div class="mb-2">
                         <x-label for="question">Pertanyaan</x-label>
                         <x-textarea id="question" name="question" placeholder="Masukkan Pertanyaan"></x-textarea>
@@ -58,7 +59,10 @@
                         </p>
                     </x-modal.body>
                     <x-modal.footer class="justify-content-center mb-3">
-                        <x-button color="danger">Ya, Hapus</x-button>
+                        <form action="{{ route('faqs.destroy', $id) }}" method="POST">
+                            @csrf
+                            <x-button color="danger">Ya, Hapus</x-button>
+                        </form>
                         <x-button data-bs-dismiss="modal" color="secondary">Batalkan</x-button>
                     </x-modal.footer>
                 </x-modal>
@@ -69,7 +73,7 @@
 
 @push('scripts')
     <script>
-        var slug = '{{ $slug }}';
+        var id = '{{ $id }}';
     </script>
     <script>
         $(function() {
@@ -81,7 +85,7 @@
 
             // Fetch single faq & displaying on view
             $.ajax({
-                url: `/panel/faqs/json/faq/${slug}`,
+                url: `/panel/faqs/json/faq/${id}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(faq) {

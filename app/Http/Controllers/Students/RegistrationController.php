@@ -63,10 +63,10 @@ class RegistrationController extends Controller
         } else {
             $data = [
                 // 'code' => $decCode->track,
-                'track'     => $track_code,
+                'track' => $track_code,
                 'track_code' => $track_code,
-                'phase_id'  => $phase_id,
-                'phase'     => $phase,
+                'phase_id' => $phase_id,
+                'phase' => $phase,
             ];
 
             return view('student.registration.track', $data);
@@ -81,8 +81,8 @@ class RegistrationController extends Controller
     public function proof(string $phase, string $phaseId): View
     {
         $data = [
-            'phase_id'  => $phaseId,
-            'phase'     => $phase,
+            'phase_id' => $phaseId,
+            'phase' => $phase,
         ];
 
         return view('student.registration.proof', $data);
@@ -99,7 +99,7 @@ class RegistrationController extends Controller
             $save = $this->registrationRepo->postSaveRegistration($phase, $phaseId, $trackCode, $request);
 
             if ($save['statusCode'] == 201) {
-                return to_route("student.regis.proof", [$phase, $phaseId])->with(['stat' => 'success', 'msg' => $save['messages']]);
+                return to_route('student.regis.proof', [$phase, $phaseId])->with(['stat' => 'success', 'msg' => $save['messages']]);
             } else {
                 return redirect()->back()->with(['stat' => 'error', 'msg' => 'Gagal menyimpan data.']);
             }

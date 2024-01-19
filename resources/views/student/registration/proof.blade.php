@@ -121,34 +121,34 @@
                 schoolVerif = $('#schoolVerif'),
                 endVerif = $('#endVerif'),
                 tracks = {
-                'AA': 'Afirmasi',
-                'AB': 'Perpindahan Tugas Orang Tua',
-                'AC': 'Anak Guru',
-                'AD': 'Prestasi Akademik',
-                'AE': 'Prestasi Non Akademik',
-                'AF': 'Zonasi',
-                'AG': 'Boarding School',
-                'KA': 'Afirmasi',
-                'KB': 'Perpindahan Tugas Orang Tua',
-                'KC': 'Anak Guru',
-                'KD': 'Prestasi Akademik',
-                'KE': 'Prestasi Non Akademik',
-                'KF': 'Domisili Terdekat',
-                'KG': 'Anak DUDI',
+                    'AA': 'Afirmasi',
+                    'AB': 'Perpindahan Tugas Orang Tua',
+                    'AC': 'Anak Guru',
+                    'AD': 'Prestasi Akademik',
+                    'AE': 'Prestasi Non Akademik',
+                    'AF': 'Zonasi',
+                    'AG': 'Boarding School',
+                    'KA': 'Afirmasi',
+                    'KB': 'Perpindahan Tugas Orang Tua',
+                    'KC': 'Anak Guru',
+                    'KD': 'Prestasi Akademik',
+                    'KE': 'Prestasi Non Akademik',
+                    'KF': 'Domisili Terdekat',
+                    'KG': 'Anak DUDI',
                 },
                 months = [
-                "Januari",
-                "Februari",
-                "Maret",
-                "April",
-                "Mei",
-                "Juni",
-                "Juli",
-                "Agustus",
-                "September",
-                "Oktober",
-                "November",
-                "Desember"
+                    "Januari",
+                    "Februari",
+                    "Maret",
+                    "April",
+                    "Mei",
+                    "Juni",
+                    "Juli",
+                    "Agustus",
+                    "September",
+                    "Oktober",
+                    "November",
+                    "Desember"
                 ];
 
             $.ajax({
@@ -166,22 +166,42 @@
                     chosenTrack.text(tracks[t]);
 
                     if (t == 'AA' || t == 'KA') { // if the track is sma or smk affirmation
-                        let a = [{"label" : "Jenis Afirmasi", "value" : data.jenis_afirmasi}];
+                        let a = [{
+                            "label": "Jenis Afirmasi",
+                            "value": data.jenis_afirmasi
+                        }];
 
                         if (data.jenis_afirmasi == 'pkh') {
-                        a.push({"label" : "Nomor PKH", "value" : data.no_pkh});
+                            a.push({
+                                "label": "Nomor PKH",
+                                "value": data.no_pkh
+                            });
                         }
 
                         addDataSect.append(addDataHtml(a));
                     }
 
                     if (t == 'AE' || t == 'KE') {
-                        let a = [
-                            {"label" : "Jenis Prestasi", "value" : capitalizeEachWord(data.prestasi_jenis)},
-                            {"label" : "Tingkatan Prestasi", "value" : capitalizeEachWord(data.prestasi_tingkat)},
-                            {"label" : "Juara", "value" : data.prestasi_juara},
-                            {"label" : "Nama Prestasi", "value" : data.prestasi_nama},
-                            {"label" : "Bobot", "value" : `${data.bobot} poin`}
+                        let a = [{
+                                "label": "Jenis Prestasi",
+                                "value": capitalizeEachWord(data.prestasi_jenis)
+                            },
+                            {
+                                "label": "Tingkatan Prestasi",
+                                "value": capitalizeEachWord(data.prestasi_tingkat)
+                            },
+                            {
+                                "label": "Juara",
+                                "value": data.prestasi_juara
+                            },
+                            {
+                                "label": "Nama Prestasi",
+                                "value": data.prestasi_nama
+                            },
+                            {
+                                "label": "Bobot",
+                                "value": `${data.bobot} poin`
+                            }
                         ];
 
                         addDataSect.append(addDataHtml(a));
@@ -190,11 +210,20 @@
                     chosenSchoolSect.html('');
                     if (j == 'A') { // if the type of school is high school (SMA)
                         if (t == 'AC' || t == 'AG') { // if the track is teacher's child or boarding school
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama));
+                            <<
+                            << << < HEAD
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1));
                         } else {
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama, '1'));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_nama ?? '-', '2'));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3'));
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_id, '1'));
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_id, '2'));
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_id, '3')); ===
+                            === =
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama));
+                        } else {
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama, '1'));
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_nama ?? '-', '2'));
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3')); >>>
+                            >>> > 7 eb4b59eba05c9c3f69aaef90fe0a329ea84c234
                         }
                     } else if (j == 'K') { // if the type of school is vocational school (SMK)
                         chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1, '1', 'y', data.jurusan1));
@@ -205,8 +234,8 @@
                     let schver = (data.sekolah_verif_id == data.sekolah1_id) ? data.sekolah1_nama : ((data.sekolah_verif_id == data.sekolah2_id) ? data.sekolah2_nama : data.sekolah3_nama);
                     schoolVerif.text(schver);
                     endVerif.text(d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear());
-                    },
-                    error: function(xhr, status, error) {
+                },
+                error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
                 }
             });
@@ -214,7 +243,7 @@
             function addDataHtml(arrayData) {
                 let data = '';
                 arrayData.forEach(d => {
-                data +=  `
+                    data += `
                 <div class="col-md-6 col-12">
                     <div class="d-flex align-items-center mb-1">
                     <div style="width: 35%;">${d.label}</div>
@@ -236,7 +265,7 @@
 
             function chosenSchoolHtml(schoolName, n = '', withDept = 'n', deptName = '') {
                 let dept = (withDept == 'y') ?
-                `<div class="d-flex align-items-center mb-2">
+                    `<div class="d-flex align-items-center mb-2">
                     <div style="width: 35%;">Jurusan</div>
                     <div class="mx-1">:</div>
                     <div style="width: 60%;">${deptName}</div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers\hasRole;
+namespace App\Providers\HasRole\SuperAdmin;
 
 use App\Repositories\HasRole\SuperAdmin\Impl\RoleRepositoryImpl;
 use App\Repositories\HasRole\SuperAdmin\RoleRepository;

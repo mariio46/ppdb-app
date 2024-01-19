@@ -11,14 +11,7 @@ class School extends Base
     {
         $schools = $this->getWithToken('sekolah');
 
-        if ($schools['status_code'] == 200) {
-            return $schools['response'];
-        } else {
-            return [
-                'statusCode' => $schools['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
+        return $this->serverResponseWithGetMethod(response: $schools);
     }
 
     public function createSchool(Request $request): array
@@ -35,17 +28,7 @@ class School extends Base
 
         $data = $this->postWithToken(endpoint: 'sekolah/create/update', data: $body);
 
-        if ($data['status_code'] == 201 || $data['status_code'] == 200) {
-            $response = $data['response'];
-        } else {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'messages' => 'Gagal Menyimpan Data!',
-                'data' => [],
-            ];
-        }
-
-        return $response;
+        return $this->serverResponseWithPostMethod(data: $data);
     }
 
     public function updateSchool(Request $request, string $user_id): array
@@ -63,30 +46,13 @@ class School extends Base
 
         $data = $this->postWithToken(endpoint: 'sekolah/create/update', data: $body);
 
-        if ($data['status_code'] == 200) {
-            $response = $data['response'];
-        } else {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'messages' => 'Gagal Menyimpan Data!',
-                'data' => [],
-            ];
-        }
-
-        return $response;
+        return $this->serverResponseWithPostMethod(data: $data);
     }
 
     public function getSingleSchool(string $school_id): array
     {
         $school = $this->getWithToken(endpoint: "sekolah/detail?id={$school_id}");
 
-        if ($school['status_code'] == 200) {
-            return $school['response'];
-        } else {
-            return [
-                'statusCode' => $school['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
+        return $this->serverResponseWithGetMethod(response: $school);
     }
 }

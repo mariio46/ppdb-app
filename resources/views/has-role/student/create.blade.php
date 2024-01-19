@@ -16,7 +16,7 @@
         <x-breadcrumb-item title="Akun Siswa" to="{{ route('siswa.index') }}" />
         <x-breadcrumb-active title="Tambah Akun Siswa" />
     </x-breadcrumb>
-    
+
     <div class="content-body">
         {{-- <div class="card">
             <div class="card-header">
