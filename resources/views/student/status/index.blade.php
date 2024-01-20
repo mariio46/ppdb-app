@@ -44,7 +44,7 @@
     
                             switch (s.status) {
                                 case 'mendaftar':
-                                    stat = registered(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_verif);
+                                    stat = registered(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_verif_nama);
                                     break;
                                 case 'verifikasi':
                                     stat = verified(s.nama, s.nisn, tracks[s.kode_jalur], s.pengumuman);
