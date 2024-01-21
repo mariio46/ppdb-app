@@ -1,26 +1,11 @@
 @extends('layouts.student.auth')
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Pendaftaran</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb breadcrumb-slash">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('student.regis') }}">Pendaftaran</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Pendaftaran Tahap {{ $phase }}
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <x-breadcrumb title="Pendaftaran">
+        <x-breadcrumb-item to="{{ route('student.regis') }}" title="Pendaftaran" />
+        <x-breadcrumb-active title="Pendaftaran Tahap {{ $phase }}" />
+    </x-breadcrumb>
+    
     <div class="content-body">
         <div id="phaseAlert"></div>
 

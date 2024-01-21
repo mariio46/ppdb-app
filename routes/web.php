@@ -18,7 +18,7 @@ Route::view('/landing-page', 'landing-page')->name('home');
 // middleware
 Route::group(['middleware' => 'student.guest'], function () {
     // student routes
-    Route::get('/masuk', [studentLoginController::class, 'index'])->name('student.login');
+    Route::get('/masuk', [studentLoginController::class, 'index'])->name('student.masuk');
     Route::post('/do-login', [studentLoginController::class, 'doLogin'])->name('student.login');
 });
 

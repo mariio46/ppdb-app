@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use App\Http\Controllers\Controller;
+use App\Models\Track;
 use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -12,25 +13,9 @@ use Illuminate\Support\Facades\Crypt;
 
 class RegistrationController extends Controller
 {
-    private $tracks = [
-        'AA' => 'Afirmasi',
-        'AB' => 'Perpindahan Tugas Orang Tua',
-        'AC' => 'Anak Guru',
-        'AD' => 'Prestasi Akademik',
-        'AE' => 'Prestasi Non Akademik',
-        'AF' => 'Zonasi',
-        'AG' => 'Boarding School',
-        'KA' => 'Afirmasi',
-        'KB' => 'Perpindahan Tugas Orang Tua',
-        'KC' => 'Anak Guru',
-        'KD' => 'Prestasi Akademik',
-        'KE' => 'Prestasi Non Akademik',
-        'KF' => 'Domisili Terdekat',
-        'KG' => 'Anak DUDI',
-    ];
-
     public function __construct(
-        protected RegistrationRepository $registrationRepo
+        protected RegistrationRepository $registrationRepo,
+        protected Track $track
     ) {
     }
 
@@ -83,6 +68,7 @@ class RegistrationController extends Controller
         $data = [
             'phase_id' => $phaseId,
             'phase' => $phase,
+            'tracks' => $this->track->getCodeName()
         ];
 
         return view('student.registration.proof', $data);

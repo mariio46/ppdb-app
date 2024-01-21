@@ -9,20 +9,18 @@
                     <p class="mb-0 text-center">Kamu belum mengunci data pribadi. Lakukan penguncian data terlebih dahulu untuk melakukan pendaftaran jalur.</p>
                 </div>
             @else
-                @if (session()->get('stu_is_regis'))
-                    <div class="card">
-                        <div class="card-body p-2">
-                            <div class="d-md-flex align-items-center">
-                                <h4 class="my-1">Lihat Bukti Pendaftaran</h4>
-                                <a class="btn btn-success ms-auto" id="registrationProofButton" href="">Lihat Detail</a>
-                            </div>
+                <div class="card d-none" id="proof_card">
+                    <div class="card-body p-2">
+                        <div class="d-md-flex align-items-center">
+                            <h4 class="my-1">Lihat Bukti Pendaftaran</h4>
+                            <a class="btn btn-success ms-auto" id="registration_proof_button" href="">Lihat Detail</a>
                         </div>
                     </div>
-                @endif
+                </div>
 
                 <div class="card">
                     <div class="card-body px-5 pt-5">
-                        <div class="row match-height" id="cardContainer">
+                        <div class="row match-height" id="card_container">
                         </div>
                     </div>
                 </div>
@@ -37,8 +35,9 @@
         $(function() {
             'use strict';
 
-            var cardContainer = $('#cardContainer'),
-                regisProofBtn = $('#registrationProofButton'),
+            var cardContainer = $('#card_container'),
+                cardProof = $('#proof_card'),
+                regisProofBtn = $('#registration_proof_button'),
                 months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                 colors = ['primary', 'success', 'warning', 'info', 'danger'];
 
@@ -70,11 +69,13 @@
                         case 'now':
                             btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.tahap}_${schedule.tahap_id}">Lihat Tahap ${schedule.tahap}</a>`;
                             cdr = 'now';
+                            cardProof.removeClass("d-none");
                             regisProofBtn.attr('href', `/pendaftaran/bukti/${schedule.tahap}_${schedule.tahap_id}`);
                             break;
                         case 'post':
                             btnHtml = `<button class="btn btn-outline-secondary disabled">Tahap ${schedule.tahap} Sudah Ditutup</button>`;
                             cdr = 'post';
+                            cardProof.addClass("d-none");
                             break;
                         default:
                             break;

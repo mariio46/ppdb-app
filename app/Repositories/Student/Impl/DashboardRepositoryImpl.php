@@ -16,91 +16,101 @@ class DashboardRepositoryImpl implements DashboardRepository
     }
 
     //------------------------------------------------------------GET
-    public function getDataStudent(): JsonResponse
+    public function getDataStudent(): array
     {
-        $result = $this->dashboardModel->getDataStudentById(session()->get('stu_id'));
-
-        return response()->json($result['response'], $result['status_code']);
+        return $this->dashboardModel->getDataStudentById(session()->get('stu_id'));
     }
 
-    public function getDataScore(): JsonResponse
+    public function getDataScore(): array
     {
-        $result = $this->dashboardModel->getDataScoreAll(session()->get('stu_id'));
-
-        return response()->json($result['response'], $result['status_code']);
+        return $this->dashboardModel->getDataScoreAll(session()->get('stu_id'));
     }
 
-    public function getScoreBySemester(int $semester): JsonResponse
+    public function getScoreBySemester(int $semester): array
     {
-        $result = $this->dashboardModel->getDataScoreBySemester(session()->get('stu_id'), $semester);
-
-        return response()->json($result['response'], $result['status_code']);
+        return $this->dashboardModel->getDataScoreBySemester(session()->get('stu_id'), $semester);
     }
 
     //------------------------------------------------------------POST
-    public function postFirstTimeLogin(Request $request): Collection
+    public function postFirstTimeLogin(Request $request): array
     {
-        $id = session()->get('stu_id');
-        $email = $request->post('ftlEmail');
-        $phone = $request->post('ftlPhoneNumber');
-        $pass = $request->post('ftlNewPassword');
-
-        $update = $this->dashboardModel->postFirstTimeLogin($id, $email, $phone, $pass);
-
-        if ($update['status_code'] == 200) {
-            return collect(['success' => true, 'code' => 200, 'message' => 'success']);
-        } else {
-            return collect(['success' => false, 'code' => 401, 'message' => 'failed']);
-        }
+        return $this->dashboardModel->postFirstTimeLogin([
+            'kata_sandi'    => $request->post('ftlNewPassword'),
+            'telepon'       => $request->post('ftlPhoneNumber'),
+            'email'         => $request->post('ftlEmail'),
+            'id'            => session()->get('stu_id'),
+        ]);
     }
 
-    public function postUpdateStudentData(Request $request): Collection
+    public function postUpdateStudentData(Request $request): array
     {
-        $update = $this->dashboardModel->postUpdateStudentData($request);
+        $province   = explode('|', $request->post('province'));
+        $city       = explode('|', $request->post('city'));
+        $district   = explode('|', $request->post('district'));
+        $village    = explode('|', $request->post('village'));
+        $month      = ($request->post('birthMonth')) < 10 ? '0' . $request->post('birthMonth') : $request->post('birthMonth');
+        $date       = ($request->post('birthDay')) < 10 ? '0' . $request->post('birthDay') : $request->post('birthDay');
 
-        if ($update['status_code'] == 200) {
-            return collect(['success' => true, 'code' => 200, 'message' => $update['response']['messages']]);
-        } else {
-            return collect(['success' => false, 'code' => $update['status_code'], 'message' => $update['response']['messages']]);
-        }
+        $data = [
+            'nik'               => $request->post('nik'),
+            'tanggal_lahir'     => $request->post('birthYear') . '-' . $month . '-' . $date,
+            'tempat_lahir'      => $request->post('birthPlace'),
+            'jenis_kelamin'     => $request->post('gender'),
+            'email'             => $request->post('email'),
+            'telepon'           => str_replace(' ', '', $request->post('phone')),
+            'rtrw'              => $request->post('associations'),
+            'nama_ayah'         => $request->post('fathersName'),
+            'telepon_ayah'      => str_replace(' ', '', $request->post('fathersPhone')),
+            'nama_ibu'          => $request->post('mothersName'),
+            'telepon_ibu'       => str_replace(' ', '', $request->post('mothersPhone')),
+            'nama_wali'         => $request->post('guardsName'),
+            'telepon_wali'      => str_replace(' ', '', $request->post('guardsPhone')),
+            'kode_provinsi'     => $province[0],
+            'provinsi'          => $province[1],
+            'kode_kabupaten'    => $city[0],
+            'kabupaten'         => $city[1],
+            'kode_kecamatan'    => $district[0],
+            'kecamatan'         => $district[1],
+            'kode_desa'         => $village[0],
+            'desa'              => $village[1],
+            'dusun'             => $request->post('hamlet'),
+            'alamat_jalan'      => $request->post('address'),
+            'kode_wilayah'      => $district[0],
+            'id'                => session()->get('stu_id'),
+        ];
+
+        return $this->dashboardModel->postUpdateStudentData($data);
     }
 
-    public function postUpdateStudentProfile(Request $request): Collection|array
+    public function postUpdateStudentProfile(Request $request): array
     {
-        $update = $this->dashboardModel->postUpdateStudentProfile($request);
-
-        if ($update['status_code'] == 200) {
-            session()->put('stu_profile_img', $update['response']['data']['pasfoto']);
-
-            return collect(['success' => true, 'code' => 200, 'message' => 'success']);
-        } else {
-            return collect(['success' => false, 'code' => $update['status_code'], 'message' => 'failed']);
-        }
+        return $this->dashboardModel->postUpdateStudentProfile($request);
     }
 
-    public function postUpdateStudentScore(int $semester, Request $request): Collection|array
+    public function postUpdateStudentScore(int $semester, Request $request): array
     {
-        $update = $this->dashboardModel->postUpdateStudentScore($semester, $request);
+        $sm = 'sm' . $semester . '_';
 
-        if ($update['status_code'] == 200 || $update['status_code' == 201]) {
-            return collect(['success' => true, 'code' => 200, 'message' => ['scoreStatus' => 'success', 'scoreMsg' => 'Data berhasil diperbarui.']]);
-        } else {
-            return collect(['success' => false, 'code' => 400, 'message' => ['scoreStatus' => 'danger', 'scoreMsg' => 'Data gagal diperbarui.']]);
-        }
+        $data = [
+            'id' => session()->get('stu_id'),
+            $sm . 'mtk' => $request->post('math'),
+            $sm . 'ipa' => $request->post('science'),
+            $sm . 'ips' => $request->post('social'),
+            $sm . 'bid' => $request->post('indonesian'),
+            $sm . 'big' => $request->post('english'),
+        ];
+
+        return $this->dashboardModel->postUpdateStudentScore($data);
     }
 
-    public function postLockStudentData(): Collection
+    public function postLockStudentData(): array
     {
-        $id = session()->get('stu_id');
+        $lock = $this->dashboardModel->postLockStudentData(session()->get('stu_id'));
 
-        $lock = $this->dashboardModel->postLockStudentData($id);
-
-        if ($lock['status_code'] == 200) {
+        if ($lock['statusCode'] == 200) {
             session()->put('stu_is_locked', true);
-
-            return collect(['success' => true, 'code' => 200]);
-        } else {
-            return collect(['success' => false, 'code' => $lock['status_code']]);
         }
+
+        return $lock;
     }
 }
