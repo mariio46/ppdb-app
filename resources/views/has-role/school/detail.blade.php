@@ -81,7 +81,7 @@
                     $('#kecamatan').text(data.kecamatan ?? 'Belum Ada')
                     $('#desa').text(data.desa ?? 'Belum Ada')
                     $('#rtrw').text(data.rtrw ?? 'Belum Ada')
-                    $('#koordinat_sekolah').text(data.bujur ? `${data.bujur} , ${data.lintanh}` : 'Belum Ada')
+                    $('#koordinat_sekolah').text(data.bujur ? `${data.bujur} , ${data.lintang}` : 'Belum Ada')
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);

@@ -25,18 +25,17 @@ class SchoolController extends Controller
         return view('has-role.school.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $response = $this->school->store(request: $request);
-        if ($response['statusCode'] == 201) {
-            return back()->with([
-                'stat' => 'success',
-                'msg' => $response['messages'],
-            ]);
+        $cabdin_id = session()->get('cabdin_id');
+        if ($cabdin_id != null && $cabdin_id != '0' && $cabdin_id != 0) {
+            $response = $this->school->store(request: $request, cabdin_id: $cabdin_id);
+
+            return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.index');
         } else {
             return back()->with([
                 'stat' => 'error',
-                'msg' => $response['messages'],
+                'msg' => 'Anda bukan Admin Cabang Dinas!',
             ]);
         }
     }
@@ -48,16 +47,15 @@ class SchoolController extends Controller
 
     public function update(Request $request, string $id): RedirectResponse
     {
-        $response = $this->school->update(request: $request, user_id: $id);
-        if ($response['statusCode'] == 200) {
-            return back()->with([
-                'stat' => 'success',
-                'msg' => $response['messages'],
-            ]);
+        $cabdin_id = session()->get('cabdin_id');
+        if ($cabdin_id != null && $cabdin_id != '0' && $cabdin_id != 0) {
+            $response = $this->school->update(request: $request, user_id: $id, cabdin_id: $cabdin_id);
+
+            return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.edit', params: $id);
         } else {
             return back()->with([
                 'stat' => 'error',
-                'msg' => $response['messages'],
+                'msg' => 'Anda bukan Admin Cabang Dinas!',
             ]);
         }
     }

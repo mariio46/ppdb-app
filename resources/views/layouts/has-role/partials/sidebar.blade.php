@@ -45,7 +45,7 @@
                 </a>
             </li>
             {{-- @endiscabdin --}}
-            <li class="nav-item {{ request()->routeIs('school-data.*') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('school-data.*', 'school-quota.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('school-data.index') }}">
                     <x-tabler-file-database />
                     <span class="menu-title text-truncate">Data Sekolah</span>
@@ -127,6 +127,13 @@
                 <a class="d-flex align-items-center" href="{{ route('faqs.index') }}">
                     <x-tabler-message-question />
                     <span class="menu-title text-truncate">FAQ</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('majors.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('majors.index') }}">
+                    <x-tabler-binary-tree-2 />
+                    <span class="menu-title text-truncate">Jurusan</span>
                 </a>
             </li>
 

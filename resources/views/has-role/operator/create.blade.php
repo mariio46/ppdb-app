@@ -151,7 +151,7 @@
                         dokumen: {
                             required: 'Dokumen tidak boleh kosong.',
                             extension: "Hanya menerima dokumen dengan format pdf.",
-                            filesize: "*Ukuran dokumen tidak boleh lebih dari 500 KB.",
+                            maxsize: "*Ukuran dokumen tidak boleh lebih dari 500 KB.",
                         },
                     },
                 })

@@ -230,13 +230,13 @@
 
                                 {{-- non academic --}}
                                 <x-three-row-info identifier="achName" label="Nama Prestasi" hide="y" />
-                                
+
                                 <x-three-row-info identifier="achWeight" label="Bobot" hide="y" />
                             </table>
                         </div>
                     </div>
 
-                    <div class="px-2 mt-1" style="display: none;" id="editAchievementBtn">
+                    <div class="px-2 mt-1" id="editAchievementBtn" style="display: none;">
                         <x-link href="{{ route('verifikasi.manual.achievement', [$id]) }}" color="success">Edit Data Prestasi</x-link>
                     </div>
                 </div>
@@ -328,12 +328,12 @@
                                             <div class="d-flex justify-content-center mb-3">
                                                 <form id="acceptForm" action="{{ route('verifikasi.manual.accept', [$id]) }}" method="post">
                                                     @csrf
-                                                    <x-input type="hidden" name="avg_total" id="avg_total" />
-                                                    <x-input type="hidden" name="avg_mtk" id="avg_mtk" />
-                                                    <x-input type="hidden" name="avg_bid" id="avg_bid" />
-                                                    <x-input type="hidden" name="avg_big" id="avg_big" />
-                                                    <x-input type="hidden" name="avg_ipa" id="avg_ipa" />
-                                                    <x-input type="hidden" name="avg_ips" id="avg_ips" />
+                                                    <x-input id="avg_total" name="avg_total" type="hidden" />
+                                                    <x-input id="avg_mtk" name="avg_mtk" type="hidden" />
+                                                    <x-input id="avg_bid" name="avg_bid" type="hidden" />
+                                                    <x-input id="avg_big" name="avg_big" type="hidden" />
+                                                    <x-input id="avg_ipa" name="avg_ipa" type="hidden" />
+                                                    <x-input id="avg_ips" name="avg_ips" type="hidden" />
 
                                                     <x-button class="me-1" type="submit" color="success">Ya, Verifikasi</x-button>
                                                 </form>
@@ -516,7 +516,8 @@
                     }
 
                     $('#school1').text(d.sekolah1);
-                    if (d.kode_jalur != 'AC' && d.kode_jalur != 'AG' && d.kode_jalur != 'KC' && d.kode_jalur != 'KG') { // not teacher's child (A & K) and boarding school (A) and partner's child (K)
+                    if (d.kode_jalur != 'AC' && d.kode_jalur != 'AG' && d.kode_jalur != 'KC' && d.kode_jalur !=
+                        'KG') { // not teacher's child (A & K) and boarding school (A) and partner's child (K)
                         $('#trschool2, #trschool3').show();
                         $('#school2').text(d.sekolah2 || '-');
                         $('#school3').text(d.sekolah3 || '-');
@@ -562,7 +563,12 @@
                     dataType: 'json',
                     success: function(data) {
                         let score = data.data;
-                        let total = 0, sum_bid = 0, sum_big = 0, sum_ipa = 0, sum_ips = 0, sum_mtk = 0;
+                        let total = 0,
+                            sum_bid = 0,
+                            sum_big = 0,
+                            sum_ipa = 0,
+                            sum_ips = 0,
+                            sum_mtk = 0;
                         for (let i = 1; i <= 5; i++) {
                             $(`#sm${i}_bid`).text(score[`sm${i}_bid`]);
                             $(`#sm${i}_big`).text(score[`sm${i}_big`]);
@@ -575,7 +581,8 @@
                             sum_mtk += parseInt(score[`sm${i}_mtk`]);
                             sum_ipa += parseInt(score[`sm${i}_ipa`]);
                             sum_ips += parseInt(score[`sm${i}_ips`]);
-                            total += parseInt(score[`sm${i}_bid`]) + parseInt(score[`sm${i}_big`]) + parseInt(score[`sm${i}_mtk`]) + parseInt(score[`sm${i}_ipa`]) + parseInt(score[`sm${i}_ips`]);
+                            total += parseInt(score[`sm${i}_bid`]) + parseInt(score[`sm${i}_big`]) + parseInt(score[`sm${i}_mtk`]) + parseInt(score[`sm${i}_ipa`]) + parseInt(score[
+                                `sm${i}_ips`]);
                         }
 
                         $('#avg_bid').val(sum_bid / 5);
@@ -600,7 +607,10 @@
 
             function toKm(distanceInMeters) {
                 var distanceInKilometers = distanceInMeters / 1000;
-                var formattedDistance = distanceInKilometers.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                var formattedDistance = distanceInKilometers.toLocaleString('id-ID', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
                 return formattedDistance;
             }
         });

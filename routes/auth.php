@@ -4,6 +4,7 @@ use App\Http\Controllers\HasRole\AgencyController;
 use App\Http\Controllers\HasRole\DashboardController;
 use App\Http\Controllers\HasRole\FaqController;
 use App\Http\Controllers\HasRole\KeyController;
+use App\Http\Controllers\HasRole\MajorController;
 use App\Http\Controllers\HasRole\OperatorController;
 use App\Http\Controllers\HasRole\OriginSchoolController;
 use App\Http\Controllers\HasRole\RankController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\HasRole\ReregistrationController;
 use App\Http\Controllers\HasRole\ScheduleController;
 use App\Http\Controllers\HasRole\SchoolController;
 use App\Http\Controllers\HasRole\SchoolDataController;
+use App\Http\Controllers\HasRole\SchoolQuotaController;
 use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
@@ -91,17 +93,39 @@ Route::controller(SchoolController::class)->group(function () {
 
 Route::controller(SchoolDataController::class)->group(function () {
     Route::get('data-sekolah', 'index')->name('school-data.index');
-    Route::get('data-sekolah/edit', 'edit')->name('school-data.edit');
-    Route::get('data-sekolah/quota', 'quota')->name('school-data.quota');
+
     Route::get('data-sekolah/dokumen', 'document')->name('school-data.document');
-    Route::get('data-sekolah/quota/add', 'addQuota')->name('school-data.add-quota');
-    Route::get('data-sekolah/quota/edit/{identifier}', 'editQuota')->name('school-data.edit-quota');
+
+    Route::get('data-sekolah/edit', 'edit')->name('school-data.edit');
+    Route::post('data-sekolah/{id}/update', 'update')->name('school-data.update'); // Route Action for update data sekolah
+    Route::post('data-sekolah/{id}/update-logo', 'logos')->name('school-data.logos-update'); // Route Action for update logo sekolah
+
+    Route::post('data-sekolah/dokumen/pakta-integritas/{id}', 'firstDocument')->name('school-data.firstDocument'); // Route Action for upload pakta integritas
+    Route::post('data-sekolah/dokumen/sk-ppdb/{id}', 'secondDocument')->name('school-data.secondDocument'); // Route Action for upload SK PPDB
 
     Route::get('data-sekolah/json/school/{school_id}', 'school');
+    Route::get('data-sekolah/json/districts/{code}', 'districts');
     // Route::get('data-sekolah/json/form-data-percentage', 'formDataPercentage');
     // Route::get('data-sekolah/json/school/{id}', 'school');
     // Route::get('data-sekolah/json/major-quota/{identifier}', 'majorQuota');
     // Route::get('data-sekolah/json/school-quota/{unit}', 'schoolsQuota');
+});
+
+Route::controller(SchoolQuotaController::class)->group(function () {
+    Route::get('kuota-sekolah', 'index')->name('school-quota.index');
+    Route::get('kuota-sekolah/create', 'create')->name('school-quota.create');
+    Route::post('kuota-sekolah/store-smk', 'storeSmk')->name('school-quota.store-smk');
+    Route::post('kuota-sekolah/store-sma', 'storeSma')->name('school-quota.store-sma');
+    Route::get('kuota-sekolah/{id}/edit', 'edit')->name('school-quota.edit');
+    Route::post('kuota-sekolah/{id}/update-smk', 'updateSmk')->name('school-quota.update-smk');
+    Route::post('kuota-sekolah/{id}/update-sma', 'updateSma')->name('school-quota.update-sma');
+
+    Route::post('kuota-sekolah/{id}/destroy', 'destroy')->name('school-quota.destroy');
+    Route::post('kuota-sekolah/{id}/lock', 'lock')->name('school-quota.lock');
+
+    Route::get('kuota-sekolah/json/majors', 'majors');
+    Route::get('kuota-sekolah/json/quotas/{school_unit}/{id}', 'quotas');
+    Route::get('kuota-sekolah/json/quotas/{school_unit}/{id}/quota', 'quota');
 });
 
 Route::controller(OperatorController::class)->group(function () {
@@ -198,6 +222,17 @@ Route::controller(FaqController::class)->group(function () {
 
     Route::get('faqs/json/faqs', 'faqs');
     Route::get('faqs/json/faq/{id}', 'faq');
+});
+
+Route::controller(MajorController::class)->group(function () {
+    Route::get('jurusan', 'index')->name('majors.index');
+    Route::post('jurusan/store', 'store')->name('majors.store');
+    Route::get('jurusan/{id}/edit', 'edit')->name('majors.edit');
+    Route::post('jurusan/{id}/update', 'update')->name('majors.update');
+    Route::post('jurusan/{id}/destroy', 'destroy')->name('majors.destroy');
+
+    Route::get('jurusan/json/majors', 'majors');
+    Route::get('jurusan/json/major/{id}', 'major');
 });
 
 Route::controller(RegionController::class)->group(function () {

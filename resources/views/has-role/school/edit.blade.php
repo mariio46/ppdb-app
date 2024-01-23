@@ -156,11 +156,11 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(school) {
-                    console.log('Data Sekolah : ', school);
+                    // console.log('Data Sekolah : ', school);
                     $('#nama_sekolah').val(school.nama_sekolah)
                     $('#npsn').val(school.npsn)
                     $('#kabupaten').val(school.kabupaten)
-                    loadCities(school.kode_labupaten, school.kabupaten)
+                    loadCities(school.kode_kabupaten, school.kabupaten)
                     loadUnit(school.satuan_pendidikan)
 
                 },
@@ -181,8 +181,8 @@
                             let merge = `${code}|${name}`;
                             let value = `${item.code}|${item.name}`;
                             let selected_item = value === merge ? 'selected' : '';
-                            console.log('Merge : ', merge);
-                            console.log('Value : ', value);
+                            // console.log('Merge : ', merge);
+                            // console.log('Value : ', value);
                             kabupaten.append(`<option value="${value}" ${selected_item}>${item.name}</option>`)
                         })
 
