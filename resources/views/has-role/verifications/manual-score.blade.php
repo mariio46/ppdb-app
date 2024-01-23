@@ -39,17 +39,17 @@
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <table class="table table-borderless">
-                            <x-three-row-info label="Nama Siswa" identifier="name" />
-                            <x-three-row-info label="NISN" identifier="nisn" />
-                            <x-three-row-info label="Asal Sekolah" identifier="origin_school" />
+                            <x-three-row-info identifier="name" label="Nama Siswa" />
+                            <x-three-row-info identifier="nisn" label="NISN" />
+                            <x-three-row-info identifier="origin_school" label="Asal Sekolah" />
                         </table>
                     </div>
                 </div>
             </div>
             <form id="formEditScore" action="{{ route('verifikasi.manual.update-score', [$id]) }}" method="post">
                 @csrf
-                <x-input type="hidden" name="student_id" id="student_id" />
-                <x-input type="hidden" name="semester" id="semester" value="{{ $semester }}" />
+                <x-input id="student_id" name="student_id" type="hidden" />
+                <x-input id="semester" name="semester" type="hidden" value="{{ $semester }}" />
                 <div class="card-body border-top border-bottom p-0">
                     <div class="row">
                         <div class="col-md-4 col-xl-3 col-sm-12 border-md-end pe-0">

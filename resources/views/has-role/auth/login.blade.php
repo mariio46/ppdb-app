@@ -26,7 +26,7 @@
                                     @csrf
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="username">Username</x-label>
-                                        <x-input id="username" name="username" type="text" value="{{ old('username', 'mario2296_') }}" placeholder="Masukkan username" autofocus required />
+                                        <x-input id="username" name="username" type="text" value="{{ old('username', 'mario46_') }}" placeholder="Masukkan username" autofocus required />
                                     </div>
                                     <div class="mb-2">
                                         <x-label class="mb-1" for="password">Password</x-label>

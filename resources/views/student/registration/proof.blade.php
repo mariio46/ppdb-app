@@ -211,19 +211,25 @@
                     if (j == 'A') { // if the type of school is high school (SMA)
                         if (t == 'AC' || t == 'AG') { // if the track is teacher's child or boarding school
                             <<
-                            << << < HEAD
+                            <<
+                            <<
+                            <
+                            HEAD
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1));
                         } else {
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_id, '1'));
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_id, '2'));
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_id, '3')); ===
-                            === =
+                            ===
+                            =
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama));
                         } else {
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama, '1'));
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_nama ?? '-', '2'));
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3')); >>>
-                            >>> > 7 eb4b59eba05c9c3f69aaef90fe0a329ea84c234
+                            >>>
+                            >
+                            7 eb4b59eba05c9c3f69aaef90fe0a329ea84c234
                         }
                     } else if (j == 'K') { // if the type of school is vocational school (SMK)
                         chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1, '1', 'y', data.jurusan1));
@@ -231,7 +237,8 @@
                         chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3, '3', 'y', data.jurusan3));
                     }
 
-                    let schver = (data.sekolah_verif_id == data.sekolah1_id) ? data.sekolah1_nama : ((data.sekolah_verif_id == data.sekolah2_id) ? data.sekolah2_nama : data.sekolah3_nama);
+                    let schver = (data.sekolah_verif_id == data.sekolah1_id) ? data.sekolah1_nama : ((data.sekolah_verif_id == data.sekolah2_id) ? data.sekolah2_nama : data
+                        .sekolah3_nama);
                     schoolVerif.text(schver);
                     endVerif.text(d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear());
                 },

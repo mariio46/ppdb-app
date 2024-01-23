@@ -59,10 +59,10 @@ class Student extends Base
             return $get['response'];
         } else {
             return [
-                "statusCode" => $get["status_code"],
-                "status"     => "failed",
-                "messages"   => "Terjadi kesalahan.",
-                "data"       => []
+                'statusCode' => $get['status_code'],
+                'status' => 'failed',
+                'messages' => 'Terjadi kesalahan.',
+                'data' => [],
             ];
         }
     }
@@ -74,10 +74,10 @@ class Student extends Base
             return $get['response'];
         } else {
             return [
-                "statusCode" => $get["status_code"],
-                "status"     => "failed",
-                "messages"   => "Terjadi kesalahan.",
-                "data"       => []
+                'statusCode' => $get['status_code'],
+                'status' => 'failed',
+                'messages' => 'Terjadi kesalahan.',
+                'data' => [],
             ];
         }
     }

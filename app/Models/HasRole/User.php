@@ -72,24 +72,18 @@ class User extends Base
     {
         $regions = $this->getWithToken(endpoint: 'cabdin/index');
 
-        $results = collect($regions['response']['data'])->map(fn ($region) => [
-            'value' => $region['id'],
-            'label' => $region['nama'],
-        ]);
-
-        return $regions['status_code'] == 200 ? $results : $this->serverFailedResponse(error: $regions);
+        return $regions['status_code'] == 200
+            ? $this->jsonToCollectionFormData(collections: $regions, value: 'id', label: 'nama')
+            : $this->serverFailedResponse(error: $regions);
     }
 
     public function getSchoolList(): Collection
     {
         $schools = $this->getWithToken(endpoint: 'sekolah');
 
-        $results = collect($schools['response']['data'])->map(fn ($school) => [
-            'value' => $school['id'],
-            'label' => $school['nama_sekolah'],
-        ]);
-
-        return $schools['status_code'] == 200 ? $results : $this->serverFailedResponse(error: $schools);
+        return $schools['status_code'] == 200
+            ? $this->jsonToCollectionFormData(collections: $schools, value: 'id', label: 'nama_sekolah')
+            : $this->serverFailedResponse(error: $schools);
     }
 
     public function getRolesList(): Collection
@@ -124,11 +118,8 @@ class User extends Base
     {
         $origin_schools = $this->getWithToken(endpoint: 'sekolah/asal/all');
 
-        $results = collect($origin_schools['response']['data'])->map(fn ($school) => [
-            'value' => $school['id'],
-            'label' => $school['nama'],
-        ]);
-
-        return $origin_schools['status_code'] == 200 ? $results : $this->serverFailedResponse(error: $origin_schools);
+        return $origin_schools['status_code'] == 200
+            ? $this->jsonToCollectionFormData(collections: $origin_schools, value: 'id', label: 'nama')
+            : $this->serverFailedResponse(error: $origin_schools);
     }
 }

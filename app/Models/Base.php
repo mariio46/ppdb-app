@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
 class Base
@@ -18,7 +19,7 @@ class Base
 
     protected function postWithoutToken(string $endpoint, array $data): array
     {
-        $response = Http::post($this->BASE_API_URL . $endpoint, $data);
+        $response = Http::post($this->BASE_API_URL.$endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -28,7 +29,7 @@ class Base
 
     protected function postWithToken(string $endpoint, array $data)
     {
-        $response = Http::withHeaders($this->defaultHeaders())->post($this->BASE_API_URL . $endpoint, $data);
+        $response = Http::withHeaders($this->defaultHeaders())->post($this->BASE_API_URL.$endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -40,7 +41,7 @@ class Base
     {
         $response = Http::withHeaders($this->defaultHeaders())
             ->attach($key, file_get_contents($file->path()), $file->getClientOriginalName())
-            ->post(url: $this->BASE_API_URL . $endpoint, data: $data);
+            ->post(url: $this->BASE_API_URL.$endpoint, data: $data);
 
         return [
             'status_code' => $response->status(),
@@ -50,7 +51,7 @@ class Base
 
     protected function getWithToken(string $endpoint)
     {
-        $response = Http::withHeaders($this->defaultHeaders())->get($this->BASE_API_URL . $endpoint);
+        $response = Http::withHeaders($this->defaultHeaders())->get($this->BASE_API_URL.$endpoint);
 
         return [
             'status_code' => $response->status(),
@@ -63,7 +64,7 @@ class Base
         $response = Http::withHeaders([
             'waktu' => 5,
             'Sw-Code' => session()->get('stu_token'),
-        ])->get($this->BASE_API_URL . $endpoint);
+        ])->get($this->BASE_API_URL.$endpoint);
 
         return [
             'status_code' => $response->status(),
@@ -76,7 +77,7 @@ class Base
         $response = Http::withHeaders([
             'waktu' => 5,
             'Sw-Code' => session()->get('stu_token'),
-        ])->post($this->BASE_API_URL . $endpoint, $data);
+        ])->post($this->BASE_API_URL.$endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -104,5 +105,14 @@ class Base
             'messages' => 'Gagal Menampilkan Data',
             'data' => [],
         ];
+    }
+
+    // -------------------------CONVERTION-------------------------
+    protected function jsonToCollectionFormData(array $collections, string $value, string $label): Collection
+    {
+        return collect($collections['response']['data'])->map(fn ($item) => [
+            'value' => $item[$value],
+            'label' => $item[$label],
+        ]);
     }
 }

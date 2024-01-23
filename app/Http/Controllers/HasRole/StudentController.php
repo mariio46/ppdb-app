@@ -382,12 +382,14 @@ class StudentController extends Controller
     public function getScores(string $id): JsonResponse
     {
         $get = $this->student->getScores($id);
+
         return response()->json($get);
     }
 
     protected function getScore(string $id, string $semester): JsonResponse
     {
         $data = $this->student->getScore($id, $semester);
+
         return response()->json($data);
     }
 }

@@ -18,9 +18,9 @@ class SchoolRepositoryImpl implements SchoolRepository
         return $this->school->getSchools();
     }
 
-    public function store(Request $request): array
+    public function store(Request $request, string $cabdin_id): array
     {
-        return $this->school->createSchool(request: $request);
+        return $this->school->createSchool(request: $request, cabdin_id: $cabdin_id);
     }
 
     public function show(string $school_id): array
@@ -28,8 +28,8 @@ class SchoolRepositoryImpl implements SchoolRepository
         return $this->school->getSingleSchool(school_id: $school_id);
     }
 
-    public function update(Request $request, string $user_id): array
+    public function update(Request $request, string $user_id, string $cabdin_id): array
     {
-        return $this->school->updateSchool(request: $request, user_id: $user_id);
+        return $this->school->updateSchool(request: $request, user_id: $user_id, cabdin_id: $cabdin_id);
     }
 }

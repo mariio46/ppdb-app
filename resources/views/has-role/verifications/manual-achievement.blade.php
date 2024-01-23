@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ["title" => "Edit Data Prestasi"])
+@extends('layouts.has-role.auth', ['title' => 'Edit Data Prestasi'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/vendors/css/forms/select/select2.min.css" rel="stylesheet">
@@ -12,8 +12,8 @@
 
 @section('content')
     <x-breadcrumb title="Verifikasi Manual">
-        <x-breadcrumb-item to="{{ route('verifikasi.manual') }}" title="Verifikasi Manual" />
-        <x-breadcrumb-item to="{{ route('verifikasi.manual.detail', [$id]) }}" title="Lihat Detail Siswa" />
+        <x-breadcrumb-item title="Verifikasi Manual" to="{{ route('verifikasi.manual') }}" />
+        <x-breadcrumb-item title="Lihat Detail Siswa" to="{{ route('verifikasi.manual.detail', [$id]) }}" />
         <x-breadcrumb-active title="Edit Data Prestasi" />
     </x-breadcrumb>
 
@@ -25,7 +25,7 @@
                         <h4 class="card-title">Edit Data Prestasi</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('verifikasi.manual.update-achievement', [$id]) }}" method="post" id="update-form">
+                        <form id="update-form" action="{{ route('verifikasi.manual.update-achievement', [$id]) }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-6 col-12">
@@ -52,7 +52,7 @@
 
                                     <div class="mb-2">
                                         <p>Bobot: <span id="bobotshow">0</span> poin</p>
-                                        <x-input type="hidden" name="bobot" id="bobot"></x-input>
+                                        <x-input id="bobot" name="bobot" type="hidden"></x-input>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-12">
@@ -68,13 +68,13 @@
 
                                     <div class="mb-1">
                                         <x-label for="prestasi_nama">Nama Prestasi</x-label>
-                                        <x-input name="prestasi_nama" id="prestasi_nama" placeholder="Nama Prestasi" />
+                                        <x-input id="prestasi_nama" name="prestasi_nama" placeholder="Nama Prestasi" />
                                     </div>
                                 </div>
 
                                 <div class="mb-2">
                                     <x-button type="submit" color="success">Simpan Perubahan</x-button>
-                                    <x-link color="secondary" variant="outline" href="{{ route('verifikasi.manual.detail', [$id]) }}">Kembali</x-link>
+                                    <x-link href="{{ route('verifikasi.manual.detail', [$id]) }}" color="secondary" variant="outline">Kembali</x-link>
                                 </div>
                             </div>
                         </form>
@@ -116,8 +116,12 @@
 
             //------------------------------------------------------------
             if (form.length) {
-                let r = {required: true};
-                let m = {required: "Tidak boleh dikosongkan."}
+                let r = {
+                    required: true
+                };
+                let m = {
+                    required: "Tidak boleh dikosongkan."
+                }
 
                 form.validate({
                     rules: {

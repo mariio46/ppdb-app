@@ -47,7 +47,7 @@ class AgencyController extends Controller
         } else {
             return redirect()->back()->with([
                 'stat' => 'error',
-                'msg' => $save['messages']
+                'msg' => $save['messages'],
             ]);
         }
     }

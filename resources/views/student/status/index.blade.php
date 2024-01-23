@@ -5,7 +5,7 @@
         <section id="loader">
             <div class="d-flex justify-content-center">
                 <div class="spinner-grow text-primary" role="status"></div>
-              </div>
+            </div>
         </section>
 
         <section id="statusSection">
@@ -41,7 +41,7 @@
                         $('#loader').hide();
                         status.data.forEach(s => {
                             let stat = '';
-    
+
                             switch (s.status) {
                                 case 'mendaftar':
                                     stat = registered(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_verif);
@@ -53,23 +53,25 @@
                                     stat = declined(s.nama, s.nisn, tracks[s.kode_jalur]);
                                     break;
                                 case 'accepted':
-                                    stat = accepted(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.re_registration_date, s.kode_jalur.charAt(0) == 'K' ? true : false, s.jurusan_lulus);
+                                    stat = accepted(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.re_registration_date, s.kode_jalur.charAt(0) == 'K' ? true : false,
+                                        s.jurusan_lulus);
                                     break;
                                 case 'completed':
                                     stat = completed(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.kode_jalur.charAt(0) == 'K' ? true : false, s.jurusan_lulus);
                                     break;
                                 case '':
-                                    stat = unregister(); 
+                                    stat = unregister();
                                     break;
                                 default:
                                     break;
                             }
-    
-                            cardSection.append(generateCard(s.tahap, stat, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) != 'pre' ? true : false, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) == 'now' ? true : false));
+
+                            cardSection.append(generateCard(s.tahap, stat, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) != 'pre' ? true : false, getTimeStatus(s
+                                .pendaftaran_mulai, s.daftar_ulang_selesai) == 'now' ? true : false));
                         });
                     },
                     error: function(xhr, status, error) {
-                    console.error("Gagal mendapatkan data: ", status, error);
+                        console.error("Gagal mendapatkan data: ", status, error);
                     }
                 });
             }
@@ -232,7 +234,7 @@
                 // check time first
 
                 const departmentRow = isSMK ?
-                `<tr>
+                    `<tr>
                     <td class="col-auto px-0">Jurusan</td>
                     <td class="col-auto">:</td>
                     <td class="col-auto px-0">${department}</td>
@@ -294,7 +296,7 @@
              */
             function completed(name, nisn, track, school, isSMK = false, department = null) {
                 const departmentRow = isSMK ?
-                `<tr>
+                    `<tr>
                     <td class="col-auto px-0">Jalur Pilihan</td>
                     <td class="col-auto">:</td>
                     <td class="col-auto px-0">${department}</td>
@@ -353,13 +355,13 @@
 
                 // Check time status
                 if (currentDate < startDate) {
-                return 'pre'; // Time before date range
+                    return 'pre'; // Time before date range
                 } else if (currentDate >= startDate && currentDate <= endDate) {
-                return 'now'; // Time between date range
+                    return 'now'; // Time between date range
                 } else {
-                return 'post'; // Time after date range
+                    return 'post'; // Time after date range
                 }
             }
-            });
+        });
     </script>
 @endpush
