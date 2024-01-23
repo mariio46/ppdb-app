@@ -18,7 +18,7 @@ Route::view('/landing-page', 'landing-page')->name('home');
 // middleware
 Route::group(['middleware' => 'student.guest'], function () {
     // student routes
-    Route::get('/masuk', [studentLoginController::class, 'index'])->name('student.login');
+    Route::get('/masuk', [studentLoginController::class, 'index'])->name('student.masuk');
     Route::post('/do-login', [studentLoginController::class, 'doLogin'])->name('student.login');
 });
 
@@ -66,10 +66,10 @@ Route::group(['middleware' => 'student.auth'], function () {
     Route::controller(SchoolController::class)->group(function () {
         Route::get('/sekolah', 'index')->name('student.school');
 
-        Route::get('/schools/get-list', 'getSchools')->name('student.school.get-data');
+        Route::get('json/schools/get-list', 'getSchools')->name('student.school.get-data');
         Route::get('/schools/by-city/{cityCode}/{schoolType}', 'getSchoolByCity')->name('student.school.filter-school');
         Route::get('/schools/by-zone', 'getSchoolByZone')->name('student.school.get-zone');
-        Route::get('/schools/boarding-school', 'getBoardingSchool')->name('student.school.get-boarding');
+        Route::get('json/schools/boarding-school', 'getBoardingSchool')->name('student.school.get-boarding');
         Route::get('/schools/department/{schoolId}', 'getDepartmentBySchool')->name('student.school.get-department');
     });
 

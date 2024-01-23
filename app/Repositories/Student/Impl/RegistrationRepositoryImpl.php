@@ -3,26 +3,27 @@
 namespace App\Repositories\Student\Impl;
 
 use App\Models\Student\RegistrationModel;
+use App\Models\Track;
 use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\Request;
 
 class RegistrationRepositoryImpl implements RegistrationRepository
 {
     public function __construct(
-        public RegistrationModel $registrationModel
+        public RegistrationModel $registrationModel,
+        protected Track $track,
     ) {
     }
 
     public function getSchedules(): array
     {
-        $get = $this->registrationModel->getSchedules();
-
-        return $get;
+        return $this->registrationModel->getSchedules();
     }
 
     public function getRegistrationDataByPhase(string $phase): array
     {
-        return $this->registrationModel->getRegistrationDataByPhase($phase);
+        $student_id = session()->get('stu_id');
+        return $this->registrationModel->getRegistrationDataByPhase($student_id, $phase);
     }
 
     public function getScheduleByPhaseCode(string $phase): array
@@ -34,7 +35,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
                 foreach ($data['data'][$schoolType] as &$track) {
                     $track['slug'] = $phase.'_'.$data['data']['tahap_id'].'_'.$track['kode'];
                     $track['jalur'] = str_replace(['SMA', 'SMK'], '', $track['jalur']);
-                    $track['info'] = $this->registrationModel->informations[$track['kode']];
+                    $track['info'] = $this->track->getInfo($track['kode']);
                 }
             }
         }
