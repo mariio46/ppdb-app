@@ -1,30 +1,34 @@
 @extends('layouts.student.auth')
 
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            @if (!session()->get('stu_is_locked'))
-                <div class="alert alert-danger p-1">
-                    <p class="text-center"><x-tabler-shield-lock style="width: 36px; height: 36px;" /></p>
-                    <p class="mb-0 text-center">Kamu belum mengunci data pribadi. Lakukan penguncian data terlebih dahulu untuk melakukan pendaftaran jalur.</p>
-                </div>
-            @else
-                <div class="card d-none" id="proof_card">
-                    <div class="card-body p-2">
-                        <div class="d-md-flex align-items-center">
-                            <h4 class="my-1">Lihat Bukti Pendaftaran</h4>
-                            <a class="btn btn-success ms-auto" id="registration_proof_button" href="">Lihat Detail</a>
-                        </div>
-                    </div>
-                </div>
+    <x-loader key="loader" />
 
-                <div class="card">
-                    <div class="card-body px-5 pt-5">
-                        <div class="row match-height" id="card_container">
+    <div class="content-body d-none" id="content">
+        <div class="row">
+            <div class="col-12">
+                @if (!session()->get('stu_is_locked'))
+                    <div class="alert alert-danger p-1">
+                        <p class="text-center"><x-tabler-shield-lock style="width: 36px; height: 36px;" /></p>
+                        <p class="mb-0 text-center">Kamu belum mengunci data pribadi. Lakukan penguncian data terlebih dahulu untuk melakukan pendaftaran jalur.</p>
+                    </div>
+                @else
+                    <div class="card d-none" id="proof_card">
+                        <div class="card-body p-2">
+                            <div class="d-md-flex align-items-center">
+                                <h4 class="my-1">Lihat Bukti Pendaftaran</h4>
+                                <a class="btn btn-success ms-auto" id="registration_proof_button" href="">Lihat Detail</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endif
+    
+                    <div class="card">
+                        <div class="card-body px-5 pt-5">
+                            <div class="row match-height" id="card_container">
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 @endsection
@@ -32,10 +36,15 @@
 @push('scripts')
     {{-- <script src="/js/student/pages/registration/index-v1.0.1.js"></script> --}}
     <script>
+        var isRegis = "{{ session()->get('stu_is_regis') ? 'y' : 'n' }}";
+    </script>
+    <script>
         $(function() {
             'use strict';
 
-            var cardContainer = $('#card_container'),
+            var loader = $('#loader'),
+                content = $('#content'),
+                cardContainer = $('#card_container'),
                 cardProof = $('#proof_card'),
                 regisProofBtn = $('#registration_proof_button'),
                 months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
@@ -47,10 +56,14 @@
                 dataType: 'json',
                 success: function(schedules) {
                     console.log(schedules);
+                    loader.addClass("d-none");
+                    content.removeClass("d-none");
                     displayDataInCards(schedules.data);
                 },
                 error: function(xhr, status, error) {
                     console.error('Gagal mengambil data:', status, error);
+                    loader.removeClass("d-none");
+                    content.addClass("d-none");
                 }
             });
 
@@ -69,7 +82,9 @@
                         case 'now':
                             btnHtml = `<a class="btn btn-primary" href="/pendaftaran/tahap/${schedule.tahap}_${schedule.tahap_id}">Lihat Tahap ${schedule.tahap}</a>`;
                             cdr = 'now';
-                            cardProof.removeClass("d-none");
+                            if (isRegis == 'y') {
+                                cardProof.removeClass("d-none");
+                            }
                             regisProofBtn.attr('href', `/pendaftaran/bukti/${schedule.tahap}_${schedule.tahap_id}`);
                             break;
                         case 'post':

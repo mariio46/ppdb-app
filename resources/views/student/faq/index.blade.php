@@ -38,11 +38,7 @@
         </div>
 
         {{-- loader --}}
-        <div id="loader" style="display: none;">
-            <div class="d-flex justify-content-center mt-2">
-                <div class="spinner-border" role="status"></div>
-            </div>
-        </div>
+        <x-loader key="loader" />
         
         {{-- frequent answer and question  collapse --}}
         <div class="accordion accordion-margin my-2" id="accordionSection"></div>
@@ -70,11 +66,11 @@
                     dataType: 'json',
                     success: function(data) {
                         displayData(data.data);
-                        loader.hide();
+                        loader.addClass('d-none');
                     },
                     error: function(xhr, status, error) {
                         console.error('Failed get data.', status, error);
-                        loader.hide();
+                        loader.addClass('d-none');
                     }
                 });
             }

@@ -66,7 +66,7 @@ Route::group(['middleware' => 'student.auth'], function () {
     Route::controller(SchoolController::class)->group(function () {
         Route::get('/sekolah', 'index')->name('student.school');
 
-        Route::get('/schools/get-list', 'getSchools')->name('student.school.get-data');
+        Route::get('json/schools/get-list', 'getSchools')->name('student.school.get-data');
         Route::get('/schools/by-city/{cityCode}/{schoolType}', 'getSchoolByCity')->name('student.school.filter-school');
         Route::get('/schools/by-zone', 'getSchoolByZone')->name('student.school.get-zone');
         Route::get('/schools/boarding-school', 'getBoardingSchool')->name('student.school.get-boarding');

@@ -226,7 +226,7 @@
                                 noResults: function () {
                                    return "Tidak ada data ditemukan.";
                                 }
-                            }
+                            },
                         });
                     });
                 }

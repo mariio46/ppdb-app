@@ -9,7 +9,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class RegistrationController extends Controller
 {
@@ -33,6 +32,7 @@ class RegistrationController extends Controller
         $data = [
             'phase_id' => $phase_id,
             'phase' => $phase,
+            'icon'  => $this->track->getIcon()
         ];
 
         return view('student.registration.phase', $data);
@@ -95,9 +95,7 @@ class RegistrationController extends Controller
     //------------------------------------------------------------JSON
     public function getSchedules(): JsonResponse
     {
-        $get = $this->registrationRepo->getSchedules();
-
-        return response()->json($get['response'], $get['status_code']);
+        return response()->json($this->registrationRepo->getSchedules());
     }
 
     public function getScheduleByPhase(string $phase): JsonResponse

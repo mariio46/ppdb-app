@@ -2,11 +2,7 @@
 
 @section('content')
     <div class="content-body">
-        <section id="loader">
-            <div class="d-flex justify-content-center">
-                <div class="spinner-grow text-primary" role="status"></div>
-              </div>
-        </section>
+        <x-loader key="loader" />
 
         <section id="statusSection">
             <div class="row">
@@ -20,7 +16,7 @@
 @push('scripts')
     {{-- <script src="/js/student/pages/status/index.js"></script> --}}
     <script>
-        var tracks = JSON.parse('{!! json_encode($tracks) !!}');
+        var tracks = {!! json_encode($tracks) !!};
     </script>
     <script>
         $(function() {
@@ -38,7 +34,7 @@
                     dataType: 'json',
                     success: function(status) {
                         console.log(status);
-                        $('#loader').hide();
+                        
                         status.data.forEach(s => {
                             let stat = '';
     
@@ -66,10 +62,13 @@
                             }
     
                             cardSection.append(generateCard(s.tahap, stat, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) != 'pre' ? true : false, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) == 'now' ? true : false));
+
+                            $('#loader').addClass('d-none');
                         });
                     },
                     error: function(xhr, status, error) {
-                    console.error("Gagal mendapatkan data: ", status, error);
+                        console.error("Gagal mendapatkan data: ", status, error);
+                        $('#loader').addClass('d-none');
                     }
                 });
             }

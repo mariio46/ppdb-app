@@ -9,32 +9,13 @@ class SchoolModel extends Base
     public function getSchools(string $type = '', string $city = ''): array // 04.001
     {
         $get = $this->swGetWithToken("sekolah/jenis/kabupaten?kode=$city&jenis=$type&status=verifikasi");
-        if ($get['status_code'] == 200) {
-            return $get['response'];
-        } else {
-            return [
-                'statusCode' => $get['status_code'],
-                'status' => 'failed',
-                'messages' => 'Terjadi kesalahan. Gagal mendapatkan data.',
-                'data' => [],
-            ];
-        }
+        return $this->serverResponseWithGetMethod($get);
     }
 
     public function getSchoolByCity(?string $type, ?string $city): array // 04.002
     {
         $data = $this->swGetWithToken("sekolah/jenis/kabupaten?kode=$city&jenis=$type&status=verifikasi");
-
-        if ($data['status_code'] == 200) {
-            return $data['response'];
-        } else {
-            return [
-                'statusCode' => $data['status_code'],
-                'status' => 'failed',
-                'messages' => 'Gagal mendapatkan data.',
-                'data' => [],
-            ];
-        }
+        return $this->serverResponseWithGetMethod($data);
     }
 
     public function getSchoolByZone(): array
