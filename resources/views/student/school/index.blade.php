@@ -39,7 +39,7 @@
                     </div>
                 </div> --}}
                 <div class="card-body border-top px-0">
-                    <table class="table table-hover" id="tableData">
+                    <table class="table table-hover border-bottom" id="tableData">
                         <thead>
                             <tr>
                                 <th>Nama Sekolah</th>
@@ -129,8 +129,10 @@
                 var datatable = table.DataTable({
                     ajax: {
                         // url: '/schools/get-list?t=' + filterType + '&c=' + filterCity,
-                        url: '/schools/get-list',
-                        dataSrc: 'data.data'
+                        url: '/json/schools/get-list',
+                        dataSrc: function(json) {
+                            return json.data || [];
+                        }
                     },
                     columns: [{
                             data: 'nama_sekolah'
@@ -164,7 +166,6 @@
                         {
                             data: null,
                             render: function(data, type, row) {
-
                                 return `<button class="btn btn-primary btn-detail" data-bs-toggle="modal" data-bs-target="#detailModal" data-all="${JSON.stringify(row)}">Lihat Detail</button>`;
                             }
                         }
@@ -180,7 +181,12 @@
                         lengthMenu: "_MENU_",
                         search: "",
                         searchPlaceholder: "Cari Sekolah...",
-                        info: "Display _START_ to _END_ of _TOTAL_ entries",
+                        info: "Menampilkan _START_ - _END_ dari _TOTAL_ entri",
+                        infoEmpty: "Menampilkan 0 entri",
+                        emptyTable: "Tidak ada data yang tersedia di dalam tabel.",
+                        loadingRecords: "Memuat..",
+                        processing: "Memproses",
+                        zeroRecords: "Tidak ditemukan hasil yang sesuai",
                         paginate: {
                             // remove previous & next text from pagination
                             previous: '&nbsp;',
