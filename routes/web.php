@@ -69,7 +69,7 @@ Route::group(['middleware' => 'student.auth'], function () {
         Route::get('json/schools/get-list', 'getSchools')->name('student.school.get-data');
         Route::get('/schools/by-city/{cityCode}/{schoolType}', 'getSchoolByCity')->name('student.school.filter-school');
         Route::get('/schools/by-zone', 'getSchoolByZone')->name('student.school.get-zone');
-        Route::get('/schools/boarding-school', 'getBoardingSchool')->name('student.school.get-boarding');
+        Route::get('json/schools/boarding-school', 'getBoardingSchool')->name('student.school.get-boarding');
         Route::get('/schools/department/{schoolId}', 'getDepartmentBySchool')->name('student.school.get-department');
     });
 
