@@ -199,6 +199,12 @@
                 });
             }
 
+            // Load Form Data In First Render
+            loadRoles();
+            loadRegions();
+            loadSchools();
+            loadOriginSchool();
+
             $.ajax({
                 url: `/panel/users/json/user/${id}`,
                 method: 'get',
@@ -209,17 +215,17 @@
                     $('#nama_pengguna').val(user.nama_pengguna);
                     $('#status_aktif').val(user.status_aktif).trigger('change');
                     // console.log(user);
-                    loadRoles(user.roles.id.toString())
-                    switch (user.roles.id.toString()) {
-                        case '3':
+                    loadRoles(user.roles.id)
+                    switch (user.roles.id) {
+                        case 3:
                             $('#input-wilayah').show();
                             loadRegions(user.cabdin_id);
                             break;
-                        case '4':
+                        case 4:
                             $('#input-sekolah').show();
                             loadSchools(user.sekolah_id);
                             break;
-                        case '5':
+                        case 5:
                             $('#input-sekolah-asal').show();
                             loadOriginSchool(user.sekolah_asal_id);
                             break;
@@ -233,13 +239,15 @@
             // Data Roles Collections
             function loadRoles(value = '') {
                 $.ajax({
-                    url: '/panel/users/json/rolesCollections',
+                    url: '/panel/users/json/roles',
                     method: 'get',
                     dataType: 'json',
                     success: function(roles) {
                         role.empty().append('<option value=""></option>');
+
                         roles.forEach(item => {
-                            role.append(`<option value="${item.id}" ${item.id.toString() === value ? 'selected' : ''}>${item.name}</option>`)
+                            let selected = item.value === value ? 'selected' : '';
+                            role.append(`<option value="${item.value}" ${selected}>${item.label}</option>`)
                         })
                     },
                     error: function(xhr, status, error) {
@@ -251,14 +259,16 @@
             // Data Wilayah Collections
             function loadRegions(value = '') {
                 $.ajax({
-                    url: '/panel/users/json/regionsCollections',
+                    url: '/panel/users/json/regions',
                     method: 'get',
                     dataType: 'json',
                     success: function(regions) {
+                        console.log('Wilayah : ', regions);
                         wilayah.empty().append('<option value=""></option>');
+
                         regions.forEach(region => {
-                            let selected = region.id.toString() === value ? 'selected' : '';
-                            wilayah.append(`<option value="${region.id}" ${selected}>${region.name}</option>`)
+                            let selected = region.value === value ? 'selected' : '';
+                            wilayah.append(`<option value="${region.value}" ${selected}>${region.label}</option>`)
                         })
                     },
                     error: function(xhr, status, error) {
@@ -270,14 +280,14 @@
             // Data Sekolah Tujuan Collections
             function loadSchools(value = '') {
                 $.ajax({
-                    url: '/panel/sekolah/json/schools-collections',
+                    url: '/panel/users/json/schools',
                     method: 'get',
                     dataType: 'json',
                     success: function(schools) {
                         sekolah.empty().append('<option value=""></option>');
                         schools.forEach(school => {
-                            let selected = school.id.toString() === value ? 'selected' : '';
-                            sekolah.append(`<option value="${school.id}" ${selected}>${school.nama_sekolah}</option>`)
+                            let selected = school.value === value ? 'selected' : '';
+                            sekolah.append(`<option value="${school.value}" ${selected}>${school.label}</option>`)
                         })
                     },
                     error: function(xhr, status, error) {
@@ -289,14 +299,15 @@
             // Data Sekolah Asal Collections
             function loadOriginSchool(value = '') {
                 $.ajax({
-                    url: '/panel/users/json/originSchoolsCollections',
+                    url: '/panel/users/json/origin-schools',
                     method: 'get',
                     dataType: 'json',
                     success: function(origin_schools) {
                         sekolah_asal.empty().append('<option value=""></option>');
+
                         origin_schools.forEach(school => {
-                            let selected = school.id.toString() === value ? 'selected' : '';
-                            sekolah_asal.append(`<option value="${school.id}" ${selected}>${school.name}</option>`)
+                            let selected = school.value === value ? 'selected' : '';
+                            sekolah_asal.append(`<option value="${school.value}" ${selected}>${school.label}</option>`)
                         })
                     },
                     error: function(xhr, status, error) {

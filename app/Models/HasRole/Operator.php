@@ -11,28 +11,14 @@ class Operator extends Base
     {
         $response = $this->getWithToken("admin/operator/list?{$key}={$param}");
 
-        if ($response['status_code'] == 200) {
-            return $response['response'];
-        } else {
-            return [
-                'statusCode' => $response['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
+        return $this->serverResponseWithGetMethod(response: $response);
     }
 
     public function getSingleOperator(string $param): array
     {
         $response = $this->getWithToken(endpoint: "admin/operator/get?id={$param}");
 
-        if ($response['status_code'] == 200) {
-            return $response['response'];
-        } else {
-            return [
-                'statusCode' => $response['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
+        return $this->serverResponseWithGetMethod(response: $response);
     }
 
     public function createOperator(Request $request, string $param): array
@@ -43,18 +29,9 @@ class Operator extends Base
             'kata_sandi' => $request->password,
             'sekolah_id' => $param,
         ];
+
         $data = $this->postWithTokenAndWithFile(endpoint: 'admin/operator/pengajuan', data: $body, key: 'dokumen', file: $request->file('dokumen'));
 
-        if ($data['status_code'] == 201 || $data['status_code'] == 200) {
-            $response = $data['response'];
-        } else {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'messages' => 'Gagal Menyimpan Data!',
-                'data' => [],
-            ];
-        }
-
-        return $response;
+        return $this->serverResponseWithPostMethod(data: $data);
     }
 }

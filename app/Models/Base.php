@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
 class Base
@@ -115,5 +116,14 @@ class Base
             'messages' => 'Gagal Menampilkan Data',
             'data' => [],
         ];
+    }
+
+    // -------------------------CONVERTION-------------------------
+    protected function jsonToCollectionFormData(array $collections, string $value, string $label): Collection
+    {
+        return collect($collections['response']['data'])->map(fn ($item) => [
+            'value' => $item[$value],
+            'label' => $item[$label],
+        ]);
     }
 }

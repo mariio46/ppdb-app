@@ -57,7 +57,7 @@ class VerificationController extends Controller
     public function manualAchievement(string $id): View
     {
         return view('has-role.verifications.manual-achievement', [
-            "id" => $id
+            'id' => $id,
         ]);
     }
 
@@ -67,9 +67,9 @@ class VerificationController extends Controller
         $upd = $this->verification->updateAchievement($registration_id, $request);
 
         if ($upd['statusCode'] == 200 || $upd['statusCode'] == 201) {
-            return to_route("verifikasi.manual.detail", [$registration_id])->with(['stat' => "success", 'msg' => $upd['messages']]);
+            return to_route('verifikasi.manual.detail', [$registration_id])->with(['stat' => 'success', 'msg' => $upd['messages']]);
         } else {
-            return redirect()->back()->with(['stat' => "error", 'msg' => $upd['messages']]);
+            return redirect()->back()->with(['stat' => 'error', 'msg' => $upd['messages']]);
         }
     }
 
@@ -77,8 +77,9 @@ class VerificationController extends Controller
     {
         $upd = $this->verification->updateScore($request);
 
-        $stat = ($upd['statusCode'] == 200 || $upd['statusCode'] == 201) ? "success" : "error";
-        return redirect()->back()->with(["stat" => $stat, "msg" => $upd["messages"]]);
+        $stat = ($upd['statusCode'] == 200 || $upd['statusCode'] == 201) ? 'success' : 'error';
+
+        return redirect()->back()->with(['stat' => $stat, 'msg' => $upd['messages']]);
     }
 
     public function manualUpdateMap(string $id, Request $request): RedirectResponse
@@ -86,9 +87,9 @@ class VerificationController extends Controller
         $save = $this->verification->updateCoordinate($id, $request);
 
         if ($save['statusCode'] == 200 || $save['statusCode'] == 201) {
-            return to_route("verifikasi.manual.detail", [$id])->with(["stat" => "success", "msg" => $save['messages']]);
+            return to_route('verifikasi.manual.detail', [$id])->with(['stat' => 'success', 'msg' => $save['messages']]);
         } else {
-            return redirect()->back()->with(["stat" => "error", "msg" => $save["messages"]]);
+            return redirect()->back()->with(['stat' => 'error', 'msg' => $save['messages']]);
         }
     }
 
@@ -97,29 +98,32 @@ class VerificationController extends Controller
         $acc = $this->verification->acceptRegistration($id, $request);
 
         $stat = ($acc['statusCode'] == 200) ? 'success' : 'error';
-        return redirect()->back()->with(['stat' => $stat, "msg" => $acc['messages']]);
+
+        return redirect()->back()->with(['stat' => $stat, 'msg' => $acc['messages']]);
     }
 
     public function manualDeclineVerification(string $id, Request $request): RedirectResponse
     {
         $dec = $this->verification->declineRegistration($id, $request);
         if ($dec['statusCode'] == 200) {
-            return to_route("verifikasi.manual")->with(['stat' => 'success', 'msg' => $dec['messages']]);
+            return to_route('verifikasi.manual')->with(['stat' => 'success', 'msg' => $dec['messages']]);
         } else {
-            return redirect()->back()->with(['stat' => "error", "msg" => $dec['messages']]);
+            return redirect()->back()->with(['stat' => 'error', 'msg' => $dec['messages']]);
         }
     }
 
     //------------------------------------------------------------JSON
     public function manualGetData(): JsonResponse
     {
-        $data = $this->verification->getAll(session()->get("sekolah_id"));
+        $data = $this->verification->getAll(session()->get('sekolah_id'));
+
         return response()->json($data);
     }
 
     public function manualGetDetailData(string $id): JsonResponse
     {
         $get = $this->verification->getSingle($id);
+
         return response()->json($get);
     }
 }

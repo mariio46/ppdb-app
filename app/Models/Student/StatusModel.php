@@ -44,10 +44,10 @@ class StatusModel extends Base
             return $get['response'];
         } else {
             return [
-                "statusCode" => $get['status_code'],
-                "status"     => "failed",
-                "messages"   => "Terjadi kesalahan. Gagal mendapatkan data.",
-                "data"       => []
+                'statusCode' => $get['status_code'],
+                'status' => 'failed',
+                'messages' => 'Terjadi kesalahan. Gagal mendapatkan data.',
+                'data' => [],
             ];
         }
     }

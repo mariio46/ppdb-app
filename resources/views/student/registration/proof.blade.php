@@ -190,7 +190,8 @@
                         chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3', 'y', data.jurusan3_nama));
                     }
 
-                    let schver = (data.sekolah_verif_id == data.sekolah1_id) ? data.sekolah1_nama : ((data.sekolah_verif_id == data.sekolah2_id) ? data.sekolah2_nama : data.sekolah3_nama);
+                    let schver = (data.sekolah_verif_id == data.sekolah1_id) ? data.sekolah1_nama : ((data.sekolah_verif_id == data.sekolah2_id) ? data.sekolah2_nama : data
+                        .sekolah3_nama);
                     schoolVerif.text(schver);
                     endVerif.text(d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear());
                 },

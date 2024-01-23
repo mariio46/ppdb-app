@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Tambah Kuota SMA'])
+@extends('layouts.has-role.auth', ['title' => 'Edit Kuota SMA'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
@@ -18,7 +18,7 @@
             </div>
             <div class="card-body">
                 <x-alert>Masukkan kuota Per-Jalur peserta didik yang ingin diterima.</x-alert>
-                <form id="form-add-quota" action="{{ route('school-quota.store-sma') }}" method="POST">
+                <form id="form-add-quota" action="{{ route('school-quota.update-sma', $quota_id) }}" method="POST">
                     @csrf
 
                     @if ($satuan_pendidikan == 'sma' || $satuan_pendidikan == 'hbs')
@@ -103,6 +103,7 @@
                             </table>
                         </div>
                     @endif
+
                     @if ($satuan_pendidikan == 'fbs' || $satuan_pendidikan == 'hbs')
                         <div class="mb-2">
                             <table class="table">
@@ -144,6 +145,10 @@
     <script>
         var default_value = '{{ $default }}';
         var percentage = JSON.parse('{!! $percentage !!}');
+        var school_id = '{{ $sekolah_id }}',
+            quota_id = '{{ $quota_id }}',
+            satuan_pendidikan = '{{ $satuan_pendidikan }}',
+            unit = '{{ $unit }}';
     </script>
     <script>
         $(function() {
@@ -242,6 +247,32 @@
                 let result = (value * 100).toFixed(0) + '%';
                 return result
             }
+
+            $.ajax({
+                url: `/panel/kuota-sekolah/json/quotas/${unit}/${quota_id}/quota`,
+                method: 'get',
+                dataType: 'json',
+                success: function(quota) {
+                    console.log('Kuota : ', quota);
+                    if (satuan_pendidikan === 'sma' || satuan_pendidikan === 'hbs') {
+                        if (quota.data.total_kuota) {
+                            let totalDividing = quota.data.total_kuota / default_value;
+                            let totalMultiplie = Math.round(totalDividing) * default_value;
+
+                            total.val(Math.round(totalDividing));
+                            totalQuotaOperator(Math.round(totalMultiplie), percentage)
+                        }
+                    }
+                    if (satuan_pendidikan === 'fbs' || satuan_pendidikan === 'hbs') {
+                        $('#bs_lakilaki').val(quota.data.bs_lakilaki)
+                        $('#bs_perempuan').val(quota.data.bs_perempuan)
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to get data single school.", status, error, xhr);
+                }
+            })
 
             // Form Validation
             if (form.length) {

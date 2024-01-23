@@ -88,6 +88,7 @@
 @push('scripts')
     <script>
         var track = '{{ $track }}';
+
         function countBobot(type, level, n) {
             let bobot = 0;
             if (type == "berjenjang" && level == "internasional" && n == 1) {
@@ -223,8 +224,8 @@
                         $this.select2({
                             dropdownParent: $this.parent(),
                             language: {
-                                noResults: function () {
-                                   return "Tidak ada data ditemukan.";
+                                noResults: function() {
+                                    return "Tidak ada data ditemukan.";
                                 }
                             },
                         });

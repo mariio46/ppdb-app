@@ -19,9 +19,9 @@
                 </div>
                 <div class="card-body">
                     <div class="rounded shadow-md" id="map" style="width: 100%; height: 400px;"></div>
-                    <x-input class="w-50 mt-1" type="text" id="search-input" placeholder="cari tempat.." />
+                    <x-input class="w-50 mt-1" id="search-input" type="text" placeholder="cari tempat.." />
 
-                    <form id="form" action="{{ route("verifikasi.manual.update-map", [$id]) }}" method="post">
+                    <form id="form" action="{{ route('verifikasi.manual.update-map', [$id]) }}" method="post">
                         @csrf
                         <div class="row mt-2">
                             <div class="mb-2 col-lg-4 col-12">
@@ -75,14 +75,17 @@
                         }
                     }
                 });
-            }            
+            }
         });
 
         let map, marker;
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -5.1384917, lng: 119.4893742}, // Koordinat pusat peta awal
+                center: {
+                    lat: -5.1384917,
+                    lng: 119.4893742
+                }, // Koordinat pusat peta awal
                 zoom: 13,
                 streetViewControl: false
             });

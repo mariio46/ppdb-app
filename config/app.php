@@ -180,8 +180,10 @@ return [
         App\Providers\HasRole\UserServiceProvider::class,
         App\Providers\HasRole\SchoolServiceProvider::class,
         App\Providers\HasRole\SchoolDataServiceProvider::class,
+        App\Providers\HasRole\SchoolQuotaServiceProvider::class,
         App\Providers\HasRole\OperatorServiceProvider::class,
         App\Providers\HasRole\FaqServiceProvider::class,
+        App\Providers\HasRole\MajorServiceProvider::class,
         /*
          * SuperAdmin Service Providers...
          */
