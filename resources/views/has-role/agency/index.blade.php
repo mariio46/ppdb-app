@@ -27,12 +27,6 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            @if (session()->get('msg'))
-                <div class="alert alert-{{ session()->get('stat') }} p-1">
-                    <p class="text-center">{{ session()->get('msg') }}</p>
-                </div>
-            @endif
-
             <div class="card">
                 <div class="card-body px-0 border-top">
                     <table class="table table-agency border-bottom">
