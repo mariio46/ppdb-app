@@ -1,34 +1,11 @@
 @extends('layouts.has-role.auth', ['title' => 'Detail Jadwal'])
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Tahap & Jadwal</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('schedules.index') }}">
-                                    Tahap & Jadwal
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Lihat Detail
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
+    <x-breadcrumb title="Tahap & Jadwal">
+        <x-breadcrumb-item to="{{ route('schedules.index') }}" title="Tahap & Jadwal" />
+        <x-breadcrumb-active title="Lihat Detail" />
+    </x-breadcrumb>
+    
     <div class="content-body row">
         <div class="col-12">
             <div class="card">
