@@ -6,32 +6,11 @@
 @endsection
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Cabang Dinas</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('cabang-dinas.index') }}">Cabang Dinas</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Detail Cabang Dinas
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
+    <x-breadcrumb title="Cabang Dinas">
+        <x-breadcrumb-item to="{{ route('cabang-dinas.index') }}" title="Cabang Dinas" />
+        <x-breadcrumb-active title="Detail Cabang Dinas" />
+    </x-breadcrumb>
+    
     <div class="content-body row">
         <div class="col-12">
             <div class="card">
@@ -173,19 +152,17 @@
             });
 
             $.ajax({
-                url: '/panel/cabang-dinas/get-cabang-dinas-by-id/' + idAgency,
+                url: `/panel/cabang-dinas/get-cabang-dinas-by-id/${idAgency}`,
                 method: 'get',
                 dataType: 'json',
                 success: function(data) {
                     let areas = data.wilayah.map(function(wilayah) {
-                        return wilayah.kode + '|' + wilayah.nama;
+                        return `${wilayah.kode}|${wilayah.nama}`;
                     });
-
-                    console.log(data);
 
                     $('#name').val(data.nama);
                     $('#phone').val(data.nomor_telepon);
-                    loadServiceArea(areas, data.kedudukan_kode + '|' + data.kedudukan);
+                    loadServiceArea(areas, `${data.kedudukan_kode}|${data.kedudukan}`);
                     $('#address').val(data.alamat);
 
                     // modal
@@ -205,14 +182,14 @@
                         serviceArea.empty().append('<option value=""></option>');
 
                         cities.forEach(city => {
-                            let value = city.code + '|' + city.name;
+                            let value = `${city.code}|${city.name}`;
 
                             let opt = $("<option></option>").val(value).text(city.name);
 
                             if (serviceAreaArray.indexOf(value) !== -1) {
                                 opt.attr('selected', 'selected');
 
-                                position.append('<option value="' + value + '" ' + ((value == positionData) ? 'selected' : '') + '>' + city.name + '</option>');
+                                position.append(`<option value="${value}" ${value == positionData ? 'selected' : ''}>${city.name}</option>`);
                             }
 
                             serviceArea.append(opt);
@@ -233,7 +210,7 @@
 
                 $.each(selected, function(index, value) {
                     let s = value.split('|');
-                    position.append('<option value="' + value + '">' + s[1] + '</option>');
+                    position.append(`<option value="${value}">${s[1]}</option>`);
                 });
             });
 

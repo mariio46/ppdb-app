@@ -688,6 +688,15 @@
                     });
                 }
 
+                // pembobotan
+                if (achType.length && achLevel.length && achChamp.length) {
+                    $('#achievementType, #achievementLevel, #achievementChamp').change(function() {
+                        let bobot = countBobot(achType.val(), achLevel.val(), achChamp.val());
+                        $('#bobotx').text(bobot);
+                        $('#achievementWeight').val(bobot);
+                    });
+                }
+
                 // jQuery Validations
                 if (regisForm.length) {
                     regisForm.validate({
@@ -908,14 +917,14 @@
                 if (track == 'KA') { // ka => affirmation
                     // affirmation section
                     if (affType.length && affNum.length && affNumSec.length) {
-                    affType.change(function() {
-                        if ($(this).val() == 'pkh') {
-                        affNumSec.show();
-                        } else {
-                        affNumSec.hide();
-                        affNum.val('');
-                        }
-                    });
+                        affType.change(function() {
+                            if ($(this).val() == 'pkh') {
+                                affNumSec.show();
+                            } else {
+                                affNumSec.hide();
+                                affNum.val('');
+                            }
+                        });
                     }
 
                     // load city, school and department
@@ -959,87 +968,87 @@
                     loadCity();
 
                     for (let i = 1; i <= 3; i++) {
-                    $('#city1').change(function() {
-                        loadSchool(i, $(this).val());
-                    });
+                        $('#city1').change(function() {
+                            loadSchool(i, $(this).val());
+                        });
 
-                    $('#school' + i).change(function() {
-                        loadDepartment(i, $(this).val());
-                    });
+                        $('#school' + i).change(function() {
+                            loadDepartment(i, $(this).val());
+                        });
                     }
                 } else if (track == 'KC' || track == 'KG') { // kc => teacher's child || kg => partner's child
                     loadCity();
 
                     $('#city1').change(function() {
-                    loadSchool(1, $(this).val());
-                    $('#department1, #department2, #department3').empty().append('<option value=""></option>');
+                        loadSchool(1, $(this).val());
+                        $('#department1, #department2, #department3').empty().append('<option value=""></option>');
                     });
 
                     for (let i = 1; i <= 3; i++) {
-                    $('#school1').change(function() {
-                        loadDepartment(i, $(this).val());
-                    });
+                        $('#school1').change(function() {
+                            loadDepartment(i, $(this).val());
+                        });
                     }
                 } else if (track == 'KD') { // kd => academic
                     // load cities, schools and departments
                     loadCity();
 
                     for (let i = 1; i <= 3; i++) {
-                    $('#city' + i).change(function() {
-                        loadSchool(i, $(this).val());
-                        $('#department' + i).empty().append('<option value=""></option>');
-                    });
+                        $('#city' + i).change(function() {
+                            loadSchool(i, $(this).val());
+                            $('#department' + i).empty().append('<option value=""></option>');
+                        });
 
-                    $('#school' + i).change(function() {
-                        loadDepartment(i, $(this).val());
-                    });
+                        $('#school' + i).change(function() {
+                            loadDepartment(i, $(this).val());
+                        });
                     }
                 } else if (track == 'KE') { // ke => non academic
                     // additional rules
                     if (achType.length) {
-                    achType.rules("add", {
-                        required: true,
-                        messages: {
-                        required: "*Pilih salah satu."
-                        }
-                    });
+                        achType.rules("add", {
+                            required: true,
+                            messages: {
+                            required: "*Pilih salah satu."
+                            }
+                        });
                     }
                     if (achLevel.length) {
-                    achLevel.rules("add", {
-                        required: true,
-                        messages: {
-                        required: "*Pilih salah satu"
-                        }
-                    });
+                        achLevel.rules("add", {
+                            required: true,
+                            messages: {
+                            required: "*Pilih salah satu"
+                            }
+                        });
                     }
                     if (achChamp.length) {
-                    achChamp.rules("add", {
-                        required: true,
-                        messages: {
-                        required: "*Pilih salah satu."
-                        }
+                        achChamp.rules("add", {
+                            required: true,
+                            messages: {
+                            required: "*Pilih salah satu."
+                            }
                     });
                     }
                     if (achName.length) {
-                    achName.rules("add", {
-                        required: true,
-                        messages: {
-                        required: "*Pilih salah satu."
-                        }
-                    });
+                        achName.rules("add", {
+                            required: true,
+                            messages: {
+                            required: "*Pilih salah satu."
+                            }
+                        });
                     }
 
                     // load cities, schools and departments
                     loadCity();
                     for (let i = 1; i <= 3; i++) {
-                    $('#city' + i).change(function() {
-                        loadSchool(i, $(this).val());
-                        $('#department' + i).empty().append('<option value=""></option>');
-                    });
+                        $('#city' + i).change(function() {
+                            loadSchool(i, $(this).val());
+                            $('#department' + i).empty().append('<option value=""></option>');
+                        });
 
-                    $('#school' + i).change(function() {
-                        loadDepartment(i, $(this).val());
-                    });
+                        $('#school' + i).change(function() {
+                            loadDepartment(i, $(this).val());
+                        });
                     }
                 } else if (track == 'KF') { // kf => domicile
                     // load cities, schools and departments

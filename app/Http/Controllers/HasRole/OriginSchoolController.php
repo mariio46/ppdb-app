@@ -49,7 +49,7 @@ class OriginSchoolController extends Controller
             return to_route('sekolah-asal.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
         }
 
-        return redirect()->back()->withInput()->with(['stat' => 'danger', 'msg' => $save['messages'] ?? 'Data gagal ditambahkan.']);
+        return redirect()->back()->withInput()->with(['stat' => 'error', 'msg' => $save['messages'] ?? 'Data gagal ditambahkan.']);
     }
 
     public function update(Request $request): RedirectResponse

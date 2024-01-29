@@ -157,17 +157,21 @@ Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual', 'manual')->name('verifikasi.manual');
     Route::get('verifikasi-manual/d/{id}', 'manualDetail')->name('verifikasi.manual.detail');
     Route::get('verifikasi-manual/d/{id}/edit-nilai', 'manualScore')->name('verifikasi.manual.score');
-    Route::get('verifikasi-manual/d/{id}/edit-titik-rumah', 'manualMap')->name('verifikasi.manual.map');
+    Route::get('verifikasi-manual/d/{id}/edit-titik-rumah/{student_id}', 'manualMap')->name('verifikasi.manual.map');
     Route::get('verifikasi-manual/d/{id}/edit-prestasi', 'manualAchievement')->name('verifikasi.manual.achievement');
 
     Route::post('verifikasi-manual/d/{id}/update-score', 'manualUpdateScore')->name('verifikasi.manual.update-score');
     Route::post('verifikasi-manual/d/{id}/update-map', 'manualUpdateMap')->name('verifikasi.manual.update-map');
     Route::post('verifikasi-manual/d/{id}/update-achievement', 'manualUpdateAchievement')->name('verifikasi.manual.update-achievement');
+    Route::post('verifikasi-manual/d/{id}/is-color-blind', 'manualUpdateColorBlind')->name('verifikasi.manual.color-blind');
+    Route::post('verifikasi-manual/d/{id}/is-short', 'manualUpdateShort')->name('verifikasi.manual.short');
     Route::post('verifikasi-manual/d/{id}/accept-verication', 'manualAcceptVerification')->name('verifikasi.manual.accept');
     Route::post('verifikasi-manual/d/{id}/decline-verication', 'manualDeclineVerification')->name('verifikasi.manual.decline');
 
     Route::get('verifikasi-manual/get-data', 'manualGetData');
     Route::get('verifikasi-manual/d/{id}/get-data-detail', 'manualgetDetailData')->name('verifikasi.manual.getdetail');
+    Route::get('json/verifikasi-manual/get-time', 'getTimeVerification')->name('verifikasi.manual.get-time');
+    Route::get('json/verifikasi-manual/get-coordinate/{student_id}', 'getCoordinate')->name('verifikasi.manual.get-coordinate');
 
     // Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar-ulang');
     // Route::get('verifikasi-daftar-ulang/{nisn}', 'reregistrationShow')->name('verifikasi.daftar-ulang.show');

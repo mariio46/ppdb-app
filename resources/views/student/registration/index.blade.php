@@ -22,7 +22,7 @@
                     </div>
     
                     <div class="card">
-                        <div class="card-body px-5 pt-5">
+                        <div class="card-body px-xl-5 pt-5">
                             <div class="row match-height" id="card_container">
                             </div>
                         </div>

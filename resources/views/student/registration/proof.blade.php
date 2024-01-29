@@ -4,7 +4,7 @@
     <x-breadcrumb title="Pendaftaran">
         <x-breadcrumb-item to="{{ route('student.regis') }}" title="Pendaftaran" />
         <x-breadcrumb-item to="{{ route('student.regis.phase', [$phase, $phase_id]) }}" title="Pendaftaran Tahap {{ $phase }}" />
-        <x-breadcrumb-active title="Cetak Bykti Pendaftaran" />
+        <x-breadcrumb-active title="Cetak Bukti Pendaftaran" />
     </x-breadcrumb>
     
     <div class="content-body">
@@ -124,8 +124,8 @@
                 dataType: 'json',
                 success: function(datas) {
                     // let data = datas.data[0];
-                    let data = datas.data[0];
-                    console.log(data);
+                    let data = datas.data;
+                    console.log(datas);
                     let t = data.kode_jalur;
                     let j = t.charAt(0);
                     let d = new Date(data.verifikasi_selesai);
@@ -226,10 +226,10 @@
             function chosenSchoolHtml(schoolName, n = '', withDept = 'n', deptName = '') {
                 let dept = (withDept == 'y') ?
                     `<div class="d-flex align-items-center mb-2">
-                    <div style="width: 35%;">Jurusan</div>
-                    <div class="mx-1">:</div>
-                    <div style="width: 60%;">${deptName}</div>
-                </div>` : '';
+                        <div style="width: 35%;">Jurusan</div>
+                        <div class="mx-1">:</div>
+                        <div style="width: 60%;">${deptName}</div>
+                    </div>` : '';
 
                 return `
                 <h5 class="text-warning">Pilihan ${n}</h5>

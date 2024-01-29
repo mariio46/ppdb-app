@@ -482,6 +482,7 @@
             });
 
             lockDataBtn.click(function() {
+                console.log(allData);
                 if (!isDataComplete(allData)) {
                     alertBeforeLock.removeClass('d-none');
                 } else {
@@ -502,7 +503,6 @@
                     dataType: 'json',
                     success: function(data) {
                         let d = data.data;
-                        console.log(d);
 
                         let check = {
                             'jenis_kelamin': d.jenis_kelamin,
@@ -535,9 +535,9 @@
                         $('#selfRtRw').text(d.rtrw);
                         $('#selfAddress').text(d.alamat_jalan);
                         $('#selfMothersName').text(d.nama_ibu); // parent's data
-                        $('#selfMothersPhone').text(d.telepon_ibu);
+                        $('#selfMothersPhone').text(d.telepon_ibu == '0' ? '-' : d.telepon_ibu);
                         $('#selfFathersName').text(d.nama_ayah);
-                        $('#selfFathersPhone').text(d.telepon_ayah);
+                        $('#selfFathersPhone').text(d.telepon_ayah == '0' ? '-' : d.telepon_ayah);
                         $('#selfGuardsName').text(d.nama_wali);
                         $('#selfGuardsPhone').text(d.telepon_wali);
 
@@ -574,6 +574,7 @@
                                 $(`#smt${i}Ips`).text(s[`sm${i}_ips`]);
                             }
                         } else if (score.statusCode == 400) {
+                            Object.assign(allData, {'score': null})
                             for (let i = 1; i <= 5; i++) {
                                 $(`#smt${i}Bid`).text(0);
                                 $(`#smt${i}Big`).text(0);
@@ -595,7 +596,7 @@
 
             function isDataComplete(data) {
                 for (var key in data) {
-                    if (data[key] === null) {
+                    if (data[key] === null || data[key] === '-') {
                         return false; // Jika ada nilai yang belum terisi
                     }
                 }

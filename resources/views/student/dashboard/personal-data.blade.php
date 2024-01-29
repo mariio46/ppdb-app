@@ -168,7 +168,7 @@
                                     <select class="form-select select2 " id="birthDay" name="birthDay" data-placeholder="DD" data-minimum-results-for-search="-1">
                                         <option value=""></option>
                                         @for ($i = 1; $i <= 31; $i++)
-                                            <option value="{{ ($i < 10) ? '0' . $i : $i }}">{{ $i }}</option>
+                                            <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
                                 </div>
@@ -699,7 +699,7 @@
                         generateSelectDistrict(`${d.kode_kabupaten}|${d.kabupaten}`, `${d.kode_kecamatan}|${d.kecamatan}`);
                         generateSelectVillage(`${d.kode_kecamatan}|${d.kecamatan}`, `${d.kode_desa}|${d.desa}`);
 
-                        $('#hamlet').val(d.dusun);
+                        $('#hamlet').val(d.dusun == '-' ? null : d.dusun);
                         $('#associations').val(d.rtrw);
                         $('#address').val(d.alamat_jalan);
 

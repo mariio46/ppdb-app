@@ -49,7 +49,11 @@
 @endsection
 
 @push('scripts')
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS-nYa_Am79m7sMGUYpehL8XKE3XFv_RM&libraries=places&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS-nYa_Am79m7sMGUYpehL8XKE3XFv_RM&libraries=places"></script>
+    <script>
+        var id = '{{ $id }}',
+            student_id = '{{ $student_id }}';
+    </script>
     <script>
         $(function() {
             'use strict';
@@ -80,15 +84,31 @@
 
         let map, marker;
 
-        function initMap() {
+        $.ajax({
+                url: `/panel/json/verifikasi-manual/get-coordinate/${student_id}`,
+                method: 'get',
+                dataType: 'json',
+                success: function(data) {
+                    initMap(parseFloat(data.data.lintang), parseFloat(data.data.bujur));
+                    $('#lintang').val(data.data.lintang);
+                    $('#bujur').val(data.data.bujur);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to get data.', status, error);
+                }
+            });
+
+        function initMap(lintang = -5.1384917, bujur = 119.4893742) {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {
-                    lat: -5.1384917,
-                    lng: 119.4893742
+                    lat: lintang,
+                    lng: bujur
                 }, // Koordinat pusat peta awal
                 zoom: 13,
                 streetViewControl: false
             });
+
+            placeMarker(new google.maps.LatLng(lintang, bujur));
 
             // Tambahkan event listener untuk memilih titik koordinat
             map.addListener('click', function(event) {
