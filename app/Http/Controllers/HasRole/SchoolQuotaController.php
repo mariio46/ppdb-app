@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\HasRole\SchoolDataRepository;
+use App\Repositories\HasRole\SchoolDataRepository as SchoolData;
 use App\Repositories\HasRole\SchoolQuotaRepository as Quota;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -12,57 +12,70 @@ use Illuminate\View\View;
 
 class SchoolQuotaController extends Controller
 {
-    public function __construct(protected Quota $quota, protected SchoolDataRepository $school_data)
+    protected string $schoolId;
+
+    protected string $schoolUnit;
+
+    protected bool $hasSchoolUnit;
+
+    protected int $defaultValueRombel;
+
+    protected string $smkPercentage;
+
+    protected string $smaPercentage;
+
+    protected string $percentage;
+
+    public function __construct(protected Quota $quota, protected SchoolData $schoolData)
     {
-        //
+        $this->middleware(function ($request, $next) {
+            $this->schoolId = session()->get('sekolah_id');
+            $this->hasSchoolUnit = session()->has('satuan_pendidikan');
+            $this->schoolUnit = $this->hasSchoolUnit ? session()->get('satuan_pendidikan') : null;
+            $this->defaultValueRombel = (int) config('constant.TOTAL_ROMBEL');
+            $this->smkPercentage = json_encode(config('constant.PERCENTAGE_SMK'));
+            $this->smaPercentage = json_encode(config('constant.PERCENTAGE_SMA'));
+            $this->percentage = $this->schoolUnit == 'smk' ? $this->smkPercentage : $this->smaPercentage;
+
+            return $next($request);
+        });
     }
 
     public function index(): View
     {
-        $sekolah_id = session()->get('sekolah_id');
-        $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
-
-        return $satuan_pendidikan == 'smk'
-            ? view('has-role.school-data.quota-smk', compact('sekolah_id', 'satuan_pendidikan'))
-            : view('has-role.school-data.quota', compact('sekolah_id', 'satuan_pendidikan'));
+        return view($this->schoolUnit == 'smk' ? 'has-role.school-data.quota-smk' : 'has-role.school-data.quota', [
+            'sekolah_id' => $this->schoolId,
+            'satuan_pendidikan' => $this->schoolUnit,
+        ]);
     }
 
     public function create(): View
     {
-        $sekolah_id = session()->get('sekolah_id');
-        $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
-
-        $default = (int) config('constant.TOTAL_ROMBEL');
-        $percentage = $satuan_pendidikan == 'smk' ? json_encode(config('constant.PERCENTAGE_SMK')) : json_encode(config('constant.PERCENTAGE_SMA'));
-
-        return $satuan_pendidikan == 'smk'
-            ? view('has-role.school-data.add-quota-smk', compact('sekolah_id', 'satuan_pendidikan', 'percentage', 'default'))
-            : view('has-role.school-data.add-quota', compact('sekolah_id', 'satuan_pendidikan', 'percentage', 'default'));
+        return view($this->schoolUnit == 'smk' ? 'has-role.school-data.add-quota-smk' : 'has-role.school-data.add-quota', [
+            'sekolah_id' => $this->schoolId,
+            'satuan_pendidikan' => $this->schoolUnit,
+            'percentage' => $this->percentage,
+            'default' => $this->defaultValueRombel,
+        ]);
     }
 
     public function storeSmk(Request $request): RedirectResponse
     {
-        $sekolah_id = session()->get('sekolah_id');
-
-        $response = $this->quota->storeSmk(request: $request, school_id: $sekolah_id);
+        $response = $this->quota->storeSmk(request: $request, school_id: $this->schoolId);
 
         return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-quota.index');
     }
 
     public function storeSma(Request $request): RedirectResponse
     {
-        $sekolah_id = session()->get('sekolah_id');
-
-        $response = $this->quota->storeSma(request: $request, school_id: $sekolah_id);
+        $response = $this->quota->storeSma(request: $request, school_id: $this->schoolId);
 
         return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-quota.index');
     }
 
     public function edit(string $id): View
     {
-        $sekolah_id = session()->get('sekolah_id');
-        $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
-        $unit = match ($satuan_pendidikan) {
+        $unit = match ($this->schoolUnit) {
             'smk' => 'smk',
             'sma' => 'sma',
             'hbs' => 'sma',
@@ -72,11 +85,11 @@ class SchoolQuotaController extends Controller
 
         return view($unit == 'smk' ? 'has-role.school-data.edit-quota-smk' : 'has-role.school-data.edit-quota-sma', [
             'quota_id' => $id,
-            'sekolah_id' => $sekolah_id,
-            'satuan_pendidikan' => $satuan_pendidikan,
+            'sekolah_id' => $this->schoolId,
+            'satuan_pendidikan' => $this->schoolUnit,
             'unit' => $unit,
-            'default' => (int) config('constant.TOTAL_ROMBEL'),
-            'percentage' => $unit == 'smk' ? json_encode(config('constant.PERCENTAGE_SMK')) : json_encode(config('constant.PERCENTAGE_SMA')),
+            'default' => $this->defaultValueRombel,
+            'percentage' => $unit == 'smk' ? $this->smkPercentage : $this->smaPercentage,
         ]);
     }
 
@@ -96,89 +109,19 @@ class SchoolQuotaController extends Controller
 
     public function destroy(string $id): RedirectResponse
     {
-        $sekolah_id = session()->get('sekolah_id');
-        $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
-
-        if ($satuan_pendidikan != 'smk' || $satuan_pendidikan == null) {
+        if ($this->schoolUnit != 'smk' || $this->schoolUnit == null) {
             return to_route('school-quota.index')->with([
                 'stat' => 'error',
                 'msg' => 'Kuota ini tidak bisa di hapus',
             ]);
         } else {
-            $response = $this->quota->destroy(quota_id: $id, school_id: $sekolah_id);
+            $response = $this->quota->destroy(quota_id: $id, school_id: $this->schoolId);
 
             return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-quota.index');
         }
     }
 
-    // --------------------------------------------------LOCK DATA SCHOOL--------------------------------------------------
-
-    public function lock(string $school_id)
-    {
-        $sekolah_id = session()->get('sekolah_id');
-        $school = $this->school(school_id: $sekolah_id)->original;
-        // $hasNullChecked = $this->checkForNullValuesWithOption(data: $school, excludeKey: 'wilayah_id');
-        $hasNullChecked = $this->checkForNullValues(data: $school);
-
-        return dd($hasNullChecked);
-        // return $school;
-    }
-
-    // will return true if there is null in schooldata
-    private function checkForNullValues(array $data): bool
-    {
-        foreach ($data as $key => $value) {
-            // Check if the value is null
-            if ($value === null) {
-                return true; // Found a null value
-            }
-
-            // If the value is an array, recursively check for null values
-            if (is_array($value)) {
-                if ($this->checkForNullValues($value)) {
-                    return true; // Found a null value in the nested array
-                }
-            }
-        }
-
-        // No null values found
-        return false;
-    }
-
-    // will return true if there is null in schooldata
-    private function checkForNullValuesWithOption(array $data, string $excludeKey): bool
-    {
-        foreach ($data as $key => $value) {
-            // Exclude the specified key from the null check
-            if ($key === $excludeKey) {
-                continue;
-            }
-
-            // Check if the value is null
-            if ($value === null) {
-                return true; // Found a null value
-            }
-
-            // If the value is an array, recursively check for null values
-            if (is_array($value)) {
-                if ($this->checkForNullValues($value, $excludeKey)) {
-                    return true; // Found a null value in the nested array
-                }
-            }
-        }
-
-        // No null values found
-        return false;
-    }
-
     // --------------------------------------------------DATA API JSON--------------------------------------------------
-
-    protected function school(string $school_id): JsonResponse
-    {
-        $school = $this->school_data->index(school_id: $school_id);
-
-        return response()->json($school['data']);
-    }
 
     public function quotas(string $unit, string $id): JsonResponse
     {

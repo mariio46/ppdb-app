@@ -121,7 +121,7 @@
                     <x-separator marginY="2" />
                     <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
                         <x-button color="success">Simpan Perubahan</x-button>
-                        <x-link href="{{ route('school-data.index') }}" color="secondary">Batalkan</x-link>
+                        <x-link href="{{ url()->previous() }}" color="secondary">Batalkan</x-link>
                     </div>
                 </form>
 

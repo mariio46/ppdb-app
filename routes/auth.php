@@ -11,8 +11,10 @@ use App\Http\Controllers\HasRole\RankController;
 use App\Http\Controllers\HasRole\ReregistrationController;
 use App\Http\Controllers\HasRole\ScheduleController;
 use App\Http\Controllers\HasRole\SchoolController;
+use App\Http\Controllers\HasRole\SchoolCoordinateController;
 use App\Http\Controllers\HasRole\SchoolDataController;
 use App\Http\Controllers\HasRole\SchoolQuotaController;
+use App\Http\Controllers\HasRole\SchoolZoneController;
 use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
@@ -79,16 +81,11 @@ Route::controller(SchoolController::class)->group(function () {
     Route::post('sekolah/store', 'store')->name('sekolah.store');
     Route::get('sekolah/{id}/edit', 'edit')->name('sekolah.edit');
     Route::post('sekolah/{id}/update', 'update')->name('sekolah.update');
-    Route::get('sekolah/{id}/{unit}/info-sekolah', 'schoolDetail')->name('sekolah.detail');
-    Route::get('sekolah/{id}/{unit}/kuota-sekolah', 'schoolQuota')->name('sekolah.quota');
-    Route::get('sekolah/{id}/{unit}/wilayah-zonasi', 'schoolZone')->name('sekolah.zone');
-    Route::get('sekolah/{id}/{unit}/jurusan-dan-kuota', 'schoolMajorQuota')->name('sekolah.major-quota');
+    Route::get('sekolah/{id}/{unit}/info-sekolah', 'show')->name('sekolah.detail');
 
     Route::get('sekolah/json/units', 'units');
-    Route::get('sekolah/json/zones', 'zones');
     Route::get('sekolah/json/schools-collections', 'schools');
     Route::get('sekolah/json/single-school/{id}', 'school');
-    Route::get('sekolah/json/schools-quota/{npsn}/{unit}', 'schoolsQuota');
 });
 
 Route::controller(SchoolDataController::class)->group(function () {
@@ -100,32 +97,50 @@ Route::controller(SchoolDataController::class)->group(function () {
     Route::post('data-sekolah/{id}/update', 'update')->name('school-data.update'); // Route Action for update data sekolah
     Route::post('data-sekolah/{id}/update-logo', 'logos')->name('school-data.logos-update'); // Route Action for update logo sekolah
 
+    Route::post('data-sekolah/{id}/{unit}/lock', 'lock')->name('school-data.lock'); // Kunci Data Sekolah
+
     Route::post('data-sekolah/dokumen/pakta-integritas/{id}', 'firstDocument')->name('school-data.firstDocument'); // Route Action for upload pakta integritas
     Route::post('data-sekolah/dokumen/sk-ppdb/{id}', 'secondDocument')->name('school-data.secondDocument'); // Route Action for upload SK PPDB
 
     Route::get('data-sekolah/json/school/{school_id}', 'school');
     Route::get('data-sekolah/json/districts/{code}', 'districts');
-    // Route::get('data-sekolah/json/form-data-percentage', 'formDataPercentage');
-    // Route::get('data-sekolah/json/school/{id}', 'school');
-    // Route::get('data-sekolah/json/major-quota/{identifier}', 'majorQuota');
-    // Route::get('data-sekolah/json/school-quota/{unit}', 'schoolsQuota');
 });
 
 Route::controller(SchoolQuotaController::class)->group(function () {
     Route::get('kuota-sekolah', 'index')->name('school-quota.index');
+
     Route::get('kuota-sekolah/create', 'create')->name('school-quota.create');
     Route::post('kuota-sekolah/store-smk', 'storeSmk')->name('school-quota.store-smk');
     Route::post('kuota-sekolah/store-sma', 'storeSma')->name('school-quota.store-sma');
+
     Route::get('kuota-sekolah/{id}/edit', 'edit')->name('school-quota.edit');
     Route::post('kuota-sekolah/{id}/update-smk', 'updateSmk')->name('school-quota.update-smk');
     Route::post('kuota-sekolah/{id}/update-sma', 'updateSma')->name('school-quota.update-sma');
 
     Route::post('kuota-sekolah/{id}/destroy', 'destroy')->name('school-quota.destroy');
-    Route::post('kuota-sekolah/{id}/lock', 'lock')->name('school-quota.lock');
 
     Route::get('kuota-sekolah/json/majors', 'majors');
     Route::get('kuota-sekolah/json/quotas/{school_unit}/{id}', 'quotas');
     Route::get('kuota-sekolah/json/quotas/{school_unit}/{id}/quota', 'quota');
+});
+
+Route::controller(SchoolZoneController::class)->group(function () {
+    Route::get('zonasi-sekolah', 'index')->name('school-zone.index');
+    Route::get('zonasi-sekolah/{id}', 'edit')->name('school-zone.edit');
+    Route::post('zonasi-sekolah/store/{id}', 'store')->name('school-zone.store');
+    Route::post('zonasi-sekolah/update/{id}', 'update')->name('school-zone.update');
+    Route::post('zonasi-sekolah/destroy/{id}', 'destroy')->name('school-zone.destroy');
+
+    Route::get('zonasi-sekolah/json/zones/{id}', 'zones');
+    Route::get('zonasi-sekolah/json/zone/{id}', 'zone');
+
+    Route::get('zonasi-sekolah/json-form-data/provinces', 'provinces');
+    Route::get('zonasi-sekolah/json-form-data/cities/{code}', 'cities');
+    Route::get('zonasi-sekolah/json-form-data/districts/{code}', 'districts');
+});
+
+Route::controller(SchoolCoordinateController::class)->group(function () {
+    Route::get('koordinat-sekolah', 'index')->name('school-coordinate.index');
 });
 
 Route::controller(OperatorController::class)->group(function () {

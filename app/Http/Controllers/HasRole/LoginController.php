@@ -22,24 +22,35 @@ class LoginController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $authenticate = $this->auth->login($request->username, $request->password);
-        if ($authenticate->get('status') == 'success') {
-            return to_route('dashboard');
+        $response = $this->auth->login($request->username, $request->password);
+
+        if ($response['stat'] == 'success') {
+            return to_route('dashboard')->with([
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
+            ]);
         } else {
-            return back()->withErrors(['login_error' => $authenticate->get('message')])->withInput();
+            return back()->with([
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
+            ]);
         }
     }
 
     public function destroy(): RedirectResponse
     {
-        $logout = $this->auth->logout();
-        if ($logout['success']) {
+        $response = $this->auth->logout(user_id: session()->get('id'));
+
+        if ($response['stat'] == 'success') {
             return to_route('login')->with([
-                'stat' => 'success',
-                'msg' => 'Anda berhasil keluar!',
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
             ]);
         } else {
-            return back();
+            return back()->with([
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
+            ]);
         }
     }
 }

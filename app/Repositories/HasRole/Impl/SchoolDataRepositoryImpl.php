@@ -43,4 +43,9 @@ class SchoolDataRepositoryImpl implements SchoolDataRepository
     {
         return $this->school_data->uploadSchoolLogo(request: $request, school_id: $school_id);
     }
+
+    public function lock(string $school_id): array
+    {
+        return $this->school_data->lockDataSchool(school_id: $school_id);
+    }
 }
