@@ -114,97 +114,56 @@
                 school_edit_link = $('#link-edit-sekolah'),
                 select = $('.select2');
 
+            var lock_button = $('#button-kunci-sekolah'),
+                school_name = $('#nama-sekolah'),
+                school_edit_link = $('#link-edit-sekolah');
+
             $.ajax({
                 url: `/panel/data-sekolah/json/school/${school_id}`,
                 method: 'get',
                 dataType: 'json',
                 beforeSend: function() {
-                    buttonLoader()
-                    buttonTableLoader()
+                    buttonLoader();
+                    buttonTableLoader();
+                    showTableItemLoader();
+                    headerSchoolAction('onLoad');
                 },
                 success: function(school) {
                     console.log('Sekolah : ', school);
                     if (school.logo) $('#logo-sekolah').attr('src', school.logo);
+                    headerSchoolAction('onSuccess', school.nama_sekolah, school.npsn);
 
                     loadEditLink(school.terverifikasi);
-                    loadLockSchoolButton(school.terverifikasi);
+                    loadLockSchoolButton(school.terverifikasi, school.id, school.satuan_pendidikan);
 
-                    loadQuota(school.satuan_pendidikan, school.id);
+                    loadQuota(school);
                 },
                 complete: function() {
                     $('#btn-loader').html(``);
+                    headerSchoolAction('onComplete');
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
                 }
             })
 
-            function buttonLoader() {
-                $("#btn-loader").html(function() {
-                    return `
-                        <div id="btn-loader" class="placeholder-glow d-flex gap-2">
-                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
-                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
-                        </div>
-                            `
-                });
-            }
-
-            function buttonTableLoader() {
-                $('#btn-loader-table').html(function() {
-                    return `
-                        <div class="placeholder-glow d-flex w-100 justify-content-between gap-2">
-                            <button class="btn btn-secondary disabled placeholder" style="width: 137px" aria-disabled="true"></button>
-                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
-                        </div>
-                        `
-                });
-            }
-
-            function loadQuota(school_unit, id) {
+            function loadQuota(school) {
                 $.ajax({
-                    url: `/panel/kuota-sekolah/json/quotas/${school_unit}/${id}`,
+                    url: `/panel/kuota-sekolah/json/quotas/${school.satuan_pendidikan}/${school.id}`,
                     method: 'get',
                     dataType: 'json',
-                    beforeSend: function() {
-                        $('#table-body-quota').addClass('placeholder-glow')
-                        $('#value-jalur-afirmasi,#value-jalur-mutasi,#value-jalur-anak-guru,#value-jalur-akademik,#value-jalur-non-akademik,#value-jalur-zonasi,#value-jalur-boarding')
-                            .text('Memuat Data').addClass('text-dark text-center placeholder fw-bolder')
-                    },
                     success: function(quota) {
                         console.log('Kuota : ', quota);
                         $('#btn-loader-table').html(``).removeClass('p-1');
-                        if (quota.statusCode === 400 || quota.statusCode === 404 || quota.statusCode === 500) {
-                            $('#link-add-quota').show()
-                            $('#anchor-add-quota').html(() => `<a href="/panel/kuota-sekolah/create">+ Tamabah Kuota</a>`)
-                            $('#value-jalur-afirmasi,#value-jalur-mutasi,#value-jalur-anak-guru,#value-jalur-akademik,#value-jalur-non-akademik,#value-jalur-zonasi,#value-jalur-boarding')
-                                .text('Memuat Data').addClass('text-danger text-center placeholder fw-bolder')
+                        if (quota.statusCode === 404) {
+                            showLinkAddQuota()
+                            hideTableItemLoaderWhen404()
                         }
                         if (quota.statusCode === 200) {
-
-                            $('#value-jalur-afirmasi,#value-jalur-mutasi,#value-jalur-anak-guru,#value-jalur-akademik,#value-jalur-non-akademik,#value-jalur-zonasi,#value-jalur-boarding')
-                                .text('Memuat Data').removeClass('placeholder text-dark fw-normal')
-                            $('#table-body-quota').removeClass('placeholder-glow')
-                            $('#link-edit-quota').show()
-                            $('#anchor-edit-quota').html(function() {
-                                return `
-                                <a href="/panel/kuota-sekolah/${quota.data.id}/edit" class="btn btn-success">
-                                    <x-tabler-pencil />
-                                    Edit Kuota Sekolah
-                                </a>`
-                            })
-                            var school_quota = quota.data;
-                            var boarding_total = parseInt(school_quota.bs_lakilaki) + parseInt(school_quota.bs_perempuan);
-                            $('#value-jalur-afirmasi').text(school_quota.afirmasi)
-                            $('#value-jalur-mutasi').text(school_quota.mutasi)
-                            $('#value-jalur-anak-guru').text(school_quota.anak_guru)
-                            $('#value-jalur-akademik').text(school_quota.akademik)
-                            $('#value-jalur-non-akademik').text(school_quota.non_akademik)
-                            $('#value-jalur-zonasi').text(school_quota.zonasi)
-                            $('#value-jalur-boarding').text(boarding_total)
+                            hideTableItemLoaderWhen200()
+                            if (school.terverifikasi === 'belum_simpan') showLinkEditQuota(quota.data.id);
+                            displayQuota(quota.data);
                         }
-                        // if (school.logo) $('#logo-sekolah').attr('src', school.logo);
-                        // loadQuota(school.satuan_pendidikan, school.id);
                     },
                     error: function(xhr, status, error) {
                         console.error('Failed to get kuota.', status, error);
@@ -212,6 +171,57 @@
                 })
             }
 
+            // Show Link Create Quota when school still doesnt have quota
+            function showLinkAddQuota() {
+                $('#link-add-quota').show()
+                $('#anchor-add-quota').html(() => `<a href="/panel/kuota-sekolah/create" class="btn btn-success">+ Tamabah Kuota</a>`)
+            }
+
+            // Show Link Edti Quota when school already have a quota
+            function showLinkEditQuota(quota_id) {
+                $('#link-edit-quota').show()
+                $('#anchor-edit-quota').html(function() {
+                    return `
+                    <a href="/panel/kuota-sekolah/${quota_id}/edit" class="btn btn-success">
+                        <x-tabler-pencil />
+                        Edit Kuota Sekolah
+                    </a>`
+                })
+            }
+
+            // Show Skeleton when fetching data
+            function showTableItemLoader() {
+                $('#table-body-quota').addClass('placeholder-glow')
+                $('#value-jalur-afirmasi,#value-jalur-mutasi,#value-jalur-anak-guru,#value-jalur-akademik,#value-jalur-non-akademik,#value-jalur-zonasi,#value-jalur-boarding').text('Memuat Data')
+                    .addClass('text-dark text-center w-100 placeholder fw-bolder')
+            }
+
+            // Hide Skeleton when fetching data is = 404
+            function hideTableItemLoaderWhen404() {
+                $('#value-jalur-afirmasi,#value-jalur-mutasi,#value-jalur-anak-guru,#value-jalur-akademik,#value-jalur-non-akademik,#value-jalur-zonasi,#value-jalur-boarding').text(
+                    'Belum Ada Kuota').addClass('text-danger text-center fw-bolder').removeClass('placeholder w-100')
+            }
+
+            // Hide Skeleton when fetching data is = 200
+            function hideTableItemLoaderWhen200() {
+                $('#table-body-quota').removeClass('placeholder-glow')
+                $('#value-jalur-afirmasi,#value-jalur-mutasi,#value-jalur-anak-guru,#value-jalur-akademik,#value-jalur-non-akademik,#value-jalur-zonasi,#value-jalur-boarding').text('')
+                    .removeClass('placeholder w-100 text-dark fw-normal')
+            }
+
+            // Displaying Quota in table
+            function displayQuota(school_quota) {
+                var boarding_total = parseInt(school_quota.bs_lakilaki) + parseInt(school_quota.bs_perempuan);
+                $('#value-jalur-afirmasi').text(school_quota.afirmasi)
+                $('#value-jalur-mutasi').text(school_quota.mutasi)
+                $('#value-jalur-anak-guru').text(school_quota.anak_guru)
+                $('#value-jalur-akademik').text(school_quota.akademik)
+                $('#value-jalur-non-akademik').text(school_quota.non_akademik)
+                $('#value-jalur-zonasi').text(school_quota.zonasi)
+                $('#value-jalur-boarding').text(boarding_total)
+            }
+
+            // Displaying Link Edit School when status === 'Belum simpan' 
             function loadEditLink(school_status) {
                 if (school_status === 'belum_simpan') {
                     school_edit_link.show()
@@ -225,27 +235,70 @@
                 }
             }
 
-            function loadLockSchoolButton(school_status) {
+            // Displaying Button Lock School when status === 'Belum simpan'
+            function loadLockSchoolButton(school_status, school_id, unit) {
                 if (school_status === 'belum_simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                            <button id="modal-kunci-sekolah" class="btn btn-warning">
+                        <form action="/panel/data-sekolah/${school_id}/${unit}/lock" method="post">
+                            @csrf
+                            <button type="submit" id="modal-kunci-sekolah" class="btn btn-warning">
                                 <x-tabler-lock-square-rounded />
                                 Kunci Sekolah
                             </button>
+                        </form>
                             `
                     });
-                } else {
+                } else if (school_status === 'simpan' || school_status === 'verifikasi') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                            <button class="btn btn-danger" disabled>
+                            <button type="button" class="btn btn-danger" disabled>
                                 <x-tabler-lock-square-rounded />
                                 Sekolah Sudah Terkunci
                             </button>
                             `
                     });
+                }
+            }
+
+            function buttonTableLoader() {
+                $('#btn-loader-table').html(function() {
+                    return `
+                        <div class="placeholder-glow d-flex w-100 justify-content-between gap-2">
+                            <button class="btn btn-secondary disabled placeholder" style="width: 137px" aria-disabled="true"></button>
+                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
+                        </div>
+                        `
+                });
+            }
+
+            function buttonLoader() {
+                $("#btn-loader").html(function() {
+                    return `
+                        <div id="btn-loader" class="placeholder-glow d-flex gap-2">
+                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
+                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
+                        </div>
+                            `
+                });
+            }
+
+            function headerSchoolAction(type, school_name = '', school_npsn = '') {
+                switch (type) {
+                    case 'onLoad':
+                        $('#info-sekolah,#cover-logo-sekolah').addClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah,#logo-sekolah').text('Memuat Data').addClass('placeholder col-12');
+                        break;
+                    case 'onSuccess':
+                        $('#nama-sekolah').text(school_name);
+                        $('#npsn-sekolah').text(school_npsn);
+                        break;
+                    case 'onComplete':
+                        $('#info-sekolah,#cover-logo-sekolah').removeClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah,#logo-sekolah').removeClass('placeholder');
+                        break;
                 }
             }
         })

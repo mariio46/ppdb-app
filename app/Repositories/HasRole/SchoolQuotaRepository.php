@@ -21,7 +21,5 @@ interface SchoolQuotaRepository
 
     public function destroy(string $quota_id, string $school_id): array;
 
-    public function lock(string $school_id): array;
-
     public function majors(): Collection;
 }

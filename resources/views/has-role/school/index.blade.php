@@ -27,6 +27,18 @@
                 margin-left: 0.75rem !important;
             }
         }
+
+        td.satuan-pendidikan {
+            width: 150px;
+        }
+
+        td.nama-sekolah {
+            width: 200px;
+        }
+
+        td.detail {
+            width: 130px;
+        }
     </style>
 @endsection
 
@@ -63,7 +75,7 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/sekolah/json/schools-collections',
-                        dataSrc: ''
+                        dataSrc: (response) => response.status === 'success' ? response.data : [],
                     },
                     columns: [{
                             data: 'nama_sekolah'
@@ -78,18 +90,28 @@
                             data: 'alamat_jalan'
                         },
                         {
-                            data: 'id',
-                            render: function(data, type, row) {
-                                return `<a href="/panel/sekolah/${data}/${row.satuan_pendidikan}/info-sekolah" class="btn btn-primary">Lihat Detail</a>`;
-                            }
+                            render: (data, type, row) => `<a href="/panel/sekolah/${row.id}/${row.satuan_pendidikan}/info-sekolah" class="btn btn-primary">Lihat Detail</a>`
                         },
                     ],
 
                     // Styling Table
                     columnDefs: [{
-                        targets: [2, 4],
-                        className: 'text-center'
-                    }],
+                            targets: [0],
+                            className: 'nama-sekolah'
+                        },
+                        {
+                            targets: [1],
+                            className: 'text-center'
+                        },
+                        {
+                            targets: [2],
+                            className: 'text-center satuan-pendidikan'
+                        },
+                        {
+                            targets: [4],
+                            className: 'text-center detail'
+                        },
+                    ],
 
                     dom: `<"d-none d-md-block align-items-center"<"row g-0"<"col-6 d-flex"lf><"col-6"<"add-button">>>>
                     <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>

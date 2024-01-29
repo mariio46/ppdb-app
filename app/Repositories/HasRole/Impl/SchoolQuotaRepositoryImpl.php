@@ -49,11 +49,6 @@ class SchoolQuotaRepositoryImpl implements SchoolQuotaRepository
         return $this->schoolQuota->deleteQuotaSmk(quota_id: $quota_id, school_id: $school_id);
     }
 
-    public function lock(string $school_id): array
-    {
-        return $this->schoolQuota->lockDataSchool(school_id: $school_id);
-    }
-
     public function majors(): Collection
     {
         return $this->schoolQuota->schoolMajorList();
