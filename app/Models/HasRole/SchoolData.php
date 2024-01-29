@@ -89,4 +89,11 @@ class SchoolData extends Base
 
         return $this->serverResponseWithPostMethod(data: $data);
     }
+
+    public function lockDataSchool(string $school_id): array
+    {
+        $response = $this->postWithToken(endpoint: 'sekolah/kunci', data: ['id' => $school_id]);
+
+        return $this->serverResponseWithPostMethod(data: $response);
+    }
 }

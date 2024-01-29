@@ -34,16 +34,12 @@
 
 @section('content')
     <div class="content-body">
-        <div id="user-profile">
-            @include('has-role.school-data.partials.header')
-        </div>
-        <div class="d-flex gap-md-2">
-            @include('has-role.school-data.partials.tab')
-        </div>
+
+        @include('has-role.school-data.partials.header')
+
+        @include('has-role.school-data.partials.tab')
+
         <div class="card">
-            {{-- <div class="card-header">
-                <x-link :href="route('school-quota.create')">Tambah Kuota</x-link>
-            </div> --}}
             <div class="card-body p-0">
                 <table class="table table-quota">
                     <thead>
@@ -57,6 +53,7 @@
                 </table>
             </div>
         </div>
+
     </div>
 @endsection
 
@@ -81,11 +78,13 @@
                 method: 'get',
                 dataType: 'json',
                 beforeSend: function() {
-                    buttonLoader()
+                    buttonLoader();
+                    headerSchoolAction('onLoad');
                 },
                 success: function(school) {
                     $("#btn-loader").hide();
                     console.log('Sekolah : ', school);
+                    headerSchoolAction('onSuccess', school.nama_sekolah, school.npsn);
                     if (school.logo) $('#logo-sekolah').attr('src', school.logo);
 
                     loadEditLink(school.terverifikasi);
@@ -96,6 +95,7 @@
                 },
                 complete: function() {
                     $('#btn-loader').html(``)
+                    headerSchoolAction('onComplete');
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
@@ -224,6 +224,23 @@
                             </button>
                             `
                     });
+                }
+            }
+
+            function headerSchoolAction(type, school_name = '', school_npsn = '') {
+                switch (type) {
+                    case 'onLoad':
+                        $('#info-sekolah').addClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah').text('Memuat Data').addClass('placeholder col-12');
+                        break;
+                    case 'onSuccess':
+                        $('#nama-sekolah').text(school_name);
+                        $('#npsn-sekolah').text(school_npsn);
+                        break;
+                    case 'onComplete':
+                        $('#info-sekolah').removeClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah').removeClass('placeholder');
+                        break;
                 }
             }
         })

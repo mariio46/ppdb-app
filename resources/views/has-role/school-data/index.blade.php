@@ -59,6 +59,7 @@
             'use strict';
 
             var lock_button = $('#button-kunci-sekolah'),
+                school_name = $('#nama-sekolah'),
                 school_edit_link = $('#link-edit-sekolah');
 
             $.ajax({
@@ -67,34 +68,45 @@
                 dataType: 'json',
                 beforeSend: function() {
                     buttonLoader();
-                    $('#nama_sekolah,#nama_kepsek,#nip_kepsek,#nama_kappdb,#nip_kappdb,#alamat_jalan,#npsn,#kabupaten,#kecamatan,#desa,#rtrw,#koordinat_sekolah').text(
-                        'Sedang Memuat Data')
-                    $('#trnama_sekolah,#trnama_kepsek,#trnip_kepsek,#trnama_kappdb,#trnip_kappdb,#tralamat_jalan,#trnpsn,#trkabupaten,#trkecamatan,#trdesa,#trrtrw,#trkoordinat_sekolah,#cover-logo-sekolah')
-                        .addClass('placeholder-glow')
-                    $('#nama_sekolah,#nama_kepsek,#nip_kepsek,#nama_kappdb,#nip_kappdb,#alamat_jalan,#npsn,#kabupaten,#kecamatan,#desa,#rtrw,#koordinat_sekolah,#logo-sekolah')
-                        .addClass('placeholder')
+                    headerSchoolAction('onLoad');
+                    detailSchoolSekeletonAction('onLoad');
                 },
                 success: function(school) {
                     console.log('Data Sekolah : ', school);
+                    headerSchoolAction('onSuccess', school.nama_sekolah, school.npsn);
 
                     loadEditLink(school.terverifikasi);
-                    loadLockSchoolButton(school.terverifikasi);
+                    loadLockSchoolButton(school.terverifikasi, school.id, school.satuan_pendidikan);
 
                     showSchoolDetail(school);
                 },
                 complete: function() {
-                    $('#btn-loader').html(``)
-
-                    // $('#nama_sekolah,#nama_kepsek,#nip_kepsek,#nama_kappdb,#nip_kappdb,#alamat_jalan,#npsn,#kabupaten,#kecamatan,#desa,#rtrw,#koordinat_sekolah').text('')
-                    $('#trnama_sekolah,#trnama_kepsek,#trnip_kepsek,#trnama_kappdb,#trnip_kappdb,#tralamat_jalan,#trnpsn,#trkabupaten,#trkecamatan,#trdesa,#trrtrw,#trkoordinat_sekolah,#cover-logo-sekolah')
-                        .removeClass('placeholder-glow')
-                    $('#nama_sekolah,#nama_kepsek,#nip_kepsek,#nama_kappdb,#nip_kappdb,#alamat_jalan,#npsn,#kabupaten,#kecamatan,#desa,#rtrw,#koordinat_sekolah,#logo-sekolah')
-                        .removeClass('placeholder')
+                    $('#btn-loader').html(``);
+                    detailSchoolSekeletonAction('onComplete');
+                    headerSchoolAction('onComplete');
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
                 }
             })
+
+            function detailSchoolSekeletonAction(type) {
+                switch (type) {
+                    case 'onLoad':
+                        $('#nama_sekolah,#nama_kepsek,#nip_kepsek,#nama_kappdb,#nip_kappdb,#alamat_jalan,#npsn,#kabupaten,#kecamatan,#desa,#rtrw,#koordinat_sekolah').text('Sedang Memuat Data')
+                        $('#trnama_sekolah,#trnama_kepsek,#trnip_kepsek,#trnama_kappdb,#trnip_kappdb,#tralamat_jalan,#trnpsn,#trkabupaten,#trkecamatan,#trdesa,#trrtrw,#trkoordinat_sekolah,#cover-logo-sekolah')
+                            .addClass('placeholder-glow')
+                        $('#nama_sekolah,#nama_kepsek,#nip_kepsek,#nama_kappdb,#nip_kappdb,#alamat_jalan,#npsn,#kabupaten,#kecamatan,#desa,#rtrw,#koordinat_sekolah,#logo-sekolah').addClass(
+                            'placeholder')
+                        break;
+                    case 'onComplete':
+                        $('#trnama_sekolah,#trnama_kepsek,#trnip_kepsek,#trnama_kappdb,#trnip_kappdb,#tralamat_jalan,#trnpsn,#trkabupaten,#trkecamatan,#trdesa,#trrtrw,#trkoordinat_sekolah,#cover-logo-sekolah')
+                            .removeClass('placeholder-glow');
+                        $('#nama_sekolah,#nama_kepsek,#nip_kepsek,#nama_kappdb,#nip_kappdb,#alamat_jalan,#npsn,#kabupaten,#kecamatan,#desa,#rtrw,#koordinat_sekolah,#logo-sekolah').removeClass(
+                            'placeholder');
+                        break;
+                }
+            }
 
             function showSchoolDetail(school) {
                 // Column 1
@@ -126,7 +138,7 @@
             }
 
             function loadEditLink(school_status) {
-                if (school_status !== 'simpan') {
+                if (school_status === 'belum_simpan') {
                     school_edit_link.show()
                     school_edit_link.html(function() {
                         return `
@@ -138,25 +150,46 @@
                 }
             }
 
-            function loadLockSchoolButton(school_status) {
-                if (school_status !== 'simpan') {
+            function loadLockSchoolButton(school_status, school_id, unit) {
+                if (school_status === 'belum_simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                            <button id="modal-kunci-sekolah" class="btn btn-warning">
+                        <form id="form-kunci-sekolah" action="/panel/data-sekolah/${school_id}/${unit}/lock" method="post">
+                            @csrf
+                            <button type="submit" id="modal-kunci-sekolah" class="btn btn-warning">
                                 <x-tabler-lock-square-rounded />
                                 Kunci Sekolah
-                            </button>`
+                            </button>
+                        </form>
+                            `
                     });
-                } else {
+                } else if (school_status === 'simpan' || school_status === 'verifikasi') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                            <button class="btn btn-danger" disabled>
+                            <button type="button" class="btn btn-danger" disabled>
                                 <x-tabler-lock-square-rounded />
                                 Sekolah Sudah Terkunci
                             </button>`
                     });
+                }
+            }
+
+            function headerSchoolAction(type, school_name = '', school_npsn = '') {
+                switch (type) {
+                    case 'onLoad':
+                        $('#info-sekolah').addClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah').text('Memuat Data').addClass('placeholder col-12');
+                        break;
+                    case 'onSuccess':
+                        $('#nama-sekolah').text(school_name);
+                        $('#npsn-sekolah').text(school_npsn);
+                        break;
+                    case 'onComplete':
+                        $('#info-sekolah').removeClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah').removeClass('placeholder');
+                        break;
                 }
             }
         })

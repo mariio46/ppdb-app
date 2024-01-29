@@ -4,6 +4,8 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\SchoolDataRepository as SchoolData;
+use App\Repositories\HasRole\SchoolQuotaRepository as Quota;
+use App\Repositories\HasRole\SchoolZoneRepository as Zone;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,25 +13,36 @@ use Illuminate\View\View;
 
 class SchoolDataController extends Controller
 {
-    public function __construct(protected SchoolData $school_data)
+    protected string $schoolId;
+
+    protected ?string $schoolUnit;
+
+    protected bool $hasSchoolUnit;
+
+    public function __construct(protected SchoolData $school_data, protected Quota $quota, protected Zone $zone)
     {
-        // School Data Repository
+        $this->middleware(function ($request, $next) {
+            $this->schoolId = session()->get('sekolah_id');
+            $this->hasSchoolUnit = session()->has('satuan_pendidikan');
+            $this->schoolUnit = $this->hasSchoolUnit ? session()->get('satuan_pendidikan') : null;
+
+            return $this->hasSchoolUnit ? $next($request) : to_route('dashboard');
+        });
     }
 
     public function index(): View
     {
-        $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
-
-        $sekolah_id = session()->get('sekolah_id');
-
-        return view('has-role.school-data.index', compact('sekolah_id', 'satuan_pendidikan'));
+        return view('has-role.school-data.index', [
+            'sekolah_id' => $this->schoolId,
+            'satuan_pendidikan' => $this->schoolUnit,
+        ]);
     }
 
     public function edit(): View
     {
-        $sekolah_id = session()->get('sekolah_id');
-
-        return view('has-role.school-data.edit', compact('sekolah_id'));
+        return view('has-role.school-data.edit', [
+            'sekolah_id' => $this->schoolId,
+        ]);
     }
 
     public function update(Request $request, string $id): RedirectResponse
@@ -41,10 +54,10 @@ class SchoolDataController extends Controller
 
     public function document(): View
     {
-        $sekolah_id = session()->get('sekolah_id');
-        $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
-
-        return view('has-role.school-data.document', compact('sekolah_id', 'satuan_pendidikan'));
+        return view('has-role.school-data.document', [
+            'sekolah_id' => $this->schoolId,
+            'satuan_pendidikan' => $this->schoolUnit,
+        ]);
     }
 
     public function firstDocument(Request $request, string $id): RedirectResponse
@@ -68,13 +81,57 @@ class SchoolDataController extends Controller
         return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-data.edit');
     }
 
-    // public function editQuota(string $identifier): View
-    // {
-    //     $json = $this->formDataPercentage();
-    //     $default = 36;
+    // --------------------------------------------------LOCK DATA SCHOOL--------------------------------------------------
 
-    //     return view('has-role.school-data.edit-quota-smk', compact('identifier', 'json', 'default'));
-    // }
+    public function lock(string $school_id, string $unit): RedirectResponse
+    {
+        // Query For School and Quota
+        $school = $this->school(school_id: $school_id)->original;
+        $quotas = $this->quota->index(satuan_pendidikan: $unit, school_id: $school_id);
+        $zones = $this->zone->index(school_id: $school_id);
+
+        // Result
+        if ($this->isNull(data: $school) || ! $this->isKeyExists(key: 'data', data: $quotas) || count($zones['data']) <= 0) {
+            return back()->with(['stat' => 'error', 'msg' => 'Masih Ada data yang kosong!']);
+        }
+
+        $response = $this->school_data->lock(school_id: $school_id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-data.index');
+    }
+
+    /**
+     * Will check if there is an empty value in school data.
+     * will return true if there is null in schooldata
+     */
+    protected function isNull(array $data): bool
+    {
+        foreach ($data as $key => $value) {
+            // Check if the value is null
+            if ($value === null) {
+                return true; // Found a null value
+            }
+
+            // If the value is an array, recursively check for null values
+            if (is_array($value)) {
+                if ($this->isNull($value)) {
+                    return true; // Found a null value in the nested array
+                }
+            }
+        }
+
+        // No null values found
+        return false;
+    }
+
+    /**
+     * Will check if there is key 'data' in api response.
+     * will return true if the data exists in quota response.
+     */
+    protected function isKeyExists(string $key, array $data): bool
+    {
+        return array_key_exists($key, $data);
+    }
 
     // --------------------------------------------------DATA API JSON--------------------------------------------------
 
@@ -91,110 +148,4 @@ class SchoolDataController extends Controller
 
         return response()->json($districts);
     }
-
-    // --------------------------------------------------DATA JSON--------------------------------------------------
-
-    // protected function majorQuota(string $identifier): JsonResponse
-    // {
-    //     $quota = collect($this->schoolsQuota($this->unit)->original)->firstWhere('identifier', $identifier);
-
-    //     return response()->json($quota);
-    // }
-
-    // protected function schoolsQuota($unit): JsonResponse
-    // {
-    //     $quota_smk = [
-    //         [
-    //             'label' => 'Teknik Komputer dan Jaringan',
-    //             'identifier' => 479305,
-    //             'value' => 144,
-    //         ],
-    //         [
-    //             'label' => 'Teknik Kendaraan Ringan',
-    //             'identifier' => 114565,
-    //             'value' => 72,
-    //         ],
-    //         [
-    //             'label' => 'Pemodelan dan Informasi Bangunan',
-    //             'identifier' => 911899,
-    //             'value' => 108,
-    //         ],
-    //         [
-    //             'label' => 'Administrasi Perkantoran',
-    //             'identifier' => 238415,
-    //             'value' => 216,
-    //         ],
-    //         [
-    //             'label' => 'Tata Rias dan Kecantikan',
-    //             'identifier' => 598110,
-    //             'value' => 252,
-    //         ],
-    //         [
-    //             'label' => 'Perbankan dan Keuangan Syariah',
-    //             'identifier' => 922020,
-    //             'value' => 72,
-    //         ],
-    //     ];
-
-    //     $quota_sma = [
-    //         [
-    //             // Afirmasi
-    //             'label' => 'Jalur Afirmasi',
-    //             'identifier' => 333992,
-    //             'value' => 150,
-    //         ],
-    //         [
-    //             // Mutasi
-    //             'label' => 'Jalur Perpindahan Tugas Orang Tua',
-    //             'identifier' => 476632,
-    //             'value' => 75,
-    //         ],
-    //         [
-    //             // Anak Guru
-    //             'label' => 'Jalur Anak Guru',
-    //             'identifier' => 939003,
-    //             'value' => 100,
-    //         ],
-    //         [
-    //             // Akademik
-    //             'label' => 'Jalur Prestasi Akademik',
-    //             'identifier' => 589846,
-    //             'value' => 50,
-    //         ],
-    //         [
-    //             // Non Akademik
-    //             'label' => 'Jalur Prestasi Non Akademik',
-    //             'identifier' => 891432,
-    //             'value' => 200,
-    //         ],
-    //         [
-    //             // Zonasi
-    //             'label' => 'Jalur Zonasi',
-    //             'identifier' => 505066,
-    //             'value' => 250,
-    //         ],
-    //     ];
-
-    //     $quota_sma_full_boarding = [
-    //         [
-    //             'label' => 'Jalur Boarding School',
-    //             'identifier' => 919851,
-    //             'value' => 500,
-    //         ],
-    //     ];
-
-    //     $quota_sma_half_boarding = array_merge($quota_sma, $quota_sma_full_boarding);
-
-    //     if ($unit == 1) {
-    //         return response()->json($quota_sma);
-    //     } elseif ($unit == 2) {
-    //         return response()->json($quota_smk);
-    //     } elseif ($unit == 3) {
-    //         return response()->json($quota_sma_full_boarding);
-    //     } elseif ($unit == 4) {
-    //         return response()->json($quota_sma_half_boarding);
-    //     } else {
-    //         return response()->json(['error' => 'Quota Tidak Ditemukan'], 404);
-    //     }
-    // }
 }

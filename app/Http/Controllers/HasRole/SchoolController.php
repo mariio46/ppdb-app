@@ -13,6 +13,7 @@ class SchoolController extends Controller
 {
     public function __construct(protected School $school)
     {
+        //
     }
 
     public function index(): View
@@ -40,6 +41,14 @@ class SchoolController extends Controller
         }
     }
 
+    public function show($id, $unit): View
+    {
+        return view('has-role.school.detail', [
+            'id' => $id,
+            'unit' => $unit,
+        ]);
+    }
+
     public function edit(string $id): View
     {
         return view('has-role.school.edit', compact('id'));
@@ -60,32 +69,8 @@ class SchoolController extends Controller
         }
     }
 
-    public function schoolMajorQuota($npsn): View
-    {
-        return view('has-role.school.major', [
-            'school' => $this->getSingleSchool($npsn),
-            'quotas' => $this->getSchoolMajorQuota(),
-        ]);
-    }
-
-    public function schoolDetail($id, $unit): View
-    {
-        return view('has-role.school.detail', compact('id', 'unit'));
-    }
-
-    public function schoolQuota($id, $unit): View
-    {
-        return view('has-role.school.quota', compact('id', 'unit'));
-    }
-
-    public function schoolZone($npsn, $unit): View
-    {
-        return $unit == 'SMA' || $unit == 'SMA Half Boarding'
-            ? view('has-role.school.zone', compact('npsn', 'unit'))
-            : abort(404);
-    }
-
     // --------------------------------------------------DATA JSON--------------------------------------------------
+
     protected function units(): JsonResponse
     {
         $units = [
@@ -110,224 +95,13 @@ class SchoolController extends Controller
         return response()->json($units);
     }
 
-    protected function zones(): JsonResponse
-    {
-        $zones = [
-            [
-                'id' => 1,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Parepare',
-                'subdistrict' => 'Bacukiki',
-            ],
-            [
-                'id' => 2,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Parepare',
-                'subdistrict' => 'Soreang',
-            ],
-            [
-                'id' => 3,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Parepare',
-                'subdistrict' => 'Ujung',
-            ],
-            [
-                'id' => 4,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Biringkanaya',
-            ],
-            [
-                'id' => 5,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Bontoala',
-            ],
-            [
-                'id' => 6,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Kepulauan Sangkarrang',
-            ],
-            [
-                'id' => 7,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Mamajang',
-            ],
-            [
-                'id' => 8,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Manggala',
-            ],
-            [
-                'id' => 9,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Balusu',
-            ],
-            [
-                'id' => 10,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Mallusetasi',
-            ],
-            [
-                'id' => 11,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Pujananting',
-            ],
-            [
-                'id' => 12,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Tanete Riaja',
-            ],
-            [
-                'id' => 13,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Alla',
-            ],
-            [
-                'id' => 14,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Anggeraja',
-            ],
-            [
-                'id' => 15,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Baraka',
-            ],
-            [
-                'id' => 16,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Buntu Batu',
-            ],
-            [
-                'id' => 17,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Baranti',
-            ],
-            [
-                'id' => 18,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Duapitue',
-            ],
-            [
-                'id' => 19,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Kulo',
-            ],
-            [
-                'id' => 20,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Panca Lautang',
-            ],
-        ];
-
-        return response()->json($zones);
-    }
-
-    protected function schoolsQuota($npsn, $unit): JsonResponse
-    {
-        $quota_smk = [
-            [
-                'label' => 'Teknik Komputer dan Jaringan',
-                'value' => '150 Orang',
-            ],
-            [
-                'label' => 'Teknik Kendaraan Ringan',
-                'value' => '75 Orang',
-            ],
-            [
-                'label' => 'Pemodelan dan Informasi Bangunan',
-                'value' => '100 Orang',
-            ],
-            [
-                'label' => 'Administrasi Perkantoran',
-                'value' => '200 Orang',
-            ],
-            [
-                'label' => 'Tata Rias dan Kecantikan',
-                'value' => '250 Orang',
-            ],
-            [
-                'label' => 'Perbankan dan Keuangan Syariah',
-                'value' => '50 Orang',
-            ],
-        ];
-
-        $quota_sma = [
-            [
-                // Afirmasi
-                'label' => 'Jalur Afirmasi',
-                'value' => '150 Orang',
-            ],
-            [
-                // Mutasi
-                'label' => 'Jalur Perpindahan Tugas Orang Tua',
-                'value' => '75 Orang',
-            ],
-            [
-                // Anak Guru
-                'label' => 'Jalur Anak Guru',
-                'value' => '100 Orang',
-            ],
-            [
-                // Akademik
-                'label' => 'Jalur Prestasi Akademik',
-                'value' => '50 Orang',
-            ],
-            [
-                // Non Akademik
-                'label' => 'Jalur Prestasi Non Akademik',
-                'value' => '200 Orang',
-            ],
-            [
-                // Zonasi
-                'label' => 'Jalur Zonasi',
-                'value' => '250 Orang',
-            ],
-        ];
-
-        $quota_sma_full_boarding = [
-            [
-                'label' => 'Jalur Boarding School',
-                'value' => '500 Orang',
-            ],
-        ];
-
-        $quota_sma_half_boarding = array_merge($quota_sma, $quota_sma_full_boarding);
-
-        if ($unit == 'SMA') {
-            return response()->json($quota_sma);
-        } elseif ($unit == 'SMA Half Boarding') {
-            return response()->json($quota_sma_half_boarding);
-        } elseif ($unit == 'SMA Boarding') {
-            return response()->json($quota_sma_full_boarding);
-        } elseif ($unit == 'SMK') {
-            return response()->json($quota_smk);
-        } else {
-            return response()->json(['error' => 'Quota Tidak Ditemukan'], 404);
-        }
-    }
-
     // --------------------------------------------------DATA API JSON--------------------------------------------------
+
     protected function schools(): JsonResponse
     {
         $schools = $this->school->index();
 
-        return response()->json($schools['data']);
+        return response()->json($schools);
     }
 
     protected function school(string $school_id): JsonResponse

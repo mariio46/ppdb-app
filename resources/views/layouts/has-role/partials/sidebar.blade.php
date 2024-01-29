@@ -45,7 +45,7 @@
                 </a>
             </li>
             {{-- @endiscabdin --}}
-            <li class="nav-item {{ request()->routeIs('school-data.*', 'school-quota.*') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('school-data.*', 'school-quota.*', 'school-zone.*', 'school-coordinate.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('school-data.index') }}">
                     <x-tabler-file-database />
                     <span class="menu-title text-truncate">Data Sekolah</span>

@@ -133,7 +133,7 @@
 
                     <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
                         <x-button id="form-button" type="button" color="success">Simpan</x-button>
-                        <x-link color="secondary" :href="route('roles.index')">Batalkan</x-link>
+                        <x-link color="secondary" :href="route('school-quota.index')">Batalkan</x-link>
                     </div>
                 </form>
             </div>

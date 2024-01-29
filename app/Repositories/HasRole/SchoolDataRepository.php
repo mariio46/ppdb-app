@@ -18,4 +18,6 @@ interface SchoolDataRepository
     public function uploadSecondDocument(Request $request, string $school_id): array;
 
     public function uploadLogo(Request $request, string $school_id): array;
+
+    public function lock(string $school_id): array;
 }
