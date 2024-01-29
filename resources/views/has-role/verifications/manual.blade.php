@@ -94,23 +94,7 @@
                     'KE': 'Prestasi Non Akademik',
                     'KF': 'Domisili Terdekat',
                     'KG': 'Anak DUDI'
-                },
-                statusMapping = {
-                    'Afirmasi': 'AA',
-                    'Perpindahan Tugas Orang Tua': 'AB',
-                    'Anak Guru': 'AC',
-                    'Prestasi Akademik': 'AD',
-                    'Prestasi Non Akademik': 'AE',
-                    'Zonasi': 'AF',
-                    'Boarding School': 'AG',
-                    'Afirmasi': 'KA',
-                    'Perpindahan Tugas Orang Tua': 'KB',
-                    'Anak Guru': 'KC',
-                    'Prestasi Akademik': 'KD',
-                    'Prestasi Non Akademik': 'KE',
-                    'Domisili Terdekat': 'KF',
-                    'Anak DUDI': 'KG',
-                };;
+                };
 
             select.each(function() {
                 var $this = $(this);
@@ -128,7 +112,9 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/verifikasi-manual/get-data',
-                        dataSrc: "data"
+                        dataSrc: function(data) {
+                            return data.data || [];
+                        }
                     },
                     columns: [{
                             data: "nama_siswa"

@@ -38,6 +38,18 @@ class Verification extends Base
         }
     }
 
+    public function getTimeVerification(): array
+    {
+        $get = $this->getWithToken("batas/jadwal/verifikasi");
+        return $this->serverResponseWithGetMethod($get);
+    }
+
+    public function getCoordinate(string $student_id): array
+    {
+        $get = $this->getWithToken("siswa/byid?id=$student_id");
+        return $this->serverResponseWithGetMethod($get);
+    }
+
     //------------------------------------------------------------POST
     public function updateAchievement(string $registration_id, Request $request): array
     {
@@ -68,11 +80,11 @@ class Verification extends Base
     {
         $data = [
             'id' => $request->student_id,
-            'sm'.$request->semester.'_mtk' => $request->mtk,
-            'sm'.$request->semester.'_ipa' => $request->ipa,
-            'sm'.$request->semester.'_ips' => $request->ips,
-            'sm'.$request->semester.'_bid' => $request->bid,
-            'sm'.$request->semester.'_big' => $request->big,
+            'sm' . $request->semester . '_mtk' => $request->mtk,
+            'sm' . $request->semester . '_ipa' => $request->ipa,
+            'sm' . $request->semester . '_ips' => $request->ips,
+            'sm' . $request->semester . '_bid' => $request->bid,
+            'sm' . $request->semester . '_big' => $request->big,
         ];
 
         $upd = $this->postWithToken('siswa/nilai/update', $data);
@@ -111,6 +123,18 @@ class Verification extends Base
         }
     }
 
+    public function updateIsColorBlindOrShort(string $id, ?string $jurusan1ok, ?string $jurusan2ok, ?string $jurusan3ok): array
+    {
+        $data = [
+            "jurusan1_ok"       => $jurusan1ok,
+            "jurusan2_ok"       => $jurusan2ok,
+            "jurusan3_ok"       => $jurusan3ok,
+            "pendaftaran_id"    => $id
+        ];
+        $upd = $this->postWithToken('pendaftaran/update/bwtb', $data);
+        return $this->serverResponseWithPostMethod($upd);
+    }
+
     public function acceptRegistration(string $registration_id, Request $request): array
     {
         $data = [
@@ -147,16 +171,6 @@ class Verification extends Base
         ];
 
         $dec = $this->postWithToken('pendaftaran/update/tolak', $data);
-
-        if ($dec['status_code'] == 200) {
-            return $dec['response'];
-        } else {
-            return [
-                'statusCode' => $dec['status_code'],
-                'status' => 'failed',
-                'messages' => 'Terjadi kesalahan. Gagal mengupdate data.',
-                'data' => [],
-            ];
-        }
+        return $this->serverResponseWithPostMethod($dec);
     }
 }
