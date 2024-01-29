@@ -29,7 +29,7 @@ class SchoolController extends Controller
 
         $get = $this->schoolRepo->getSchools($type, $city);
 
-        return response()->json(['data' => $get]);
+        return response()->json($get);
     }
 
     public function getSchoolByCity(string $cityCode, string $schoolType): JsonResponse
@@ -49,14 +49,12 @@ class SchoolController extends Controller
     public function getBoardingSchool(): JsonResponse
     {
         $get = $this->schoolRepo->getBoardingSchool();
-
         return response()->json($get);
     }
 
     public function getDepartmentBySchool(string $schoolId): JsonResponse
     {
         $get = $this->schoolRepo->getDepartmentBySchool($schoolId);
-
         return response()->json($get);
     }
 }

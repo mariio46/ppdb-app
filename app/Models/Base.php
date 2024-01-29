@@ -15,11 +15,16 @@ class Base
         return ['waktu' => $time, 'Dn-Code' => session()->get($token)];
     }
 
+    protected function swDefaultHeaders(string $token = 'stu_token', int $time = null): array
+    {
+        return ($time !== null) ? ['waktu' => $time, 'Sw-Code' => session()->get($token)] : ['Sw-Code' => session()->get($token)];
+    }
+
     // -------------------------SERVER ACTION-------------------------
 
     protected function postWithoutToken(string $endpoint, array $data): array
     {
-        $response = Http::post($this->BASE_API_URL.$endpoint, $data);
+        $response = Http::post($this->BASE_API_URL . $endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -29,7 +34,7 @@ class Base
 
     protected function postWithToken(string $endpoint, array $data)
     {
-        $response = Http::withHeaders($this->defaultHeaders())->post($this->BASE_API_URL.$endpoint, $data);
+        $response = Http::withHeaders($this->defaultHeaders())->post($this->BASE_API_URL . $endpoint, $data);
 
         return [
             'status_code' => $response->status(),
@@ -41,7 +46,7 @@ class Base
     {
         $response = Http::withHeaders($this->defaultHeaders())
             ->attach($key, file_get_contents($file->path()), $file->getClientOriginalName())
-            ->post(url: $this->BASE_API_URL.$endpoint, data: $data);
+            ->post(url: $this->BASE_API_URL . $endpoint, data: $data);
 
         return [
             'status_code' => $response->status(),
@@ -51,7 +56,7 @@ class Base
 
     protected function getWithToken(string $endpoint)
     {
-        $response = Http::withHeaders($this->defaultHeaders())->get($this->BASE_API_URL.$endpoint);
+        $response = Http::withHeaders($this->defaultHeaders())->get($this->BASE_API_URL . $endpoint);
 
         return [
             'status_code' => $response->status(),
@@ -61,10 +66,7 @@ class Base
 
     protected function swGetWithToken(string $endpoint)
     {
-        $response = Http::withHeaders([
-            'waktu' => 5,
-            'Sw-Code' => session()->get('stu_token'),
-        ])->get($this->BASE_API_URL.$endpoint);
+        $response = Http::withHeaders($this->swDefaultHeaders())->get($this->BASE_API_URL . $endpoint);
 
         return [
             'status_code' => $response->status(),
@@ -74,10 +76,19 @@ class Base
 
     protected function swPostWithToken(string $endpoint, array $data): array
     {
-        $response = Http::withHeaders([
-            'waktu' => 5,
-            'Sw-Code' => session()->get('stu_token'),
-        ])->post($this->BASE_API_URL.$endpoint, $data);
+        $response = Http::withHeaders($this->swDefaultHeaders())->post($this->BASE_API_URL . $endpoint, $data);
+
+        return [
+            'status_code' => $response->status(),
+            'response' => $response->json(),
+        ];
+    }
+
+    protected function swPostFileWithToken(string $endpoint, array $data, string $keyFile, object $file): array
+    {
+        $response = Http::withHeaders($this->swDefaultHeaders())
+            ->attach($keyFile, file_get_contents($file->path()), $file->getClientOriginalName())
+            ->post(url: $this->BASE_API_URL . $endpoint, data: $data);
 
         return [
             'status_code' => $response->status(),

@@ -1,28 +1,12 @@
 @extends('layouts.student.auth')
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Pendaftaran</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb breadcrumb-slash">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('student.regis') }}">Pendaftaran</a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('student.regis.phase', [$phase, $phase_id]) }}">Pendaftaran Tahap {{ $phase }}</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Cetak Bukti Pendaftaran
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-breadcrumb title="Pendaftaran">
+        <x-breadcrumb-item to="{{ route('student.regis') }}" title="Pendaftaran" />
+        <x-breadcrumb-item to="{{ route('student.regis.phase', [$phase, $phase_id]) }}" title="Pendaftaran Tahap {{ $phase }}" />
+        <x-breadcrumb-active title="Cetak Bykti Pendaftaran" />
+    </x-breadcrumb>
+    
     <div class="content-body">
         <div class="row">
             <div class="col-12">
@@ -37,30 +21,14 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <table class="table table-borderless">
-                                    <tr>
-                                        <td class="col-auto px-0" style="width: 35%;">Nama Lengkap</td>
-                                        <td class="col-auto">:</td>
-                                        <td class="col-auto px-0" style="width: 60%;">{{ session()->get('stu_name') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-auto px-0">NISN</td>
-                                        <td class="col-auto">:</td>
-                                        <td class="col-auto px-0">{{ session()->get('stu_nisn') }}</td>
-                                    </tr>
+                                    <x-three-row-info label="Nama Lengkap" identifier="nama_lengkap" value="{{ session()->get('stu_name') }}" />
+                                    <x-three-row-info label="NISN" identifier="nisn" value="{{ session()->get('stu_nisn') }}" />
                                 </table>
                             </div>
                             <div class="col-md-6 col-12">
                                 <table class="table table-borderless">
-                                    <tr>
-                                        <td class="col-auto px-0" style="width: 35%;">Jenis Kelamin</td>
-                                        <td class="col-auto">:</td>
-                                        <td class="col-auto px-0" style="width: 60%;">{{ session()->get('stu_gender') == 'l' ? 'Laki-laki' : 'Perempuan' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-auto px-0">Asal Sekolah</td>
-                                        <td class="col-auto">:</td>
-                                        <td class="col-auto px-0">{{ session()->get('stu_school') }}</td>
-                                    </tr>
+                                    <x-three-row-info label="Jenis Kelamin" identifier="jenis_kelamin" value="{{ session()->get('stu_gender') == 'l' ? 'Laki-laki' : 'Perempuan' }}" />
+                                    <x-three-row-info label="Asal Sekolah" identifier="asal_sekolah" value="{{ session()->get('stu_school') }}" />
                                 </table>
                             </div>
                         </div>
@@ -78,11 +46,9 @@
                         <h5 class="text-primary">Sekolah Verifikasi Berkas</h5>
                         <div class="row">
                             <div class="col-lg-6 col-12">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div style="width: 35%;">Sekolah Pilihan</div>
-                                    <div class="px-1">:</div>
-                                    <div style="width: 60%;"><span id="schoolVerif">-</span></div>
-                                </div>
+                                <table class="table table-borderless">
+                                    <x-three-row-info label="Sekolah Pilihan" identifier="schoolVerif" />
+                                </table>
                             </div>
                         </div>
 
@@ -107,7 +73,8 @@
 
 @push('scripts')
     <script>
-        var phaseId = '{{ $phase_id }}';
+        var phaseId = '{{ $phase_id }}',
+            tracks = JSON.parse('{!! json_encode($tracks) !!}');
     </script>
     {{-- <script src="/js/student/pages/registration/proof-v1.0.1.js"></script> --}}
     <script>
@@ -120,22 +87,22 @@
                 chosenSchoolSect = $('#chosenSchoolSect'),
                 schoolVerif = $('#schoolVerif'),
                 endVerif = $('#endVerif'),
-                tracks = {
-                    'AA': 'Afirmasi',
-                    'AB': 'Perpindahan Tugas Orang Tua',
-                    'AC': 'Anak Guru',
-                    'AD': 'Prestasi Akademik',
-                    'AE': 'Prestasi Non Akademik',
-                    'AF': 'Zonasi',
-                    'AG': 'Boarding School',
-                    'KA': 'Afirmasi',
-                    'KB': 'Perpindahan Tugas Orang Tua',
-                    'KC': 'Anak Guru',
-                    'KD': 'Prestasi Akademik',
-                    'KE': 'Prestasi Non Akademik',
-                    'KF': 'Domisili Terdekat',
-                    'KG': 'Anak DUDI',
-                },
+                // tracks = {
+                //     'AA': 'Afirmasi',
+                //     'AB': 'Perpindahan Tugas Orang Tua',
+                //     'AC': 'Anak Guru',
+                //     'AD': 'Prestasi Akademik',
+                //     'AE': 'Prestasi Non Akademik',
+                //     'AF': 'Zonasi',
+                //     'AG': 'Boarding School',
+                //     'KA': 'Afirmasi',
+                //     'KB': 'Perpindahan Tugas Orang Tua',
+                //     'KC': 'Anak Guru',
+                //     'KD': 'Prestasi Akademik',
+                //     'KE': 'Prestasi Non Akademik',
+                //     'KF': 'Domisili Terdekat',
+                //     'KG': 'Anak DUDI',
+                // },
                 months = [
                     "Januari",
                     "Februari",
@@ -156,6 +123,7 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(datas) {
+                    // let data = datas.data[0];
                     let data = datas.data[0];
                     console.log(data);
                     let t = data.kode_jalur;
@@ -210,31 +178,16 @@
                     chosenSchoolSect.html('');
                     if (j == 'A') { // if the type of school is high school (SMA)
                         if (t == 'AC' || t == 'AG') { // if the track is teacher's child or boarding school
-                            <<
-                            <<
-                            <<
-                            <
-                            HEAD
-                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1));
-                        } else {
-                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_id, '1'));
-                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_id, '2'));
-                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_id, '3')); ===
-                            ===
-                            =
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama));
                         } else {
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama, '1'));
                             chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_nama ?? '-', '2'));
-                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3')); >>>
-                            >>>
-                            >
-                            7 eb4b59eba05c9c3f69aaef90fe0a329ea84c234
+                            chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3'));
                         }
                     } else if (j == 'K') { // if the type of school is vocational school (SMK)
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1, '1', 'y', data.jurusan1));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2, '2', 'y', data.jurusan2));
-                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3, '3', 'y', data.jurusan3));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah1_nama, '1', 'y', data.jurusan1_nama));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah2_nama ?? '-', '2', 'y', data.jurusan2_nama));
+                        chosenSchoolSect.append(chosenSchoolHtml(data.sekolah3_nama ?? '-', '3', 'y', data.jurusan3_nama));
                     }
 
                     let schver = (data.sekolah_verif_id == data.sekolah1_id) ? data.sekolah1_nama : ((data.sekolah_verif_id == data.sekolah2_id) ? data.sekolah2_nama : data
@@ -282,9 +235,9 @@
                 <h5 class="text-warning">Pilihan ${n}</h5>
 
                 <div class="d-flex align-items-center mb-1">
-                <div style="width: 35%;">Sekolah Pilihan</div>
-                <div class="mx-1">:</div>
-                <div style="width: 60%;">${schoolName}</div>
+                    <div style="width: 35%;">Sekolah Pilihan</div>
+                    <div class="mx-1">:</div>
+                    <div style="width: 60%;">${schoolName}</div>
                 </div>
                 
                 ${dept}`;

@@ -7,12 +7,6 @@
 @endsection
 
 @section('content')
-    @if (session()->get('stat'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
     <div class="modal fade text-start" id="firstTimeLoginModal" data-bs-backdrop="static" aria-labelledby="ftlLabel" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -508,6 +502,7 @@
                     dataType: 'json',
                     success: function(data) {
                         let d = data.data;
+                        console.log(d);
 
                         let check = {
                             'jenis_kelamin': d.jenis_kelamin,
@@ -564,19 +559,28 @@
                     method: 'get',
                     dataType: 'json',
                     success: function(score) {
-                        let s = score.data;
-
-                        let check = Object.fromEntries(
-                            Object.entries(s).map(([key, value]) => [key, value === 0 ? null : value])
-                        );
-
-                        Object.assign(allData, check)
-                        for (let i = 1; i <= 5; i++) {
-                            $(`#smt${i}Bid`).text(s[`sm${i}_bid`]);
-                            $(`#smt${i}Big`).text(s[`sm${i}_big`]);
-                            $(`#smt${i}Mtk`).text(s[`sm${i}_mtk`]);
-                            $(`#smt${i}Ipa`).text(s[`sm${i}_ipa`]);
-                            $(`#smt${i}Ips`).text(s[`sm${i}_ips`]);
+                        if (score.statusCode == 200) {
+                            let s = score.data;
+                            let check = Object.fromEntries(
+                                Object.entries(s).map(([key, value]) => [key, value === 0 ? null : value])
+                            );
+    
+                            Object.assign(allData, check)
+                            for (let i = 1; i <= 5; i++) {
+                                $(`#smt${i}Bid`).text(s[`sm${i}_bid`]);
+                                $(`#smt${i}Big`).text(s[`sm${i}_big`]);
+                                $(`#smt${i}Mtk`).text(s[`sm${i}_mtk`]);
+                                $(`#smt${i}Ipa`).text(s[`sm${i}_ipa`]);
+                                $(`#smt${i}Ips`).text(s[`sm${i}_ips`]);
+                            }
+                        } else if (score.statusCode == 400) {
+                            for (let i = 1; i <= 5; i++) {
+                                $(`#smt${i}Bid`).text(0);
+                                $(`#smt${i}Big`).text(0);
+                                $(`#smt${i}Mtk`).text(0);
+                                $(`#smt${i}Ipa`).text(0);
+                                $(`#smt${i}Ips`).text(0);
+                            }
                         }
                     },
                     error: function(x, s, e) {
