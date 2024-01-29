@@ -30,11 +30,6 @@
             <div class="modal-body border-top">
                 <h5>Pendaftaran</h5>
                 <table class="table table-borderless">
-                    {{-- <tr>
-            <td class="col-auto px-0" style="width: 40%;">Jenjang Pendidikan</td>
-            <td class="col-auto">:</td>
-            <td class="col-auto px-0 fw-bold" style="width: 55%;">{{ $modalLevel }}</td>
-          </tr> --}}
                     <tr>
                         <td class="col-auto px-0" style="width: 40%;">Jalur</td>
                         <td class="col-auto">:</td>

@@ -6,12 +6,6 @@
 @endsection
 
 @section('content')
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
     <div class="content-body">
         <div class="card">
             <div class="card-header">

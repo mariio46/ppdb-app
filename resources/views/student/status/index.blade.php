@@ -34,38 +34,42 @@
                     dataType: 'json',
                     success: function(status) {
                         console.log(status);
-                        
-                        status.data.forEach(s => {
-                            let stat = '';
-
-                            switch (s.status) {
-                                case 'mendaftar':
-                                    stat = registered(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_verif_nama);
-                                    break;
-                                case 'verifikasi':
-                                    stat = verified(s.nama, s.nisn, tracks[s.kode_jalur], s.pengumuman);
-                                    break;
-                                case 'declined':
-                                    stat = declined(s.nama, s.nisn, tracks[s.kode_jalur]);
-                                    break;
-                                case 'accepted':
-                                    stat = accepted(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.re_registration_date, s.kode_jalur.charAt(0) == 'K' ? true : false,
-                                        s.jurusan_lulus);
-                                    break;
-                                case 'completed':
-                                    stat = completed(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.kode_jalur.charAt(0) == 'K' ? true : false, s.jurusan_lulus);
-                                    break;
-                                case '':
-                                    stat = unregister();
-                                    break;
-                                default:
-                                    break;
-                            }
+                        if (status.statusCode == 200) {
+                            status.data.forEach(s => {
+                                let stat = '';
     
-                            cardSection.append(generateCard(s.tahap, stat, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) != 'pre' ? true : false, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) == 'now' ? true : false));
+                                switch (s.status) {
+                                    case 'mendaftar':
+                                        stat = registered(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_verif_nama);
+                                        break;
+                                    case 'verifikasi':
+                                        stat = verified(s.nama, s.nisn, tracks[s.kode_jalur], s.pengumuman);
+                                        break;
+                                    case 'declined':
+                                        stat = declined(s.nama, s.nisn, tracks[s.kode_jalur]);
+                                        break;
+                                    case 'accepted':
+                                        stat = accepted(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.re_registration_date, s.kode_jalur.charAt(0) == 'K' ? true : false,
+                                            s.jurusan_lulus);
+                                        break;
+                                    case 'completed':
+                                        stat = completed(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.kode_jalur.charAt(0) == 'K' ? true : false, s.jurusan_lulus);
+                                        break;
+                                    case '':
+                                        stat = unregister();
+                                        break;
+                                    default:
+                                        break;
+                                }
+        
+                                cardSection.append(generateCard(s.tahap, stat, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) != 'pre' ? true : false, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) == 'now' ? true : false));
+    
+                            });
+                        } else {
+                            cardSection.append(empty())
+                        }
 
-                            $('#loader').addClass('d-none');
-                        });
+                        $('#loader').addClass('d-none');
                     },
                     error: function(xhr, status, error) {
                         console.error("Gagal mendapatkan data: ", status, error);
@@ -335,6 +339,14 @@
 
             function unregister() {
                 return `<p class="text-center">Kamu belum melakukan pendaftaran.</p>`;
+            }
+
+            function empty() {
+                return `<div class="card">
+                    <div class="card-body">
+                        <p class="text-center mb-0">Data gagal ditemukan. Mohon coba lagi nanti.</p>
+                    </div>
+                </div>`;
             }
 
             /**

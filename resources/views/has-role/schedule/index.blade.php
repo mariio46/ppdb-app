@@ -1,12 +1,6 @@
 @extends('layouts.has-role.auth', ['title' => 'Tahap & Jadwal'])
 
 @section('content')
-    @if (session()->get('msg'))
-        <div class="alert alert-success p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -63,7 +57,7 @@
                     method: 'get',
                     dataType: 'json',
                     success: function(response) {
-                        console.log(response.data);
+                        console.log(response);
                         let data = response.data;
 
                         if (response.statusCode == 200) {
@@ -91,7 +85,7 @@
                             });
                         } else {
                             table.html('');
-                            table.append('<tr><td class="text-center py-1" colspan="6"><i>Tidak ada data ditemukan.</i></td></tr>');
+                            table.append('<tr><td class="text-center py-1" colspan="8"><i>Tidak ada data ditemukan.</i></td></tr>');
                         }
                     },
                     error: function(xhr, status, error) {

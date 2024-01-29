@@ -51,12 +51,12 @@
         <input id="city1Name" name="city1Name" type="hidden">
         <input id="school1Name" name="school1Name" type="hidden">
         <input id="department1Name" name="department1Name" type="hidden">
-        <input id="city1Name" name="city1Name" type="hidden">
-        <input id="school1Name" name="school1Name" type="hidden">
-        <input id="department1Name" name="department1Name" type="hidden">
-        <input id="city1Name" name="city1Name" type="hidden">
-        <input id="school1Name" name="school1Name" type="hidden">
-        <input id="department1Name" name="department1Name" type="hidden">
+        <input id="city2Name" name="city2Name" type="hidden">
+        <input id="school2Name" name="school2Name" type="hidden">
+        <input id="department2Name" name="department2Name" type="hidden">
+        <input id="city3Name" name="city3Name" type="hidden">
+        <input id="school3Name" name="school3Name" type="hidden">
+        <input id="department3Name" name="department3Name" type="hidden">
         <input id="schoolVerif" name="schoolVerif" type="hidden">
         <input id="schoolVerifName" name="schoolVerifName" type="hidden">
     </div>
