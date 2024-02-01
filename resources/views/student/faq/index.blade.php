@@ -39,7 +39,7 @@
 
         {{-- loader --}}
         <x-loader key="loader" />
-        
+
         {{-- frequent answer and question  collapse --}}
         <div class="accordion accordion-margin my-2" id="accordionSection"></div>
     </div>
@@ -96,9 +96,9 @@
                 let n = 1;
                 section.html('');
                 if (data.length) {
-                data.forEach(d => {
-                    section.append(generateHtml(n++, d.question, d.answer));
-                });
+                    data.forEach(d => {
+                        section.append(generateHtml(n++, d.question, d.answer));
+                    });
                 } else {
                     section.html('<p class="text-center">Tidak ada data ditemukan.</p>')
                 }
@@ -113,9 +113,9 @@
 
             $('#search').keypress(function(event) {
                 if (event.which === 13) {
-                event.preventDefault();
+                    event.preventDefault();
 
-                searchBtn.click();
+                    searchBtn.click();
                 }
             });
         });

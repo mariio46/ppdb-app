@@ -164,13 +164,22 @@
                         </form>
                             `
                     });
-                } else if (school_status === 'simpan' || school_status === 'verifikasi') {
+                } else if (school_status === 'simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
                             <button type="button" class="btn btn-danger" disabled>
                                 <x-tabler-lock-square-rounded />
                                 Sekolah Sudah Terkunci
+                            </button>`
+                    });
+                } else if (school_status === 'verifikasi') {
+                    lock_button.show();
+                    lock_button.html(function() {
+                        return `
+                            <button type="button" class="btn btn-success" disabled>
+                                <x-tabler-discount-check />
+                                Sekolah Sudah Terverifikasi
                             </button>`
                     });
                 }

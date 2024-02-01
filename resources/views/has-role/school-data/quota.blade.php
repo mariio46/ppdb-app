@@ -34,12 +34,11 @@
 
 @section('content')
     <div class="content-body">
-        <div id="user-profile">
-            @include('has-role.school-data.partials.header')
-        </div>
-        <div class="d-flex gap-md-2">
-            @include('has-role.school-data.partials.tab')
-        </div>
+
+        @include('has-role.school-data.partials.header')
+
+        @include('has-role.school-data.partials.tab')
+
         <div class="card">
             <div class="card-body p-0">
                 <table class="table table-quota">
@@ -241,7 +240,7 @@
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                        <form action="/panel/data-sekolah/${school_id}/${unit}/lock" method="post">
+                        <form id="form-kunci-sekolah" action="/panel/data-sekolah/${school_id}/${unit}/lock" method="post">
                             @csrf
                             <button type="submit" id="modal-kunci-sekolah" class="btn btn-warning">
                                 <x-tabler-lock-square-rounded />
@@ -250,15 +249,23 @@
                         </form>
                             `
                     });
-                } else if (school_status === 'simpan' || school_status === 'verifikasi') {
+                } else if (school_status === 'simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
                             <button type="button" class="btn btn-danger" disabled>
                                 <x-tabler-lock-square-rounded />
                                 Sekolah Sudah Terkunci
-                            </button>
-                            `
+                            </button>`
+                    });
+                } else if (school_status === 'verifikasi') {
+                    lock_button.show();
+                    lock_button.html(function() {
+                        return `
+                            <button type="button" class="btn btn-success" disabled>
+                                <x-tabler-discount-check />
+                                Sekolah Sudah Terverifikasi
+                            </button>`
                     });
                 }
             }

@@ -17,7 +17,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Logo Sekolah</h3>
+                <h3 class="card-title">Edit Logo Sekolah</h3>
             </div>
             <div class="card-body">
                 <div class="d-md-flex align-items-end">
@@ -121,7 +121,7 @@
                     <x-separator marginY="2" />
                     <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
                         <x-button color="success">Simpan Perubahan</x-button>
-                        <x-link href="{{ url()->previous() }}" color="secondary">Batalkan</x-link>
+                        <x-link href="{{ route('school-data.index') }}" color="secondary">Batalkan</x-link>
                     </div>
                 </form>
 

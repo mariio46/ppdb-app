@@ -2,10 +2,10 @@
 
 @section('content')
     <x-breadcrumb title="Tahap & Jadwal">
-        <x-breadcrumb-item to="{{ route('schedules.index') }}" title="Tahap & Jadwal" />
+        <x-breadcrumb-item title="Tahap & Jadwal" to="{{ route('schedules.index') }}" />
         <x-breadcrumb-active title="Lihat Detail" />
     </x-breadcrumb>
-    
+
     <div class="content-body row">
         <div class="col-12">
             <div class="card">

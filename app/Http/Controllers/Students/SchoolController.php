@@ -49,12 +49,14 @@ class SchoolController extends Controller
     public function getBoardingSchool(): JsonResponse
     {
         $get = $this->schoolRepo->getBoardingSchool();
+
         return response()->json($get);
     }
 
     public function getDepartmentBySchool(string $schoolId): JsonResponse
     {
         $get = $this->schoolRepo->getDepartmentBySchool($schoolId);
+
         return response()->json($get);
     }
 }

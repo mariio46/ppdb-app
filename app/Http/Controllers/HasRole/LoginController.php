@@ -22,7 +22,7 @@ class LoginController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $response = $this->auth->login($request->username, $request->password);
+        $response = $this->auth->login(username: $request->username, password: $request->password);
 
         if ($response['stat'] == 'success') {
             return to_route('dashboard')->with([

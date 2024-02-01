@@ -6,10 +6,9 @@
 @endsection
 
 @section('content')
-
     <x-breadcrumb title="Pendaftaran">
-        <x-breadcrumb-item to="{{ route('student.regis') }}" title="Pendaftaran" />
-        <x-breadcrumb-item to="{{ route('student.regis.phase', [$phase, $phase_id]) }}" title="Pendaftaran Tahap {{ $phase }}" />
+        <x-breadcrumb-item title="Pendaftaran" to="{{ route('student.regis') }}" />
+        <x-breadcrumb-item title="Pendaftaran Tahap {{ $phase }}" to="{{ route('student.regis.phase', [$phase, $phase_id]) }}" />
         <x-breadcrumb-active title="Pendaftaran Jalur {{ $track }}" />
     </x-breadcrumb>
 
@@ -661,30 +660,30 @@
                 // select2
                 if (select2.length) {
                     select2.each(function() {
-                    var $this = $(this);
-                    $this.wrap('<div class="position-relative"></div>');
-                    $this.select2({
-                        dropdownParent: $this.parent()
-                    });
+                        var $this = $(this);
+                        $this.wrap('<div class="position-relative"></div>');
+                        $this.select2({
+                            dropdownParent: $this.parent()
+                        });
                     });
                 }
 
                 if (selectInModal.length) {
                     regisModal.on('shown.bs.modal', function() {
-                    selectInModal.select2({
-                        minimumResultsForSearch: -1
-                    });
+                        selectInModal.select2({
+                            minimumResultsForSearch: -1
+                        });
                     });
                 }
 
                 // checkbox verify
                 if (verifyCheckbox.length) {
                     verifyCheckbox.click(function() {
-                    if (verifyCheckbox.is(":checked")) {
-                        verifyButton.removeAttr('disabled');
-                    } else {
-                        verifyButton.attr('disabled', true);
-                    }
+                        if (verifyCheckbox.is(":checked")) {
+                            verifyButton.removeAttr('disabled');
+                        } else {
+                            verifyButton.attr('disabled', true);
+                        }
                     });
                 }
 
@@ -700,144 +699,144 @@
                 // jQuery Validations
                 if (regisForm.length) {
                     regisForm.validate({
-                    rules: {
-                        school1: {
-                        required: true,
+                        rules: {
+                            school1: {
+                                required: true,
+                            },
+                            department1: {
+                                required: true,
+                                uniqueValue: "department2,department3"
+                            },
+                            department2: {
+                                uniqueValue: "department1,department3"
+                            },
+                            department3: {
+                                uniqueValue: "department1,department2"
+                            }
                         },
-                        department1: {
-                        required: true,
-                        uniqueValue: "department2,department3"
-                        },
-                        department2: {
-                        uniqueValue: "department1,department3"
-                        },
-                        department3: {
-                        uniqueValue: "department1,department2"
+                        messages: {
+                            school1: {
+                                required: "*Pilih salah satu sekolah.",
+                            },
+                            department1: {
+                                required: "*Pilih salah satu jurusan.",
+                                uniqueValue: "*Tidak boleh memilih jurusan yang sama lebih dari sekali."
+                            },
+                            department2: {
+                                uniqueValue: "*Tidak boleh memilih jurusan yang sama lebih dari sekali."
+                            },
+                            department3: {
+                                uniqueValue: "*Tidak boleh memilih jurusan yang sama lebih dari sekali."
+                            }
                         }
-                    },
-                    messages: {
-                        school1: {
-                        required: "*Pilih salah satu sekolah.",
-                        },
-                        department1: {
-                        required: "*Pilih salah satu jurusan.",
-                        uniqueValue: "*Tidak boleh memilih jurusan yang sama lebih dari sekali."
-                        },
-                        department2: {
-                        uniqueValue: "*Tidak boleh memilih jurusan yang sama lebih dari sekali."
-                        },
-                        department3: {
-                        uniqueValue: "*Tidak boleh memilih jurusan yang sama lebih dari sekali."
-                        }
-                    }
                     });
 
                     $.validator.addMethod("uniqueValue", function(value, element, params) {
-                    var otherInputs = params.split(",");
-                
-                    for (var i = 0; i < otherInputs.length; i++) {
-                        var otherInputValue = $("#" + otherInputs[i]).val();
-                
-                        // Abaikan nilai null dan string kosong
-                        if (value !== null && value !== "" && otherInputValue !== null && otherInputValue !== "" && value === otherInputValue) {
-                        return false;
+                        var otherInputs = params.split(",");
+
+                        for (var i = 0; i < otherInputs.length; i++) {
+                            var otherInputValue = $("#" + otherInputs[i]).val();
+
+                            // Abaikan nilai null dan string kosong
+                            if (value !== null && value !== "" && otherInputValue !== null && otherInputValue !== "" && value === otherInputValue) {
+                                return false;
+                            }
                         }
-                    }
-                
-                    return true;
+
+                        return true;
                     }, "Nilai harus unik.");
                 }
 
                 if (schoolVerifSelect.length) {
                     schoolVerifSelect.rules("add", {
-                    required: true,
-                    messages: {
-                        required: "*Pilih sekolah tempat verifikasi kamu."
-                    }
+                        required: true,
+                        messages: {
+                            required: "*Pilih sekolah tempat verifikasi kamu."
+                        }
                     });
                 }
 
                 // verifying
                 if (verifyButton.length) {
                     verifyButton.click(function() {
-                    if (regisForm.valid()) {
-                        if (track === 'KA') {
-                        additionalFunctionVerifyKA();
-                        } else if (track === 'KE') {
-                        additionalFunctionVerifyKE();
-                        }
-
-                        schoolVerifSelect.empty().append('<option value=""></option>');
-
-                        for (let i = 1; i <= 3; i++) {
-                        if (schoolVerifSelect.length) {
-                            let sch = $('#school' + i);
-                            let schCode = sch.val();
-                            let schName = sch.children(':selected').text();
-                            let depName = $('#department' + i).children(':selected').text();
-
-                            $(`#school${i}Show`).text(schName);
-                            $(`#department${i}Show`).text(depName);
-
-                            if (!schoolVerifSelect.find("option[value='" + schCode + "']").length) {
-                            schoolVerifSelect.append('<option value="' + schCode + '">' + schName + '</option>');
+                        if (regisForm.valid()) {
+                            if (track === 'KA') {
+                                additionalFunctionVerifyKA();
+                            } else if (track === 'KE') {
+                                additionalFunctionVerifyKE();
                             }
-                        } else {
-                            let schName = $('#school1').children(":selected").text();
-                            let depName = $('#department' + i).children(":selected").text();
 
-                            if (depName) {
-                            $(`#school${i}Show`).text(schName);
+                            schoolVerifSelect.empty().append('<option value=""></option>');
+
+                            for (let i = 1; i <= 3; i++) {
+                                if (schoolVerifSelect.length) {
+                                    let sch = $('#school' + i);
+                                    let schCode = sch.val();
+                                    let schName = sch.children(':selected').text();
+                                    let depName = $('#department' + i).children(':selected').text();
+
+                                    $(`#school${i}Show`).text(schName);
+                                    $(`#department${i}Show`).text(depName);
+
+                                    if (!schoolVerifSelect.find("option[value='" + schCode + "']").length) {
+                                        schoolVerifSelect.append('<option value="' + schCode + '">' + schName + '</option>');
+                                    }
+                                } else {
+                                    let schName = $('#school1').children(":selected").text();
+                                    let depName = $('#department' + i).children(":selected").text();
+
+                                    if (depName) {
+                                        $(`#school${i}Show`).text(schName);
+                                    }
+                                    $(`#department${i}Show`).text(depName);
+                                }
                             }
-                            $(`#department${i}Show`).text(depName);
-                        }
-                        }
 
-                        regisModal.modal('show');
-                    }
+                            regisModal.modal('show');
+                        }
                     });
                 }
 
                 // submitting
                 if (submitButton.length) {
                     submitButton.click(function() {
-                    if (schoolVerifSelect.length) {
-                        if(schoolVerifSelect.valid()) {
-                        for (let i = 1; i <= 3; i++) {
-                            if ($('#city' + i).length) {
-                            let cityName = $('#city' + i).children(':selected').text();
-                            $(`#city${i}Name`).val(cityName);
+                        if (schoolVerifSelect.length) {
+                            if (schoolVerifSelect.valid()) {
+                                for (let i = 1; i <= 3; i++) {
+                                    if ($('#city' + i).length) {
+                                        let cityName = $('#city' + i).children(':selected').text();
+                                        $(`#city${i}Name`).val(cityName);
+                                    }
+
+                                    if ($('#school' + i).length) {
+                                        let schoolName = $('#school' + i).children(':selected').text();
+                                        $(`#school${i}Name`).val(schoolName);
+                                    }
+
+                                    let deptName = $('#department' + i).children(':selected').text();
+                                    $(`#department${i}Name`).val(deptName);
+                                }
+
+                                let verifCode = schoolVerifSelect.val();
+                                let verifName = schoolVerifSelect.children(":selected").text();
+                                $('#schoolVerif').val(verifCode);
+                                $('#schoolVerifName').val(verifName);
+
+                                regisForm.submit();
+                            }
+                        } else {
+                            for (let i = 1; i <= 3; i++) {
+                                if ($('#school' + i).length) {
+                                    let schoolName = $('#school' + i).children(':selected').text();
+                                    $(`#school${i}Name`).val(schoolName);
+                                }
+
+                                let deptName = $('#department' + i).children(':selected').text();
+                                $(`#department${i}Name`).val(deptName);
                             }
 
-                            if ($('#school' + i).length) {
-                            let schoolName = $('#school' + i).children(':selected').text();
-                            $(`#school${i}Name`).val(schoolName);
-                            }
-
-                            let deptName = $('#department' + i).children(':selected').text();
-                            $(`#department${i}Name`).val(deptName);
+                            regisForm.submit();
                         }
-
-                        let verifCode = schoolVerifSelect.val();
-                        let verifName = schoolVerifSelect.children(":selected").text();
-                        $('#schoolVerif').val(verifCode);
-                        $('#schoolVerifName').val(verifName);
-
-                        regisForm.submit();
-                        }
-                    } else {
-                        for (let i = 1; i <= 3; i++) {
-                        if ($('#school' + i).length) {
-                            let schoolName = $('#school' + i).children(':selected').text();
-                            $(`#school${i}Name`).val(schoolName);
-                        }
-
-                        let deptName = $('#department' + i).children(':selected').text();
-                            $(`#department${i}Name`).val(deptName);
-                        }
-
-                        regisForm.submit();
-                    }
                     });
                 }
 
@@ -931,38 +930,38 @@
                     loadCity();
 
                     for (let i = 1; i <= 3; i++) {
-                    $('#city' + i).change(function() {
-                        loadSchool(i, $(this).val());
-                        $('#department' + i).empty().append('<option value=""></option>');
-                    });
+                        $('#city' + i).change(function() {
+                            loadSchool(i, $(this).val());
+                            $('#department' + i).empty().append('<option value=""></option>');
+                        });
 
-                    $('#school' + i).change(function() {
-                        loadDepartment(i, $(this).val());
-                    });
+                        $('#school' + i).change(function() {
+                            loadDepartment(i, $(this).val());
+                        });
                     }
 
                     // additional rules
                     if (affType.length) {
-                    affType.rules("add", {
-                        required: true,
-                        messages: {
-                        required: "*Pilih Jenis Afirmasi kamu."
-                        }
-                    });
+                        affType.rules("add", {
+                            required: true,
+                            messages: {
+                                required: "*Pilih Jenis Afirmasi kamu."
+                            }
+                        });
                     }
                     if (affNum.length) {
-                    affNum.rules("add", {
-                        requiredIfPkh: "affirmationType",
-                        messages: {
-                        requiredIfPkh: "*Nomor PKH harus diisi."
-                        }
-                    });
+                        affNum.rules("add", {
+                            requiredIfPkh: "affirmationType",
+                            messages: {
+                                requiredIfPkh: "*Nomor PKH harus diisi."
+                            }
+                        });
                     }
                     $.validator.addMethod("requiredIfPkh", function(value, element, params) {
-                    var sourceValue = $("#" + params).val();
+                        var sourceValue = $("#" + params).val();
 
-                    // Jika input sumber memiliki nilai tertentu, maka target harus diisi
-                    return sourceValue !== "pkh" || value !== "";
+                        // Jika input sumber memiliki nilai tertentu, maka target harus diisi
+                        return sourceValue !== "pkh" || value !== "";
                     }, "Target harus diisi.");
                 } else if (track == 'KB') { // kb => mutation
                     loadCity();
@@ -1009,7 +1008,7 @@
                         achType.rules("add", {
                             required: true,
                             messages: {
-                            required: "*Pilih salah satu."
+                                required: "*Pilih salah satu."
                             }
                         });
                     }
@@ -1017,7 +1016,7 @@
                         achLevel.rules("add", {
                             required: true,
                             messages: {
-                            required: "*Pilih salah satu"
+                                required: "*Pilih salah satu"
                             }
                         });
                     }
@@ -1025,15 +1024,15 @@
                         achChamp.rules("add", {
                             required: true,
                             messages: {
-                            required: "*Pilih salah satu."
+                                required: "*Pilih salah satu."
                             }
-                    });
+                        });
                     }
                     if (achName.length) {
                         achName.rules("add", {
                             required: true,
                             messages: {
-                            required: "*Pilih salah satu."
+                                required: "*Pilih salah satu."
                             }
                         });
                     }
@@ -1055,14 +1054,14 @@
                     loadCity();
 
                     for (let i = 1; i <= 3; i++) {
-                    $('#city' + i).change(function() {
-                        loadSchool(i, $(this).val());
-                        $('#department' + i).empty().append('<option value=""></option>');
-                    });
+                        $('#city' + i).change(function() {
+                            loadSchool(i, $(this).val());
+                            $('#department' + i).empty().append('<option value=""></option>');
+                        });
 
-                    $('#school' + i).change(function() {
-                        loadDepartment(i, $(this).val());
-                    });
+                        $('#school' + i).change(function() {
+                            loadDepartment(i, $(this).val());
+                        });
                     }
                 }
 
@@ -1075,11 +1074,11 @@
                     affTypeShow.text(a);
 
                     if (affType.val() == 'pkh') {
-                    affNumSecShow.show();
-                    affNumShow.text(b);
+                        affNumSecShow.show();
+                        affNumShow.text(b);
                     } else {
-                    affNumSecShow.hide();
-                    affNumShow.text('');
+                        affNumSecShow.hide();
+                        affNumShow.text('');
                     }
                 }
 
@@ -1094,7 +1093,7 @@
                     achChampShow.text(kec);
                     achNameShow.text(ked);
                 }
-                });
+            });
         </script>
     @endif
 @endpush

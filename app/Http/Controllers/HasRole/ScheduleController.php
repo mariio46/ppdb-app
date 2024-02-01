@@ -97,11 +97,11 @@ class ScheduleController extends Controller
     {
         if ($type == 'pengumuman') {
             $data = [
-                'tahap_id'      => $id,
-                'tanggal'       => $request->post('date'),
-                'jam_mulai'     => $request->post('time'),
-                'jam_selesai'   => null,
-                'jenis'         => 'pengumuman',
+                'tahap_id' => $id,
+                'tanggal' => $request->post('date'),
+                'jam_mulai' => $request->post('time'),
+                'jam_selesai' => null,
+                'jenis' => 'pengumuman',
             ];
 
             ($request->post('id') != null) ? $data['id'] = $request->post('id') : '';
@@ -150,7 +150,7 @@ class ScheduleController extends Controller
                 }
             }
 
-            $failed = (count($dateFailed) != 0) ? 'data tanggal ' . implode(', ', $dateFailed) : '0 data.';
+            $failed = (count($dateFailed) != 0) ? 'data tanggal '.implode(', ', $dateFailed) : '0 data.';
             $msg = '';
 
             if ($countSuccess == 0 && $dateFailed == []) {
@@ -173,24 +173,28 @@ class ScheduleController extends Controller
     public function getDataSchedules(): JsonResponse
     {
         $data = $this->schedule->getDataSchedules();
+
         return response()->json($data);
     }
 
     public function detailData(string $id): JsonResponse
     {
         $data = $this->schedule->getDetailData($id);
+
         return response()->json($data);
     }
 
     public function getDataSchedule(string $id): JsonResponse
     {
         $data = $this->schedule->getDataSchedule($id);
+
         return response()->json($data);
     }
 
     public function getDataTime(string $type, string $id): JsonResponse
     {
         $data = $this->schedule->getDetailTime($id, $type);
+
         return response()->json($data);
     }
 

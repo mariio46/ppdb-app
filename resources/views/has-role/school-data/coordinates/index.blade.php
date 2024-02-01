@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Info Wilayah Zonasi Sekolah'])
+@extends('layouts.has-role.auth', ['title' => 'Koordinat Sekolah'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">
@@ -24,29 +24,22 @@
 
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title"></h4>
+                <h4 class="card-title fw-bolder text-primary">Koordinat Sekolah</h4>
+                <div id="link-edit-coordinate"></div>
             </div>
             <div class="card-body">
+                <div class="row mb-2">
+                    <div class="mb-2 col-lg-4 col-12">
+                        <x-label for="lintang">Lintang</x-label>
+                        <x-input id="lintang" name="lintang" type="text" placeholder="lintang.." readonly></x-input>
+                    </div>
+                    <div class="mb-2 col-lg-4 col-12">
+                        <x-label for="bujur">Bujur</x-label>
+                        <x-input id="bujur" name="bujur" type="text" placeholder="bujur.." readonly></x-input>
+                    </div>
+                </div>
                 <div class="rounded shadow-md" id="map" style="width: 100%; height: 400px;"></div>
-                <x-input class="w-50 mt-1" id="search-input" type="text" placeholder="cari tempat.." />
-
-                <form id="form" action="#" method="post">
-                    @csrf
-                    <div class="row mt-2">
-                        <div class="mb-2 col-lg-4 col-12">
-                            <x-label for="lintang">Lintang</x-label>
-                            <x-input id="lintang" name="lintang" type="text" placeholder="lintang.." readonly></x-input>
-                        </div>
-                        <div class="mb-2 col-lg-4 col-12">
-                            <x-label for="bujur">Bujur</x-label>
-                            <x-input id="bujur" name="bujur" type="text" placeholder="bujur.." readonly></x-input>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <x-button type="submit" color="success">Simpan Koordinat</x-button>
-                        <x-link type="button" href="#" variant="outline" color="secondary">Kembali</x-link>
-                    </div>
-                </form>
+                {{-- <x-input class="w-50 mt-1" id="search-input" type="text" placeholder="cari tempat.." /> --}}
             </div>
         </div>
     </div>
@@ -56,8 +49,6 @@
     <script>
         var school_id = '{{ $sekolah_id }}',
             unit = '{{ $satuan_pendidikan }}';
-        // console.log('Id Sekolah : ', school_id);
-        // console.log('Satuan Pendidikan : ', unit);
     </script>
     <script>
         $(function() {
@@ -67,6 +58,8 @@
                 school_name = $('#nama-sekolah'),
                 school_edit_link = $('#link-edit-sekolah');
 
+            var editCoordinateLink = $('#link-edit-coordinate');
+
             $.ajax({
                 url: `/panel/data-sekolah/json/school/${school_id}`,
                 method: 'get',
@@ -74,21 +67,36 @@
                 beforeSend: function() {
                     buttonLoader();
                     headerSchoolAction('onLoad');
+                    editCoordinateLink.addClass('placeholder-glow');
+                    editCoordinateLink.html(() => {
+                        return `<button class="btn btn-secondary placeholder" style="width: 220px;"></button>`
+                    });
                 },
                 success: function(school) {
                     console.log('Sekolah : ', school);
                     if (school.logo) $('#logo-sekolah').attr('src', school.logo);
-                    if (school.lintang) $('#lintang').val(school.lintang);
-                    if (school.bujur) $('#bujur').val(school.bujur);
+                    if (school.lintang && school.bujur) {
+                        $('#lintang').val(school.lintang);
+                        $('#bujur').val(school.bujur);
+                    }
+
                     headerSchoolAction('onSuccess', school.nama_sekolah, school.npsn);
                     loadEditLink(school.terverifikasi);
                     loadLockSchoolButton(school.terverifikasi, school.id, school.satuan_pendidikan);
+
+                    editCoordinateLink.removeClass('placeholder-glow');
+                    editCoordinateLink.html('');
+                    if (school.terverifikasi === 'belum_simpan') {
+                        editCoordinateLink.html(() => {
+                            return `<a href="/panel/koordinat-sekolah/edit" class="btn btn-success">Edit Koordinat Sekolah</a>`
+                        });
+                    }
 
                     initMap(school.lintang, school.bujur)
                 },
                 complete: function() {
                     $('#btn-loader').html(``);
-                    headerSchoolAction('onComplete')
+                    headerSchoolAction('onComplete');
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
@@ -122,14 +130,23 @@
                         </form>
                             `
                     });
-                } else if (school_status === 'simpan' || school_status === 'verifikasi') {
+                } else if (school_status === 'simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                <button type="button" class="btn btn-danger" disabled>
-                    <x-tabler-lock-square-rounded />
-                    Sekolah Sudah Terkunci
-                </button>`
+                            <button type="button" class="btn btn-danger" disabled>
+                                <x-tabler-lock-square-rounded />
+                                Sekolah Sudah Terkunci
+                            </button>`
+                    });
+                } else if (school_status === 'verifikasi') {
+                    lock_button.show();
+                    lock_button.html(function() {
+                        return `
+                            <button type="button" class="btn btn-success" disabled>
+                                <x-tabler-discount-check />
+                                Sekolah Sudah Terverifikasi
+                            </button>`
                     });
                 }
             }
@@ -161,7 +178,6 @@
                         break;
                 }
             }
-
 
         })
     </script>
@@ -195,8 +211,6 @@
         });
 
         let map, marker;
-        var latNew = -3.5138654553765787;
-        var langNew = 120.36971926689148;
 
         function initMap(lintang, bujur) {
             map = new google.maps.Map(document.getElementById('map'), {

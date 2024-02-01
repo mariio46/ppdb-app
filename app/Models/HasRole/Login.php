@@ -11,13 +11,7 @@ class Login extends Base
 
     public function store(string $username, string $password): array
     {
-        $body = [
-            'nama_pengguna' => $username,
-            'kata_sandi' => $password,
-            'waktu' => 10,
-        ];
-
-        $response = $this->postWithoutToken('admin/login', $body);
+        $response = $this->postWithoutToken('admin/login', ['nama_pengguna' => $username, 'kata_sandi' => $password, 'waktu' => 10]);
 
         return $this->loginResponse(data: $response);
     }
@@ -32,28 +26,34 @@ class Login extends Base
     private function loginResponse(array $data): array
     {
         $server_status_code = $data['status_code'];
-        if ($server_status_code == 200) {
-            return $this->whenServerIsOk(response: $data['response'], statusName: $data['response']['status']);
-        } elseif ($server_status_code == 404 || $server_status_code == 400) {
-            return $this->whenServerIsNotFound(code: $server_status_code);
-        } elseif ($server_status_code == 500) {
+
+        // If Server / Backend Error
+        if ($server_status_code == 500) {
             return $this->whenServerIsError(code: $server_status_code);
-        } else {
+        }
+
+        // Client Error
+        if ($server_status_code == 400 || $server_status_code == 404) {
             return $this->whenServerIsNotFound(code: $server_status_code);
         }
+
+        return $this->whenServerIsOk(response: $data['response'], statusName: $data['response']['status']);
     }
 
     private function logoutResponse(array $data): array
     {
         $server_status_code = $data['status_code'];
-        if ($server_status_code == 200) {
-            return $this->whenLogoutSuccess(response: $data['response']);
-        } elseif ($server_status_code == 400 || $server_status_code == 404) {
-            return $this->whenServerIsNotFound(code: $server_status_code);
-        } elseif ($server_status_code == 500) {
+
+        // If Server / Backend Error
+        if ($server_status_code == 500) {
             return $this->whenServerIsError(code: $server_status_code);
-        } else {
+        }
+
+        // Client Error
+        if ($server_status_code == 400 || $server_status_code == 404) {
             return $this->whenServerIsNotFound(code: $server_status_code);
         }
+
+        return $this->whenLogoutSuccess(response: $data['response']);
     }
 }

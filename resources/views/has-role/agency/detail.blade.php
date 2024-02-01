@@ -7,10 +7,10 @@
 
 @section('content')
     <x-breadcrumb title="Cabang Dinas">
-        <x-breadcrumb-item to="{{ route('cabang-dinas.index') }}" title="Cabang Dinas" />
+        <x-breadcrumb-item title="Cabang Dinas" to="{{ route('cabang-dinas.index') }}" />
         <x-breadcrumb-active title="Detail Cabang Dinas" />
     </x-breadcrumb>
-    
+
     <div class="content-body row">
         <div class="col-12">
             <div class="card">

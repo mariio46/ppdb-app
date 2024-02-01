@@ -2,10 +2,10 @@
 
 @section('content')
     <x-breadcrumb title="Sekolah Asal">
-        <x-breadcrumb-item to="{{ route('sekolah-asal.index') }}" title="Sekolah Asal" />
+        <x-breadcrumb-item title="Sekolah Asal" to="{{ route('sekolah-asal.index') }}" />
         <x-breadcrumb-active title="Detail Sekolah Asal" />
     </x-breadcrumb>
-    
+
     <div class="content-body">
         <div class="card">
             <div class="card-header align-items-center px-3">

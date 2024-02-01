@@ -122,7 +122,7 @@
                     headerSchoolAction('onLoad');
                 },
                 success: function(school) {
-                    // console.log('Sekolah : ', school);
+                    console.log('Sekolah : ', school);
                     if (school.logo) $('#logo-sekolah').attr('src', school.logo);
                     headerSchoolAction('onSuccess', school.nama_sekolah, school.npsn);
                     loadEditLink(school.terverifikasi);
@@ -147,6 +147,7 @@
                         ajax: {
                             url: `/panel/zonasi-sekolah/json/zones/${school_id}`,
                             dataSrc: (response) => {
+                                console.log('List Wilayah Zonasi : ', response.data);
                                 getProvinces();
                                 return response.statusCode === 200 && response.status === 'success' ? response.data : [];
                             },
@@ -329,13 +330,22 @@
                         </form>
                             `
                     });
-                } else if (school_status === 'simpan' || school_status === 'verifikasi') {
+                } else if (school_status === 'simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
                             <button type="button" class="btn btn-danger" disabled>
                                 <x-tabler-lock-square-rounded />
                                 Sekolah Sudah Terkunci
+                            </button>`
+                    });
+                } else if (school_status === 'verifikasi') {
+                    lock_button.show();
+                    lock_button.html(function() {
+                        return `
+                            <button type="button" class="btn btn-success" disabled>
+                                <x-tabler-discount-check />
+                                Sekolah Sudah Terverifikasi
                             </button>`
                     });
                 }

@@ -32,7 +32,7 @@ class RegistrationController extends Controller
         $data = [
             'phase_id' => $phase_id,
             'phase' => $phase,
-            'icon'  => $this->track->getIcon()
+            'icon' => $this->track->getIcon(),
         ];
 
         return view('student.registration.phase', $data);
@@ -68,7 +68,7 @@ class RegistrationController extends Controller
         $data = [
             'phase_id' => $phaseId,
             'phase' => $phase,
-            'tracks' => $this->track->getCodeName()
+            'tracks' => $this->track->getCodeName(),
         ];
 
         return view('student.registration.proof', $data);

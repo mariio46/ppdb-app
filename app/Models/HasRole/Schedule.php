@@ -16,18 +16,21 @@ class Schedule extends Base
     public function getDetailData(string $id): array // A.12.003
     {
         $get = $this->getWithToken("tahap/batas?id=$id");
+
         return $this->serverResponseWithGetMethod($get);
     }
 
     public function getDataSchedule(string $id): array // A.12.005
     {
         $get = $this->getWithToken("tahap/detail?id=$id");
+
         return $this->serverResponseWithGetMethod($get);
     }
 
     public function getDetailTime(string $id, string $type): array // A.12.007
     {
         $get = $this->getWithToken("batas/jenis?id=$id&tipe=$type");
+
         return $this->serverResponseWithGetMethod($get);
     }
 
@@ -48,6 +51,7 @@ class Schedule extends Base
         ];
 
         $save = $this->postWithToken('tahap/create', $data);
+
         return $this->serverResponseWithPostMethod($save);
     }
 

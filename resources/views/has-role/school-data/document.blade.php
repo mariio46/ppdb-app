@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Info Kuota Sekolah'])
+@extends('layouts.has-role.auth', ['title' => 'Info Dokumen Sekolah'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">
@@ -386,6 +386,7 @@
                 }
             }
 
+
             function loadLockSchoolButton(school_status, school_id, unit) {
                 if (school_status === 'belum_simpan') {
                     lock_button.show();
@@ -400,13 +401,22 @@
                         </form>
                             `
                     });
-                } else if (school_status === 'simpan' || school_status === 'verifikasi') {
+                } else if (school_status === 'simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
                             <button type="button" class="btn btn-danger" disabled>
                                 <x-tabler-lock-square-rounded />
                                 Sekolah Sudah Terkunci
+                            </button>`
+                    });
+                } else if (school_status === 'verifikasi') {
+                    lock_button.show();
+                    lock_button.html(function() {
+                        return `
+                            <button type="button" class="btn btn-success" disabled>
+                                <x-tabler-discount-check />
+                                Sekolah Sudah Terverifikasi
                             </button>`
                     });
                 }

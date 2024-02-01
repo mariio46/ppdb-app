@@ -2,11 +2,11 @@
 
 @section('content')
     <x-breadcrumb title="Pendaftaran">
-        <x-breadcrumb-item to="{{ route('student.regis') }}" title="Pendaftaran" />
-        <x-breadcrumb-item to="{{ route('student.regis.phase', [$phase, $phase_id]) }}" title="Pendaftaran Tahap {{ $phase }}" />
+        <x-breadcrumb-item title="Pendaftaran" to="{{ route('student.regis') }}" />
+        <x-breadcrumb-item title="Pendaftaran Tahap {{ $phase }}" to="{{ route('student.regis.phase', [$phase, $phase_id]) }}" />
         <x-breadcrumb-active title="Cetak Bukti Pendaftaran" />
     </x-breadcrumb>
-    
+
     <div class="content-body">
         <div class="row">
             <div class="col-12">
@@ -21,14 +21,14 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <table class="table table-borderless">
-                                    <x-three-row-info label="Nama Lengkap" identifier="nama_lengkap" value="{{ session()->get('stu_name') }}" />
-                                    <x-three-row-info label="NISN" identifier="nisn" value="{{ session()->get('stu_nisn') }}" />
+                                    <x-three-row-info identifier="nama_lengkap" value="{{ session()->get('stu_name') }}" label="Nama Lengkap" />
+                                    <x-three-row-info identifier="nisn" value="{{ session()->get('stu_nisn') }}" label="NISN" />
                                 </table>
                             </div>
                             <div class="col-md-6 col-12">
                                 <table class="table table-borderless">
-                                    <x-three-row-info label="Jenis Kelamin" identifier="jenis_kelamin" value="{{ session()->get('stu_gender') == 'l' ? 'Laki-laki' : 'Perempuan' }}" />
-                                    <x-three-row-info label="Asal Sekolah" identifier="asal_sekolah" value="{{ session()->get('stu_school') }}" />
+                                    <x-three-row-info identifier="jenis_kelamin" value="{{ session()->get('stu_gender') == 'l' ? 'Laki-laki' : 'Perempuan' }}" label="Jenis Kelamin" />
+                                    <x-three-row-info identifier="asal_sekolah" value="{{ session()->get('stu_school') }}" label="Asal Sekolah" />
                                 </table>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <table class="table table-borderless">
-                                    <x-three-row-info label="Sekolah Pilihan" identifier="schoolVerif" />
+                                    <x-three-row-info identifier="schoolVerif" label="Sekolah Pilihan" />
                                 </table>
                             </div>
                         </div>

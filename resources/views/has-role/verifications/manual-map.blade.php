@@ -85,18 +85,18 @@
         let map, marker;
 
         $.ajax({
-                url: `/panel/json/verifikasi-manual/get-coordinate/${student_id}`,
-                method: 'get',
-                dataType: 'json',
-                success: function(data) {
-                    initMap(parseFloat(data.data.lintang), parseFloat(data.data.bujur));
-                    $('#lintang').val(data.data.lintang);
-                    $('#bujur').val(data.data.bujur);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Failed to get data.', status, error);
-                }
-            });
+            url: `/panel/json/verifikasi-manual/get-coordinate/${student_id}`,
+            method: 'get',
+            dataType: 'json',
+            success: function(data) {
+                initMap(parseFloat(data.data.lintang), parseFloat(data.data.bujur));
+                $('#lintang').val(data.data.lintang);
+                $('#bujur').val(data.data.bujur);
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to get data.', status, error);
+            }
+        });
 
         function initMap(lintang = -5.1384917, bujur = 119.4893742) {
             map = new google.maps.Map(document.getElementById('map'), {

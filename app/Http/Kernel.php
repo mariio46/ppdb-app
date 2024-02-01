@@ -68,5 +68,8 @@ class Kernel extends HttpKernel
         'student.guest' => \App\Http\Middleware\StudentGuest::class,
         'HasRole.auth' => \App\Http\Middleware\HasRole\Authenticated::class,
         'HasRole.guest' => \App\Http\Middleware\HasRole\Unauthenticated::class,
+        'HasRole.isAdminSekolah' => \App\Http\Middleware\HasRole\IsAdminSekolah::class,
+        'HasRole.isSchoolHasLock' => \App\Http\Middleware\HasRole\IsSchoolHasLock::class,
+        'HasRole.verifySchool' => \App\Http\Middleware\HasRole\VerifyingSchool::class,
     ];
 }
