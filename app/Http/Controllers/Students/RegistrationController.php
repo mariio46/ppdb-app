@@ -69,6 +69,7 @@ class RegistrationController extends Controller
             'phase_id' => $phaseId,
             'phase' => $phase,
             'tracks' => $this->track->getCodeName(),
+            'requirement' => $this->track->getRequirements(),
         ];
 
         return view('student.registration.proof', $data);

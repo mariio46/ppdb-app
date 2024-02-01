@@ -7,7 +7,11 @@
         <x-breadcrumb-active title="Cetak Bukti Pendaftaran" />
     </x-breadcrumb>
 
-    <div class="content-body">
+    <x-loader key="loader" />
+
+    <x-error-reload />
+
+    <div class="content-body d-none" id="content">
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -44,7 +48,7 @@
                         </div>
 
                         <h5 class="text-primary">Sekolah Verifikasi Berkas</h5>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-lg-6 col-12">
                                 <table class="table table-borderless">
                                     <x-three-row-info identifier="schoolVerif" label="Sekolah Pilihan" />
@@ -54,10 +58,12 @@
 
                         {{-- info --}}
                         <div class="alert alert-info p-1">
-                            <p class="mb-0">
-                                Silakan ke sekolah tempat verifikasi berkas yang kamu pilih selambat-lambatnya tanggal <span class="text-danger fw-bold" id="endVerif"></span> dengan membawa semua berkas
-                                yang
-                                diperlukan seperti:
+                            <p>
+                                Silakan ke sekolah tempat verifikasi berkas yang kamu pilih selambat-lambatnya tanggal <span class="text-danger fw-bold" id="endVerif"></span> dengan membawa semua berkas yang diperlukan seperti:
+                            </p>
+                            <ul class="mt-1" id="requirements"></ul>
+                            <p>
+                                Jika calon siswa tidak melakukan verifikasi pada tanggal yang ditentukan, maka calon siswa dianggap <u>mengundurkan diri</u> pada jalur ini.
                             </p>
                         </div>
                     </div>
@@ -74,35 +80,22 @@
 @push('scripts')
     <script>
         var phaseId = '{{ $phase_id }}',
-            tracks = JSON.parse('{!! json_encode($tracks) !!}');
+            tracks = JSON.parse('{!! json_encode($tracks) !!}'),
+            requirements = {!! json_encode($requirement) !!};
     </script>
     {{-- <script src="/js/student/pages/registration/proof-v1.0.1.js"></script> --}}
     <script>
         $(function() {
             'use strict';
 
-            var schoolType = $('#schoolType'),
+            var loader = $('#loader'),
+                content = $('#content'),
+                schoolType = $('#schoolType'),
                 chosenTrack = $('#chosenTrack'),
                 addDataSect = $('#additionalDataSect'),
                 chosenSchoolSect = $('#chosenSchoolSect'),
                 schoolVerif = $('#schoolVerif'),
                 endVerif = $('#endVerif'),
-                // tracks = {
-                //     'AA': 'Afirmasi',
-                //     'AB': 'Perpindahan Tugas Orang Tua',
-                //     'AC': 'Anak Guru',
-                //     'AD': 'Prestasi Akademik',
-                //     'AE': 'Prestasi Non Akademik',
-                //     'AF': 'Zonasi',
-                //     'AG': 'Boarding School',
-                //     'KA': 'Afirmasi',
-                //     'KB': 'Perpindahan Tugas Orang Tua',
-                //     'KC': 'Anak Guru',
-                //     'KD': 'Prestasi Akademik',
-                //     'KE': 'Prestasi Non Akademik',
-                //     'KF': 'Domisili Terdekat',
-                //     'KG': 'Anak DUDI',
-                // },
                 months = [
                     "Januari",
                     "Februari",
@@ -123,7 +116,6 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(datas) {
-                    // let data = datas.data[0];
                     let data = datas.data;
                     console.log(datas);
                     let t = data.kode_jalur;
@@ -194,9 +186,19 @@
                         .sekolah3_nama);
                     schoolVerif.text(schver);
                     endVerif.text(d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear());
+
+                    $.each(requirements[data.kode_jalur], function(index, item) {
+                        let li = $('<li>').addClass('pb-1').text(item);
+                        $('#requirements').append(li);
+                    });
+
+                    loader.addClass('d-none');
+                    content.removeClass('d-none');
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
+                    loader.addClass('d-none');
+                    $('#error-section').show();
                 }
             });
 
