@@ -1,10 +1,10 @@
 @extends('layouts.has-role.auth', ['title' => 'Detail Verifikasi Manual'])
 
-@section('styles_')
+@section('styles')
     <link type="text/css" href="/app-assets/css/plugins/forms/form-validation.css" rel="stylesheet">
 @endsection
 
-@section('vendorScripts_')
+@section('vendorScripts')
     <script src="/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
 @endsection
 
@@ -682,9 +682,15 @@
                     $('#achievement_btn_div, #achievement_data_div, #affirmation_data_div').html('');
                 }
 
+                const onlyOne = ['AC', 'AG'];
                 $('#school1').text(data.sekolah1);
-                $('#school2').text(data.sekolah2);
-                $('#school3').text(data.sekolah3);
+
+                if (onlyOne.indexOf(data.kode_jalur) !== -1) {
+                    $('#trschool2, #trschool3').html('');
+                } else {
+                    $('#school2').text(data.sekolah2);
+                    $('#school3').text(data.sekolah3);
+                }
 
                 if (data.kode_jalur.charAt(0) == 'A') {
                     $('#trdep1, #trdep2, #trdep3').html('');
