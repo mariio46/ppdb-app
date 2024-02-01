@@ -73,16 +73,16 @@ class LoginRepositoryImpl implements LoginRepository
 
         if ($auth['statusCode'] == 200) {
             session()->put([
-                'stu_id'            => $auth['data']['id'],
-                'stu_name'          => $auth['data']['nama'],
-                'stu_nisn'          => $auth['data']['nisn'],
-                'stu_school'        => $auth['data']['sekolah_asal'],
-                'stu_gender'        => $auth['data']['jenis_kelamin'],
-                'stu_profile_img'   => $auth['data']['pasfoto'],
-                'stu_token'         => $auth['data']['token'],
-                'stu_is_regis'      => $auth['data']['status_pendaftaran'] == 'belum_mendaftar' ? false : true,
-                'stu_is_locked'     => $auth['data']['kunci'] == '0' ? false : true,
-                'is_login'          => true,
+                'stu_id' => $auth['data']['id'],
+                'stu_name' => $auth['data']['nama'],
+                'stu_nisn' => $auth['data']['nisn'],
+                'stu_school' => $auth['data']['sekolah_asal'],
+                'stu_gender' => $auth['data']['jenis_kelamin'],
+                'stu_profile_img' => $auth['data']['pasfoto'],
+                'stu_token' => $auth['data']['token'],
+                'stu_is_regis' => $auth['data']['status_pendaftaran'] == 'belum_mendaftar' ? false : true,
+                'stu_is_locked' => $auth['data']['kunci'] == '0' ? false : true,
+                'is_login' => true,
             ]);
         }
 

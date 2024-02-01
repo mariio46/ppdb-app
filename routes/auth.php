@@ -79,13 +79,25 @@ Route::controller(SchoolController::class)->group(function () {
     Route::get('sekolah', 'index')->name('sekolah.index');
     Route::get('sekolah/create', 'create')->name('sekolah.create');
     Route::post('sekolah/store', 'store')->name('sekolah.store');
-    Route::get('sekolah/{id}/edit', 'edit')->name('sekolah.edit');
-    Route::post('sekolah/{id}/update', 'update')->name('sekolah.update');
+
     Route::get('sekolah/{id}/{unit}/info-sekolah', 'show')->name('sekolah.detail');
+
+    Route::get('sekolah/{id}/{unit}/edit', 'edit')->name('sekolah.edit');
+    Route::post('sekolah/{id}/{unit}/update', 'update')->name('sekolah.update');
+
+    Route::get('sekolah/{id}/{unit}/kuota', 'quota')->name('sekolah.quota');
+    Route::get('sekolah/{id}/{unit}/zonasi', 'zone')->name('sekolah.zones');
+    Route::get('sekolah/{id}/{unit}/dokumen', 'document')->name('sekolah.document');
+    Route::get('sekolah/{id}/{unit}/koordinat', 'coordinate')->name('sekolah.coordinate');
+
+    Route::post('sekolah/{id}/{unit}/verify', 'verify')->name('sekolah.verify');
 
     Route::get('sekolah/json/units', 'units');
     Route::get('sekolah/json/schools-collections', 'schools');
+    Route::get('sekolah/json/admin-cabang-dinas', 'usersWithRoleAdminCabangDinas');
     Route::get('sekolah/json/single-school/{id}', 'school');
+    Route::get('sekolah/json/zones/{id}', 'zones');
+    Route::get('sekolah/json/quotas/{unit}/{id}', 'quotas');
 });
 
 Route::controller(SchoolDataController::class)->group(function () {
@@ -102,7 +114,7 @@ Route::controller(SchoolDataController::class)->group(function () {
     Route::post('data-sekolah/dokumen/pakta-integritas/{id}', 'firstDocument')->name('school-data.firstDocument'); // Route Action for upload pakta integritas
     Route::post('data-sekolah/dokumen/sk-ppdb/{id}', 'secondDocument')->name('school-data.secondDocument'); // Route Action for upload SK PPDB
 
-    Route::get('data-sekolah/json/school/{school_id}', 'school');
+    Route::get('data-sekolah/json/school/{school_id}', 'school')->name('school-data.json.school');
     Route::get('data-sekolah/json/districts/{code}', 'districts');
 });
 
@@ -141,6 +153,8 @@ Route::controller(SchoolZoneController::class)->group(function () {
 
 Route::controller(SchoolCoordinateController::class)->group(function () {
     Route::get('koordinat-sekolah', 'index')->name('school-coordinate.index');
+    Route::get('koordinat-sekolah/edit', 'edit')->name('school-coordinate.edit');
+    Route::post('koordinat-sekolah/{id}/update', 'update')->name('school-coordinate.update'); // Route Action for update lokasi / koordinats sekolah
 });
 
 Route::controller(OperatorController::class)->group(function () {

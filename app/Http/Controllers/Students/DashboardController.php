@@ -41,8 +41,8 @@ class DashboardController extends Controller
         $update = $this->dashboardRepo->postFirstTimeLogin($request);
 
         return redirect()->back()->with([
-            "stat"  => ($update['statusCode'] == 200 || $update['statusCode'] == 201) ? "success" : "error",
-            "msg"   => $update['messages']
+            'stat' => ($update['statusCode'] == 200 || $update['statusCode'] == 201) ? 'success' : 'error',
+            'msg' => $update['messages'],
         ]);
     }
 
@@ -62,8 +62,8 @@ class DashboardController extends Controller
         $update = $this->dashboardRepo->postUpdateStudentProfile($request);
 
         return redirect()->back()->with([
-            "stat"  => $update['statusCode'] == 200 || $update['statusCode'] == 201 ? "success" : "error",
-            "msg"   => $update['messages']
+            'stat' => $update['statusCode'] == 200 || $update['statusCode'] == 201 ? 'success' : 'error',
+            'msg' => $update['messages'],
         ]);
     }
 
@@ -72,8 +72,8 @@ class DashboardController extends Controller
         $update = $this->dashboardRepo->postUpdateStudentScore($semester, $request);
 
         return redirect()->back()->with([
-            "stat"  => $update['statusCode'] == 200 || $update['statusCode'] == 201 ? "success" : "error",
-            "msg"   => $update['messages']
+            'stat' => $update['statusCode'] == 200 || $update['statusCode'] == 201 ? 'success' : 'error',
+            'msg' => $update['messages'],
         ]);
     }
 
@@ -82,8 +82,8 @@ class DashboardController extends Controller
         $lock = $this->dashboardRepo->postLockStudentData();
 
         return redirect()->back()->with([
-            "stat"  => ($lock['statusCode'] == 200 || $lock['statusCode'] == 201) ? "success" : "error",
-            "msg"   => $lock['messages']
+            'stat' => ($lock['statusCode'] == 200 || $lock['statusCode'] == 201) ? 'success' : 'error',
+            'msg' => $lock['messages'],
         ]);
     }
 
@@ -91,18 +91,21 @@ class DashboardController extends Controller
     public function getDataDashboard(): JsonResponse
     {
         $get = $this->dashboardRepo->getDataStudent();
+
         return response()->json($get);
     }
 
     public function getDataScore(): JsonResponse
     {
         $get = $this->dashboardRepo->getDataScore();
+
         return response()->json($get);
     }
 
     public function getDataScoreBySemester(int $semester): JsonResponse
     {
         $get = $this->dashboardRepo->getScoreBySemester($semester);
+
         return response()->json($get);
     }
 }

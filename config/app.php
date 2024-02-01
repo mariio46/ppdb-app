@@ -182,6 +182,7 @@ return [
         App\Providers\HasRole\SchoolDataServiceProvider::class,
         App\Providers\HasRole\SchoolQuotaServiceProvider::class,
         App\Providers\HasRole\SchoolZoneServiceProvider::class,
+        App\Providers\HasRole\SchoolCoordinateServiceProvider::class,
         App\Providers\HasRole\OperatorServiceProvider::class,
         App\Providers\HasRole\FaqServiceProvider::class,
         App\Providers\HasRole\MajorServiceProvider::class,

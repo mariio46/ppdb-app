@@ -564,7 +564,7 @@
                             let check = Object.fromEntries(
                                 Object.entries(s).map(([key, value]) => [key, value === 0 ? null : value])
                             );
-    
+
                             Object.assign(allData, check)
                             for (let i = 1; i <= 5; i++) {
                                 $(`#smt${i}Bid`).text(s[`sm${i}_bid`]);
@@ -574,7 +574,9 @@
                                 $(`#smt${i}Ips`).text(s[`sm${i}_ips`]);
                             }
                         } else if (score.statusCode == 400) {
-                            Object.assign(allData, {'score': null})
+                            Object.assign(allData, {
+                                'score': null
+                            })
                             for (let i = 1; i <= 5; i++) {
                                 $(`#smt${i}Bid`).text(0);
                                 $(`#smt${i}Big`).text(0);

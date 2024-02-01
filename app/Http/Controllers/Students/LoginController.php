@@ -45,7 +45,7 @@ class LoginController extends Controller
 
         if ($logout['statusCode'] == 200) {
             return to_route('student.masuk')->withErrors([
-                'errorMsg' => 'Kamu sudah logout.'
+                'errorMsg' => 'Kamu sudah logout.',
             ]);
         }
 

@@ -4,16 +4,16 @@ namespace App\Traits\HasRole;
 
 trait LoginTrait
 {
-    private function whenServerIsOk(array $response, string|bool $statusName): array // 200
+    protected function whenServerIsOk(array $response, string|bool $statusName): array // 200
     {
         if ($statusName == false || $statusName == 'failed value') {
             return $this->whenCredentialInvalid();
-        } else {
-            return $this->whenLoginSuccess(data: $response['data']);
         }
+
+        return $this->whenLoginSuccess(data: $response['data']);
     }
 
-    private function whenServerIsNotFound(string|int $code): array // 400 | 404
+    protected function whenServerIsNotFound(string|int $code): array // 400 | 404
     {
         return [
             'stat' => 'error',
@@ -22,7 +22,7 @@ trait LoginTrait
         ];
     }
 
-    private function whenServerIsError(string|int $code): array // 500
+    protected function whenServerIsError(string|int $code): array // 500
     {
         return [
             'stat' => 'error',
@@ -31,7 +31,7 @@ trait LoginTrait
         ];
     }
 
-    private function whenCredentialInvalid(): array // Client Error
+    protected function whenCredentialInvalid(): array // Client Error
     {
         return [
             'stat' => 'error',
@@ -40,7 +40,7 @@ trait LoginTrait
         ];
     }
 
-    private function whenLoginSuccess(array $data): array
+    protected function whenLoginSuccess(array $data): array
     {
         $default_session = [
             'id' => $data['id'] ?? null,
@@ -49,20 +49,20 @@ trait LoginTrait
             'role_id' => $data['role_id'] ?? null,
             'roles' => $data['roles'] ?? [],
             'permissions' => $data['permissions'] ?? [],
-            'cabdin_id' => $data['cabdin_id'] ?? null,
-            'sekolah_asal_id' => $data['sekolah_asal_id'] ?? null,
-            'sekolah_id' => $data['sekolah_id'] ?? null,
+
+            'cabdin_id' => isset($data['cabdin_id']) && str_contains($data['cabdin_id'], '-') ? $data['cabdin_id'] : null,
+            'sekolah_id' => isset($data['sekolah_id']) && str_contains($data['sekolah_id'], '-') ? $data['sekolah_id'] : null,
+            'sekolah_asal_id' => isset($data['sekolah_asal_id']) && str_contains($data['sekolah_asal_id'], '-') ? $data['sekolah_asal_id'] : null,
+
             'status_aktif' => $data['status_aktif'] ?? null,
             'token' => $data['remember_token'] ?? null,
             'logged_in' => true,
         ];
-        if ($data['role_id'] != 4) {
-            // If login is not AdminSekolah
-            session()->put($default_session);
-        } else {
-            // If login is AdminSekolah
-            $unit = ['satuan_pendidikan' => $data['satuan_pendidikan'] ?? null];
-            session()->put(array_merge($default_session, $unit));
+
+        session()->put($default_session);
+
+        if ($data['role_id'] == 4 && array_key_exists('satuan_pendidikan', $data)) {
+            session()->put('satuan_pendidikan', $data['satuan_pendidikan']);
         }
 
         return [
@@ -71,25 +71,24 @@ trait LoginTrait
         ];
     }
 
-    private function whenLogoutSuccess(array $response): array
+    protected function whenLogoutSuccess(array $response): array
     {
-        $statusCode = $response['statusCode'];
-        if ($statusCode == 400) {
+        if ($response['statusCode'] == 400) {
             session()->flush();
 
             return [
                 'stat' => 'error',
-                'msg' => 'Data Anda tidak ditemukan!',
-                'data' => [],
-            ];
-        } elseif ($statusCode == 200) {
-            session()->flush();
-
-            return [
-                'stat' => 'success',
-                'msg' => 'Logout Berhasil!',
+                'msg' => 'Anda telah keluar dari server beberapa waktu yang lalu!',
                 'data' => [],
             ];
         }
+
+        session()->flush();
+
+        return [
+            'stat' => 'success',
+            'msg' => 'Logout Berhasil!',
+            'data' => [],
+        ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HasRole;
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\SchoolDataRepository as SchoolData;
 use App\Repositories\HasRole\SchoolQuotaRepository as Quota;
+use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,6 +13,12 @@ use Illuminate\View\View;
 
 class SchoolQuotaController extends Controller
 {
+    protected string $smkPercentage;
+
+    protected string $smaPercentage;
+
+    protected string $percentage;
+
     protected string $schoolId;
 
     protected string $schoolUnit;
@@ -20,18 +27,14 @@ class SchoolQuotaController extends Controller
 
     protected int $defaultValueRombel;
 
-    protected string $smkPercentage;
-
-    protected string $smaPercentage;
-
-    protected string $percentage;
-
     public function __construct(protected Quota $quota, protected SchoolData $schoolData)
     {
-        $this->middleware(function ($request, $next) {
+        $this->middleware('HasRole.isAdminSekolah');
+        $this->middleware(function (Request $request, Closure $next) {
             $this->schoolId = session()->get('sekolah_id');
             $this->hasSchoolUnit = session()->has('satuan_pendidikan');
             $this->schoolUnit = $this->hasSchoolUnit ? session()->get('satuan_pendidikan') : null;
+
             $this->defaultValueRombel = (int) config('constant.TOTAL_ROMBEL');
             $this->smkPercentage = json_encode(config('constant.PERCENTAGE_SMK'));
             $this->smaPercentage = json_encode(config('constant.PERCENTAGE_SMA'));

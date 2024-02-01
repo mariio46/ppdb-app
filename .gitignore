@@ -2,7 +2,7 @@
 /.phpunit.cache
 /node_modules
 /public/build
-/public/app-assets
+# /public/app-assets/*
 /public/hot
 /public/storage
 /storage/*.key

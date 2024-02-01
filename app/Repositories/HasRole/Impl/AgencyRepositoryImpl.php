@@ -70,14 +70,15 @@ class AgencyRepositoryImpl implements AgencyRepository
             'id' => $request->post('id'),
         ];
 
-
         $save = $this->agency->update($data);
+
         return $save;
     }
 
     public function remove(string $id): array
     {
         $del = $this->agency->delete($id);
+
         return $del;
     }
 }

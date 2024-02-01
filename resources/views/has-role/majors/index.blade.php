@@ -81,16 +81,16 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/jurusan/json/majors',
-                        dataSrc: '',
+                        dataSrc: (response) => {
+                            // console.log('List Jurusan : ', response);
+                            return response.status === 'success' && response.statusCode === 200 ? response.data : [];
+                        },
                     },
                     columns: [{
                             data: 'jurusan'
                         },
                         {
-                            data: 'id',
-                            render: function(data, type, row) {
-                                return `<a href="/panel/jurusan/${data}/edit" class="btn btn-primary">Lihat Detail</a>`;
-                            }
+                            render: (data, type, row) => `<a href="/panel/jurusan/${row.id}/edit" class="btn btn-primary">Lihat Detail</a>`,
                         },
                     ],
 

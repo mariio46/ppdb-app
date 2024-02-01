@@ -58,7 +58,7 @@ class MajorController extends Controller
     {
         $majors = $this->major->index();
 
-        return response()->json($majors['data']);
+        return response()->json($majors);
     }
 
     public function major(string $id): JsonResponse

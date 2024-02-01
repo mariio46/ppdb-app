@@ -6,7 +6,7 @@
                     <a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a>
                 </li>
                 <li class="nav-item">
-                    <p class="nav-link mb-0">Selamat Datang di Welcome</p>
+                    <p class="nav-link mb-0">Halo <strong>{{ session()->get('nama') }}</strong> dan kamu adalah <strong>{{ session()->get('roles.name') }}</strong></p>
                 </li>
             </ul>
         </div>

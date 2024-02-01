@@ -37,7 +37,7 @@
                         if (status.statusCode == 200) {
                             status.data.forEach(s => {
                                 let stat = '';
-    
+
                                 switch (s.status) {
                                     case 'mendaftar':
                                         stat = registered(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_verif_nama);
@@ -49,7 +49,8 @@
                                         stat = declined(s.nama, s.nisn, tracks[s.kode_jalur]);
                                         break;
                                     case 'accepted':
-                                        stat = accepted(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.re_registration_date, s.kode_jalur.charAt(0) == 'K' ? true : false,
+                                        stat = accepted(s.nama, s.nisn, tracks[s.kode_jalur], s.sekolah_lulus, s.re_registration_date, s.kode_jalur.charAt(0) == 'K' ? true :
+                                            false,
                                             s.jurusan_lulus);
                                         break;
                                     case 'completed':
@@ -61,9 +62,10 @@
                                     default:
                                         break;
                                 }
-        
-                                cardSection.append(generateCard(s.tahap, stat, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) != 'pre' ? true : false, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) == 'now' ? true : false));
-    
+
+                                cardSection.append(generateCard(s.tahap, stat, getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) != 'pre' ? true : false,
+                                    getTimeStatus(s.pendaftaran_mulai, s.daftar_ulang_selesai) == 'now' ? true : false));
+
                             });
                         } else {
                             cardSection.append(empty())

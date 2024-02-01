@@ -22,7 +22,7 @@ class Agency extends Base
 
     public function getById(string $id): array
     {
-        $get = $this->getWithToken('cabdin/?id=' . $id);
+        $get = $this->getWithToken('cabdin/?id='.$id);
 
         if ($get['status_code'] == '200') {
             return $get['response'];
@@ -39,12 +39,14 @@ class Agency extends Base
     public function create(array $data): array
     {
         $save = $this->postWithToken('cabdin/create', $data);
+
         return $this->serverResponseWithPostMethod($save);
     }
 
     public function update(array $data): array
     {
         $upd = $this->postWithToken('cabdin/update', $data);
+
         return $this->serverResponseWithPostMethod($upd);
     }
 
