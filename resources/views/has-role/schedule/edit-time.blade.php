@@ -8,8 +8,8 @@
 @section('content')
     {{-- breadcrumbs --}}
     <x-breadcrumb title="Tahap & Jadwal">
-        <x-breadcrumb-item to="{{ route('schedules.index') }}" title="Tahap & Jadwal" />
-        <x-breadcrumb-item to="{{ route('schedules.detail', [$id]) }}" title="Lihat Detail" />
+        <x-breadcrumb-item title="Tahap & Jadwal" to="{{ route('schedules.index') }}" />
+        <x-breadcrumb-item title="Lihat Detail" to="{{ route('schedules.detail', [$id]) }}" />
         <x-breadcrumb-active title="Edit Jadwal {{ ucwords(strtr($type, '_', ' ')) }}" />
     </x-breadcrumb>
 

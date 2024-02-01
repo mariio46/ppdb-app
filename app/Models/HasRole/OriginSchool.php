@@ -48,6 +48,7 @@ class OriginSchool extends Base
         ];
 
         $post = $this->postWithToken('sekolah/asal/add', $data);
+
         return $this->serverResponseWithPostMethod($post);
     }
 

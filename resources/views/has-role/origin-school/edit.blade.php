@@ -6,8 +6,8 @@
 
 @section('content')
     <x-breadcrumb title="Sekolah Asal">
-        <x-breadcrumb-item to="{{ route('sekolah-asal.index') }}" title="Sekolah Asal" />
-        <x-breadcrumb-item to="{{ route('sekolah-asal.show', [$id]) }}" title="Detail Sekolah Asal" />
+        <x-breadcrumb-item title="Sekolah Asal" to="{{ route('sekolah-asal.index') }}" />
+        <x-breadcrumb-item title="Detail Sekolah Asal" to="{{ route('sekolah-asal.show', [$id]) }}" />
         <x-breadcrumb-active title="Edit Sekolah Asal" />
     </x-breadcrumb>
 

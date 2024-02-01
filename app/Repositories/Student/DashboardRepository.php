@@ -2,9 +2,7 @@
 
 namespace App\Repositories\Student;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 interface DashboardRepository
 {

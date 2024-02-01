@@ -75,7 +75,10 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: '/panel/sekolah/json/schools-collections',
-                        dataSrc: (response) => response.status === 'success' ? response.data : [],
+                        dataSrc: (response) => {
+                            console.log(response);
+                            return response.status === 'success' && parseInt(response.statusCode) === 200 ? response.data : []
+                        },
                     },
                     columns: [{
                             data: 'nama_sekolah'

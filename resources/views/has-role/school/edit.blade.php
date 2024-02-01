@@ -18,7 +18,7 @@
             </div>
             <div class="card-body">
 
-                <form id="form-edit-school" action="{{ route('sekolah.update', $id) }}" method="POST">
+                <form id="form-edit-school" action="{{ route('sekolah.update', ['id' => $id, 'unit' => $unit]) }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6">
@@ -49,7 +49,7 @@
                     <x-separator marginY="2" />
                     <div class="d-flex align-items-center justify-content-start gap-2 mt-2">
                         <x-button color="success">Simpan Perubahan</x-button>
-                        <x-link href="{{ route('sekolah.index') }}" color="secondary">Batalkan</x-link>
+                        <x-link href="{{ route('sekolah.detail', ['id' => $id, 'unit' => $unit]) }}" color="secondary">Batalkan</x-link>
                     </div>
                 </form>
 
@@ -87,7 +87,10 @@
 
 @push('scripts')
     <script>
-        var id = '{{ $id }}'
+        var id = '{{ $id }}';
+        var role_id = '{{ $roleId }}',
+            role_name = '{{ $roleName }}';
+        // console.info(role_id, role_name);
     </script>
     <script>
         $(function() {
@@ -99,6 +102,8 @@
                 kabupaten = $('#kabupaten'),
                 form = $('#form-edit-school'),
                 unit = $('#satuan_pendidikan');
+
+            var user = $('#user');
 
             select.each(function() {
                 var $this = $(this);
@@ -155,13 +160,17 @@
                 url: `/panel/sekolah/json/single-school/${id}`,
                 method: 'get',
                 dataType: 'json',
-                success: function(school) {
-                    // console.log('Data Sekolah : ', school);
+                success: (school) => {
+                    console.log('Data Sekolah : ', school);
                     $('#nama_sekolah').val(school.nama_sekolah)
                     $('#npsn').val(school.npsn)
                     $('#kabupaten').val(school.kabupaten)
                     loadCities(school.kode_kabupaten, school.kabupaten)
                     loadUnit(school.satuan_pendidikan)
+
+                    if (role_id === '1' && role_name === 'SuperAdmin') {
+                        loadCabdinList(school.cabdin_id)
+                    }
 
                 },
                 error: function(xhr, status, error) {
@@ -193,13 +202,13 @@
                 })
             }
 
-            // Get Data Uni
+            // Get Data Unit
             function loadUnit(value) {
                 $.ajax({
                     url: '/panel/sekolah/json/units',
                     method: 'get',
                     dataType: 'json',
-                    success: function(units) {
+                    success: (units) => {
                         unit.empty().append('<option value=""></option>');
 
                         units.forEach(item => {
@@ -208,8 +217,8 @@
                         })
 
                     },
-                    error: function(xhr, status, error) {
-                        console.error('Failed to get data units.', status, error);
+                    error: (xhr, status, error) => {
+                        console.error('Failed to get kuota.', xhr.status, error);
                     }
                 })
             }
@@ -217,6 +226,27 @@
             check.change(function() {
                 btnDeleteSchool.prop('disabled', !this.checked);
             });
+
+            // Get List Admin Cabang Dinas if $roleId == 1 or $roleName == SuperAdmin
+            // if (role_id === '1' && role_name === 'SuperAdmin') {
+            const loadCabdinList = (cabdin_id) => {
+                $.ajax({
+                    url: '/panel/sekolah/json/admin-cabang-dinas',
+                    method: 'GET',
+                    dataType: 'JSON',
+                    success: (users) => {
+                        console.log(users);
+                        user.empty().append('<option value=""></option>');
+
+                        users.forEach((item) => {
+                            var selected = item.value === cabdin_id ? 'selected' : '';
+                            user.append(`<option value="${item.value}" ${selected}>${item.label}</option>`);
+                        })
+                    },
+                    error: (xhr, status, error) => console.error('Failed to get data users with role admin cabang dinas.', status),
+                })
+            }
+            // }
 
         })
     </script>

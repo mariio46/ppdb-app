@@ -27,7 +27,7 @@ class VerificationController extends Controller
     {
         $data = [
             'id' => $id,
-            'tracks' => $this->track->getCodeName()
+            'tracks' => $this->track->getCodeName(),
         ];
 
         return view('has-role.verifications.manual-detail', $data);
@@ -53,7 +53,7 @@ class VerificationController extends Controller
     {
         $data = [
             'id' => $id,
-            'student_id' => $student_id
+            'student_id' => $student_id,
         ];
 
         return view('has-role.verifications.manual-map', $data);
@@ -101,18 +101,20 @@ class VerificationController extends Controller
     public function manualUpdateColorBlind(string $id, Request $request): RedirectResponse
     {
         $upd = $this->verification->updateIsColorBlindOrShort(id: $id, jurusan1ok: $request->color_blind1, jurusan2ok: $request->color_blind2, jurusan3ok: $request->color_blind3);
+
         return redirect()->back()->with([
-            "stat"  => $upd["statusCode"] == 200 || $upd["statusCode"] == 201 ? "success" : "error",
-            "msg"   => $upd["messages"]
+            'stat' => $upd['statusCode'] == 200 || $upd['statusCode'] == 201 ? 'success' : 'error',
+            'msg' => $upd['messages'],
         ]);
     }
 
     public function manualUpdateShort(string $id, Request $request): RedirectResponse
     {
         $upd = $this->verification->updateIsColorBlindOrShort(id: $id, jurusan1ok: $request->height1, jurusan2ok: $request->height2, jurusan3ok: $request->height3);
+
         return redirect()->back()->with([
-            "stat"  => $upd["statusCode"] == 200 || $upd["statusCode"] == 201 ? "success" : "error",
-            "msg"   => $upd["messages"]
+            'stat' => $upd['statusCode'] == 200 || $upd['statusCode'] == 201 ? 'success' : 'error',
+            'msg' => $upd['messages'],
         ]);
     }
 
@@ -160,13 +162,13 @@ class VerificationController extends Controller
         $result = $this->verification->getCoordinate($student_id);
 
         $data = [
-            "statusCode" => $result['statusCode'],
-            "status"     => $result['status'],
-            "messages"   => $result['messages'],
-            "data"       => [
-                "lintang"   => $result['data']['lintang'] ?? null,
-                "bujur"     => $result['data']['bujur'] ?? null,
-            ]
+            'statusCode' => $result['statusCode'],
+            'status' => $result['status'],
+            'messages' => $result['messages'],
+            'data' => [
+                'lintang' => $result['data']['lintang'] ?? null,
+                'bujur' => $result['data']['bujur'] ?? null,
+            ],
         ];
 
         return response()->json($data);

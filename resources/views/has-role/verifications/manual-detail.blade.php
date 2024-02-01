@@ -10,7 +10,7 @@
 
 @section('content')
     <x-breadcrumb title="Verifikasi">
-        <x-breadcrumb-item to="{{ route('verifikasi.manual') }}" title="Verifikasi" />
+        <x-breadcrumb-item title="Verifikasi" to="{{ route('verifikasi.manual') }}" />
         <x-breadcrumb-active title="Lihat Detail Siswa" />
     </x-breadcrumb>
 
@@ -25,7 +25,7 @@
                     <h4 class="text-primary mb-2 ms-2">Data Diri</h4>
 
                     <div class="d-flex justify-content-center">
-                        <img src="/img/base-profile.png" class="rounded" alt="foto siswa" id="photo" style="height: 200px; width: 175px; object-fit: cover;">
+                        <img class="rounded" id="photo" src="/img/base-profile.png" alt="foto siswa" style="height: 200px; width: 175px; object-fit: cover;">
                     </div>
 
                     <div class="row px-2">
@@ -177,7 +177,7 @@
                         <h4 class="text-primary ms-2 mb-0">Pendaftaran</h4>
 
                         <div class="ms-auto d-none" id="achievement_btn_div">
-                            <x-link href="{{ route('verifikasi.manual.achievement', [$id]) }}" color="primary" id="achievement_edit_btn">Edit Data Prestasi</x-link>
+                            <x-link id="achievement_edit_btn" href="{{ route('verifikasi.manual.achievement', [$id]) }}" color="primary">Edit Data Prestasi</x-link>
                         </div>
                     </div>
 
@@ -248,13 +248,13 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <h4 class="text-primary mb-2 ms-2">Titik Rumah Calon Peserta Didik</h4>
-    
+
                             <a class="ms-auto btn btn-primary ms-2" id="map_edit_btn" href="#">
                                 <x-tabler-map-pin-filled style="width: 16px; height: 16px;" />
                                 Masukkan Titik Rumah
                             </a>
                         </div>
-    
+
                         <div class="row mb-2 px-2">
                             <div class="col-lg-6 col-12">
                                 <table class="table table-borderless">
@@ -278,36 +278,38 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="ms-2 mb-2 text-primary">Buta Warna dan Tinggi Badan</h4>
-    
+
                         <div class="row px-2">
                             <div class="col-lg-6 col-12" id="blind_section">
                                 {{-- color blind --}}
-                                <x-button variant="outline" color="primary" data-bs-toggle="modal" data-bs-target="#color_blind_modal" id="color_blind_btn">Tandai Sebagai Buta Warna</x-button>
+                                <x-button id="color_blind_btn" data-bs-toggle="modal" data-bs-target="#color_blind_modal" variant="outline" color="primary">Tandai Sebagai Buta Warna</x-button>
                                 <p><small>Tekan tombol di atas hanya jika siswa adalah penderita buta warna.</small></p>
-    
-                                <div class="modal fade text-start" id="color_blind_modal" tabindex="-1" aria-labelledby="cb_modal" aria-hidden="true">
+
+                                <div class="modal fade text-start" id="color_blind_modal" aria-labelledby="cb_modal" aria-hidden="true" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header bg-white">
                                                 <h4 class="modal-title" id="cb_modal">Calon Siswa ini Buta Warna?</h4>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="alert alert-warning p-1">
                                                     <p class="text-center text-danger"><x-tabler-alert-triangle width="64" height="64" /></p>
-                                                    <p class="mb-2">Tekan tombol di bawah hanya jika siswa yang bersangkutan <strong class="text-danger">telah dikonfirmasi</strong> sebagai individu yang <strong class="text-danger">menderita buta warna</strong>.</p>
+                                                    <p class="mb-2">Tekan tombol di bawah hanya jika siswa yang bersangkutan <strong class="text-danger">telah dikonfirmasi</strong> sebagai individu
+                                                        yang <strong class="text-danger">menderita buta warna</strong>.</p>
                                                     <div class="alert alert-danger p-1">
-                                                        <p><small>Dengan menekan tombol di bawah, sebagian / seluruh pilihan jurusan calon siswa akan terpengaruh, dan jurusan yang terkena dampak akan dianggap tidak dipilih oleh siswa.</small></p>
+                                                        <p><small>Dengan menekan tombol di bawah, sebagian / seluruh pilihan jurusan calon siswa akan terpengaruh, dan jurusan yang terkena dampak akan
+                                                                dianggap tidak dipilih oleh siswa.</small></p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <form action="{{ route('verifikasi.manual.color-blind', [$id]) }}" method="post">
                                                     @csrf
-                                                    <input type="hidden" id="color_blind1" name="color_blind1" value="">
-                                                    <input type="hidden" id="color_blind2" name="color_blind2" value="">
-                                                    <input type="hidden" id="color_blind3" name="color_blind3" value="">
-                                                    <button type="submit" class="btn btn-danger">Konfirmasi Buta Warna</button>
+                                                    <input id="color_blind1" name="color_blind1" type="hidden" value="">
+                                                    <input id="color_blind2" name="color_blind2" type="hidden" value="">
+                                                    <input id="color_blind3" name="color_blind3" type="hidden" value="">
+                                                    <button class="btn btn-danger" type="submit">Konfirmasi Buta Warna</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -316,15 +318,15 @@
                             </div>
                             <div class="col-lg-6 col-12" id="height_section">
                                 {{-- body height --}}
-                                <x-button variant="outline" color="primary" data-bs-toggle="modal" data-bs-target="#height_modal" id="height_btn">Identifikasi Tinggi Kurang</x-button>
+                                <x-button id="height_btn" data-bs-toggle="modal" data-bs-target="#height_modal" variant="outline" color="primary">Identifikasi Tinggi Kurang</x-button>
                                 <p><small>Tekan tombol di atas hanya jika siswa tidak memenuhi standar tinggi badan (laki-laki kurang dari 165 cm, perempuan kurang dari 155 cm).</small></p>
-    
-                                <div class="modal fade text-start" id="height_modal" tabindex="-1" aria-labelledby="tb_modal" aria-hidden="true">
+
+                                <div class="modal fade text-start" id="height_modal" aria-labelledby="tb_modal" aria-hidden="true" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header bg-white">
                                                 <h4 class="modal-title" id="tb_modal">Tinggi Badan di bawah standar?</h4>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="alert alert-warning p-1">
@@ -335,17 +337,18 @@
                                                         <li>Perempuan minimal 155 cm.</li>
                                                     </ul>
                                                     <div class="alert alert-danger p-1">
-                                                        <p><small>Dengan menekan tombol di bawah, sebagian / seluruh pilihan jurusan calon siswa akan terpengaruh, dan jurusan yang terkena dampak akan dianggap tidak dipilih oleh siswa.</small></p>
+                                                        <p><small>Dengan menekan tombol di bawah, sebagian / seluruh pilihan jurusan calon siswa akan terpengaruh, dan jurusan yang terkena dampak akan
+                                                                dianggap tidak dipilih oleh siswa.</small></p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <form action="{{ route('verifikasi.manual.short', [$id]) }}" method="post">
                                                     @csrf
-                                                    <input type="hidden" id="height1" name="height1" value="">
-                                                    <input type="hidden" id="height2" name="height2" value="">
-                                                    <input type="hidden" id="height3" name="height3" value="">
-                                                    <button type="submit" class="btn btn-danger" >Konfirmasi Tinggi Badan</button>
+                                                    <input id="height1" name="height1" type="hidden" value="">
+                                                    <input id="height2" name="height2" type="hidden" value="">
+                                                    <input id="height3" name="height3" type="hidden" value="">
+                                                    <button class="btn btn-danger" type="submit">Konfirmasi Tinggi Badan</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -353,7 +356,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
             </div>
@@ -363,16 +366,16 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="mb-2 ms-2">Verifikasi Pendaftaran</h4>
-    
+
                         <div class="px-2" id="verification">
                             <div class="alert alert-primary p-1">
                                 <p class="mb-0">Periksa kembali data calon peserta didik, Pastikan semuanya benar. Data yang sudah diverifikasi tidak dapat diubah lagi.</p>
                             </div>
 
                             <div id="verification_info"></div>
-    
+
                             <div class="d-flex">
-                                <x-button class="me-1" data-bs-toggle="modal" data-bs-target="#verifModal" color="success" id="verif_modal_btn">Verifikasi Data Siswa</x-button>
+                                <x-button class="me-1" id="verif_modal_btn" data-bs-toggle="modal" data-bs-target="#verifModal" color="success">Verifikasi Data Siswa</x-button>
                                 {{-- modal --}}
                                 <div class="modal fade text-start" id="verifModal" role="dialog" aria-modal="true" tabindex="-1">
                                     <div class="modal-dialog modal-lg">
@@ -382,9 +385,9 @@
                                             </div>
                                             <div class="modal-body">
                                                 <h4 class="text-center">Verifikasi Data Siswa</h4>
-    
+
                                                 <p class="px-5 py-2">Apakah Anda yakin ingin memverifikasi data siswa ini? Data yang sudah diverifkasi tidak dapat diubah kembali.</p>
-    
+
                                                 <div class="d-flex justify-content-center mb-3">
                                                     <form id="acceptForm" action="{{ route('verifikasi.manual.accept', [$id]) }}" method="post">
                                                         @csrf
@@ -394,18 +397,18 @@
                                                         <x-input id="avg_big" name="avg_big" type="hidden" />
                                                         <x-input id="avg_ipa" name="avg_ipa" type="hidden" />
                                                         <x-input id="avg_ips" name="avg_ips" type="hidden" />
-    
+
                                                         <x-button class="me-1" type="submit" color="success">Ya, Verifikasi</x-button>
                                                     </form>
-    
+
                                                     <x-button data-bs-dismiss="modal" type="button" variant="flat" color="secondary">Batalkan</x-button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-    
-                                <x-button data-bs-toggle="modal" data-bs-target="#declineModal" color="danger" id="decline_modal_btn">Tolak Data</x-button>
+
+                                <x-button id="decline_modal_btn" data-bs-toggle="modal" data-bs-target="#declineModal" color="danger">Tolak Data</x-button>
                                 {{-- modal --}}
                                 <div class="modal fade text-start" id="declineModal" role="dialog" aria-modal="true" tabindex="-1">
                                     <div class="modal-dialog modal-lg">
@@ -415,16 +418,16 @@
                                             </div>
                                             <div class="modal-body px-5">
                                                 <h4 class="text-center">Tolak Verifikasi Data Siswa</h4>
-    
+
                                                 <p class="py-2">Apakah Anda yakin ingin menolak verifikasi data ini? Data yang sudah di tolak tidak bisa di kembalikan kembali.</p>
-    
+
                                                 <form id="declineForm" action="{{ route('verifikasi.manual.decline', [$id]) }}" method="post">
                                                     @csrf
                                                     <div class="mb-2">
                                                         <x-label for="declineMsg">Alasan Tolak Verifikasi</x-label>
                                                         <x-input id="declineMsg" name="declineMsg" placeholder="Masukkan alasan tolak.." />
                                                     </div>
-    
+
                                                     <div class="d-flex justify-content-center mb-2">
                                                         <x-button class="me-1" type="submit" color="danger">Tolak</x-button>
                                                         <x-button data-bs-dismiss="modal" type="button" color="secondary" variant="flat">Batalkan</x-button>
@@ -452,11 +455,11 @@
                                     </table>
                                 </div>
                             </div>
-    
+
                             <div class="alert alert-success p-1">
                                 <p class="mb-0">Data calon peserta didik ini sudah diverifikasi.</p>
                             </div>
-    
+
                             <a class="btn btn-success" href="">
                                 <x-tabler-printer />
                                 Download Bukti Pendaftaran
@@ -475,12 +478,12 @@
                                 <div class="col-lg-6 col-12">
                                     <table class="table table-borderless">
                                         <x-three-row-info identifier="dverificator" label="Nama Verifikator" />
-    
+
                                         <x-three-row-info identifier="reason" label="Alasan Data Ditolak" />
                                     </table>
                                 </div>
                             </div>
-    
+
                             <div class="alert alert-danger p-1">
                                 <p class="mb-0">Data calon peserta didik ini ditolak.</p>
                             </div>
@@ -528,7 +531,7 @@
                 success: function(data) {
                     let d = data.data;
                     let bd = new Date(d.tanggal_lahir);
-                    
+
                     getTime();
 
                     $('#photo').attr("src", d.pasfoto);
@@ -557,13 +560,36 @@
 
                     getScore(d.siswa_id);
 
-                    showStatus({status: d.status, verifikator: d.operator_nama, alasan_tolak: d.alasan_tolak});
+                    showStatus({
+                        status: d.status,
+                        verifikator: d.operator_nama,
+                        alasan_tolak: d.alasan_tolak
+                    });
 
                     showRegistration(d);
-                    
-                    showMap({track_code: d.kode_jalur, lat: d.lintang, long: d.bujur, distance1: d.jarak1, distance2: d.jarak2, distance3: d.jarak3, student_id: d.siswa_id});
 
-                    showColorBlindOrHeightCard({bw1: d.jurusan1_bw, bw2: d.jurusan2_bw, bw3: d.jurusan3_bw, tb1: d.jurusan1_tb, tb2: d.jurusan2_tb, tb3: d.jurusan3_tb, ok1: d.jurusan1_ok, ok2: d.jurusan2_ok, ok3: d.jurusan3_ok, status: d.status})
+                    showMap({
+                        track_code: d.kode_jalur,
+                        lat: d.lintang,
+                        long: d.bujur,
+                        distance1: d.jarak1,
+                        distance2: d.jarak2,
+                        distance3: d.jarak3,
+                        student_id: d.siswa_id
+                    });
+
+                    showColorBlindOrHeightCard({
+                        bw1: d.jurusan1_bw,
+                        bw2: d.jurusan2_bw,
+                        bw3: d.jurusan3_bw,
+                        tb1: d.jurusan1_tb,
+                        tb2: d.jurusan2_tb,
+                        tb3: d.jurusan3_tb,
+                        ok1: d.jurusan1_ok,
+                        ok2: d.jurusan2_ok,
+                        ok3: d.jurusan3_ok,
+                        status: d.status
+                    })
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to get data.', status, error);
@@ -580,12 +606,18 @@
                             let stats = cekWaktuDiAntaraJamMulaiDanSelesai(time.data.jam_mulai, time.data.jam_selesai);
                             if (stats !== 'now') {
                                 $('#score_edit_btn, #achievement_edit_btn, #map_edit_btn, #color_blind_btn, #height_btn').attr('href', '#').addClass('disabled');
-                                $('#verif_modal_btn, #decline_modal_btn').addClass('disabled').attr({'disabled': true, 'data-bs-target': '#'});
+                                $('#verif_modal_btn, #decline_modal_btn').addClass('disabled').attr({
+                                    'disabled': true,
+                                    'data-bs-target': '#'
+                                });
                                 $('#verification_info').addClass('alert alert-warning p-1').text(`Verifikasi hari ini ${stats === 'pre' ? 'belum dibuka.' : 'sudah ditutup.'}`);
                             }
                         } else {
                             $('#score_edit_btn, #achievement_edit_btn, #map_edit_btn, #color_blind_btn, #height_btn').attr('href', '#').addClass('disabled');
-                            $('#verif_modal_btn, #decline_modal_btn').addClass('disabled').attr({'disabled': true, 'data-bs-target': '#'});
+                            $('#verif_modal_btn, #decline_modal_btn').addClass('disabled').attr({
+                                'disabled': true,
+                                'data-bs-target': '#'
+                            });
                         }
 
                         $('#loader').hide();
@@ -623,7 +655,8 @@
                             sum_mtk += parseInt(score[`sm${i}_mtk`]);
                             sum_ipa += parseInt(score[`sm${i}_ipa`]);
                             sum_ips += parseInt(score[`sm${i}_ips`]);
-                            total += parseInt(score[`sm${i}_bid`]) + parseInt(score[`sm${i}_big`]) + parseInt(score[`sm${i}_mtk`]) + parseInt(score[`sm${i}_ipa`]) + parseInt(score[`sm${i}_ips`]);
+                            total += parseInt(score[`sm${i}_bid`]) + parseInt(score[`sm${i}_big`]) + parseInt(score[`sm${i}_mtk`]) + parseInt(score[`sm${i}_ipa`]) + parseInt(score[
+                                `sm${i}_ips`]);
                         }
 
                         $('#avg_bid').val(sum_bid / 5);
@@ -640,7 +673,11 @@
             }
 
             function showStatus(data) {
-                const {status, verifikator, alasan_tolak} = data;
+                const {
+                    status,
+                    verifikator,
+                    alasan_tolak
+                } = data;
 
                 if (status == 'mendaftar') {
                     $('#card_verified, #card_declined').html('');
@@ -699,7 +736,7 @@
                                     $(`#color_blind${b}`).val('buta_warna');
                                     bwtb = `${data[`jurusan${b}`]}<br><small class="text-muted">(butuh verifikasi buta warna)</small>`;
                                 }
-                                
+
                                 if (data[`jurusan${b}_tb`] === 'y') {
                                     $(`#height${b}`).val('tinggi_badan');
                                     bwtb = `${data[`jurusan${b}`]}<br><small class="text-muted">(butuh verifikasi tinggi badan)</small>`;
@@ -717,16 +754,24 @@
                     'AA', // SMA AFIRMASI
                     'AB', // SMA PERPINDAHAN TUGAS ORANG TUA
                     'AF', // SMA ZONASI
-                    'KF'  // SMK DOMISILI TERDEKAT
+                    'KF' // SMK DOMISILI TERDEKAT
                 ];
 
-                const {track_code, lat, long, distance1, distance2, distance3, student_id} = data;
+                const {
+                    track_code,
+                    lat,
+                    long,
+                    distance1,
+                    distance2,
+                    distance3,
+                    student_id
+                } = data;
 
                 if (useMaps.indexOf(track_code) !== -1) {
                     $('#map_edit_btn').attr('href', `/panel/verifikasi-manual/d/${id}/edit-titik-rumah/${student_id}`)
 
                     let coor = (lat.length && long.length) ? `${lat}, ${long}` : "-";
-                    
+
                     $('#coordinate').text(coor);
                     $('#distance1').text(distance1 ? `${toM(distance1)} m` : '-');
                     $('#distance2').text(distance2 ? `${toM(distance2)} m` : '-');
@@ -737,7 +782,18 @@
             }
 
             function showColorBlindOrHeightCard(data) {
-                const {bw1, bw2, bw3, tb1, tb2, tb3, ok1, ok2, ok3, status} = data;
+                const {
+                    bw1,
+                    bw2,
+                    bw3,
+                    tb1,
+                    tb2,
+                    tb3,
+                    ok1,
+                    ok2,
+                    ok3,
+                    status
+                } = data;
                 const jurusan_bw = [bw1, bw2, bw3].some(bw => bw === 'y');
                 const jurusan_tb = [tb1, tb2, tb3].some(tb => tb === 'y');
                 const jurusan_ok = [ok1, ok2, ok3];
@@ -746,7 +802,7 @@
                     if (!jurusan_bw) { // tampilkan tombol verifikasi buta warna
                         $('#blind_section').html('').removeClass('col-lg-6 col-12');
                     }
-                    
+
                     if (!jurusan_tb) { // tampilkan tombol verifikasi tinggi badan
                         $('#height_section').html('').removeClass('col-lg-6 col-12');
                     }

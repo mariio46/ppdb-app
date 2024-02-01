@@ -11,7 +11,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    protected function repositoryResponseWithPostMethod(array $response, string $route, ?string $params = null): RedirectResponse
+    protected function repositoryResponseWithPostMethod(array $response, string $route, string|array|null $params = null): RedirectResponse
     {
         $status_code = $response['statusCode'];
 

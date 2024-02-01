@@ -11,7 +11,7 @@ class LoginModel extends Base
         $data = $this->postWithoutToken('siswa/login', [
             'nisn' => $nisn,
             'kata_sandi' => $password,
-            'waktu' => 15
+            'waktu' => 15,
         ]);
 
         return $this->serverResponseWithPostMethod($data);
@@ -20,7 +20,7 @@ class LoginModel extends Base
     public function logout(string $id): array
     {
         $logout = $this->postWithoutToken('siswa/logout', [
-            "id" => $id
+            'id' => $id,
         ]);
 
         return $this->serverResponseWithPostMethod($logout);

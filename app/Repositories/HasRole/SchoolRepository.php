@@ -13,4 +13,10 @@ interface SchoolRepository
     public function show(string $school_id): array;
 
     public function update(Request $request, string $user_id, string $cabdin_id): array;
+
+    public function quotas(string $school_unit, string $school_id): array;
+
+    public function zones(string $school_id): array;
+
+    public function verify(string $school_id, string $cabdin_id): array;
 }

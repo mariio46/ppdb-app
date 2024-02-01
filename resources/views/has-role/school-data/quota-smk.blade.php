@@ -88,7 +88,7 @@
                     if (school.logo) $('#logo-sekolah').attr('src', school.logo);
 
                     loadEditLink(school.terverifikasi);
-                    loadLockSchoolButton(school.terverifikasi);
+                    loadLockSchoolButton(school.terverifikasi, school.id, school.satuan_pendidikan);
 
                     loadQuota(school.satuan_pendidikan, school.id, school.terverifikasi);
 
@@ -203,26 +203,37 @@
                 }
             }
 
-            function loadLockSchoolButton(school_status) {
+            function loadLockSchoolButton(school_status, school_id, unit) {
                 if (school_status === 'belum_simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                            <button id="modal-kunci-sekolah" class="btn btn-warning">
+                        <form id="form-kunci-sekolah" action="/panel/data-sekolah/${school_id}/${unit}/lock" method="post">
+                            @csrf
+                            <button type="submit" id="modal-kunci-sekolah" class="btn btn-warning">
                                 <x-tabler-lock-square-rounded />
                                 Kunci Sekolah
                             </button>
+                        </form>
                             `
                     });
-                } else {
+                } else if (school_status === 'simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                            <button class="btn btn-danger" disabled>
+                            <button type="button" class="btn btn-danger" disabled>
                                 <x-tabler-lock-square-rounded />
                                 Sekolah Sudah Terkunci
-                            </button>
-                            `
+                            </button>`
+                    });
+                } else if (school_status === 'verifikasi') {
+                    lock_button.show();
+                    lock_button.html(function() {
+                        return `
+                            <button type="button" class="btn btn-success" disabled>
+                                <x-tabler-discount-check />
+                                Sekolah Sudah Terverifikasi
+                            </button>`
                     });
                 }
             }

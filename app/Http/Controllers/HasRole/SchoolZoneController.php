@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HasRole\SchoolDataRepository as School;
 use App\Repositories\HasRole\SchoolZoneRepository as Zone;
+use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,9 +19,22 @@ class SchoolZoneController extends Controller
 
     protected bool $hasSchoolUnit;
 
-    public function __construct(protected Zone $zone)
+    public function __construct(protected Zone $zone, protected School $school)
     {
-        $this->middleware(function ($request, $next) {
+        // $this->middleware(function ($request, $next) {
+        //     $this->schoolId = session()->get('sekolah_id');
+        //     $this->hasSchoolUnit = session()->has('satuan_pendidikan');
+        //     $this->schoolUnit = $this->hasSchoolUnit ? session()->get('satuan_pendidikan') : null;
+
+        //     $schoolHasVerified = $this->school->index(school_id: $this->schoolId)['data']['terverifikasi'] == 'simpan';
+        //     $protectedRoutes = ['school-zone.edit', 'school-zone.store', 'school-zone.update', 'school-zone.destroy'];
+
+        //     return $schoolHasVerified && $request->routeIs($protectedRoutes)
+        //         ? to_route('school-zone.index')->with(['stat' => 'error', 'msg' => 'Sekolah anda telah terkunci!'])
+        //         : $next($request);
+        // });
+        $this->middleware('HasRole.isAdminSekolah');
+        $this->middleware(function (Request $request, Closure $next) {
             $this->schoolId = session()->get('sekolah_id');
             $this->hasSchoolUnit = session()->has('satuan_pendidikan');
             $this->schoolUnit = $this->hasSchoolUnit ? session()->get('satuan_pendidikan') : null;

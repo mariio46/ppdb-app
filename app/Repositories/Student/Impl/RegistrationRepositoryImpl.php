@@ -23,6 +23,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
     public function getRegistrationDataByPhase(string $phase): array
     {
         $student_id = session()->get('stu_id');
+
         return $this->registrationModel->getRegistrationDataByPhase($student_id, $phase);
     }
 
@@ -33,7 +34,7 @@ class RegistrationRepositoryImpl implements RegistrationRepository
         foreach (['sma', 'smk'] as $schoolType) {
             if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
                 foreach ($data['data'][$schoolType] as &$track) {
-                    $track['slug'] = $phase . '_' . $data['data']['tahap_id'] . '_' . $track['kode'];
+                    $track['slug'] = $phase.'_'.$data['data']['tahap_id'].'_'.$track['kode'];
                     $track['jalur'] = str_replace(['SMA', 'SMK'], '', $track['jalur']);
                     $track['info'] = $this->track->getInfo($track['kode']);
                 }

@@ -32,4 +32,19 @@ class SchoolRepositoryImpl implements SchoolRepository
     {
         return $this->school->updateSchool(request: $request, user_id: $user_id, cabdin_id: $cabdin_id);
     }
+
+    public function quotas(string $school_unit, string $school_id): array
+    {
+        return $this->school->getSchoolQuota(school_unit: $school_unit, school_id: $school_id);
+    }
+
+    public function zones(string $school_id): array
+    {
+        return $this->school->getSchoolZone(school_id: $school_id);
+    }
+
+    public function verify(string $school_id, string $cabdin_id): array
+    {
+        return $this->school->verifySchool(school_id: $school_id, cabdin_id: $cabdin_id);
+    }
 }
