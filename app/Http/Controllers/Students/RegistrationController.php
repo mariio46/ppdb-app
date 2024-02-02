@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Students;
 use App\Http\Controllers\Controller;
 use App\Models\Track;
 use App\Repositories\Student\RegistrationRepository;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -73,6 +74,14 @@ class RegistrationController extends Controller
         ];
 
         return view('student.registration.proof', $data);
+    }
+
+    public function print(string $phase, string $phase_id)
+    {
+        $data = $this->registrationRepo->getRegistrationDataByPhase($phase_id);
+        $pdf = PDF::loadView('student.registration.print', ['data' => $data['data'], 'name_track' => $this->track->getNameByCode($data['data']['kode_jalur'])]);
+        return $pdf->stream('print-pdf');
+        // return view('student.registration.print', ['data' => $data['data'], 'name_track' => $this->track->getNameByCode($data['data']['kode_jalur'])]);
     }
 
     //------------------------------------------------------------FUNC

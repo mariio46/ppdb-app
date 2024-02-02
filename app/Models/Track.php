@@ -17,10 +17,12 @@ class Track
         ];
 
         if ($additional_array !== null) {
-            array_merge($data, $additional_array);
+            $result = array_merge($data, $additional_array);
+        } else {
+            $result = $data;
         }
 
-        return $data;
+        return $result;
     }
 
     protected function collection(): Collection
@@ -250,5 +252,10 @@ class Track
     public function getRequirements(): Collection
     {
         return collect($this->collection()->pluck('requirement', 'code')->all());
+    }
+
+    public function getNameByCode(string $code): string
+    {
+        return $this->collection()->where('code', '=', $code)->pluck('name')->first();
     }
 }

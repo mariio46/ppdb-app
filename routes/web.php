@@ -47,6 +47,7 @@ Route::group(['middleware' => 'student.auth'], function () {
         Route::get('/pendaftaran/tahap/{phase}_{phase_id}', 'phase')->name('student.regis.phase');
         Route::get('/pendaftaran/jalur/{phase}_{phase_id}_{track}', 'track')->name('student.regis.track');
         Route::get('/pendaftaran/bukti/{phase}_{phase_id}', 'proof')->name('student.regis.proof');
+        Route::get('/pendaftaran/bukti/{phase}/{phase_id}/cetak', 'print')->name('student.regis.pdf');
 
         Route::post('/registration/{phase}/{phase_id}/{trackCode}/register', 'postSchoolRegistration')->name('student.regis.save-registration');
 

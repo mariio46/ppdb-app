@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="card-body border-top">
-                        <x-button color="success" withIcon="true"><x-tabler-printer style="width: 16px; height: 16px;" /><span class="ms-1">Cetak Bukti Pendaftaran</span></x-button>
+                        <x-link href="{{ route('student.regis.pdf', [$phase, $phase_id]) }}" color="success" withIcon="true" target="_blank"><x-tabler-printer style="width: 16px; height: 16px;" /><span class="ms-1">Cetak Bukti Pendaftaran</span></x-link>
                     </div>
                 </div>
             </div>
@@ -230,7 +230,7 @@
                     `<div class="d-flex align-items-center mb-2">
                         <div style="width: 35%;">Jurusan</div>
                         <div class="mx-1">:</div>
-                        <div style="width: 60%;">${deptName}</div>
+                        <div style="width: 60%;">${deptName != null ? deptName : '-'}</div>
                     </div>` : '';
 
                 return `
