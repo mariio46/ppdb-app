@@ -41,7 +41,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title fw-bolder text-primary">Informasi Kuota dan Jurusan Sekolah</h4>
+                <h4 class="card-title fw-bolder text-primary">Informasi Jurusan dan Kuota Sekolah</h4>
             </div>
             <div class="card-body p-0">
                 <table class="table table-quota">

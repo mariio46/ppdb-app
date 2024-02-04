@@ -83,15 +83,17 @@ Route::controller(SchoolController::class)->group(function () {
 
     Route::get('sekolah/{id}/{unit}/info-sekolah', 'show')->name('sekolah.detail');
 
-    Route::get('sekolah/{id}/{unit}/edit', 'edit')->name('sekolah.edit');
-    Route::post('sekolah/{id}/{unit}/update', 'update')->name('sekolah.update');
+    Route::get('sekolah/{id}/{unit}/edit', 'edit')->name('sekolah.edit')->middleware(['HasRole.isSchoolHasLock']);
+    Route::post('sekolah/{id}/{unit}/update', 'update')->name('sekolah.update')->middleware(['HasRole.isSchoolHasLock']);
+
+    Route::post('sekolah/{id}/{unit}/destroy', 'destroy')->name('sekolah.destroy')->middleware(['HasRole.isSuperAdmin']);
 
     Route::get('sekolah/{id}/{unit}/kuota', 'quota')->name('sekolah.quota');
     Route::get('sekolah/{id}/{unit}/zonasi', 'zone')->name('sekolah.zones');
     Route::get('sekolah/{id}/{unit}/dokumen', 'document')->name('sekolah.document');
     Route::get('sekolah/{id}/{unit}/koordinat', 'coordinate')->name('sekolah.coordinate');
 
-    Route::post('sekolah/{id}/{unit}/verify', 'verify')->name('sekolah.verify');
+    Route::post('sekolah/{id}/{unit}/verify', 'verify')->name('sekolah.verify')->middleware(['HasRole.verifySchool']);
 
     Route::get('sekolah/json/units', 'units');
     Route::get('sekolah/json/schools-collections', 'schools');
@@ -112,6 +114,7 @@ Route::controller(SchoolDataController::class)->group(function () {
 
     Route::post('data-sekolah/{id}/{unit}/lock', 'lock')->name('school-data.lock'); // Kunci Data Sekolah
 
+    Route::get('data-sekolah/dokumen/pakta-integritas/pdf', 'firstDocumentPdf')->name('school-data.firstDocumentPdf'); // Route Action for upload pakta integritas
     Route::post('data-sekolah/dokumen/pakta-integritas/{id}', 'firstDocument')->name('school-data.firstDocument'); // Route Action for upload pakta integritas
     Route::post('data-sekolah/dokumen/sk-ppdb/{id}', 'secondDocument')->name('school-data.secondDocument'); // Route Action for upload SK PPDB
 
@@ -158,13 +161,21 @@ Route::controller(SchoolCoordinateController::class)->group(function () {
     Route::post('koordinat-sekolah/{id}/update', 'update')->name('school-coordinate.update'); // Route Action for update lokasi / koordinats sekolah
 });
 
-Route::controller(OperatorController::class)->group(function () {
+Route::controller(OperatorController::class)->middleware('HasRole.accessOperator')->group(function () {
     Route::get('operators', 'index')->name('operators.index');
-    Route::get('operators/create', 'create')->name('operators.create');
-    Route::post('operators/store', 'store')->name('operators.store');
-    Route::get('operators/{param}', 'show')->name('operators.show');
 
-    Route::get('operators/json/operator/{param}', 'operator');
+    Route::get('operators/create', 'create')->name('operators.create')->middleware('HasRole.storeOperator');
+    Route::post('operators/store', 'store')->name('operators.store')->middleware('HasRole.storeOperator');
+
+    Route::get('operators/pdf', 'pdf')->name('operators.pdf')->withoutMiddleware('HasRole.accessOperator');
+    // Route::post('operators/pdf', 'pdf')->name('operators.pdf');
+
+    Route::get('operators/{id}', 'show')->name('operators.show');
+
+    Route::post('operators/{id}/verify', 'verify')->name('operators.verify')->middleware('HasRole.verifyOperator');
+    Route::post('operators/{id}/update', 'update')->name('operators.update')->middleware('HasRole.updateStatusOperator');
+
+    Route::get('operators/json/operator/{id}', 'operator');
     Route::get('operators/json/operators/{key}/{param}', 'operators');
 });
 

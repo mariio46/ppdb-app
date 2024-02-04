@@ -4,8 +4,6 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\SchoolRepository as School;
-use App\Repositories\HasRole\UserRepository as User;
-use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,20 +11,9 @@ use Illuminate\View\View;
 
 class SchoolController extends Controller
 {
-    protected int $roleId;
-
-    protected string $roleName;
-
-    public function __construct(protected School $school, protected User $user)
+    public function __construct(protected School $school)
     {
-        $this->middleware('HasRole.isSchoolHasLock')->except(['index', 'schools', 'create', 'units']);
-        $this->middleware(function (Request $request, Closure $next) {
-            $this->roleId = session()->get('role_id');
-            $this->roleName = session()->get('roles.name');
-
-            return $next($request);
-        });
-        $this->middleware('HasRole.verifySchool')->only('verify');
+        //
     }
 
     public function index(): View
@@ -36,21 +23,18 @@ class SchoolController extends Controller
 
     public function create(): View
     {
-        return view('has-role.school.create', [
-            'roleId' => $this->roleId,
-            'roleName' => $this->roleName,
-        ]);
+        return view('has-role.school.create');
     }
 
     public function store(Request $request): RedirectResponse
     {
         $cabdin_id = session()->get('cabdin_id');
 
-        if ($cabdin_id == null && ! $request->has('user')) {
+        if ($cabdin_id == null) {
             return back()->with(['stat' => 'error', 'msg' => 'Anda bukan Admin Cabang Dinas!']);
         }
 
-        $response = $this->school->store(request: $request, cabdin_id: $cabdin_id ?? $request->user);
+        $response = $this->school->store(request: $request, cabdin_id: $cabdin_id);
 
         return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.index');
     }
@@ -68,8 +52,6 @@ class SchoolController extends Controller
         return view('has-role.school.edit', [
             'id' => $id,
             'unit' => $unit,
-            'roleId' => $this->roleId,
-            'roleName' => $this->roleName,
         ]);
     }
 
@@ -77,13 +59,20 @@ class SchoolController extends Controller
     {
         $cabdin_id = session()->get('cabdin_id');
 
-        if ($cabdin_id == null && ! $request->has('user')) {
+        if ($cabdin_id == null) {
             return back()->with(['stat' => 'error', 'msg' => 'Anda bukan Admin Cabang Dinas!']);
         }
 
-        $response = $this->school->update(request: $request, user_id: $id, cabdin_id: $cabdin_id ?? $request->user);
+        $response = $this->school->update(request: $request, school_id: $id, cabdin_id: $cabdin_id);
 
         return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.edit', params: ['id' => $id, 'unit' => $unit]);
+    }
+
+    public function destroy(string $school_id): RedirectResponse
+    {
+        $response = $this->school->destroy(school_id: $school_id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.index');
     }
 
     public function quota(string $id, string $unit): View
@@ -134,32 +123,6 @@ class SchoolController extends Controller
         return $this->repositoryResponseWithPostMethod(response: $verify, route: 'sekolah.detail', params: ['id' => $id, 'unit' => $unit]);
     }
 
-    // --------------------------------------------------DATA JSON--------------------------------------------------
-
-    protected function units(): JsonResponse
-    {
-        $units = [
-            [
-                'label' => 'SMA',
-                'value' => 'sma',
-            ],
-            [
-                'label' => 'SMK',
-                'value' => 'smk',
-            ],
-            [
-                'label' => 'SMA Boarding',
-                'value' => 'fbs',
-            ],
-            [
-                'label' => 'SMA Half Boarding',
-                'value' => 'hbs',
-            ],
-        ];
-
-        return response()->json($units);
-    }
-
     // --------------------------------------------------DATA API JSON--------------------------------------------------
 
     protected function schools(): JsonResponse
@@ -192,23 +155,27 @@ class SchoolController extends Controller
 
     // -----------------------------------------------DATA API JSON FORM DATA-----------------------------------------------
 
-    public function usersWithRoleAdminCabangDinas(): JsonResponse
+    protected function units(): JsonResponse
     {
-        if ($this->roleId != 1) {
-            return response()->json([]);
-        }
+        $units = [
+            [
+                'label' => 'SMA',
+                'value' => 'sma',
+            ],
+            [
+                'label' => 'SMK',
+                'value' => 'smk',
+            ],
+            [
+                'label' => 'SMA Boarding',
+                'value' => 'fbs',
+            ],
+            [
+                'label' => 'SMA Half Boarding',
+                'value' => 'hbs',
+            ],
+        ];
 
-        $response = $this->user->index(role_name: $this->roleName);
-
-        if ($response['status'] != 'success' || $response['statusCode'] != 200) {
-            return response()->json([]);
-        }
-
-        $collections = collect($response['data'])->where('role_id', 3)->map(fn ($user) => [
-            'value' => $user['id'],
-            'label' => $user['nama'],
-        ])->values();
-
-        return response()->json($collections);
+        return response()->json($units);
     }
 }

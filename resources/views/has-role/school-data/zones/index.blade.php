@@ -1,4 +1,4 @@
-@extends('layouts.has-role.auth', ['title' => 'Info Wilayah Zonasi Sekolah'])
+@extends('layouts.has-role.auth', ['title' => 'Wilayah Zonasi Sekolah'])
 
 @section('vendorStyles')
     <link type="text/css" href="/app-assets/css/pages/page-profile.css" rel="stylesheet">
@@ -42,6 +42,9 @@
         @include('has-role.school-data.partials.tab')
 
         <div class="card">
+            <div class="card-header">
+                <h4 class="card-title text-primary fw-bolder">Informasi Wilayah Zonasi Sekolah</h4>
+            </div>
             <div class="card-body p-0">
                 <table class="table table-school-zone">
                     <thead>
@@ -117,35 +120,33 @@
                 url: `/panel/data-sekolah/json/school/${school_id}`,
                 method: 'get',
                 dataType: 'json',
-                beforeSend: function() {
-                    buttonLoader();
+                beforeSend: () => {
                     headerSchoolAction('onLoad');
                 },
-                success: function(school) {
+                success: (school) => {
                     console.log('Sekolah : ', school);
                     if (school.logo) $('#logo-sekolah').attr('src', school.logo);
-                    headerSchoolAction('onSuccess', school.nama_sekolah, school.npsn);
-                    loadEditLink(school.terverifikasi);
-                    loadLockSchoolButton(school.terverifikasi, school.id, school.satuan_pendidikan);
 
-                    loadSchoolZones(school.terverifikasi)
+                    headerSchoolAction('onSuccess', school);
+
+                    loadSchoolZones(school)
                 },
-                complete: function() {
-                    $('#btn-loader').html(``);
+                complete: () => {
                     headerSchoolAction('onComplete')
                 },
-                error: function(xhr, status, error) {
-                    console.error('Failed to get data.', status, error);
+                error: (xhr, status, error) => {
+                    console.error('Failed to get data.', xhr.status);
                 }
             })
 
+            // -----------For Body-----------
             // Get School Zone
-            function loadSchoolZones(school_status) {
+            function loadSchoolZones(school) {
                 var edit_button_disabled = `<button disabled class="btn btn-primary"><x-tabler-lock />Lihat Detail</button>`;
                 if (table.length) {
                     var tb = table.DataTable({
                         ajax: {
-                            url: `/panel/zonasi-sekolah/json/zones/${school_id}`,
+                            url: `/panel/zonasi-sekolah/json/zones/${school.id}`,
                             dataSrc: (response) => {
                                 console.log('List Wilayah Zonasi : ', response.data);
                                 getProvinces();
@@ -159,7 +160,7 @@
                         }, {
                             render: (data, type, row) => row.mwilayah.nama_kecamatan ?? '',
                         }, {
-                            render: (data, type, row) => school_status === 'belum_simpan' ?
+                            render: (data, type, row) => school.terverifikasi === 'belum_simpan' ?
                                 `<a href="/panel/zonasi-sekolah/${row.id}" class="btn btn-primary">Lihat Detail</a>` : edit_button_disabled,
                         }, ],
 
@@ -203,7 +204,7 @@
                         },
                     });
 
-                    if (school_status === 'belum_simpan') {
+                    if (school.terverifikasi === 'belum_simpan') {
                         $("div.add-button, div.add-button-sm").html(
                             '<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-new-zone" type="button">+ Tambah Wilayah Zonasi</button>');
                         $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
@@ -253,7 +254,7 @@
                         provinsi.empty().append('<option value=""></option>');
                         provinces.forEach((item) => provinsi.append(`<option value="${item.value}">${item.label}</option>`))
                     },
-                    error: (xhr, status, error) => console.error('Failed to get data.', status, error),
+                    error: (xhr, status, error) => console.error('Failed to get data.', xhr.status),
                 })
             }
 
@@ -275,7 +276,7 @@
                         cities.forEach((item) => kabupaten.append(`<option value="${item.value}">${item.label}</option>`));
                         kabupaten.prop('disabled', false);
                     },
-                    error: (xhr, status, error) => console.error('Failed to get data.', status, error),
+                    error: (xhr, status, error) => console.error('Failed to get data.', xhr.status),
                 })
             }
 
@@ -297,31 +298,82 @@
                         districts.forEach((item) => kecamatan.append(`<option value="${item.value}">${item.label}</option>`))
                         kecamatan.prop('disabled', false);
                     },
-                    error: (xhr, status, error) => console.error('Failed to get data.', status, error),
+                    error: (xhr, status, error) => console.error('Failed to get data.', xhr.status),
                 })
             }
 
             kecamatan.change(() => submitButton.prop('disabled', false));
+            // -----------/For Body-----------
 
-            function loadEditLink(school_status) {
-                if (school_status === 'belum_simpan') {
-                    school_edit_link.show()
-                    school_edit_link.html(function() {
-                        return `
-                            <a href="/panel/data-sekolah/edit" class="btn btn-success">
-                                <x-tabler-pencil />
-                                Edit Info Sekolah
-                            </a>`
-                    })
+            // -----------For Header-----------
+            function headerSchoolAction(type, school) {
+                switch (type) {
+                    case 'onLoad':
+                        // For Name, Npsn, And Status
+                        $('#info-sekolah').addClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah,#status-sekolah').text('Memuat Data').addClass('placeholder col-12');
+
+                        // Button Skeleton
+                        buttonSkeletonForEditAndLockSchool()
+                        break;
+
+                    case 'onSuccess':
+                        // For Name, Npsn, And Status
+                        $('#nama-sekolah').html(() => {
+                            var verifiedCheck = `<x-tabler-discount-check-filled style="color: #0369a1" />`;
+                            let showVerified = school.terverifikasi === 'verifikasi' ? verifiedCheck : '';
+                            return `${school.nama_sekolah} ${showVerified}`
+                        });
+                        $('#npsn-sekolah').text(school.npsn);
+                        $('#status-sekolah').html(() => {
+                            if (school.terverifikasi === 'belum_simpan') {
+                                return `Status : <span class="badge bg-light-danger">Belum Simpan</span>`
+                            }
+                            if (school.terverifikasi === 'simpan') {
+                                return `Status : <span class="badge bg-light-warning">Sudah Simpan</span>`
+                            }
+                            if (school.terverifikasi === 'verifikasi') {
+                                return `Status : <span class="badge bg-light-success">Terverifikasi</span>`
+                            }
+                            return `Status : <span class="badge bg-light-warning">Status Tidak Diketahui</span>`
+                        })
+
+                        // For School Verified Button
+                        buttonForLockSchool(school)
+
+                        // For Link Edit School
+                        linkForEditingSchool(school)
+                        break;
+
+                    case 'onComplete':
+                        // For Name, Npsn, And Status
+                        $('#info-sekolah').removeClass('placeholder-glow');
+                        $('#nama-sekolah,#npsn-sekolah,#status-sekolah').removeClass('placeholder');
+
+                        // Button Skeleton
+                        $('#btn-loader').html('');
+
+                        break;
                 }
             }
 
-            function loadLockSchoolButton(school_status, school_id, unit) {
-                if (school_status === 'belum_simpan') {
+            function buttonSkeletonForEditAndLockSchool() {
+                $("#btn-loader").html(() => {
+                    return `
+                        <div id="btn-loader" class="placeholder-glow d-flex gap-2">
+                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
+                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
+                        </div>
+                        `
+                });
+            }
+
+            function buttonForLockSchool(school) {
+                if (school.terverifikasi === 'belum_simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
-                        <form id="form-kunci-sekolah" action="/panel/data-sekolah/${school_id}/${unit}/lock" method="post">
+                        <form id="form-kunci-sekolah" action="/panel/data-sekolah/${school.id}/${school.satuan_pendidikan}/lock" method="post">
                             @csrf
                             <button type="submit" id="modal-kunci-sekolah" class="btn btn-warning">
                                 <x-tabler-lock-square-rounded />
@@ -330,7 +382,7 @@
                         </form>
                             `
                     });
-                } else if (school_status === 'simpan') {
+                } else if (school.terverifikasi === 'simpan') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
@@ -339,7 +391,7 @@
                                 Sekolah Sudah Terkunci
                             </button>`
                     });
-                } else if (school_status === 'verifikasi') {
+                } else if (school.terverifikasi === 'verifikasi') {
                     lock_button.show();
                     lock_button.html(function() {
                         return `
@@ -351,33 +403,19 @@
                 }
             }
 
-            function buttonLoader() {
-                $("#btn-loader").html(function() {
-                    return `
-                        <div id="btn-loader" class="placeholder-glow d-flex gap-2">
-                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
-                            <button class="btn btn-secondary disabled placeholder" style="width: 237px" aria-disabled="true"></button>
-                        </div>
-                            `
-                });
-            }
-
-            function headerSchoolAction(type, school_name = '', school_npsn = '') {
-                switch (type) {
-                    case 'onLoad':
-                        $('#info-sekolah,#cover-logo-sekolah').addClass('placeholder-glow');
-                        $('#nama-sekolah,#npsn-sekolah,#logo-sekolah').text('Memuat Data').addClass('placeholder col-12');
-                        break;
-                    case 'onSuccess':
-                        $('#nama-sekolah').text(school_name);
-                        $('#npsn-sekolah').text(school_npsn);
-                        break;
-                    case 'onComplete':
-                        $('#info-sekolah,#cover-logo-sekolah').removeClass('placeholder-glow');
-                        $('#nama-sekolah,#npsn-sekolah,#logo-sekolah').removeClass('placeholder');
-                        break;
+            function linkForEditingSchool(school) {
+                if (school.terverifikasi === 'belum_simpan') {
+                    school_edit_link.show()
+                    school_edit_link.html(function() {
+                        return `
+                            <a href="/panel/data-sekolah/edit" class="btn btn-success">
+                                <x-tabler-pencil />
+                                Edit Info Sekolah
+                            </a>`
+                    })
                 }
             }
+            // -----------For Header-----------
         })
     </script>
 @endpush

@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\SchoolDataRepository as SchoolData;
 use App\Repositories\HasRole\SchoolQuotaRepository as Quota;
 use App\Repositories\HasRole\SchoolZoneRepository as Zone;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class SchoolDataController extends Controller
@@ -74,10 +76,15 @@ class SchoolDataController extends Controller
 
     public function document(): View
     {
-        return view('has-role.school-data.document', [
+        return view('has-role.school-data.document.index', [
             'sekolah_id' => $this->schoolId,
             'satuan_pendidikan' => $this->schoolUnit,
         ]);
+    }
+
+    public function firstDocumentPdf(): Response
+    {
+        return Pdf::loadView('has-role.school-data.document.pakta-integritas-pdf')->stream(now()->addMinute().mt_rand(9999, 99999).'.pdf');
     }
 
     public function firstDocument(Request $request, string $id): RedirectResponse

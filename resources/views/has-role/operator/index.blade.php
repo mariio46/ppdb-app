@@ -67,7 +67,10 @@
                 var tb = table.DataTable({
                     ajax: {
                         url: `/panel/operators/json/operators/${key}/${param}`,
-                        dataSrc: ''
+                        dataSrc: (response) => {
+                            console.log(response);
+                            return response.data ?? []
+                        }
                     },
                     columns: [{
                             data: 'nama'
@@ -80,19 +83,22 @@
                         },
                         {
                             data: 'status_aktif',
-                            render: function(data, type, row) {
+                            render: (data, type, row) => {
                                 if (data === 'v') {
                                     return ` <x-badge class="w-75" variant="light" color="warning">Menunggu Verifikasi</x-badge> `;
-                                } else if (data === 'a') {
+                                }
+                                if (data === 'a') {
                                     return ` <x-badge class="w-75" variant="light" color="success">Aktif</x-badge> `;
-                                } else {
+                                }
+                                if (data === 'n') {
                                     return ` <x-badge class="w-75" variant="light" color="danger">Tidak Aktif</x-badge> `;
                                 }
+                                return ` <x-badge class="w-75" variant="light" color="danger">Unknown</x-badge> `;
                             }
                         },
                         {
                             data: 'id',
-                            render: function(data, type, row) {
+                            render: (data, type, row) => {
                                 return `<a href="/panel/operators/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         },
@@ -100,7 +106,7 @@
 
                     // Styling Table
                     columnDefs: [{
-                        targets: [2, 3],
+                        targets: [2, 3, 4],
                         className: 'text-center'
                     }],
 
@@ -134,9 +140,11 @@
                     }
                 });
 
-                $("div.add-button, div.add-button-sm").html(`<a href="{{ route('operators.create') }}" class="btn btn-success">+ Tambah Operator</a>`);
-                $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
-                $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
+                if (key === 'sekolah_id') {
+                    $("div.add-button, div.add-button-sm").html(`<a href="{{ route('operators.create') }}" class="btn btn-success">+ Tambah Operator</a>`);
+                    $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
+                    $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
+                }
 
             }
         })

@@ -240,7 +240,7 @@
                 method: 'get',
                 dataType: 'json',
                 success: function(regions) {
-                    console.log(regions);
+                    // console.log(regions);
                     wilayah.empty().append('<option value=""></option>');
                     regions.forEach(region => {
                         wilayah.append(`<option value="${region.value}">${region.label}</option>`)
