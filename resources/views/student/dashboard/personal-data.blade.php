@@ -72,17 +72,6 @@
 
             <div class="card-body py-2 my-25">
 
-                @if (session()->get('stat'))
-                    <div>
-                        <div class="alert alert-{{ session()->get('stat') }} alert-dismissible fade show" role="alert">
-                            <div class="alert-body">
-                                <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-                            </div>
-                            <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
-                        </div>
-                    </div>
-                @endif
-
                 <div class="d-md-flex align-items-end">
                     <div class="d-flex justify-content-center mb-1 ">
                         <div class="custom-aspect-ratio ">
@@ -141,18 +130,6 @@
             <form id="formEditData" action="{{ route('student.personal.update-data') }}" method="post">
                 @csrf
                 <div class="card-body py-2 my-25 border-top row">
-
-                    @if (session()->get('updStatus'))
-                        <div>
-                            <div class="alert alert-{{ session()->get('updStatus') }} alert-dismissible fade show" role="alert">
-                                <div class="alert-body">
-                                    <p class="mb-0 text-center">{{ session()->get('updMsg') }}</p>
-                                </div>
-                                <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
-                            </div>
-                        </div>
-                    @endif
-
                     <div class="col-xl-6 col-md-6 col-12">
                         <div class="mb-1">
                             <x-label for="name">Nama Lengkap</x-label>
@@ -722,7 +699,7 @@
                         generateSelectDistrict(`${d.kode_kabupaten}|${d.kabupaten}`, `${d.kode_kecamatan}|${d.kecamatan}`);
                         generateSelectVillage(`${d.kode_kecamatan}|${d.kecamatan}`, `${d.kode_desa}|${d.desa}`);
 
-                        $('#hamlet').val(d.dusun);
+                        $('#hamlet').val(d.dusun == '-' ? null : d.dusun);
                         $('#associations').val(d.rtrw);
                         $('#address').val(d.alamat_jalan);
 

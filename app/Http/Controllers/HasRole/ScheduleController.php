@@ -65,10 +65,10 @@ class ScheduleController extends Controller
         $save = $this->schedule->insertPhase($request);
 
         if ($save['statusCode'] == 200 || $save['statusCode'] == 201) {
-            return to_route('schedules.index')->with(['msg' => 'Berhasil menambahkan data.']);
+            return to_route('schedules.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
         }
 
-        return redirect()->back()->with(['msg' => 'Gagal menyimpan data. Silakan coba lagi nanti.']);
+        return redirect()->back()->with(['stat' => 'error', 'msg' => $save['messages']]);
     }
 
     public function removeData(Request $request): RedirectResponse // A.12.004
@@ -79,7 +79,7 @@ class ScheduleController extends Controller
             return to_route('schedules.index')->with(['stat' => 'success', 'msg' => $remove['messages']]);
         }
 
-        return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menghapus data. Silakan coba lagi nanti.']);
+        return redirect()->back()->with(['stat' => 'error', 'msg' => 'Gagal menghapus data. Silakan coba lagi nanti.']);
     }
 
     public function updateData(string $id, Request $request): RedirectResponse // A.12.006
@@ -112,7 +112,7 @@ class ScheduleController extends Controller
                 if ($save) {
                     $msg = ['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.'];
                 } else {
-                    $msg = ['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data.'];
+                    $msg = ['stat' => 'error', 'msg' => 'Gagal menyimpan perubahan data.'];
                 }
             } else {
                 $msg = ['stat' => 'info', 'msg' => 'Tidak ada perubahan data.'];
@@ -169,199 +169,36 @@ class ScheduleController extends Controller
         }
     }
 
-    // public function updateAnnouncement(Request $request): RedirectResponse
-    // {
-    //     $data = [
-    //         'id' => $request->post('id'),
-    //         'tanggal' => $request->post('date'),
-    //         'jam_mulai' => $request->post('hour') . '.' . $request->post('minute'),
-    //         'jenis' => 'pengumuman'
-    //     ];
-
-    //     dd($data);
-
-    //     $return = [
-    //         'statusCode' => 200,
-    //         // 'statusCode' => 404,
-    //     ];
-
-    //     if ($return['statusCode'] == 200) {
-    //         return to_route('schedules.detail', [$request->phase])->with(['stat' => 'success', 'msg' => 'Berhasil menyimpan perubahan data.']);
-    //     }
-
-    //     return redirect()->back()->with(['stat' => 'danger', 'msg' => 'Gagal menyimpan perubahan data. Silakan coba lagi nanti.']);
-    // }
-
     //------------------------------------------------------------JSON
     public function getDataSchedules(): JsonResponse
     {
         $data = $this->schedule->getDataSchedules();
 
-        return response()->json($data['response'], $data['status_code']);
+        return response()->json($data);
     }
 
     public function detailData(string $id): JsonResponse
     {
-        // $data = [
-        //     'statusCode' => 200,
-        //     'status' => 'success',
-        //     'message' => 'Berhasil mendapatkan data.',
-        //     'data' => [
-        //         'tahap_id' => '9ae85c84-0f44-461f-ae95-84d800c07331',
-        //         'tahap' => '1',
-        //         'pendaftaran_mulai' => '2024-01-01',
-        //         'pendaftaran_selesai' => '2024-01-04',
-        //         'pendaftaran_batas' => [
-        //             [
-        //                 'batas_id' => '1',
-        //                 'tanggal' => '2024-01-01',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //             [
-        //                 'batas_id' => '2',
-        //                 'tanggal' => '2024-01-02',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //             [
-        //                 'batas_id' => '3',
-        //                 'tanggal' => '2024-01-03',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //             [
-        //                 'batas_id' => '4',
-        //                 'tanggal' => '2024-01-04',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '12.00',
-        //                 'jenis' => 'pendaftaran'
-        //             ],
-        //         ],
-        //         'verifikasi_mulai' => '2024-01-01',
-        //         'verifikasi_selesai' => '2024-01-04',
-        //         'verifikasi_batas' => [
-        //             [
-        //                 'batas_id' => '1',
-        //                 'tanggal' => '2024-01-01',
-        //                 'jam_mulai' => '09.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //             [
-        //                 'batas_id' => '2',
-        //                 'tanggal' => '2024-01-02',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //             [
-        //                 'batas_id' => '3',
-        //                 'tanggal' => '2024-01-03',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //             [
-        //                 'batas_id' => '4',
-        //                 'tanggal' => '2024-01-04',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '17.00',
-        //                 'jenis' => 'verifikasi'
-        //             ],
-        //         ],
-        //         'pengumuman' => '2024-01-05',
-        //         'pengumuman_batas_id' => '5',
-        //         'pengumuman_jam_mulai' => '09.00',
-        //         'daftar_ulang_mulai' => '2024-01-05',
-        //         'daftar_ulang_selesai' => '2024-01-06',
-        //         'daftar_ulang_batas' => [
-        //             [
-        //                 'batas_id' => '1',
-        //                 'tanggal' => '2024-01-05',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'daftar ulang'
-        //             ],
-        //             [
-        //                 'batas_id' => '2',
-        //                 'tanggal' => '2024-01-06',
-        //                 'jam_mulai' => '07.00',
-        //                 'jam_selesai' => '15.00',
-        //                 'jenis' => 'daftar ulang'
-        //             ],
-        //         ]
-        //     ]
-        // ];
-
         $data = $this->schedule->getDetailData($id);
 
-        return response()->json($data['response'], $data['status_code']);
+        return response()->json($data);
     }
 
     public function getDataSchedule(string $id): JsonResponse
     {
-        // $data = [
-        //     "statusCode" => 200,
-        //     "status" => "success",
-        //     "message" => "Berhasil mendapatkan data.",
-        //     "data" => [
-        //         "tahap_id" => "9ae85c84-0f44-461f-ae95-84d800c07331",
-        //         "tahap" => "1",
-        //         "pendaftaran_mulai" => "2024-01-01",
-        //         "pendaftaran_selesai" => "2024-01-04",
-        //         "verifikasi_mulai" => "2024-01-01",
-        //         "verifikasi_selesai" => "2024-01-04",
-        //         "pengumuman" => "2024-01-05",
-        //         "daftar_ulang_mulai" => "2024-01-05",
-        //         "daftar_ulang_selesai" => "2024-01-06",
-        //         "sma" => [
-        //             [
-        //                 "kode_jalur" => "AG",
-        //                 "nama_jalur" => "Boarding School"
-        //             ],
-        //         ],
-        //         "smk" => [
-        //             [
-        //                 "kode_jalur" => "KA",
-        //                 "nama_jalur" => "Afirmasi"
-        //             ],
-        //             [
-        //                 "kode_jalur" => "KB",
-        //                 "nama_jalur" => "Perpindahan Tugas Orang Tua"
-        //             ],
-        //             [
-        //                 "kode_jalur" => "KC",
-        //                 "nama_jalur" => "Anak Guru"
-        //             ],
-        //             [
-        //                 "kode_jalur" => "KF",
-        //                 "nama_jalur" => "Domisili Terdekat"
-        //             ],
-        //             [
-        //                 "kode_jalur" => "KG",
-        //                 "nama_jalur" => "Anak DUDI"
-        //             ],
-        //         ],
-        //     ]
-        // ];
-
         $data = $this->schedule->getDataSchedule($id);
 
-        return response()->json($data['response'], $data['status_code']);
+        return response()->json($data);
     }
 
     public function getDataTime(string $type, string $id): JsonResponse
     {
         $data = $this->schedule->getDetailTime($id, $type);
 
-        return response()->json($data['response'], $data['status_code']);
+        return response()->json($data);
     }
 
-    // tracks
+    //------------------------------------------------------------TRACKS
     public function getTracks(string $type): JsonResponse
     {
         return response()->json($this->track->get($type));

@@ -2,7 +2,9 @@
 
 namespace App\Models\Student;
 
-class StatusModel
+use App\Models\Base;
+
+class StatusModel extends Base
 {
     /**
      * @param  string  $s - date start
@@ -36,14 +38,17 @@ class StatusModel
 
     public function getStudentStatus(string $studentId): array
     {
-        $phase1 = $this->templateArray(s: '2023-11-15', e: '2023-11-30', status: 'declined');
-        $phase2 = $this->templateArray(p: '2', status: 'registered');
-        $phase3 = $this->templateArray(p: '3', status: '', s: '2023-12-15', e: '2023-12-31');
+        $get = $this->swGetWithToken("siswa/status?id=$studentId");
 
-        return [
-            $phase1,
-            $phase2,
-            $phase3,
-        ];
+        if ($get['status_code'] == 200) {
+            return $get['response'];
+        } else {
+            return [
+                'statusCode' => $get['status_code'],
+                'status' => 'failed',
+                'messages' => 'Terjadi kesalahan. Gagal mendapatkan data.',
+                'data' => [],
+            ];
+        }
     }
 }

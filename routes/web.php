@@ -11,14 +11,18 @@ use App\Http\Controllers\Students\SchoolController;
 use App\Http\Controllers\Students\StatusController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeController::class)->name('home');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/pengumuman', 'announcement')->name('home.announcement');
+    Route::get('/peta-zonasi', 'mapZone')->name('home.zone-map');
+});
 
 Route::view('/landing-page', 'landing-page')->name('home');
 
 // middleware
 Route::group(['middleware' => 'student.guest'], function () {
     // student routes
-    Route::get('/masuk', [studentLoginController::class, 'index'])->name('student.login');
+    Route::get('/masuk', [studentLoginController::class, 'index'])->name('student.masuk');
     Route::post('/do-login', [studentLoginController::class, 'doLogin'])->name('student.login');
 });
 
@@ -47,6 +51,7 @@ Route::group(['middleware' => 'student.auth'], function () {
         Route::get('/pendaftaran/tahap/{phase}_{phase_id}', 'phase')->name('student.regis.phase');
         Route::get('/pendaftaran/jalur/{phase}_{phase_id}_{track}', 'track')->name('student.regis.track');
         Route::get('/pendaftaran/bukti/{phase}_{phase_id}', 'proof')->name('student.regis.proof');
+        Route::get('/pendaftaran/bukti/{phase}/{phase_id}/cetak', 'print')->name('student.regis.pdf');
 
         Route::post('/registration/{phase}/{phase_id}/{trackCode}/register', 'postSchoolRegistration')->name('student.regis.save-registration');
 
@@ -59,17 +64,17 @@ Route::group(['middleware' => 'student.auth'], function () {
     Route::controller(StatusController::class)->group(function () {
         Route::get('/status', 'index')->name('student.status');
 
-        Route::get('/status/get-status', 'getStatus')->name('student.status.get-data');
+        Route::get('json/status/get-status', 'getStatus')->name('student.status.get-data');
     });
 
     // School
     Route::controller(SchoolController::class)->group(function () {
         Route::get('/sekolah', 'index')->name('student.school');
 
-        Route::get('/schools/get-list', 'getSchools')->name('student.school.get-data');
+        Route::get('json/schools/get-list', 'getSchools')->name('student.school.get-data');
         Route::get('/schools/by-city/{cityCode}/{schoolType}', 'getSchoolByCity')->name('student.school.filter-school');
         Route::get('/schools/by-zone', 'getSchoolByZone')->name('student.school.get-zone');
-        Route::get('/schools/boarding-school', 'getBoardingSchool')->name('student.school.get-boarding');
+        Route::get('json/schools/boarding-school', 'getBoardingSchool')->name('student.school.get-boarding');
         Route::get('/schools/department/{schoolId}', 'getDepartmentBySchool')->name('student.school.get-department');
     });
 

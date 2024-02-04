@@ -6,31 +6,10 @@
 @endsection
 
 @section('content')
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Cabang Dinas</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('cabang-dinas.index') }}">Cabang Dinas</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Tambah Cabang Dinas
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ json_encode(session()->get('data')) }}</p>
-        </div>
-    @endif
+    <x-breadcrumb title="Cabang Dinas">
+        <x-breadcrumb-item title="Cabang Dinas" to="{{ route('cabang-dinas.index') }}" />
+        <x-breadcrumb-active title="Tambah Cabang Dinas" />
+    </x-breadcrumb>
 
     <div class="content-body row">
         <div class="col-12">

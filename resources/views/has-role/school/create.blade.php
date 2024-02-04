@@ -17,11 +17,18 @@
                 <h4 class="card-title">Tambah Sekolah</h4>
             </div>
             <div class="card-body">
-
                 <form id="form-create-school" action="{{ route('sekolah.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6">
+                            {{-- @if ($roleId == 1 && $roleName == 'SuperAdmin')
+                                <div class="mb-2">
+                                    <x-label for="user">Admin Cabang Dinas</x-label>
+                                    <x-select class="select2 form-select" id="user" name="user" data-placeholder="Pilih Admin Cabang Dinas">
+                                        <x-empty-option />
+                                    </x-select>
+                                </div>
+                            @endif --}}
                             <div class="mb-2">
                                 <x-label for="nama_sekolah">Nama Sekolah</x-label>
                                 <x-input id="nama_sekolah" name="nama_sekolah" placeholder="Masukkan nama sekolah" />
@@ -67,6 +74,8 @@
                 unit = $('#satuan_pendidikan'),
                 form = $('#form-create-school'),
                 kabupaten = $('#kabupaten');
+
+            var user = $('#user');
 
             select.each(function() {
                 var $this = $(this);
@@ -118,17 +127,16 @@
                 })
             }
 
-
             // Get Data Kota / Kabupaten
             $.ajax({
                 url: '/panel/get-city',
-                method: 'get',
-                dataType: 'json',
+                method: 'GET',
+                dataType: 'JSON',
                 success: function(cities) {
                     kabupaten.empty().append('<option value=""></option>');
 
                     cities.forEach(item => {
-                        console.log(item);
+                        // console.log(item);
                         kabupaten.append(`<option value="${item.code}|${item.name}">${item.name}</option>`)
                     })
 
@@ -141,8 +149,8 @@
             // Get Satuan Pendidikan
             $.ajax({
                 url: '/panel/sekolah/json/units',
-                method: 'get',
-                dataType: 'json',
+                method: 'GET',
+                dataType: 'JSON',
                 success: function(units) {
                     unit.empty().append('<option value=""></option>');
 

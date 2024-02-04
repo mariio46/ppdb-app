@@ -13,6 +13,7 @@ class SchoolController extends Controller
 {
     public function __construct(protected School $school)
     {
+        //
     }
 
     public function index(): View
@@ -25,69 +26,135 @@ class SchoolController extends Controller
         return view('has-role.school.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $response = $this->school->store(request: $request);
-        if ($response['statusCode'] == 201) {
-            return back()->with([
-                'stat' => 'success',
-                'msg' => $response['messages'],
-            ]);
-        } else {
-            return back()->with([
-                'stat' => 'error',
-                'msg' => $response['messages'],
-            ]);
+        $cabdin_id = session()->get('cabdin_id');
+
+        if ($cabdin_id == null) {
+            return back()->with(['stat' => 'error', 'msg' => 'Anda bukan Admin Cabang Dinas!']);
         }
+
+        $response = $this->school->store(request: $request, cabdin_id: $cabdin_id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.index');
     }
 
-    public function edit(string $id): View
+    public function show(Request $request, string $id, string $unit): View
     {
-        return view('has-role.school.edit', compact('id'));
-    }
-
-    public function update(Request $request, string $id): RedirectResponse
-    {
-        $response = $this->school->update(request: $request, user_id: $id);
-        if ($response['statusCode'] == 200) {
-            return back()->with([
-                'stat' => 'success',
-                'msg' => $response['messages'],
-            ]);
-        } else {
-            return back()->with([
-                'stat' => 'error',
-                'msg' => $response['messages'],
-            ]);
-        }
-    }
-
-    public function schoolMajorQuota($npsn): View
-    {
-        return view('has-role.school.major', [
-            'school' => $this->getSingleSchool($npsn),
-            'quotas' => $this->getSchoolMajorQuota(),
+        return view('has-role.school.detail', [
+            'id' => $id,
+            'unit' => $unit,
         ]);
     }
 
-    public function schoolDetail($id, $unit): View
+    public function edit(string $id, string $unit): View
     {
-        return view('has-role.school.detail', compact('id', 'unit'));
+        return view('has-role.school.edit', [
+            'id' => $id,
+            'unit' => $unit,
+        ]);
     }
 
-    public function schoolQuota($id, $unit): View
+    public function update(Request $request, string $id, string $unit): RedirectResponse
     {
-        return view('has-role.school.quota', compact('id', 'unit'));
+        $cabdin_id = session()->get('cabdin_id');
+
+        if ($cabdin_id == null) {
+            return back()->with(['stat' => 'error', 'msg' => 'Anda bukan Admin Cabang Dinas!']);
+        }
+
+        $response = $this->school->update(request: $request, school_id: $id, cabdin_id: $cabdin_id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.edit', params: ['id' => $id, 'unit' => $unit]);
     }
 
-    public function schoolZone($npsn, $unit): View
+    public function destroy(string $school_id): RedirectResponse
     {
-        return $unit == 'SMA' || $unit == 'SMA Half Boarding'
-            ? view('has-role.school.zone', compact('npsn', 'unit'))
-            : abort(404);
+        $response = $this->school->destroy(school_id: $school_id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'sekolah.index');
     }
 
-    // --------------------------------------------------DATA JSON--------------------------------------------------
+    public function quota(string $id, string $unit): View
+    {
+        return view($unit == 'smk' ? 'has-role.school.quota.smk' : 'has-role.school.quota.sma', [
+            'id' => $id,
+            'unit' => $unit,
+        ]);
+    }
+
+    public function document(string $id, string $unit): View
+    {
+        return view('has-role.school.document', [
+            'id' => $id,
+            'unit' => $unit,
+        ]);
+    }
+
+    public function coordinate(string $id, string $unit): View
+    {
+        return view('has-role.school.coordinate', [
+            'id' => $id,
+            'unit' => $unit,
+        ]);
+    }
+
+    public function zone(string $id, string $unit): View|RedirectResponse
+    {
+        if ($unit == 'smk' || $unit == 'fbs') {
+            $newUnit = $unit == 'smk' ? 'SMK' : 'Full Boading School';
+
+            return to_route('dashboard')->with([
+                'stat' => 'error',
+                'msg' => "{$newUnit} tidak memiliki wilayah zonasi",
+            ]);
+        }
+
+        return view('has-role.school.zone', [
+            'id' => $id,
+            'unit' => $unit,
+        ]);
+    }
+
+    public function verify(Request $request, string $id, string $unit): RedirectResponse
+    {
+        $verify = $this->school->verify(school_id: $id, cabdin_id: $request->attributes->get('cabdin_id'));
+
+        return $this->repositoryResponseWithPostMethod(response: $verify, route: 'sekolah.detail', params: ['id' => $id, 'unit' => $unit]);
+    }
+
+    // --------------------------------------------------DATA API JSON--------------------------------------------------
+
+    protected function schools(): JsonResponse
+    {
+        $schools = $this->school->index();
+
+        return response()->json($schools);
+    }
+
+    protected function school(string $school_id): JsonResponse
+    {
+        $school = $this->school->show(school_id: $school_id)['data'];
+
+        return response()->json($school);
+    }
+
+    protected function quotas(string $unit, string $id): JsonResponse
+    {
+        $quotas = $this->school->quotas(school_unit: $unit, school_id: $id);
+
+        return response()->json($quotas);
+    }
+
+    protected function zones(string $id): JsonResponse
+    {
+        $zones = $this->school->zones(school_id: $id);
+
+        return response()->json($zones);
+    }
+
+    // -----------------------------------------------DATA API JSON FORM DATA-----------------------------------------------
+
     protected function units(): JsonResponse
     {
         $units = [
@@ -110,232 +177,5 @@ class SchoolController extends Controller
         ];
 
         return response()->json($units);
-    }
-
-    protected function zones(): JsonResponse
-    {
-        $zones = [
-            [
-                'id' => 1,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Parepare',
-                'subdistrict' => 'Bacukiki',
-            ],
-            [
-                'id' => 2,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Parepare',
-                'subdistrict' => 'Soreang',
-            ],
-            [
-                'id' => 3,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Parepare',
-                'subdistrict' => 'Ujung',
-            ],
-            [
-                'id' => 4,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Biringkanaya',
-            ],
-            [
-                'id' => 5,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Bontoala',
-            ],
-            [
-                'id' => 6,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Kepulauan Sangkarrang',
-            ],
-            [
-                'id' => 7,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Mamajang',
-            ],
-            [
-                'id' => 8,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Makassar',
-                'subdistrict' => 'Manggala',
-            ],
-            [
-                'id' => 9,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Balusu',
-            ],
-            [
-                'id' => 10,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Mallusetasi',
-            ],
-            [
-                'id' => 11,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Pujananting',
-            ],
-            [
-                'id' => 12,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Barru',
-                'subdistrict' => 'Tanete Riaja',
-            ],
-            [
-                'id' => 13,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Alla',
-            ],
-            [
-                'id' => 14,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Anggeraja',
-            ],
-            [
-                'id' => 15,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Baraka',
-            ],
-            [
-                'id' => 16,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Enrekang',
-                'subdistrict' => 'Buntu Batu',
-            ],
-            [
-                'id' => 17,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Baranti',
-            ],
-            [
-                'id' => 18,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Duapitue',
-            ],
-            [
-                'id' => 19,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Kulo',
-            ],
-            [
-                'id' => 20,
-                'province' => 'Sulawesi Selatan',
-                'city' => 'Sidrap',
-                'subdistrict' => 'Panca Lautang',
-            ],
-        ];
-
-        return response()->json($zones);
-    }
-
-    protected function schoolsQuota($npsn, $unit): JsonResponse
-    {
-        $quota_smk = [
-            [
-                'label' => 'Teknik Komputer dan Jaringan',
-                'value' => '150 Orang',
-            ],
-            [
-                'label' => 'Teknik Kendaraan Ringan',
-                'value' => '75 Orang',
-            ],
-            [
-                'label' => 'Pemodelan dan Informasi Bangunan',
-                'value' => '100 Orang',
-            ],
-            [
-                'label' => 'Administrasi Perkantoran',
-                'value' => '200 Orang',
-            ],
-            [
-                'label' => 'Tata Rias dan Kecantikan',
-                'value' => '250 Orang',
-            ],
-            [
-                'label' => 'Perbankan dan Keuangan Syariah',
-                'value' => '50 Orang',
-            ],
-        ];
-
-        $quota_sma = [
-            [
-                // Afirmasi
-                'label' => 'Jalur Afirmasi',
-                'value' => '150 Orang',
-            ],
-            [
-                // Mutasi
-                'label' => 'Jalur Perpindahan Tugas Orang Tua',
-                'value' => '75 Orang',
-            ],
-            [
-                // Anak Guru
-                'label' => 'Jalur Anak Guru',
-                'value' => '100 Orang',
-            ],
-            [
-                // Akademik
-                'label' => 'Jalur Prestasi Akademik',
-                'value' => '50 Orang',
-            ],
-            [
-                // Non Akademik
-                'label' => 'Jalur Prestasi Non Akademik',
-                'value' => '200 Orang',
-            ],
-            [
-                // Zonasi
-                'label' => 'Jalur Zonasi',
-                'value' => '250 Orang',
-            ],
-        ];
-
-        $quota_sma_full_boarding = [
-            [
-                'label' => 'Jalur Boarding School',
-                'value' => '500 Orang',
-            ],
-        ];
-
-        $quota_sma_half_boarding = array_merge($quota_sma, $quota_sma_full_boarding);
-
-        if ($unit == 'SMA') {
-            return response()->json($quota_sma);
-        } elseif ($unit == 'SMA Half Boarding') {
-            return response()->json($quota_sma_half_boarding);
-        } elseif ($unit == 'SMA Boarding') {
-            return response()->json($quota_sma_full_boarding);
-        } elseif ($unit == 'SMK') {
-            return response()->json($quota_smk);
-        } else {
-            return response()->json(['error' => 'Quota Tidak Ditemukan'], 404);
-        }
-    }
-
-    // --------------------------------------------------DATA API JSON--------------------------------------------------
-    protected function schools(): JsonResponse
-    {
-        $schools = $this->school->index();
-
-        return response()->json($schools['data']);
-    }
-
-    protected function school(string $school_id): JsonResponse
-    {
-        $school = $this->school->show(school_id: $school_id)['data'];
-
-        return response()->json($school);
     }
 }

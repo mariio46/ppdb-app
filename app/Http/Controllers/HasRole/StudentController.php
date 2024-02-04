@@ -346,49 +346,6 @@ class StudentController extends Controller
 
     protected function getGrades(string $id): JsonResponse
     {
-        // $data = collect([
-        //     (object) [
-        //         'mata_pelajaran' => 'Bahasa Indonesia',
-        //         'semester_1' => '90',
-        //         'semester_2' => '98',
-        //         'semester_3' => '87',
-        //         'semester_4' => '98',
-        //         'semester_5' => '94',
-        //     ],
-        //     (object) [
-        //         'mata_pelajaran' => 'Bahasa Inggris',
-        //         'semester_1' => '87',
-        //         'semester_2' => '78',
-        //         'semester_3' => '79',
-        //         'semester_4' => '76',
-        //         'semester_5' => '87',
-        //     ],
-        //     (object) [
-        //         'mata_pelajaran' => 'Matematika',
-        //         'semester_1' => '70',
-        //         'semester_2' => '99',
-        //         'semester_3' => '76',
-        //         'semester_4' => '98',
-        //         'semester_5' => '98',
-        //     ],
-        //     (object) [
-        //         'mata_pelajaran' => 'IPA',
-        //         'semester_1' => '78',
-        //         'semester_2' => '89',
-        //         'semester_3' => '90',
-        //         'semester_4' => '85',
-        //         'semester_5' => '90',
-        //     ],
-        //     (object) [
-        //         'mata_pelajaran' => 'IPS',
-        //         'semester_1' => '95',
-        //         'semester_2' => '76',
-        //         'semester_3' => '87',
-        //         'semester_4' => '93',
-        //         'semester_5' => '71',
-        //     ],
-        // ]);
-
         $data = collect([
             'id' => '1',
             'siswa_id' => $id,
@@ -422,64 +379,16 @@ class StudentController extends Controller
         return response()->json($data);
     }
 
-    protected function getScores(string $username, string $semester): JsonResponse
+    public function getScores(string $id): JsonResponse
     {
-        switch ($semester) {
-            case '1':
-                $data = [
-                    'bid' => '90',
-                    'big' => '87',
-                    'mtk' => '70',
-                    'ipa' => '78',
-                    'ips' => '95',
-                ];
-                break;
-            case '2':
-                $data = [
-                    'bid' => '98',
-                    'big' => '78',
-                    'mtk' => '99',
-                    'ipa' => '89',
-                    'ips' => '76',
-                ];
-                break;
-            case '3':
-                $data = [
-                    'bid' => '87',
-                    'big' => '79',
-                    'mtk' => '76',
-                    'ipa' => '90',
-                    'ips' => '87',
-                ];
-                break;
-            case '4':
-                $data = [
-                    'bid' => '98',
-                    'big' => '76',
-                    'mtk' => '98',
-                    'ipa' => '85',
-                    'ips' => '93',
-                ];
-                break;
-            case '5':
-                $data = [
-                    'bid' => '94',
-                    'big' => '87',
-                    'mtk' => '98',
-                    'ipa' => '90',
-                    'ips' => '71',
-                ];
-                break;
-            default:
-                $data = [
-                    'bid' => '0',
-                    'big' => '0',
-                    'mtk' => '0',
-                    'ipa' => '0',
-                    'ips' => '0',
-                ];
-                break;
-        }
+        $get = $this->student->getScores($id);
+
+        return response()->json($get);
+    }
+
+    protected function getScore(string $id, string $semester): JsonResponse
+    {
+        $data = $this->student->getScore($id, $semester);
 
         return response()->json($data);
     }

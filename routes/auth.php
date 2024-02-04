@@ -4,17 +4,22 @@ use App\Http\Controllers\HasRole\AgencyController;
 use App\Http\Controllers\HasRole\DashboardController;
 use App\Http\Controllers\HasRole\FaqController;
 use App\Http\Controllers\HasRole\KeyController;
+use App\Http\Controllers\HasRole\MajorController;
 use App\Http\Controllers\HasRole\OperatorController;
 use App\Http\Controllers\HasRole\OriginSchoolController;
 use App\Http\Controllers\HasRole\RankController;
 use App\Http\Controllers\HasRole\ReregistrationController;
 use App\Http\Controllers\HasRole\ScheduleController;
 use App\Http\Controllers\HasRole\SchoolController;
+use App\Http\Controllers\HasRole\SchoolCoordinateController;
 use App\Http\Controllers\HasRole\SchoolDataController;
+use App\Http\Controllers\HasRole\SchoolQuotaController;
+use App\Http\Controllers\HasRole\SchoolZoneController;
 use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
 use App\Http\Controllers\RegionController;
+use App\Models\HasRole\SuperAdmin\Role;
 use Illuminate\Support\Facades\Route;
 
 // Prefix = /panel;
@@ -30,13 +35,11 @@ Route::controller(UserController::class)->group(function () {
     Route::get('users/{id}/lupa-password', 'forgotPassword')->name('users.lupa-password');
 
     Route::get('users/json/users', 'users');
-    Route::get('users/json/collections', 'usersCollections');
-    Route::get('users/json/rolesCollections', 'rolesCollections');
-    Route::get('users/json/regionsCollections', 'regionsCollections');
-    Route::get('users/json/schoolsCollections', 'schoolsCollections');
-    Route::get('users/json/originSchoolsCollections', 'originSchoolsCollections');
+    Route::get('users/json/roles', 'roles');
+    Route::get('users/json/regions', 'regions');
+    Route::get('users/json/schools', 'schools');
+    Route::get('users/json/origin-schools', 'originSchools');
     Route::get('users/json/user/{id}', 'user');
-    Route::get('users/json/single-user/{username}', 'singleUser');
 });
 
 Route::controller(OriginSchoolController::class)->group(function () {
@@ -64,67 +67,138 @@ Route::controller(StudentController::class)->group(function () {
     Route::post('siswa/{id}/update', 'update')->name('siswa.update');
     Route::post('siswa/{id}/score/{semester}/update-score', 'updateScore')->name('siswa.post.score');
 
-    Route::get('siswa/get-scores/{id}/{semester}', 'getScores');
-
     Route::get('siswa/json/get-list', 'getStudents')->name('siswa.json.all');
     Route::get('siswa/json/get-single/{id}', 'getSingleStudent')->name('siswa.json.single');
     Route::get('siswa/json/search-nisn/{nisn}', 'getSingleStudentByNisn')->name('siswa.json.search');
     Route::get('siswa/json/get-origin-school-list', 'getOriginSchools')->name('siswa.json.origin-school');
     Route::get('siswa/json/get-grades/{id}', 'getGrades')->name('siswa.json.grades');
+    Route::get('siswa/json/get-scores/{id}', 'getScores')->name('siswa.json.scores');
+    Route::get('siswa/json/get-score/{id}/{semester}', 'getScore')->name('siswa.json.score');
 });
 
 Route::controller(SchoolController::class)->group(function () {
     Route::get('sekolah', 'index')->name('sekolah.index');
     Route::get('sekolah/create', 'create')->name('sekolah.create');
     Route::post('sekolah/store', 'store')->name('sekolah.store');
-    Route::get('sekolah/{id}/edit', 'edit')->name('sekolah.edit');
-    Route::post('sekolah/{id}/update', 'update')->name('sekolah.update');
-    Route::get('sekolah/{id}/{unit}/info-sekolah', 'schoolDetail')->name('sekolah.detail');
-    Route::get('sekolah/{id}/{unit}/kuota-sekolah', 'schoolQuota')->name('sekolah.quota');
-    Route::get('sekolah/{id}/{unit}/wilayah-zonasi', 'schoolZone')->name('sekolah.zone');
-    Route::get('sekolah/{id}/{unit}/jurusan-dan-kuota', 'schoolMajorQuota')->name('sekolah.major-quota');
+
+    Route::get('sekolah/{id}/{unit}/info-sekolah', 'show')->name('sekolah.detail');
+
+    Route::get('sekolah/{id}/{unit}/edit', 'edit')->name('sekolah.edit')->middleware(['HasRole.isSchoolHasLock']);
+    Route::post('sekolah/{id}/{unit}/update', 'update')->name('sekolah.update')->middleware(['HasRole.isSchoolHasLock']);
+
+    Route::post('sekolah/{id}/{unit}/destroy', 'destroy')->name('sekolah.destroy')->middleware(['HasRole.isSuperAdmin']);
+
+    Route::get('sekolah/{id}/{unit}/kuota', 'quota')->name('sekolah.quota');
+    Route::get('sekolah/{id}/{unit}/zonasi', 'zone')->name('sekolah.zones');
+    Route::get('sekolah/{id}/{unit}/dokumen', 'document')->name('sekolah.document');
+    Route::get('sekolah/{id}/{unit}/koordinat', 'coordinate')->name('sekolah.coordinate');
+
+    Route::post('sekolah/{id}/{unit}/verify', 'verify')->name('sekolah.verify')->middleware(['HasRole.verifySchool']);
 
     Route::get('sekolah/json/units', 'units');
-    Route::get('sekolah/json/zones', 'zones');
     Route::get('sekolah/json/schools-collections', 'schools');
+    Route::get('sekolah/json/admin-cabang-dinas', 'usersWithRoleAdminCabangDinas');
     Route::get('sekolah/json/single-school/{id}', 'school');
-    Route::get('sekolah/json/schools-quota/{npsn}/{unit}', 'schoolsQuota');
+    Route::get('sekolah/json/zones/{id}', 'zones');
+    Route::get('sekolah/json/quotas/{unit}/{id}', 'quotas');
 });
 
 Route::controller(SchoolDataController::class)->group(function () {
     Route::get('data-sekolah', 'index')->name('school-data.index');
-    Route::get('data-sekolah/edit', 'edit')->name('school-data.edit');
-    Route::get('data-sekolah/quota', 'quota')->name('school-data.quota');
-    Route::get('data-sekolah/dokumen', 'document')->name('school-data.document');
-    Route::get('data-sekolah/quota/add', 'addQuota')->name('school-data.add-quota');
-    Route::get('data-sekolah/quota/edit/{identifier}', 'editQuota')->name('school-data.edit-quota');
 
-    Route::get('data-sekolah/json/school/{school_id}', 'school');
-    // Route::get('data-sekolah/json/form-data-percentage', 'formDataPercentage');
-    // Route::get('data-sekolah/json/school/{id}', 'school');
-    // Route::get('data-sekolah/json/major-quota/{identifier}', 'majorQuota');
-    // Route::get('data-sekolah/json/school-quota/{unit}', 'schoolsQuota');
+    Route::get('data-sekolah/dokumen', 'document')->name('school-data.document');
+
+    Route::get('data-sekolah/edit', 'edit')->name('school-data.edit');
+    Route::post('data-sekolah/{id}/update', 'update')->name('school-data.update'); // Route Action for update data sekolah
+    Route::post('data-sekolah/{id}/update-logo', 'logos')->name('school-data.logos-update'); // Route Action for update logo sekolah
+
+    Route::post('data-sekolah/{id}/{unit}/lock', 'lock')->name('school-data.lock'); // Kunci Data Sekolah
+
+    Route::get('data-sekolah/dokumen/pakta-integritas/pdf', 'firstDocumentPdf')->name('school-data.firstDocumentPdf'); // Route Action for upload pakta integritas
+    Route::post('data-sekolah/dokumen/pakta-integritas/{id}', 'firstDocument')->name('school-data.firstDocument'); // Route Action for upload pakta integritas
+    Route::post('data-sekolah/dokumen/sk-ppdb/{id}', 'secondDocument')->name('school-data.secondDocument'); // Route Action for upload SK PPDB
+
+    Route::get('data-sekolah/json/school/{school_id}', 'school')->name('school-data.json.school');
+    Route::get('data-sekolah/json/districts/{code}', 'districts');
 });
 
-Route::controller(OperatorController::class)->group(function () {
-    Route::get('operators', 'index')->name('operators.index');
-    Route::get('operators/create', 'create')->name('operators.create');
-    Route::get('operators/{username}', 'show')->name('operators.show');
-    Route::get('operators/{username}/edit', 'edit')->name('operators.edit');
+Route::controller(SchoolQuotaController::class)->group(function () {
+    Route::get('kuota-sekolah', 'index')->name('school-quota.index');
 
-    Route::get('operators/json/operators', 'operators');
-    Route::get('operators/json/singleOperator/{username}', 'singleOperator');
+    Route::get('kuota-sekolah/create', 'create')->name('school-quota.create');
+    Route::post('kuota-sekolah/store-smk', 'storeSmk')->name('school-quota.store-smk');
+    Route::post('kuota-sekolah/store-sma', 'storeSma')->name('school-quota.store-sma');
+
+    Route::get('kuota-sekolah/{id}/edit', 'edit')->name('school-quota.edit');
+    Route::post('kuota-sekolah/{id}/update-smk', 'updateSmk')->name('school-quota.update-smk');
+    Route::post('kuota-sekolah/{id}/update-sma', 'updateSma')->name('school-quota.update-sma');
+
+    Route::post('kuota-sekolah/{id}/destroy', 'destroy')->name('school-quota.destroy');
+
+    Route::get('kuota-sekolah/json/majors', 'majors');
+    Route::get('kuota-sekolah/json/quotas/{school_unit}/{id}', 'quotas');
+    Route::get('kuota-sekolah/json/quotas/{school_unit}/{id}/quota', 'quota');
+});
+
+Route::controller(SchoolZoneController::class)->group(function () {
+    Route::get('zonasi-sekolah', 'index')->name('school-zone.index');
+    Route::get('zonasi-sekolah/{id}', 'edit')->name('school-zone.edit');
+    Route::post('zonasi-sekolah/store/{id}', 'store')->name('school-zone.store');
+    Route::post('zonasi-sekolah/update/{id}', 'update')->name('school-zone.update');
+    Route::post('zonasi-sekolah/destroy/{id}', 'destroy')->name('school-zone.destroy');
+
+    Route::get('zonasi-sekolah/json/zones/{id}', 'zones');
+    Route::get('zonasi-sekolah/json/zone/{id}', 'zone');
+
+    Route::get('zonasi-sekolah/json-form-data/provinces', 'provinces');
+    Route::get('zonasi-sekolah/json-form-data/cities/{code}', 'cities');
+    Route::get('zonasi-sekolah/json-form-data/districts/{code}', 'districts');
+});
+
+Route::controller(SchoolCoordinateController::class)->group(function () {
+    Route::get('koordinat-sekolah', 'index')->name('school-coordinate.index');
+    Route::get('koordinat-sekolah/edit', 'edit')->name('school-coordinate.edit');
+    Route::post('koordinat-sekolah/{id}/update', 'update')->name('school-coordinate.update'); // Route Action for update lokasi / koordinats sekolah
+});
+
+Route::controller(OperatorController::class)->middleware('HasRole.accessOperator')->group(function () {
+    Route::get('operators', 'index')->name('operators.index');
+
+    Route::get('operators/create', 'create')->name('operators.create')->middleware('HasRole.storeOperator');
+    Route::post('operators/store', 'store')->name('operators.store')->middleware('HasRole.storeOperator');
+
+    Route::get('operators/pdf', 'pdf')->name('operators.pdf')->withoutMiddleware('HasRole.accessOperator');
+    // Route::post('operators/pdf', 'pdf')->name('operators.pdf');
+
+    Route::get('operators/{id}', 'show')->name('operators.show');
+
+    Route::post('operators/{id}/verify', 'verify')->name('operators.verify')->middleware('HasRole.verifyOperator');
+    Route::post('operators/{id}/update', 'update')->name('operators.update')->middleware('HasRole.updateStatusOperator');
+
+    Route::get('operators/json/operator/{id}', 'operator');
+    Route::get('operators/json/operators/{key}/{param}', 'operators');
 });
 
 Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual', 'manual')->name('verifikasi.manual');
-    Route::get('verifikasi-manual/get-data', 'manualGetData');
     Route::get('verifikasi-manual/d/{id}', 'manualDetail')->name('verifikasi.manual.detail');
-    Route::get('verifikasi-manual/d/{id}/get-data-detail', 'manualgetDetailData')->name('verifikasi.manual.getdetail');
     Route::get('verifikasi-manual/d/{id}/edit-nilai', 'manualScore')->name('verifikasi.manual.score');
-    Route::get('verifikasi-manual/d/{id}/edit-titik-rumah', 'manualMap')->name('verifikasi.manual.map');
+    Route::get('verifikasi-manual/d/{id}/edit-titik-rumah/{student_id}', 'manualMap')->name('verifikasi.manual.map');
+    Route::get('verifikasi-manual/d/{id}/edit-prestasi', 'manualAchievement')->name('verifikasi.manual.achievement');
+    Route::get('verifikasi-manual/d/{id}/cetak', 'manualPrint')->name('verifikasi.manual.pdf');
+
+    Route::post('verifikasi-manual/d/{id}/update-score', 'manualUpdateScore')->name('verifikasi.manual.update-score');
+    Route::post('verifikasi-manual/d/{id}/update-map', 'manualUpdateMap')->name('verifikasi.manual.update-map');
+    Route::post('verifikasi-manual/d/{id}/update-achievement', 'manualUpdateAchievement')->name('verifikasi.manual.update-achievement');
+    Route::post('verifikasi-manual/d/{id}/is-color-blind', 'manualUpdateColorBlind')->name('verifikasi.manual.color-blind');
+    Route::post('verifikasi-manual/d/{id}/is-short', 'manualUpdateShort')->name('verifikasi.manual.short');
     Route::post('verifikasi-manual/d/{id}/accept-verication', 'manualAcceptVerification')->name('verifikasi.manual.accept');
     Route::post('verifikasi-manual/d/{id}/decline-verication', 'manualDeclineVerification')->name('verifikasi.manual.decline');
+
+    Route::get('verifikasi-manual/get-data', 'manualGetData');
+    Route::get('verifikasi-manual/d/{id}/get-data-detail', 'manualgetDetailData')->name('verifikasi.manual.getdetail');
+    Route::get('json/verifikasi-manual/get-time', 'getTimeVerification')->name('verifikasi.manual.get-time');
+    Route::get('json/verifikasi-manual/get-coordinate/{student_id}', 'getCoordinate')->name('verifikasi.manual.get-coordinate');
 
     // Route::get('verifikasi-daftar-ulang', 'reregistration')->name('verifikasi.daftar-ulang');
     // Route::get('verifikasi-daftar-ulang/{nisn}', 'reregistrationShow')->name('verifikasi.daftar-ulang.show');
@@ -187,10 +261,24 @@ Route::controller(ScheduleController::class)->group(function () {
 Route::controller(FaqController::class)->group(function () {
     Route::get('faqs', 'index')->name('faqs.index');
     Route::get('faqs/create', 'create')->name('faqs.create');
-    Route::get('faqs/{slug}/edit', 'edit')->name('faqs.edit');
+    Route::post('faqs/store', 'store')->name('faqs.store');
+    Route::get('faqs/{id}/edit', 'edit')->name('faqs.edit');
+    Route::post('faqs/{id}/update', 'update')->name('faqs.update');
+    Route::post('faqs/{id}/destroy', 'destroy')->name('faqs.destroy');
 
     Route::get('faqs/json/faqs', 'faqs');
-    Route::get('faqs/json/faq/{slug}', 'faq');
+    Route::get('faqs/json/faq/{id}', 'faq');
+});
+
+Route::controller(MajorController::class)->group(function () {
+    Route::get('jurusan', 'index')->name('majors.index');
+    Route::post('jurusan/store', 'store')->name('majors.store');
+    Route::get('jurusan/{id}/edit', 'edit')->name('majors.edit');
+    Route::post('jurusan/{id}/update', 'update')->name('majors.update');
+    Route::post('jurusan/{id}/destroy', 'destroy')->name('majors.destroy');
+
+    Route::get('jurusan/json/majors', 'majors');
+    Route::get('jurusan/json/major/{id}', 'major');
 });
 
 Route::controller(RegionController::class)->group(function () {

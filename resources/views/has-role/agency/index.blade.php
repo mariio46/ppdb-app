@@ -27,12 +27,6 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            @if (session()->get('msg'))
-                <div class="alert alert-{{ session()->get('stat') }} p-1">
-                    <p class="text-center">{{ session()->get('msg') }}</p>
-                </div>
-            @endif
-
             <div class="card">
                 <div class="card-body px-0 border-top">
                     <table class="table table-agency border-bottom">
@@ -102,7 +96,10 @@
                     <"d-block d-md-none align-items-center"<"row"<"col-12"<"add-button-sm">><"col-12"f>>>
                     <"table-responsive"<t>>
                     <"row g-0"<"col-sm-12 col-md-5 ps-1"i><"col-sm-12 pe-1 col-md-7"p>>`,
-                    ordering: false,
+                    // ordering: false,
+                    order: [
+                        [0, 'asc']
+                    ],
                     lengthMenu: [
                         [10, 25, 50, 100],
                         [10, 25, 50, "100"]

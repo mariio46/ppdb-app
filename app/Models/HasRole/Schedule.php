@@ -10,22 +10,28 @@ class Schedule extends Base
     //------------------------------------------------------------GET
     public function getDataSchedules(): array // A.12.001
     {
-        return $this->getWithToken('tahap');
+        return $this->serverResponseWithGetMethod($this->getWithToken('tahap'));
     }
 
     public function getDetailData(string $id): array // A.12.003
     {
-        return $this->getWithToken("tahap/batas?id=$id");
+        $get = $this->getWithToken("tahap/batas?id=$id");
+
+        return $this->serverResponseWithGetMethod($get);
     }
 
     public function getDataSchedule(string $id): array // A.12.005
     {
-        return $this->getWithToken("tahap/detail?id=$id");
+        $get = $this->getWithToken("tahap/detail?id=$id");
+
+        return $this->serverResponseWithGetMethod($get);
     }
 
     public function getDetailTime(string $id, string $type): array // A.12.007
     {
-        return $this->getWithToken("batas/jenis?id=$id&tipe=$type");
+        $get = $this->getWithToken("batas/jenis?id=$id&tipe=$type");
+
+        return $this->serverResponseWithGetMethod($get);
     }
 
     //------------------------------------------------------------POST
@@ -40,21 +46,13 @@ class Schedule extends Base
             'pengumuman' => $request->announcement,
             'daftar_ulang_mulai' => $request->re_regis_start,
             'daftar_ulang_selesai' => $request->re_regis_end,
-            'sma' => $request->sma,
-            'smk' => $request->smk,
+            'sma' => $request->sma ?? [],
+            'smk' => $request->smk ?? [],
         ];
 
         $save = $this->postWithToken('tahap/create', $data);
 
-        if ($save['status_code'] == 201 || $save['status_code'] == 200) {
-            return $save['response'];
-        } else {
-            return [
-                'statusCode' => $save['status_code'],
-                'messages' => 'Gagal menyimpan data.',
-                'data' => [],
-            ];
-        }
+        return $this->serverResponseWithPostMethod($save);
     }
 
     public function updatePhase(Request $request, string $id): array // A.12.006
@@ -68,8 +66,8 @@ class Schedule extends Base
             'pengumuman' => $request->announcement,
             'daftar_ulang_mulai' => $request->reRegisStart,
             'daftar_ulang_selesai' => $request->reRegisEnd,
-            'sma' => $request->post('sma'),
-            'smk' => $request->post('smk'),
+            'sma' => $request->sma ?? [],
+            'smk' => $request->smk ?? [],
         ];
 
         $upd = $this->postWithToken('tahap/update', $data);
@@ -91,21 +89,12 @@ class Schedule extends Base
             'id' => $id,
         ]);
 
-        if ($del['status_code'] == 200) {
-            return $del['response'];
-        } else {
-            return [
-                'statusCode' => $del['status_code'],
-                'messages' => 'Gagal menghapus data.',
-                'data' => [],
-            ];
-        }
+        return $this->serverResponseWithPostMethod($del);
     }
 
     public function updateTime(array $data): bool // A.12.008
     {
         $upd = $this->postWithToken('batas/create', $data);
-        // dd($upd);
 
         if ($upd['status_code'] == 200 || $upd['status_code'] == 201) {
             if ($upd['response']['statusCode'] == 200 || $upd['response']['statusCode'] == 201) {

@@ -3,14 +3,27 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\HasRole\OperatorRepository as Operator;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class OperatorController extends Controller
 {
-    public function index(): View
+    public function __construct(protected Operator $operator)
     {
-        return view('has-role.operator.index');
+        //
+    }
+
+    public function index(Request $request): View
+    {
+        return view('has-role.operator.index', [
+            'key' => $request->attributes->get('key'),
+            'param' => $request->attributes->get('param'),
+        ]);
     }
 
     public function create(): view
@@ -18,64 +31,52 @@ class OperatorController extends Controller
         return view('has-role.operator.create');
     }
 
-    public function show(string $username): View
+    public function pdf(): Response
     {
-        return view('has-role.operator.show', compact('username'));
+        return Pdf::loadView('has-role.operator.pdf')->stream(now()->addMinute().mt_rand(9999, 99999).'.pdf');
     }
 
-    public function edit(string $username): View
+    public function store(Request $request): RedirectResponse
     {
-        return view('has-role.operator.edit', ["id" => $username]);
+        $response = $this->operator->store(request: $request, param: $request->attributes->get('param'));
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'operators.index');
     }
 
-    // --------------------------------------------------DATA JSON--------------------------------------------------
-    protected function singleOperator(string $username): JsonResponse
+    public function show(Request $request, string $id): View
     {
-        $operator = collect($this->operators()->original)->firstWhere('username', $username);
-
-        return response()->json($operator);
+        return view('has-role.operator.show', [
+            'id' => $id,
+            'key' => $request->attributes->get('key'),
+        ]);
     }
 
-    protected function operators(): JsonResponse
+    public function verify(string $id): RedirectResponse
     {
-        $operators = [
-            [
-                'id' => 1,
-                'nama' => 'Mawardi',
-                'nama_pengguna' => 'mawar58468',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 1,
-            ],
-            [
-                'id' => 2,
-                'nama' => 'Rais',
-                'nama_pengguna' => 'rais23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 3,
-            ],
-            [
-                'id' => 3,
-                'nama' => 'Edi Siswanto',
-                'nama_pengguna' => 'edi23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 1,
-            ],
-            [
-                'id' => 4,
-                'nama' => 'Aldi Taher',
-                'nama_pengguna' => 'taher23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 3,
-            ],
-            [
-                'id' => 5,
-                'nama' => 'Ainun Amirah',
-                'nama_pengguna' => 'ainun23078',
-                'sekolah_nama' => 'hehe',
-                'status_aktif' => 2,
-            ],
-        ];
+        $response = $this->operator->verify(operator_id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'operators.show', params: $id);
+    }
+
+    public function update(Request $request, string $id): RedirectResponse
+    {
+        $response = $this->operator->status(request: $request, operator_id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'operators.show', params: $id);
+    }
+
+    // --------------------------------------------------DATA API JSON--------------------------------------------------
+    protected function operators(string $key, string $param): JsonResponse
+    {
+        $operators = $this->operator->index(key: $key, param: $param);
 
         return response()->json($operators);
+    }
+
+    public function operator(string $id): JsonResponse
+    {
+        $operator = $this->operator->show(operator_id: $id);
+
+        return response()->json($operator['data']);
     }
 }

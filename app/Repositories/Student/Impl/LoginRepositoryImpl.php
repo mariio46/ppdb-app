@@ -50,14 +50,42 @@ class LoginRepositoryImpl implements LoginRepository
     {
         $logout = $this->loginModel->logout(session()->get('stu_id'));
 
-        $result = [];
-        if ($logout['status_code'] == 200) {
+        // $result = [];
+        // if ($logout['status_code'] == 200) {
+        //     session()->flush();
+        //     $result = ['success' => true, 'code' => 200, 'message' => 'Kamu berhasil logout.'];
+        // } else {
+        //     $result = ['success' => false, 'code' => $logout['status_code'], 'message' => 'failed.'];
+        // }
+
+        // return $result;
+        if ($logout['statusCode'] == 200) {
             session()->flush();
-            $result = ['success' => true, 'code' => 200, 'message' => 'Kamu berhasil logout.'];
-        } else {
-            $result = ['success' => false, 'code' => $logout['status_code'], 'message' => 'failed.'];
         }
 
-        return $result;
+        return $logout;
+    }
+
+    //------------------------------------------------------------FUNC
+    public function login(string $nisn, string $password): array
+    {
+        $auth = $this->loginModel->login($nisn, $password);
+
+        if ($auth['statusCode'] == 200) {
+            session()->put([
+                'stu_id' => $auth['data']['id'],
+                'stu_name' => $auth['data']['nama'],
+                'stu_nisn' => $auth['data']['nisn'],
+                'stu_school' => $auth['data']['sekolah_asal'],
+                'stu_gender' => $auth['data']['jenis_kelamin'],
+                'stu_profile_img' => $auth['data']['pasfoto'],
+                'stu_token' => $auth['data']['token'],
+                'stu_is_regis' => $auth['data']['status_pendaftaran'] == 'belum_mendaftar' ? false : true,
+                'stu_is_locked' => $auth['data']['kunci'] == '0' ? false : true,
+                'is_login' => true,
+            ]);
+        }
+
+        return $auth;
     }
 }

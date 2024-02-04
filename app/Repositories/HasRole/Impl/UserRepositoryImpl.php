@@ -5,6 +5,7 @@ namespace App\Repositories\HasRole\Impl;
 use App\Models\HasRole\User;
 use App\Repositories\HasRole\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class UserRepositoryImpl implements UserRepository
 {
@@ -36,5 +37,27 @@ class UserRepositoryImpl implements UserRepository
     public function destroy(string $user_id): array
     {
         return $this->user->deleteUser(user_id: $user_id);
+    }
+
+    // -------------------------FORM DATA-------------------------
+
+    public function regions(): Collection
+    {
+        return $this->user->getRegionsList();
+    }
+
+    public function schools(): Collection
+    {
+        return $this->user->getSchoolList();
+    }
+
+    public function originSchools(): Collection
+    {
+        return $this->user->getOriginSchoolsList();
+    }
+
+    public function roles(): Collection
+    {
+        return $this->user->getRolesList();
     }
 }

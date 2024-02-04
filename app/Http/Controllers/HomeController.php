@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
-    public function __invoke(Request $request): RedirectResponse
+    public function index(): View
     {
-        return to_route('dashboard');
+        return view('landing-page-x');
+    }
+
+    public function announcement(): View
+    {
+        return view('announcement');
+    }
+
+    public function mapZone()
+    {
+        return view('zone-map');
     }
 }

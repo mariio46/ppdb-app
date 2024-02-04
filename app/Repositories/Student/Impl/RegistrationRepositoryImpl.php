@@ -3,54 +3,43 @@
 namespace App\Repositories\Student\Impl;
 
 use App\Models\Student\RegistrationModel;
+use App\Models\Track;
 use App\Repositories\Student\RegistrationRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class RegistrationRepositoryImpl implements RegistrationRepository
 {
     public function __construct(
-        public RegistrationModel $registrationModel
+        public RegistrationModel $registrationModel,
+        protected Track $track,
     ) {
     }
 
     public function getSchedules(): array
     {
-        $get = $this->registrationModel->getSchedules();
-
-        return $get;
+        return $this->registrationModel->getSchedules();
     }
 
     public function getRegistrationDataByPhase(string $phase): array
     {
-        return $this->registrationModel->getRegistrationDataByPhase($phase);
+        $student_id = session()->get('stu_id');
+
+        return $this->registrationModel->getRegistrationDataByPhase($student_id, $phase);
     }
 
     public function getScheduleByPhaseCode(string $phase): array
     {
-        // $phase = json_decode(Crypt::decryptString($code))->phase;
-
         $data = $this->registrationModel->getScheduleByPhaseCode($phase);
 
         foreach (['sma', 'smk'] as $schoolType) {
             if (isset($data['data'][$schoolType]) && is_array($data['data'][$schoolType])) {
                 foreach ($data['data'][$schoolType] as &$track) {
-                    $track['slug'] = $phase . '_' . $data['data']['tahap_id'] . '_' . $track['kode'];
+                    $track['slug'] = $phase.'_'.$data['data']['tahap_id'].'_'.$track['kode'];
                     $track['jalur'] = str_replace(['SMA', 'SMK'], '', $track['jalur']);
-                    $track['info'] = $this->registrationModel->informations[$track['kode']];
+                    $track['info'] = $this->track->getInfo($track['kode']);
                 }
             }
         }
-
-        // foreach ($data['data'] as &$tahap) {
-        //     foreach (['sma', 'smk'] as $school) {
-        //         foreach ($tahap[$school] as &$track) {
-        //             $track['slug'] = Crypt::encryptString(json_encode(['phase' => $phase, 'track' => $track['kode']]));
-        //             $track['jalur'] = str_replace(['SMA', 'SMK'], "", $track['jalur']);
-        //             $track['info'] = $this->registrationModel->informations[$track['kode']];
-        //         }
-        //     }
-        // }
 
         // $data['data']['jam_mulai'] = '00:00'; // format tt:mm
         // $data['data']['jam_selesai'] = '23:59';
@@ -60,271 +49,114 @@ class RegistrationRepositoryImpl implements RegistrationRepository
 
     public function postSaveRegistration(string $phase, string $phaseId, string $trackCode, Request $request): array
     {
-        switch ($trackCode) {
-            case 'AA':
-                $data = [
-                    "siswa_id"          => session()->get("stu_id"),
-                    "tahap_id"          => $phaseId,
-                    "tahap"             => $phase,
-                    "kode_jalur"        => $trackCode,
-                    "jenis_afirmasi"    => $request->affirmationType,
-                    "no_pkh"            => $request->affirmationNumber,
-                    "sekolah1_id"       => $request->school1,
-                    "sekolah1_nama"     => $request->school1Name,
-                    "sekolah2_id"       => $request->school2,
-                    "sekolah2_nama"     => $request->school2Name,
-                    "sekolah3_id"       => $request->school3,
-                    "sekolah3_nama"     => $request->school3Name,
-                    "sekolah_verif_id"  => $request->schoolVerif,
-                    "nama_siswa"        => session()->get('stu_name'),
-                    "nisn"              => session()->get('stu_nisn'),
+        $data = [
+            'siswa_id' => session()->get('stu_id'),
+            'tahap_id' => $phaseId,
+            'tahap' => $phase,
+            'kode_jalur' => $trackCode,
+            'sekolah1_id' => $request->school1,
+            'sekolah1_nama' => $request->school1Name,
+            'nama_siswa' => session()->get('stu_name'),
+            'nisn' => session()->get('stu_nisn'),
+            'jenis_kelamin' => session()->get('stu_gender'),
+        ];
 
-                    // 'affType' => $request->post('affirmationType'),
-                    // 'affNum' => $request->post('affirmationNumber'),
-                    // 'city1' => $request->post('city1'),
-                    // 'city1Name' => $request->post('city1Name'),
-                    // 'school1' => $request->post('school1'),
-                    // 'school1Name' => $request->post('school1Name'),
-                    // 'city2' => $request->post('city2'),
-                    // 'city2Name' => $request->post('city2Name'),
-                    // 'school2' => $request->post('school2'),
-                    // 'school2Name' => $request->post('school2Name'),
-                    // 'city3' => $request->post('city3'),
-                    // 'city3Name' => $request->post('city3Name'),
-                    // 'school3' => $request->post('school3'),
-                    // 'school3Name' => $request->post('school3Name'),
-                    // 'schoolVerif' => $request->post('schoolVerif'),
-                    // 'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
+        switch ($trackCode) {
+            case 'AA': // afirmasi
+                $data['jenis_afirmasi'] = $request->affirmationType;
+                $data['no_pkh'] = $request->affirmationNumber;
+                $data['sekolah2_id'] = $request->school2;
+                $data['sekolah2_nama'] = $request->school2Name;
+                $data['sekolah3_id'] = $request->school3;
+                $data['sekolah3_nama'] = $request->school3Name;
+                $data['sekolah_verif_id'] = $request->schoolVerif;
                 break;
-            case 'AB':
-                $data = [
-                    'code' => $trackCode,
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
+            case 'AB': // mutasi
+            case 'AD': // prestasi akademik
+            case 'AF': // zonasi
+                $data['sekolah2_id'] = $request->school2;
+                $data['sekolah2_nama'] = $request->school2Name;
+                $data['sekolah3_id'] = $request->school3;
+                $data['sekolah3_nama'] = $request->school3Name;
+                $data['sekolah_verif_id'] = $request->schoolVerif;
                 break;
-            case 'AC':
-                $data = [
-                    'code' => $trackCode,
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                ];
+            case 'AC': // anak guru
+            case 'AG': // boarding school
+                $data['sekolah_verif_id'] = $request->school1;
                 break;
-            case 'AD':
-                $data = [
-                    'code' => $trackCode,
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'city2' => $request->post('city2'),
-                    'city2Name' => $request->post('city2Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'city3' => $request->post('city3'),
-                    'city3Name' => $request->post('city3Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
+            case 'AE': // prestasi non akademik
+                $data['prestasi_jenis'] = $request->achievementType;
+                $data['prestasi_tingkat'] = $request->achievementLevel;
+                $data['prestasi_juara'] = $request->achievementChamp;
+                $data['prestasi_nama'] = $request->achievementName;
+                $data['bobot'] = $request->achievementWeight;
+                $data['sekolah2_id'] = $request->school2;
+                $data['sekolah2_nama'] = $request->school2Name;
+                $data['sekolah3_id'] = $request->school3;
+                $data['sekolah3_nama'] = $request->school3Name;
+                $data['sekolah_verif_id'] = $request->schoolVerif;
                 break;
-            case 'AE':
-                $data = [
-                    'code' => $trackCode,
-                    'achType' => $request->post('achievementType'),
-                    'achLevel' => $request->post('achievementLevel'),
-                    'achChamp' => $request->post('achievementChamp'),
-                    'achName' => $request->post('achievementName'),
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'city2' => $request->post('city2'),
-                    'city2Name' => $request->post('city2Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'city3' => $request->post('city3'),
-                    'city3Name' => $request->post('city3Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
+            case 'KA': // afirmasi
+                $data['jenis_afirmasi'] = $request->affirmationType;
+                $data['no_pkh'] = $request->affirmationNumber;
+                $data['jurusan1_id'] = $request->department1;
+                $data['jurusan1_nama'] = $request->department1Name;
+                $data['sekolah2_id'] = $request->school2;
+                $data['sekolah2_nama'] = $request->school2Name;
+                $data['jurusan2_id'] = $request->department2;
+                $data['jurusan2_nama'] = $request->department2Name;
+                $data['sekolah3_id'] = $request->school3;
+                $data['sekolah3_nama'] = $request->school3Name;
+                $data['jurusan3_id'] = $request->department3;
+                $data['jurusan3_nama'] = $request->department3Name;
+                $data['sekolah_verif_id'] = $request->schoolVerif;
                 break;
-            case 'AF':
-                $data = [
-                    'code' => $trackCode,
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
+            case 'KB': // mutasi
+            case 'KD': // prestasi akademik
+            case 'KF': // domisili terdekat
+                $data['jurusan1_id'] = $request->department1;
+                $data['jurusan1_nama'] = $request->department1Name;
+                $data['sekolah2_id'] = $request->school2;
+                $data['sekolah2_nama'] = $request->school2Name;
+                $data['jurusan2_id'] = $request->department2;
+                $data['jurusan2_nama'] = $request->department2Name;
+                $data['sekolah3_id'] = $request->school3;
+                $data['sekolah3_nama'] = $request->school3Name;
+                $data['jurusan3_id'] = $request->department3;
+                $data['jurusan3_nama'] = $request->department3Name;
+                $data['sekolah_verif_id'] = $request->schoolVerif;
                 break;
-            case 'AG':
-                $data = [
-                    'code' => $trackCode,
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                ];
+            case 'KC': // anak guru
+            case 'KG': // anak dudi
+                $data['jurusan1_id'] = $request->department1;
+                $data['jurusan1_nama'] = $request->department1Name;
+                $data['sekolah2_id'] = $request->school1;      // hanya bisa memilih 1 sekolah
+                $data['sekolah2_nama'] = $request->school1Name;  // hanya bisa memilih 1 sekolah
+                $data['jurusan2_id'] = $request->department2;
+                $data['jurusan2_nama'] = $request->department2Name;
+                $data['sekolah3_id'] = $request->school1;      // hanya bisa memilih 1 sekolah
+                $data['sekolah3_nama'] = $request->school1Name;  // hanya bisa memilih 1 sekolah
+                $data['jurusan3_id'] = $request->department3;
+                $data['jurusan3_nama'] = $request->department3Name;
+                $data['sekolah_verif_id'] = $request->school1;      // hanya bisa memilih 1 sekolah
                 break;
-            case 'KA':
-                $data = [
-                    'code' => $trackCode,
-                    'affType' => $request->post('affirmationType'),
-                    'affNum' => $request->post('affirmationNumber'),
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'depart1' => $request->post('department1'),
-                    'depart1Name' => $request->post('department1Name'),
-                    'city2' => $request->post('city2'),
-                    'city2Name' => $request->post('city2Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'depart2' => $request->post('department2'),
-                    'depart2Name' => $request->post('department2Name'),
-                    'city3' => $request->post('city3'),
-                    'city3Name' => $request->post('city3Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'depart3' => $request->post('department3'),
-                    'depart3Name' => $request->post('department3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
-                break;
-            case 'KB':
-                $data = [
-                    'code' => $trackCode,
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'depart1' => $request->post('department1'),
-                    'depart1Name' => $request->post('department1Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'depart2' => $request->post('department2'),
-                    'depart2Name' => $request->post('department2Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'depart3' => $request->post('department3'),
-                    'depart3Name' => $request->post('department3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
-                break;
-            case 'KC':
-            case 'KG':
-                $data = [
-                    'code' => $trackCode,
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'depart1' => $request->post('department1'),
-                    'depart1Name' => $request->post('department1Name'),
-                    'depart2' => $request->post('department2'),
-                    'depart2Name' => $request->post('department2Name'),
-                    'depart3' => $request->post('department3'),
-                    'depart3Name' => $request->post('department3Name'),
-                ];
-                break;
-            case 'KD':
-                $data = [
-                    'code' => $trackCode,
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'depart1' => $request->post('department1'),
-                    'depart1Name' => $request->post('department1Name'),
-                    'city2' => $request->post('city2'),
-                    'city2Name' => $request->post('city2Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'depart2' => $request->post('department2'),
-                    'depart2Name' => $request->post('department2Name'),
-                    'city3' => $request->post('city3'),
-                    'city3Name' => $request->post('city3Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'depart3' => $request->post('department3'),
-                    'depart3Name' => $request->post('department3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
-                break;
-            case 'KE':
-                $data = [
-                    'code' => $trackCode,
-                    'achType' => $request->post('achievementType'),
-                    'achLevel' => $request->post('achievementLevel'),
-                    'achChamp' => $request->post('achievementChamp'),
-                    'achName' => $request->post('achievementName'),
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'depart1' => $request->post('department1'),
-                    'depart1Name' => $request->post('department1Name'),
-                    'city2' => $request->post('city2'),
-                    'city2Name' => $request->post('city2Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'depart2' => $request->post('department2'),
-                    'depart2Name' => $request->post('department2Name'),
-                    'city3' => $request->post('city3'),
-                    'city3Name' => $request->post('city3Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'depart3' => $request->post('department3'),
-                    'depart3Name' => $request->post('department3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
-                break;
-            case 'KF':
-                $data = [
-                    'code' => $trackCode,
-                    'city1' => $request->post('city1'),
-                    'city1Name' => $request->post('city1Name'),
-                    'school1' => $request->post('school1'),
-                    'school1Name' => $request->post('school1Name'),
-                    'depart1' => $request->post('department1'),
-                    'depart1Name' => $request->post('department1Name'),
-                    'city2' => $request->post('city2'),
-                    'city2Name' => $request->post('city2Name'),
-                    'school2' => $request->post('school2'),
-                    'school2Name' => $request->post('school2Name'),
-                    'depart2' => $request->post('department2'),
-                    'depart2Name' => $request->post('department2Name'),
-                    'city3' => $request->post('city3'),
-                    'city3Name' => $request->post('city3Name'),
-                    'school3' => $request->post('school3'),
-                    'school3Name' => $request->post('school3Name'),
-                    'depart3' => $request->post('department3'),
-                    'depart3Name' => $request->post('department3Name'),
-                    'schoolVerif' => $request->post('schoolVerif'),
-                    'schoolVerifName' => $request->post('schoolVerifName'),
-                ];
+            case 'KE': // prestasi non akademik
+                $data['prestasi_jenis'] = $request->achievementType;
+                $data['prestasi_tingkat'] = $request->achievementLevel;
+                $data['prestasi_juara'] = $request->achievementChamp;
+                $data['prestasi_nama'] = $request->achievementName;
+                $data['bobot'] = $request->achievementWeight;
+                $data['jurusan1_id'] = $request->department1;
+                $data['jurusan1_nama'] = $request->department1Name;
+                $data['sekolah2_id'] = $request->school2;
+                $data['sekolah2_nama'] = $request->school2Name;
+                $data['jurusan2_id'] = $request->department2;
+                $data['jurusan2_nama'] = $request->department2Name;
+                $data['sekolah3_id'] = $request->school3;
+                $data['sekolah3_nama'] = $request->school3Name;
+                $data['jurusan3_id'] = $request->department3;
+                $data['jurusan3_nama'] = $request->department3Name;
+                $data['sekolah_verif_id'] = $request->schoolVerif;
                 break;
             default:
                 // code...

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\HasRole\LoginRepository;
+use App\Repositories\HasRole\LoginRepository as Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class LoginController extends Controller
 {
-    public function __construct(protected LoginRepository $loginRepository)
+    public function __construct(protected Auth $auth)
     {
         //
     }
@@ -22,22 +22,35 @@ class LoginController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $authenticate = $this->loginRepository->login($request->username, $request->password);
-        if ($authenticate->get('status') == 'success') {
-            return to_route('dashboard');
+        $response = $this->auth->login(username: $request->username, password: $request->password);
+
+        if ($response['stat'] == 'success') {
+            return to_route('dashboard')->with([
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
+            ]);
         } else {
-            return back()->withErrors(['login_error' => $authenticate->get('message')])->withInput();
+            return back()->with([
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
+            ]);
         }
     }
 
     public function destroy(): RedirectResponse
     {
-        $logout = $this->loginRepository->logout();
-        if ($logout['success']) {
-            // code...
-            return to_route('login')->withErrors(['login_error' => 'You are already logout!']);
+        $response = $this->auth->logout(user_id: session()->get('id'));
+
+        if ($response['stat'] == 'success') {
+            return to_route('login')->with([
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
+            ]);
         } else {
-            return back();
+            return back()->with([
+                'stat' => $response['stat'],
+                'msg' => $response['msg'],
+            ]);
         }
     }
 }

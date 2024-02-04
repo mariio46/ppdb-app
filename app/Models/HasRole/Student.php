@@ -52,6 +52,36 @@ class Student extends Base
         }
     }
 
+    public function getScores(string $student_id): array
+    {
+        $get = $this->getWithToken("siswa/nilai?id=$student_id");
+        if ($get['status_code'] == 200) {
+            return $get['response'];
+        } else {
+            return [
+                'statusCode' => $get['status_code'],
+                'status' => 'failed',
+                'messages' => 'Terjadi kesalahan.',
+                'data' => [],
+            ];
+        }
+    }
+
+    public function getScore(string $student_id, string $semester): array
+    {
+        $get = $this->swGetWithToken("siswa/nilai?id=$student_id&semester=$semester");
+        if ($get['status_code'] == 200) {
+            return $get['response'];
+        } else {
+            return [
+                'statusCode' => $get['status_code'],
+                'status' => 'failed',
+                'messages' => 'Terjadi kesalahan.',
+                'data' => [],
+            ];
+        }
+    }
+
     //------------------------------------------------------------POST
     public function store(Request $request): array
     {
@@ -72,7 +102,6 @@ class Student extends Base
         ];
 
         $save = $this->postWithToken('siswa/create', $data);
-        // dd($save);
 
         if ($save['status_code'] == 201 || $save['status_code'] == 200) {
             return $save['response'];
@@ -90,14 +119,14 @@ class Student extends Base
     {
         $origin_school = explode('|', $request->sekolah_asal);
         $data = [
-            'id'                => $id,
-            'nama'              => $request->nama_lengkap,
-            'nisn'              => $request->nisn,
-            'id_sekolah_asal'   => $origin_school[0],
-            'sekolah_asal'      => $origin_school[1],
-            'jenis_kelamin'     => $request->jenis_kelamin,
-            'tempat_lahir'      => $request->tempat_lahir,
-            'tanggal_lahir'     => $request->tanggal_lahir,
+            'id' => $id,
+            'nama' => $request->nama_lengkap,
+            'nisn' => $request->nisn,
+            'id_sekolah_asal' => $origin_school[0],
+            'sekolah_asal' => $origin_school[1],
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
         ];
 
         $update = $this->postWithToken('siswa/update', $data);

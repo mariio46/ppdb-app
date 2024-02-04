@@ -13,12 +13,6 @@
         <x-breadcrumb-active title="Edit Jadwal Pengumuman" />
     </x-breadcrumb>
 
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
     {{-- content --}}
     <div class="content-body row">
         <div class="col-12">

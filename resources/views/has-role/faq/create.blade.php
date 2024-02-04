@@ -17,7 +17,8 @@
             </div>
             <div class="card-body">
 
-                <form id="form-question" action="#">
+                <form id="form-question" action="{{ route('faqs.store') }}" method="POST">
+                    @csrf
                     <div class="mb-2">
                         <x-label for="question">Pertanyaan</x-label>
                         <x-textarea id="question" name="question" placeholder="Masukkan Pertanyaan"></x-textarea>

@@ -7,38 +7,11 @@
 
 @section('content')
     {{-- breadcrumbs --}}
-    <div class="content-header row">
-        <div class="content-header-left col-md-9 col-12 mb-2">
-            <div class="row breadcrumbs-top">
-                <div class="col-12">
-                    <h2 class="content-header-title float-start mb-0">Tahap & Jadwal</h2>
-                    <div class="breadcrumb-wrapper">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('schedules.index') }}">
-                                    Tahap & Jadwal
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('schedules.detail', [$id]) }}">
-                                    Detail Tahap
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Edit Jadwal {{ ucwords(strtr($type, '_', ' ')) }}
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @if (session()->get('msg'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
+    <x-breadcrumb title="Tahap & Jadwal">
+        <x-breadcrumb-item title="Tahap & Jadwal" to="{{ route('schedules.index') }}" />
+        <x-breadcrumb-item title="Lihat Detail" to="{{ route('schedules.detail', [$id]) }}" />
+        <x-breadcrumb-active title="Edit Jadwal {{ ucwords(strtr($type, '_', ' ')) }}" />
+    </x-breadcrumb>
 
     {{-- content --}}
     <div class="content-body row">

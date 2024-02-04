@@ -4,89 +4,118 @@ namespace App\Models\HasRole;
 
 use App\Models\Base;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class School extends Base
 {
     public function getSchools(): array
     {
-        $schools = $this->getWithToken('sekolah');
+        $hasCabdin = session()->get('cabdin_id') != null;
+        $cabdinId = session()->get('cabdin_id');
 
-        if ($schools['status_code'] == 200) {
-            return $schools['response'];
-        } else {
-            return [
-                'statusCode' => $schools['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
-    }
+        $url = $hasCabdin ? "sekolah?cabdin_id={$cabdinId}" : 'sekolah';
 
-    public function createSchool(Request $request): array
-    {
-        $kabupaten = explode('|', $request->kabupaten);
+        $schools = $this->getWithToken($url);
 
-        $body = [
-            'nama_sekolah' => $request->nama_sekolah,
-            'npsn' => $request->npsn,
-            'kode_kabupaten' => $kabupaten[0],
-            'kabupaten' => $kabupaten[1],
-            'satuan_pendidikan' => $request->satuan_pendidikan,
-        ];
-
-        $data = $this->postWithToken(endpoint: 'sekolah/create/update', data: $body);
-
-        if ($data['status_code'] == 201 || $data['status_code'] == 200) {
-            $response = $data['response'];
-        } else {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'messages' => 'Gagal Menyimpan Data!',
-                'data' => [],
-            ];
-        }
-
-        return $response;
-    }
-
-    public function updateSchool(Request $request, string $user_id): array
-    {
-        $kabupaten = explode('|', $request->kabupaten);
-
-        $body = [
-            'nama_sekolah' => $request->nama_sekolah,
-            'npsn' => $request->npsn,
-            'kode_kabupaten' => $kabupaten[0],
-            'kabupaten' => $kabupaten[1],
-            'satuan_pendidikan' => $request->satuan_pendidikan,
-            'id' => $user_id,
-        ];
-
-        $data = $this->postWithToken(endpoint: 'sekolah/create/update', data: $body);
-
-        if ($data['status_code'] == 200) {
-            $response = $data['response'];
-        } else {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'messages' => 'Gagal Menyimpan Data!',
-                'data' => [],
-            ];
-        }
-
-        return $response;
+        return $this->serverResponseWithGetMethod(response: $schools);
     }
 
     public function getSingleSchool(string $school_id): array
     {
         $school = $this->getWithToken(endpoint: "sekolah/detail?id={$school_id}");
 
-        if ($school['status_code'] == 200) {
-            return $school['response'];
-        } else {
-            return [
-                'statusCode' => $school['status_code'],
-                'messages' => 'Gagal Menampilkan Data',
-            ];
-        }
+        return $this->serverResponseWithGetMethod(response: $school);
+    }
+
+    public function checkSchoolStatus(string $school_id): array
+    {
+        $response = $this->getWithToken(endpoint: "sekolah/status?id={$school_id}");
+
+        return $this->serverResponseWithGetMethod(response: $response);
+    }
+
+    public function checkIfSchoolExists(string $school_id, string $school_unit): array
+    {
+        $response = $this->getWithToken(endpoint: "sekolah/eksis?id={$school_id}&satuan_pendidikan={$school_unit}");
+
+        return $this->serverResponseWithGetMethod(response: $response);
+    }
+
+    public function createSchool(Request $request, string $cabdin_id): array
+    {
+        $kabupaten = explode('|', $request->kabupaten);
+
+        $body = [
+            'cabdin_id' => $cabdin_id,
+            'nama_sekolah' => $request->nama_sekolah,
+            'npsn' => $request->npsn,
+            'kode_kabupaten' => $kabupaten[0],
+            'kabupaten' => $kabupaten[1],
+            'satuan_pendidikan' => $request->satuan_pendidikan,
+
+            'kode_provinsi' => '73',
+            'provinsi' => Str::upper('Sulawesi Selatan'),
+        ];
+
+        $data = $this->postWithToken(endpoint: 'sekolah/create/update', data: $body);
+
+        return $this->serverResponseWithPostMethod(data: $data);
+    }
+
+    public function updateSchool(Request $request, string $school_id, string $cabdin_id): array
+    {
+        $kabupaten = explode('|', $request->kabupaten);
+
+        $body = [
+            'cabdin_id' => $cabdin_id,
+            'nama_sekolah' => $request->nama_sekolah,
+            'npsn' => $request->npsn,
+            'kode_kabupaten' => $kabupaten[0],
+            'kabupaten' => $kabupaten[1],
+            'satuan_pendidikan' => $request->satuan_pendidikan,
+            'id' => $school_id,
+
+            'kode_provinsi' => '73',
+            'provinsi' => Str::upper('Sulawesi Selatan'),
+        ];
+
+        $data = $this->postWithToken(endpoint: 'sekolah/create/update', data: $body);
+
+        return $this->serverResponseWithPostMethod(data: $data);
+    }
+
+    public function deleteSchool(string $school_id): array
+    {
+        $response = $this->postWithToken(endpoint: 'sekolah/hapus', data: ['id' => $school_id]);
+
+        return $this->serverResponseWithPostMethod(data: $response);
+    }
+
+    public function getSchoolQuota(string $school_unit, string $school_id): array
+    {
+        $unit = Str::upper($school_unit);
+
+        $quotas = $this->getWithToken(endpoint: "kuota/?satuan_pendidikan={$unit}&id={$school_id}");
+
+        return $this->serverResponseWithGetMethod(response: $quotas);
+    }
+
+    public function getSchoolZone(string $school_id): array
+    {
+        $zones = $this->getWithToken(endpoint: "zonasi/?sekolah_id={$school_id}");
+
+        return $this->serverResponseWithGetMethod(response: $zones);
+    }
+
+    public function verifySchool(string $school_id, string $cabdin_id): array
+    {
+        $body = [
+            'cabdin_id' => $cabdin_id,
+            'id' => $school_id,
+        ];
+
+        $response = $this->postWithToken(endpoint: 'sekolah/verifikasi', data: $body);
+
+        return $this->serverResponseWithPostMethod(data: $response);
     }
 }

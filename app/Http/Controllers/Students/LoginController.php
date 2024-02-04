@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Student\LoginRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -14,9 +14,9 @@ class LoginController extends Controller
     {
     }
 
-    public function index(): Response
+    public function index(): View
     {
-        return response()->view('student.login');
+        return view('student.login');
     }
 
     public function doLogin(Request $request): RedirectResponse
@@ -24,24 +24,31 @@ class LoginController extends Controller
         $nisn = $request->get('nisn');
         $pass = $request->get('password');
 
-        $authenticate = $this->loginRepo->doLogin($nisn, $pass);
-        if (! $authenticate->get('success')) {
-            return redirect()->back()->withErrors(['errorMsg' => $authenticate->get('message')])->withInput();
+        // $authenticate = $this->loginRepo->doLogin($nisn, $pass);
+        // if (!$authenticate->get('success')) {
+        //     return redirect()->back()->withErrors(['errorMsg' => $authenticate->get('message')])->withInput();
+        // }
+
+        // return redirect()->to('/data-diri');
+
+        $auth = $this->loginRepo->login($nisn, $pass);
+        if ($auth['statusCode'] == 200) {
+            return redirect()->back()->withErrors(['errorMsg' => $auth['messages']])->withInput();
         }
 
-        return redirect()->to('/data-diri');
+        return to_route('student.personal');
     }
 
     public function logout(): RedirectResponse
     {
         $logout = $this->loginRepo->logout();
 
-        if ($logout['success']) {
-            session()->flush();
-
-            return redirect('/masuk')->withErrors(['errorMsg' => 'Kamu sudah logout.']);
-        } else {
-            return redirect()->back();
+        if ($logout['statusCode'] == 200) {
+            return to_route('student.masuk')->withErrors([
+                'errorMsg' => 'Kamu sudah logout.',
+            ]);
         }
+
+        return redirect()->back()->with(['stat' => 'error', 'msg' => $logout['statusCode']]);
     }
 }

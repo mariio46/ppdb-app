@@ -3,34 +3,19 @@
 namespace App\Http\Controllers\Students;
 
 use App\Http\Controllers\Controller;
+use App\Models\Track;
 use App\Repositories\Student\RegistrationRepository;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class RegistrationController extends Controller
 {
-    private $tracks = [
-        'AA' => 'Afirmasi',
-        'AB' => 'Perpindahan Tugas Orang Tua',
-        'AC' => 'Anak Guru',
-        'AD' => 'Prestasi Akademik',
-        'AE' => 'Prestasi Non Akademik',
-        'AF' => 'Zonasi',
-        'AG' => 'Boarding School',
-        'KA' => 'Afirmasi',
-        'KB' => 'Perpindahan Tugas Orang Tua',
-        'KC' => 'Anak Guru',
-        'KD' => 'Prestasi Akademik',
-        'KE' => 'Prestasi Non Akademik',
-        'KF' => 'Domisili Terdekat',
-        'KG' => 'Anak DUDI',
-    ];
-
     public function __construct(
-        protected RegistrationRepository $registrationRepo
+        protected RegistrationRepository $registrationRepo,
+        protected Track $track
     ) {
     }
 
@@ -48,6 +33,7 @@ class RegistrationController extends Controller
         $data = [
             'phase_id' => $phase_id,
             'phase' => $phase,
+            'icon' => $this->track->getIcon(),
         ];
 
         return view('student.registration.phase', $data);
@@ -63,10 +49,10 @@ class RegistrationController extends Controller
         } else {
             $data = [
                 // 'code' => $decCode->track,
-                'track'     => $track_code,
+                'track' => $track_code,
                 'track_code' => $track_code,
-                'phase_id'  => $phase_id,
-                'phase'     => $phase,
+                'phase_id' => $phase_id,
+                'phase' => $phase,
             ];
 
             return view('student.registration.track', $data);
@@ -81,11 +67,21 @@ class RegistrationController extends Controller
     public function proof(string $phase, string $phaseId): View
     {
         $data = [
-            'phase_id'  => $phaseId,
-            'phase'     => $phase,
+            'phase_id' => $phaseId,
+            'phase' => $phase,
+            'tracks' => $this->track->getCodeName(),
+            'requirement' => $this->track->getRequirements(),
         ];
 
         return view('student.registration.proof', $data);
+    }
+
+    public function print(string $phase, string $phase_id)
+    {
+        $data = $this->registrationRepo->getRegistrationDataByPhase($phase_id);
+        $pdf = PDF::loadView('student.registration.print', ['data' => $data['data'], 'name_track' => $this->track->getNameByCode($data['data']['kode_jalur'])]);
+        return $pdf->stream('print-pdf');
+        // return view('student.registration.print', ['data' => $data['data'], 'name_track' => $this->track->getNameByCode($data['data']['kode_jalur'])]);
     }
 
     //------------------------------------------------------------FUNC
@@ -99,7 +95,7 @@ class RegistrationController extends Controller
             $save = $this->registrationRepo->postSaveRegistration($phase, $phaseId, $trackCode, $request);
 
             if ($save['statusCode'] == 201) {
-                return to_route("student.regis.proof", [$phase, $phaseId])->with(['stat' => 'success', 'msg' => $save['messages']]);
+                return to_route('student.regis.proof', [$phase, $phaseId])->with(['stat' => 'success', 'msg' => $save['messages']]);
             } else {
                 return redirect()->back()->with(['stat' => 'error', 'msg' => 'Gagal menyimpan data.']);
             }
@@ -109,9 +105,7 @@ class RegistrationController extends Controller
     //------------------------------------------------------------JSON
     public function getSchedules(): JsonResponse
     {
-        $get = $this->registrationRepo->getSchedules();
-
-        return response()->json($get['response'], $get['status_code']);
+        return response()->json($this->registrationRepo->getSchedules());
     }
 
     public function getScheduleByPhase(string $phase): JsonResponse

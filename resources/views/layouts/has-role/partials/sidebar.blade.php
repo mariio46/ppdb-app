@@ -45,7 +45,7 @@
                 </a>
             </li>
             {{-- @endiscabdin --}}
-            <li class="nav-item {{ request()->routeIs('school-data.*') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('school-data.*', 'school-quota.*', 'school-zone.*', 'school-coordinate.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('school-data.index') }}">
                     <x-tabler-file-database />
                     <span class="menu-title text-truncate">Data Sekolah</span>
@@ -54,7 +54,7 @@
             <li class="nav-item {{ request()->routeIs('operators.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('operators.index') }}">
                     <x-tabler-user-plus />
-                    <span class="menu-title text-truncate">Pengajuan Operator</span>
+                    <span class="menu-title text-truncate">Operator</span>
                 </a>
             </li>
             <li class="nav-item {{ request()->routeIs('verifikasi.manual*') ? 'active' : '' }}">
@@ -94,37 +94,46 @@
                 </a>
             </li>
 
-            <li class=" nav-item">
-                <a class="d-flex align-items-center" href="#">
-                    <x-tabler-shield />
-                    <span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">
-                        Roles &amp; Permission
-                    </span>
-                </a>
-                <ul class="menu-content">
-                    <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
-                            <i data-feather="circle"></i>
-                            <span class="menu-item text-truncate" data-i18n="Roles">
-                                Roles
-                            </span>
-                        </a>
-                    </li>
-                    <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}">
-                        <a class="d-flex align-items-center" href="{{ route('permissions.index') }}">
-                            <i data-feather="circle"></i>
-                            <span class="menu-item text-truncate" data-i18n="Roles">
-                                Permission
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            @issuperadmin
+                <li class=" nav-item">
+                    <a class="d-flex align-items-center" href="#">
+                        <x-tabler-shield />
+                        <span class="menu-title text-truncate" data-i18n="Roles &amp; Permission">
+                            Roles &amp; Permission
+                        </span>
+                    </a>
+                    <ul class="menu-content">
+                        <li class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                            <a class="d-flex align-items-center" href="{{ route('roles.index') }}">
+                                <i data-feather="circle"></i>
+                                <span class="menu-item text-truncate" data-i18n="Roles">
+                                    Roles
+                                </span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('permissions.*') ? 'active' : '' }}">
+                            <a class="d-flex align-items-center" href="{{ route('permissions.index') }}">
+                                <i data-feather="circle"></i>
+                                <span class="menu-item text-truncate" data-i18n="Roles">
+                                    Permission
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endissuperadmin
 
             <li class="nav-item {{ request()->routeIs('faqs.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('faqs.index') }}">
                     <x-tabler-message-question />
                     <span class="menu-title text-truncate">FAQ</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('majors.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('majors.index') }}">
+                    <x-tabler-binary-tree-2 />
+                    <span class="menu-title text-truncate">Jurusan</span>
                 </a>
             </li>
 

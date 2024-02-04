@@ -12,11 +12,6 @@
 
 @section('content')
     <div class="content-body">
-        @if (session()->get('stat'))
-            <div class="alert alert-{{ session()->get('stat') }} p-1">
-                <p class="text-center mb-0">{{ session()->get('msg') }}</p>
-            </div>
-        @endif
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Tambah User</h4>
@@ -185,23 +180,6 @@
                 });
             }
 
-            $.ajax({
-                url: '/panel/users/json/rolesCollections',
-                method: 'get',
-                dataType: 'json',
-                success: function(roles) {
-                    role.empty().append('<option value=""></option>');
-
-                    roles.forEach(item => {
-                        role.append(`<option value="${item.id}">${item.name}</option>`)
-                    })
-
-                },
-                error: function(xhr, status, error) {
-                    console.error('Failed to get data roles.', status, error);
-                }
-            })
-
             $('#role').change(function() {
                 let value = $(this).val()
 
@@ -238,14 +216,34 @@
                 }
             })
 
+            // Role Collection
             $.ajax({
-                url: '/panel/users/json/regionsCollections',
+                url: '/panel/users/json/roles',
+                method: 'get',
+                dataType: 'json',
+                success: function(roles) {
+                    role.empty().append('<option value=""></option>');
+
+                    roles.forEach(item => {
+                        role.append(`<option value="${item.value}">${item.label}</option>`)
+                    })
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to get data roles.', status, error);
+                }
+            })
+
+            // Region Collection
+            $.ajax({
+                url: '/panel/users/json/regions',
                 method: 'get',
                 dataType: 'json',
                 success: function(regions) {
+                    // console.log(regions);
                     wilayah.empty().append('<option value=""></option>');
                     regions.forEach(region => {
-                        wilayah.append(`<option value="${region.id}">${region.name}</option>`)
+                        wilayah.append(`<option value="${region.value}">${region.label}</option>`)
                     })
                 },
                 error: function(xhr, status, error) {
@@ -253,14 +251,16 @@
                 }
             })
 
+            // School Collection
             $.ajax({
-                url: '/panel/sekolah/json/schools-collections',
+                url: '/panel/users/json/schools',
                 method: 'get',
                 dataType: 'json',
                 success: function(schools) {
                     sekolah.empty().append('<option value=""></option>');
+
                     schools.forEach(school => {
-                        sekolah.append(`<option value="${school.id}">${school.nama_sekolah}</option>`)
+                        sekolah.append(`<option value="${school.value}">${school.label}</option>`)
                     })
                 },
                 error: function(xhr, status, error) {
@@ -268,14 +268,16 @@
                 }
             })
 
+            // Origin School Collection
             $.ajax({
-                url: '/panel/sekolah-asal/json/get-all-data',
+                url: '/panel/users/json/origin-schools',
                 method: 'get',
                 dataType: 'json',
                 success: function(origin_schools) {
                     sekolah_asal.empty().append('<option value=""></option>');
-                    origin_schools.data.forEach(school => {
-                        sekolah_asal.append(`<option value="${school.id}">${school.nama}</option>`)
+
+                    origin_schools.forEach(school => {
+                        sekolah_asal.append(`<option value="${school.value}">${school.label}</option>`)
                     })
                 },
                 error: function(xhr, status, error) {

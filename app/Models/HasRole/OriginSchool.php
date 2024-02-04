@@ -49,16 +49,7 @@ class OriginSchool extends Base
 
         $post = $this->postWithToken('sekolah/asal/add', $data);
 
-        if ($post['status_code'] == 201) {
-            return $post['response'];
-        } else {
-            return [
-                'statusCode' => $post['status_code'],
-                'status' => 'failed',
-                'messages' => 'Gagal menyimpan data.',
-                'data' => [],
-            ];
-        }
+        return $this->serverResponseWithPostMethod($post);
     }
 
     public function update(Request $request): array

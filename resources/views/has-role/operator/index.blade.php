@@ -5,6 +5,12 @@
     <link type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css" rel="stylesheet">
 @endsection
 
+@section('vendorScripts')
+    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
+    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+@endsection
+
 @section('styles')
     <style>
         div.dataTables_wrapper div.dataTables_filter input {
@@ -33,7 +39,7 @@
                         <tr class="table-light">
                             <th scope="col">NAMA</th>
                             <th scope="col">USERNAME</th>
-                            <th scope="col">SEKOLAH</th>
+                            <th scope="col">NAMA SEKOLAH</th>
                             <th scope="col">STATUS</th>
                             <th scope="col">DETAIL</th>
                         </tr>
@@ -45,13 +51,11 @@
     </div>
 @endsection
 
-@section('vendorScripts')
-    <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-    <script src="/app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js"></script>
-    <script src="/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-@endsection
-
 @push('scripts')
+    <script>
+        var key = '{{ $key }}',
+            param = '{{ $param }}';
+    </script>
     <script>
         $(function() {
             'use strict';
@@ -62,8 +66,11 @@
             if (table.length) {
                 var tb = table.DataTable({
                     ajax: {
-                        url: '/panel/operators/json/operators',
-                        dataSrc: ''
+                        url: `/panel/operators/json/operators/${key}/${param}`,
+                        dataSrc: (response) => {
+                            console.log(response);
+                            return response.data ?? []
+                        }
                     },
                     columns: [{
                             data: 'nama'
@@ -72,23 +79,26 @@
                             data: 'nama_pengguna'
                         },
                         {
-                            data: 'sekolah_nama'
+                            data: 'nama_sekolah'
                         },
                         {
                             data: 'status_aktif',
-                            render: function(data, type, row) {
-                                if (data === 1) {
+                            render: (data, type, row) => {
+                                if (data === 'v') {
                                     return ` <x-badge class="w-75" variant="light" color="warning">Menunggu Verifikasi</x-badge> `;
-                                } else if (data === 2) {
+                                }
+                                if (data === 'a') {
                                     return ` <x-badge class="w-75" variant="light" color="success">Aktif</x-badge> `;
-                                } else {
+                                }
+                                if (data === 'n') {
                                     return ` <x-badge class="w-75" variant="light" color="danger">Tidak Aktif</x-badge> `;
                                 }
+                                return ` <x-badge class="w-75" variant="light" color="danger">Unknown</x-badge> `;
                             }
                         },
                         {
-                            data: 'username',
-                            render: function(data, type, row) {
+                            data: 'id',
+                            render: (data, type, row) => {
                                 return `<a href="/panel/operators/${data}" class="btn btn-primary">Lihat Detail</a>`;
                             }
                         },
@@ -130,9 +140,11 @@
                     }
                 });
 
-                $("div.add-button, div.add-button-sm").html(`<a href="{{ route('operators.create') }}" class="btn btn-success">+ Tambah Operator</a>`);
-                $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
-                $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
+                if (key === 'sekolah_id') {
+                    $("div.add-button, div.add-button-sm").html(`<a href="{{ route('operators.create') }}" class="btn btn-success">+ Tambah Operator</a>`);
+                    $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');
+                    $("div.add-button-sm").addClass('h-100 d-flex align-items-center justify-content-center mt-1');
+                }
 
             }
         })

@@ -13,7 +13,7 @@
                 {{-- achievement type --}}
                 <x-student.select id="achievementType" label="Jenis Prestasi" search="n">
                     <option value="berjenjang">Berjenjang Individu</option>
-                    <option value="nonberjenjang">Tidak Berjenjang Individu</option>
+                    <option value="tidak_berjenjang">Tidak Berjenjang Individu</option>
                     <option value="beregu">Beregu</option>
                 </x-student.select>
             </div>
@@ -39,6 +39,13 @@
                 <div class="mb-1">
                     <x-label for="achievementName">Nama Prestasi/Kejuaraan</x-label>
                     <x-input id="achievementName" name="achievementName" placeholder="Nama Prestasi/Kejuaraan" />
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <p>Bobot: <span class="" id="bobotx">0</span> poin</p>
+                <x-input id="achievementWeight" name="achievementWeight" type="hidden" />
+                <div class="alert alert-secondary p-1">
+                    <p class="mb-0">Nilai bobot paling sedikit adalah 15 dan paling banyak adalah 100.</p>
                 </div>
             </div>
         </div>

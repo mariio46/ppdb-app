@@ -46,9 +46,8 @@ class AgencyController extends Controller
             return to_route('cabang-dinas.index')->with(['stat' => 'success', 'msg' => $save['messages']]);
         } else {
             return redirect()->back()->with([
-                'stat' => 'danger',
+                'stat' => 'error',
                 'msg' => $save['messages'],
-                'data' => $save,
             ]);
         }
     }

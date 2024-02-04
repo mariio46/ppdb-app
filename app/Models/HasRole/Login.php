@@ -3,40 +3,57 @@
 namespace App\Models\HasRole;
 
 use App\Models\Base;
+use App\Traits\HasRole\LoginTrait;
 
 class Login extends Base
 {
+    use LoginTrait;
+
     public function store(string $username, string $password): array
     {
-        $body = [
-            'nama_pengguna' => $username,
-            'kata_sandi' => $password,
-            'waktu' => 10,
-        ];
+        $response = $this->postWithoutToken('admin/login', ['nama_pengguna' => $username, 'kata_sandi' => $password, 'waktu' => 10]);
 
-        $data = $this->postWithoutToken('admin/login', $body);
-
-        if ($data['status_code'] != 200) {
-            $response = [
-                'statusCode' => $data['status_code'],
-                'msg' => 'error',
-                'data' => [],
-            ];
-        } else {
-            $response = $data['response'];
-        }
-
-        return $response;
+        return $this->loginResponse(data: $response);
     }
 
-    public function destroy(string $id): array
+    public function destroy(string $user_id): array
     {
-        $data = [
-            'id' => $id,
-        ];
+        $response = $this->postWithToken('admin/logout', ['id' => $user_id]);
 
-        $logout = $this->postWithToken('admin/logout', $data);
+        return $this->logoutResponse(data: $response);
+    }
 
-        return $logout;
+    private function loginResponse(array $data): array
+    {
+        $server_status_code = $data['status_code'];
+
+        // If Server / Backend Error
+        if ($server_status_code == 500) {
+            return $this->whenServerIsError(code: $server_status_code);
+        }
+
+        // Client Error
+        if ($server_status_code == 400 || $server_status_code == 404) {
+            return $this->whenServerIsNotFound(code: $server_status_code);
+        }
+
+        return $this->whenServerIsOk(response: $data['response'], statusName: $data['response']['status']);
+    }
+
+    private function logoutResponse(array $data): array
+    {
+        $server_status_code = $data['status_code'];
+
+        // If Server / Backend Error
+        if ($server_status_code == 500) {
+            return $this->whenServerIsError(code: $server_status_code);
+        }
+
+        // Client Error
+        if ($server_status_code == 400 || $server_status_code == 404) {
+            return $this->whenServerIsNotFound(code: $server_status_code);
+        }
+
+        return $this->whenLogoutSuccess(response: $data['response']);
     }
 }

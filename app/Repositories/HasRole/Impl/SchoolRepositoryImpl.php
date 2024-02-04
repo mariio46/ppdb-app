@@ -18,9 +18,9 @@ class SchoolRepositoryImpl implements SchoolRepository
         return $this->school->getSchools();
     }
 
-    public function store(Request $request): array
+    public function store(Request $request, string $cabdin_id): array
     {
-        return $this->school->createSchool(request: $request);
+        return $this->school->createSchool(request: $request, cabdin_id: $cabdin_id);
     }
 
     public function show(string $school_id): array
@@ -28,8 +28,38 @@ class SchoolRepositoryImpl implements SchoolRepository
         return $this->school->getSingleSchool(school_id: $school_id);
     }
 
-    public function update(Request $request, string $user_id): array
+    public function check(string $school_id): array
     {
-        return $this->school->updateSchool(request: $request, user_id: $user_id);
+        return $this->school->checkSchoolStatus(school_id: $school_id);
+    }
+
+    public function exists(string $school_id, string $school_unit): array
+    {
+        return $this->school->checkIfSchoolExists(school_id: $school_id, school_unit: $school_unit);
+    }
+
+    public function update(Request $request, string $school_id, string $cabdin_id): array
+    {
+        return $this->school->updateSchool(request: $request, school_id: $school_id, cabdin_id: $cabdin_id);
+    }
+
+    public function destroy(string $school_id): array
+    {
+        return $this->school->deleteSchool(school_id: $school_id);
+    }
+
+    public function quotas(string $school_unit, string $school_id): array
+    {
+        return $this->school->getSchoolQuota(school_unit: $school_unit, school_id: $school_id);
+    }
+
+    public function zones(string $school_id): array
+    {
+        return $this->school->getSchoolZone(school_id: $school_id);
+    }
+
+    public function verify(string $school_id, string $cabdin_id): array
+    {
+        return $this->school->verifySchool(school_id: $school_id, cabdin_id: $cabdin_id);
     }
 }

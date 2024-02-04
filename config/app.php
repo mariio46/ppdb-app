@@ -177,10 +177,20 @@ return [
          */
         App\Providers\HasRole\LoginServiceProvider::class,
         App\Providers\HasRole\AgencyServiceProvider::class,
-        App\Providers\HasRole\RoleServiceProvider::class,
         App\Providers\HasRole\UserServiceProvider::class,
         App\Providers\HasRole\SchoolServiceProvider::class,
         App\Providers\HasRole\SchoolDataServiceProvider::class,
+        App\Providers\HasRole\SchoolQuotaServiceProvider::class,
+        App\Providers\HasRole\SchoolZoneServiceProvider::class,
+        App\Providers\HasRole\SchoolCoordinateServiceProvider::class,
+        App\Providers\HasRole\OperatorServiceProvider::class,
+        App\Providers\HasRole\FaqServiceProvider::class,
+        App\Providers\HasRole\MajorServiceProvider::class,
+        /*
+         * SuperAdmin Service Providers...
+         */
+        App\Providers\HasRole\SuperAdmin\RoleServiceProvider::class,
+        App\Providers\HasRole\SuperAdmin\PermissionServiceProvider::class,
 
         // ------------------------------------------------------------------
         /*
@@ -192,6 +202,8 @@ return [
         App\Providers\Student\RegistrationServiceProvider::class,
         App\Providers\Student\StatusServiceProvider::class,
         App\Providers\Student\FaqServiceProvider::class,
+
+        \Barryvdh\DomPDF\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -207,6 +219,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        // 'PDF' => \Barryvdh\DomPDF\Facade\Pdf::class
     ])->toArray(),
 
 ];

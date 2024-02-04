@@ -19,14 +19,15 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="form-role" action="#" method="POST">
+                <form id="form-role" action="{{ route('roles.store') }}" method="POST">
+                    @csrf
                     <div class="mb-2">
                         <x-label for="name" value="Nama Role" />
                         <x-input id="name" name="name" placeholder="Masukkan Nama Role" />
                     </div>
                     <div class="mb-2">
                         <x-label for="permission" value="Permission" />
-                        <x-select class="select2 form-select" id="permission" name="permission" data-placeholder="Pilih Permission" multiple>
+                        <x-select class="select2 form-select" id="permission" name="permission[]" data-placeholder="Pilih Permission" multiple>
                             <x-empty-option />
                         </x-select>
                     </div>
@@ -60,14 +61,13 @@
             });
 
             $.ajax({
-                url: '/panel/roles/json/permissions',
+                url: '/panel/permissions/json/permissions',
                 method: 'get',
                 dataType: 'json',
                 success: function(permissions) {
                     permission.empty().append('<option value=""></option>');
-
                     permissions.forEach(item => {
-                        permission.append(`<option value="${item.value}">${item.label}</option>`)
+                        permission.append(`<option value="${item.id}">${item.name}</option>`)
                     })
                 },
                 error: function(xhr, status, error) {
@@ -75,12 +75,16 @@
                 }
             });
 
+            // Custom Validation
+            $.validator.addMethod('noSpace', (value, element) => value.indexOf(" ") < 0 && value != "")
+
             if (form.length) {
                 form.validate({
                     rules: {
                         name: {
                             required: true,
                             minlength: 3,
+                            noSpace: true,
                         },
                         permission: {
                             required: true,
@@ -90,6 +94,7 @@
                         name: {
                             required: 'Nama role tidak boleh kosong.',
                             minlength: 'Nama role harus lebih dari 3 karakter.',
+                            noSpace: 'Nama role tidak boleh mengandung spasi.',
                         },
                         permission: {
                             required: 'Pilih minimal 1 permission.',

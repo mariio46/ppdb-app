@@ -4,24 +4,163 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\SchoolDataRepository as SchoolData;
+use App\Repositories\HasRole\SchoolQuotaRepository as Quota;
+use App\Repositories\HasRole\SchoolZoneRepository as Zone;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Closure;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class SchoolDataController extends Controller
 {
-    public function __construct(protected SchoolData $school_data)
+    protected string $schoolId;
+
+    protected string $schoolUnit;
+
+    protected bool $hasSchoolUnit;
+
+    public function __construct(protected SchoolData $school_data, protected Quota $quota, protected Zone $zone)
     {
-        //
+        // $this->middleware(function (Request $request, Closure $next) {
+        //     $this->schoolId = session()->get('sekolah_id');
+        //     $this->hasSchoolUnit = session()->has('satuan_pendidikan');
+        //     $this->schoolUnit = $this->hasSchoolUnit ? session()->get('satuan_pendidikan') : null;
+
+        //     if (!$this->hasSchoolUnit && $this->schoolId == null) {
+        //         return to_route('dashboard')->with(['stat' => 'error', 'msg' => 'Anda bukan Admin Sekolah!']);
+        //     }
+
+        //     $schoolStatus = $this->school_data->index(school_id: $this->schoolId)['data']['terverifikasi'];
+        //     $protectedRoutes = ['school-data.edit', 'school-data.update', 'school-data.logos-update', 'school-data.lock', 'school-data.firstDocument', 'school-data.secondDocument'];
+
+        //     if (($schoolStatus == 'simpan' || $schoolStatus == 'verifikasi') && $request->routeIs($protectedRoutes)) {
+        //         return to_route('dashboard')->with(['stat' => 'error', 'msg' => 'Sekolah anda telah terkunci!']);
+        //     }
+
+        //     return $next($request);
+        // });
+        $this->middleware('HasRole.isAdminSekolah');
+        $this->middleware(function (Request $request, Closure $next) {
+            $this->schoolId = session()->get('sekolah_id');
+            $this->hasSchoolUnit = session()->has('satuan_pendidikan');
+            $this->schoolUnit = $this->hasSchoolUnit ? session()->get('satuan_pendidikan') : null;
+
+            return $next($request);
+        });
     }
 
     public function index(): View
     {
-        $satuan_pendidikan = session()->has('satuan_pendidikan') ? session()->get('satuan_pendidikan') : null;
+        return view('has-role.school-data.index', [
+            'sekolah_id' => $this->schoolId,
+            'satuan_pendidikan' => $this->schoolUnit,
+        ]);
+    }
 
-        $sekolah_id = session()->get('sekolah_id');
+    public function edit(): View
+    {
+        return view('has-role.school-data.edit', [
+            'sekolah_id' => $this->schoolId,
+        ]);
+    }
 
-        return view('has-role.school-data.index', compact('sekolah_id', 'satuan_pendidikan'));
+    public function update(Request $request, string $id): RedirectResponse
+    {
+        $school = $this->school_data->update(request: $request, id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $school, route: 'school-data.edit');
+    }
+
+    public function document(): View
+    {
+        return view('has-role.school-data.document.index', [
+            'sekolah_id' => $this->schoolId,
+            'satuan_pendidikan' => $this->schoolUnit,
+        ]);
+    }
+
+    public function firstDocumentPdf(): Response
+    {
+        return Pdf::loadView('has-role.school-data.document.pakta-integritas-pdf')->stream(now()->addMinute().mt_rand(9999, 99999).'.pdf');
+    }
+
+    public function firstDocument(Request $request, string $id): RedirectResponse
+    {
+        $response = $this->school_data->uploadFirstDocument(request: $request, school_id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-data.document');
+    }
+
+    public function secondDocument(Request $request, string $id): RedirectResponse
+    {
+        $response = $this->school_data->uploadSecondDocument(request: $request, school_id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-data.document');
+    }
+
+    public function logos(Request $request, string $id): RedirectResponse
+    {
+        $response = $this->school_data->uploadLogo(request: $request, school_id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'school-data.edit');
+    }
+
+    // --------------------------------------------------LOCK DATA SCHOOL--------------------------------------------------
+
+    public function lock(string $school_id, string $unit): RedirectResponse
+    {
+        // Query For School and Quota
+        $school = $this->school(school_id: $school_id)->original;
+        $quotas = $this->quota->index(satuan_pendidikan: $unit, school_id: $school_id);
+        $zones = $this->zone->index(school_id: $school_id);
+
+        return $this->lockSchoolChecker($school, $quotas, $zones, $school_id, $unit);
+    }
+
+    protected function lockSchoolChecker(array $school, array $quotas, array $zones, string $school_id, string $unit): RedirectResponse
+    {
+        if ($this->isNull(data: $school)) {
+            return back()->with(['stat' => 'error', 'msg' => 'Data Sekolah masih ada yang kosong!']);
+        }
+
+        if (! array_key_exists(key: 'data', array: $quotas)) {
+            return back()->with(['stat' => 'error', 'msg' => 'Quota Sekolah belum ada!']);
+        }
+
+        if ($unit != 'smk' && $unit != 'fbs' && empty($zones['data'])) {
+            return back()->with(['stat' => 'error', 'msg' => 'Wilayah Zonasi Sekolah belum ada!']);
+        }
+
+        $response = $this->school_data->lock($school_id);
+
+        return $this->repositoryResponseWithPostMethod($response, 'school-data.index');
+    }
+
+    /**
+     * Will check if there is an empty value in school data.
+     * will return true if there is null in schooldata
+     */
+    protected function isNull(array $data): bool
+    {
+        foreach ($data as $key => $value) {
+            // Check if the value is null
+            if ($value == null) {
+                return true; // Found a null value
+            }
+
+            // If the value is an array, recursively check for null values
+            if (is_array($value)) {
+                if ($this->isNull($value)) {
+                    return true; // Found a null value in the nested array
+                }
+            }
+        }
+
+        // No null values found
+        return false;
     }
 
     // --------------------------------------------------DATA API JSON--------------------------------------------------
@@ -33,432 +172,10 @@ class SchoolDataController extends Controller
         return response()->json($school['data']);
     }
 
-    // public function edit(): View
-    // {
-    //     $id = $this->id;
+    protected function districts(string $code): JsonResponse
+    {
+        $districts = $this->school_data->districts(code: $code);
 
-    //     return view('has-role.school-data.edit', compact('id'));
-    // }
-
-    // public function quota(): View
-    // {
-    //     $npsn = $this->id;
-    //     $unit = $this->unit;
-
-    //     return $unit == 2
-    //         ? view('has-role.school-data.quota-smk', compact('npsn', 'unit'))
-    //         : view('has-role.school-data.quota', compact('npsn', 'unit'));
-    // }
-
-    // public function document(): View
-    // {
-    //     $npsn = $this->id;
-    //     $unit = $this->unit;
-
-    //     return view('has-role.school-data.document', compact('npsn', 'unit'));
-    // }
-
-    // public function addQuota(): View
-    // {
-    //     $npsn = $this->id;
-    //     $unit = $this->unit;
-    //     $json = $this->formDataPercentage();
-    //     $default = 36;
-
-    //     return $unit == 2
-    //         ? view('has-role.school-data.add-quota-smk', compact('npsn', 'unit', 'json', 'default'))
-    //         : view('has-role.school-data.add-quota', compact('npsn', 'unit'));
-    // }
-
-    // public function editQuota(string $identifier): View
-    // {
-    //     $json = $this->formDataPercentage();
-    //     $default = 36;
-
-    //     return view('has-role.school-data.edit-quota-smk', compact('identifier', 'json', 'default'));
-    // }
-
-    // // --------------------------------------------------DATA JSON--------------------------------------------------
-    // protected function formDataPercentage(): string
-    // {
-    //     $percentage = [
-    //         'afirmasi' => 0.1,
-    //         'mutasi' => 0.2,
-    //         'anak_guru' => 0.25,
-    //         'akademik' => 0.25,
-    //         'non_akademik' => 0.05,
-    //         'zonasi' => 0.15,
-    //     ];
-
-    //     return json_encode($percentage);
-    // }
-
-    // protected function majorQuota(string $identifier): JsonResponse
-    // {
-    //     $quota = collect($this->schoolsQuota($this->unit)->original)->firstWhere('identifier', $identifier);
-
-    //     return response()->json($quota);
-    // }
-
-    // protected function schoolsQuota($unit): JsonResponse
-    // {
-    //     $quota_smk = [
-    //         [
-    //             'label' => 'Teknik Komputer dan Jaringan',
-    //             'identifier' => 479305,
-    //             'value' => 144,
-    //         ],
-    //         [
-    //             'label' => 'Teknik Kendaraan Ringan',
-    //             'identifier' => 114565,
-    //             'value' => 72,
-    //         ],
-    //         [
-    //             'label' => 'Pemodelan dan Informasi Bangunan',
-    //             'identifier' => 911899,
-    //             'value' => 108,
-    //         ],
-    //         [
-    //             'label' => 'Administrasi Perkantoran',
-    //             'identifier' => 238415,
-    //             'value' => 216,
-    //         ],
-    //         [
-    //             'label' => 'Tata Rias dan Kecantikan',
-    //             'identifier' => 598110,
-    //             'value' => 252,
-    //         ],
-    //         [
-    //             'label' => 'Perbankan dan Keuangan Syariah',
-    //             'identifier' => 922020,
-    //             'value' => 72,
-    //         ],
-    //     ];
-
-    //     $quota_sma = [
-    //         [
-    //             // Afirmasi
-    //             'label' => 'Jalur Afirmasi',
-    //             'identifier' => 333992,
-    //             'value' => 150,
-    //         ],
-    //         [
-    //             // Mutasi
-    //             'label' => 'Jalur Perpindahan Tugas Orang Tua',
-    //             'identifier' => 476632,
-    //             'value' => 75,
-    //         ],
-    //         [
-    //             // Anak Guru
-    //             'label' => 'Jalur Anak Guru',
-    //             'identifier' => 939003,
-    //             'value' => 100,
-    //         ],
-    //         [
-    //             // Akademik
-    //             'label' => 'Jalur Prestasi Akademik',
-    //             'identifier' => 589846,
-    //             'value' => 50,
-    //         ],
-    //         [
-    //             // Non Akademik
-    //             'label' => 'Jalur Prestasi Non Akademik',
-    //             'identifier' => 891432,
-    //             'value' => 200,
-    //         ],
-    //         [
-    //             // Zonasi
-    //             'label' => 'Jalur Zonasi',
-    //             'identifier' => 505066,
-    //             'value' => 250,
-    //         ],
-    //     ];
-
-    //     $quota_sma_full_boarding = [
-    //         [
-    //             'label' => 'Jalur Boarding School',
-    //             'identifier' => 919851,
-    //             'value' => 500,
-    //         ],
-    //     ];
-
-    //     $quota_sma_half_boarding = array_merge($quota_sma, $quota_sma_full_boarding);
-
-    //     if ($unit == 1) {
-    //         return response()->json($quota_sma);
-    //     } elseif ($unit == 2) {
-    //         return response()->json($quota_smk);
-    //     } elseif ($unit == 3) {
-    //         return response()->json($quota_sma_full_boarding);
-    //     } elseif ($unit == 4) {
-    //         return response()->json($quota_sma_half_boarding);
-    //     } else {
-    //         return response()->json(['error' => 'Quota Tidak Ditemukan'], 404);
-    //     }
-    // }
-
-    // protected function school(int|string $id): JsonResponse
-    // {
-    //     $school = collect($this->schools()->original)->firstWhere('id', $id);
-
-    //     return response()->json($school);
-    // }
-
-    // protected function schools(): JsonResponse
-    // {
-    //     $schools = [
-    //         [
-    //             'id' => 1,
-    //             'npsn' => '567822034',
-    //             'nama_sekolah' => 'SMAN 1 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 1,
-    //                 'label' => 'SMA',
-    //             ],
-    //             'nama_kepsek' => 'Ryan Rafli',
-    //             'nip_kepsek' => '027332479',
-    //             'nama_kappdb' => 'Aldi Taher',
-    //             'nip_kappdb' => '098434756',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '03',
-    //             'kecamatan' => 'Soreang',
-    //             'desa' => 'Bukit Indah',
-    //             'rtrw' => '001/002',
-    //             'alamat_jalan' => 'Jalan Industri kecil',
-    //             'wilayah_id' => '73.72.03',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 1,
-    //                 'label' => 'Belum Simpan',
-    //             ],
-
-    //         ],
-    //         [
-    //             'id' => 2,
-    //             'npsn' => '098438493',
-    //             'nama_sekolah' => 'SMAN 2 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 4,
-    //                 'label' => 'SMA Half Boarding',
-    //             ],
-    //             'nama_kepsek' => 'Aldi Taher',
-    //             'nip_kepsek' => '987298633',
-    //             'nama_kappdb' => 'Rafi Muis',
-    //             'nip_kappdb' => '024087483',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '03',
-    //             'kecamatan' => 'Soreang',
-    //             'desa' => 'Bukit Indah',
-    //             'rtrw' => '001/002',
-    //             'alamat_jalan' => 'Jalan Jendral Sudirman',
-    //             'wilayah_id' => '73.72.01',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 2,
-    //                 'label' => 'Sudah Simpan',
-    //             ],
-    //         ],
-    //         [
-    //             'id' => 3,
-    //             'npsn' => '927527534',
-    //             'nama_sekolah' => 'SMKN 3 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 2,
-    //                 'label' => 'SMK',
-    //             ],
-    //             'nama_kepsek' => 'Zoelkifli',
-    //             'nip_kepsek' => '342987839',
-    //             'nama_kappdb' => 'Aslan Bjir',
-    //             'nip_kappdb' => '034854980',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '03',
-    //             'kecamatan' => 'Soreang',
-    //             'desa' => 'Lakessi',
-    //             'rtrw' => '001/002',
-    //             'alamat_jalan' => 'Jalan Karaeng Burane',
-    //             'wilayah_id' => '73.72.03',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 3,
-    //                 'label' => 'Revisi',
-    //             ],
-    //         ],
-    //         [
-    //             'id' => 4,
-    //             'npsn' => '578232001',
-    //             'nama_sekolah' => 'SMAN 5 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 3,
-    //                 'label' => 'SMA Boarding',
-    //             ],
-    //             'nama_kepsek' => 'Mawardi',
-    //             'nip_kepsek' => '020728103',
-    //             'nama_kappdb' => 'Edy Siswanto',
-    //             'nip_kappdb' => '001238923',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '02',
-    //             'kecamatan' => 'Ujung',
-    //             'desa' => 'Mallusetasi',
-    //             'rtrw' => '001/004',
-    //             'alamat_jalan' => 'Lumpue',
-    //             'wilayah_id' => '73.72.02',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 4,
-    //                 'label' => 'Terverifikasi',
-    //             ],
-    //         ],
-    //         [
-    //             'id' => 5,
-    //             'npsn' => '567822034',
-    //             'nama_sekolah' => 'SMAN 1 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 1,
-    //                 'label' => 'SMA',
-    //             ],
-    //             'nama_kepsek' => 'Ryan Rafli',
-    //             'nip_kepsek' => '027332479',
-    //             'nama_kappdb' => 'Aldi Taher',
-    //             'nip_kappdb' => '098434756',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '03',
-    //             'kecamatan' => 'Soreang',
-    //             'desa' => 'Bukit Indah',
-    //             'rtrw' => '001/002',
-    //             'alamat_jalan' => 'Jalan Industri kecil',
-    //             'wilayah_id' => '73.72.03',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 1,
-    //                 'label' => 'Belum Simpan',
-    //             ],
-
-    //         ],
-    //         [
-    //             'id' => 6,
-    //             'npsn' => '098438493',
-    //             'nama_sekolah' => 'SMAN 2 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 4,
-    //                 'label' => 'SMA Half Boarding',
-    //             ],
-    //             'nama_kepsek' => 'Aldi Taher',
-    //             'nip_kepsek' => '987298633',
-    //             'nama_kappdb' => 'Rafi Muis',
-    //             'nip_kappdb' => '024087483',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '03',
-    //             'kecamatan' => 'Soreang',
-    //             'desa' => 'Bukit Indah',
-    //             'rtrw' => '001/002',
-    //             'alamat_jalan' => 'Jalan Jendral Sudirman',
-    //             'wilayah_id' => '73.72.01',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 2,
-    //                 'label' => 'Sudah Simpan',
-    //             ],
-    //         ],
-    //         [
-    //             'id' => 7,
-    //             'npsn' => '927527534',
-    //             'nama_sekolah' => 'SMKN 3 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 2,
-    //                 'label' => 'SMK',
-    //             ],
-    //             'nama_kepsek' => 'Zoelkifli',
-    //             'nip_kepsek' => '342987839',
-    //             'nama_kappdb' => 'Aslan Bjir',
-    //             'nip_kappdb' => '034854980',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '03',
-    //             'kecamatan' => 'Soreang',
-    //             'desa' => 'Lakessi',
-    //             'rtrw' => '001/002',
-    //             'alamat_jalan' => 'Jalan Karaeng Burane',
-    //             'wilayah_id' => '73.72.03',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 3,
-    //                 'label' => 'Revisi',
-    //             ],
-    //         ],
-    //         [
-    //             'id' => 8,
-    //             'npsn' => '578232001',
-    //             'nama_sekolah' => 'SMAN 5 Parepare',
-    //             'satuan_pendidikan' => [
-    //                 'value' => 3,
-    //                 'label' => 'SMA Boarding',
-    //             ],
-    //             'nama_kepsek' => 'Mawardi',
-    //             'nip_kepsek' => '020728103',
-    //             'nama_kappdb' => 'Edy Siswanto',
-    //             'nip_kappdb' => '001238923',
-    //             'kode_provinsi' => '73',
-    //             'provinsi' => 'Sulawesi Selatan',
-    //             'kode_kabupaten' => '72',
-    //             'kabupaten' => 'Parepare',
-    //             'kode_kecamatan' => '02',
-    //             'kecamatan' => 'Ujung',
-    //             'desa' => 'Mallusetasi',
-    //             'rtrw' => '001/004',
-    //             'alamat_jalan' => 'Lumpue',
-    //             'wilayah_id' => '73.72.02',
-    //             'logo' => Storage::url('images/static/profil-sekolah-sma.png'),
-    //             'lintang' => '-4763287324',
-    //             'bujur' => '687980903',
-    //             'pakta_integritas' => 'pdf.pdf',
-    //             'terverifikasi' => [
-    //                 'value' => 4,
-    //                 'label' => 'Terverifikasi',
-    //             ],
-    //         ],
-    //     ];
-
-    //     return response()->json($schools);
-    // }
+        return response()->json($districts);
+    }
 }

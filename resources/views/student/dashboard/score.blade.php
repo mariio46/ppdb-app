@@ -11,12 +11,6 @@
         <x-breadcrumb-active title="Edit Nilai" />
     </x-breadcrumb>
 
-    @if (session()->get('stat'))
-        <div class="alert alert-{{ session()->get('stat') }} p-1">
-            <p class="mb-0 text-center">{{ session()->get('msg') }}</p>
-        </div>
-    @endif
-
     <div class="content-body mb-5">
         <div class="card">
             <div class="card-header"></div>
