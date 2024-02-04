@@ -11,7 +11,11 @@ use App\Http\Controllers\Students\SchoolController;
 use App\Http\Controllers\Students\StatusController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeController::class)->name('home');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('/pengumuman', 'announcement')->name('home.announcement');
+    Route::get('/peta-zonasi', 'mapZone')->name('home.zone-map');
+});
 
 Route::view('/landing-page', 'landing-page')->name('home');
 
