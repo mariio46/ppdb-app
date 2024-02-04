@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HasRole;
 use App\Http\Controllers\Controller;
 use App\Models\HasRole\Verification;
 use App\Models\Track;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -64,6 +65,12 @@ class VerificationController extends Controller
         return view('has-role.verifications.manual-achievement', [
             'id' => $id,
         ]);
+    }
+
+    public function manualPrint(string $registration_id)
+    {
+        $pdf = Pdf::loadView('has-role.verifications.manual-print', []);
+        return $pdf->stream('bukti-verifikasi-' . $registration_id);
     }
 
     //------------------------------------------------------------FUNC

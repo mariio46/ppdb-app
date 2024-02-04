@@ -460,9 +460,9 @@
                                 <p class="mb-0">Data calon peserta didik ini sudah diverifikasi.</p>
                             </div>
 
-                            <a class="btn btn-success" href="">
+                            <a class="btn btn-success" href="{{ route('verifikasi.manual.pdf', [$id]) }}">
                                 <x-tabler-printer />
-                                Download Bukti Pendaftaran
+                                Download
                             </a>
                         </div>
                     </div>
@@ -725,15 +725,15 @@
                 if (onlyOne.indexOf(data.kode_jalur) !== -1) {
                     $('#trschool2, #trschool3').html('');
                 } else {
-                    $('#school2').text(data.sekolah2);
-                    $('#school3').text(data.sekolah3);
+                    $('#school2').text(data.sekolah2 || '-');
+                    $('#school3').text(data.sekolah3 || '-');
                 }
 
                 if (data.kode_jalur.charAt(0) == 'A') {
                     $('#trdep1, #trdep2, #trdep3').html('');
                 } else {
                     for (let b = 1; b <= 3; b++) {
-                        let bwtb = `${data[`jurusan${b}`]}`;
+                        let bwtb = data[`jurusan${b}`] || '-';
                         if (data.status == 'mendaftar') {
                             if (data[`jurusan${b}_ok`] != null) {
                                 bwtb = `<del>${data[`jurusan${b}`]}</del><br><small class="text-muted">(tidak dapat dilanjutkan karena ${data[`jurusan${b}_ok`].replace(/_/g, ' ')})</small>`;

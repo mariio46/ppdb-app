@@ -19,6 +19,7 @@ use App\Http\Controllers\HasRole\StudentController;
 use App\Http\Controllers\HasRole\UserController;
 use App\Http\Controllers\HasRole\VerificationController;
 use App\Http\Controllers\RegionController;
+use App\Models\HasRole\SuperAdmin\Role;
 use Illuminate\Support\Facades\Route;
 
 // Prefix = /panel;
@@ -184,6 +185,7 @@ Route::controller(VerificationController::class)->group(function () {
     Route::get('verifikasi-manual/d/{id}/edit-nilai', 'manualScore')->name('verifikasi.manual.score');
     Route::get('verifikasi-manual/d/{id}/edit-titik-rumah/{student_id}', 'manualMap')->name('verifikasi.manual.map');
     Route::get('verifikasi-manual/d/{id}/edit-prestasi', 'manualAchievement')->name('verifikasi.manual.achievement');
+    Route::get('verifikasi-manual/d/{id}/cetak', 'manualPrint')->name('verifikasi.manual.pdf');
 
     Route::post('verifikasi-manual/d/{id}/update-score', 'manualUpdateScore')->name('verifikasi.manual.update-score');
     Route::post('verifikasi-manual/d/{id}/update-map', 'manualUpdateMap')->name('verifikasi.manual.update-map');
