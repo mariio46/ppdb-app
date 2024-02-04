@@ -76,7 +76,10 @@
                         </p>
                     </x-modal.body>
                     <x-modal.footer class="justify-content-center mb-3">
-                        <x-button color="danger">Ya, Hapus</x-button>
+                        <form action="{{ route('sekolah.destroy', ['id' => $id, 'unit' => $unit]) }}" method="post">
+                            @csrf
+                            <x-button type="submit" color="danger">Ya, Hapus</x-button>
+                        </form>
                         <x-button data-bs-dismiss="modal" color="secondary">Batalkan</x-button>
                     </x-modal.footer>
                 </x-modal>
@@ -88,9 +91,6 @@
 @push('scripts')
     <script>
         var id = '{{ $id }}';
-        var role_id = '{{ $roleId }}',
-            role_name = '{{ $roleName }}';
-        // console.info(role_id, role_name);
     </script>
     <script>
         $(function() {
@@ -168,10 +168,6 @@
                     loadCities(school.kode_kabupaten, school.kabupaten)
                     loadUnit(school.satuan_pendidikan)
 
-                    if (role_id === '1' && role_name === 'SuperAdmin') {
-                        loadCabdinList(school.cabdin_id)
-                    }
-
                 },
                 error: function(xhr, status, error) {
                     console.error("Failed to get data single user.", status, error, xhr);
@@ -226,27 +222,6 @@
             check.change(function() {
                 btnDeleteSchool.prop('disabled', !this.checked);
             });
-
-            // Get List Admin Cabang Dinas if $roleId == 1 or $roleName == SuperAdmin
-            // if (role_id === '1' && role_name === 'SuperAdmin') {
-            const loadCabdinList = (cabdin_id) => {
-                $.ajax({
-                    url: '/panel/sekolah/json/admin-cabang-dinas',
-                    method: 'GET',
-                    dataType: 'JSON',
-                    success: (users) => {
-                        console.log(users);
-                        user.empty().append('<option value=""></option>');
-
-                        users.forEach((item) => {
-                            var selected = item.value === cabdin_id ? 'selected' : '';
-                            user.append(`<option value="${item.value}" ${selected}>${item.label}</option>`);
-                        })
-                    },
-                    error: (xhr, status, error) => console.error('Failed to get data users with role admin cabang dinas.', status),
-                })
-            }
-            // }
 
         })
     </script>

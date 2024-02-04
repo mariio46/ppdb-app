@@ -21,7 +21,7 @@ class IsSchoolHasLock
 
     public function handle(Request $request, Closure $next): Response
     {
-        $schoolStatus = $this->school->show(school_id: $request->id)['data']['terverifikasi'];
+        $schoolStatus = $this->school->check(school_id: $request->id)['data']['terverifikasi'];
 
         $protectedRoutes = ['sekolah.edit', 'sekolah.update'];
 

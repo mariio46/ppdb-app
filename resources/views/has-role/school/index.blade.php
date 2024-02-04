@@ -34,6 +34,7 @@
 
         td.nama-sekolah {
             width: 200px;
+            font-weight: 600;
         }
 
         td.detail {
@@ -45,11 +46,18 @@
 @section('content')
     <div class="content-body">
         <div class="card">
+            <div class="card-header" style="padding: 15px;">
+                <div>
+                    <h4 class="card-title fw-bolder text-primary">Sekolah</h4>
+                    <p class="mb-0 fw-bold"><small>Tabel di bawah merupakan daftar sekolah tujuan.</small></p>
+                </div>
+            </div>
             <div class="card-body p-0">
                 <table class="table table-schools">
                     <thead>
                         <tr class="table-light">
                             <th scope="col">NAMA SEKOLAH</th>
+                            <th scope="col">STATUS</th>
                             <th scope="col">NPSN</th>
                             <th scope="col">SATUAN PENDIDKAN</th>
                             <th scope="col">ALAMAT</th>
@@ -84,13 +92,31 @@
                             data: 'nama_sekolah'
                         },
                         {
+                            render: (data, type, row) => {
+                                var status = setStatus(row.terverifikasi);
+                                return `<span class="badge w-100 bg-light-${status.color}">${status.label}</span>`
+                            }
+                        },
+                        {
                             data: 'npsn'
                         },
                         {
-                            data: 'satuan_pendidikan'
+                            render: (data, type, row) => {
+                                if (row.satuan_pendidikan === 'sma') {
+                                    return 'SMA';
+                                }
+                                if (row.satuan_pendidikan === 'smk') {
+                                    return 'SMK';
+                                }
+                                if (row.satuan_pendidikan === 'hbs' || row.satuan_pendidikan === 'fbs') {
+                                    return 'Boarding School';
+                                }
+                                return 'Unknown';
+                            }
                         },
                         {
-                            data: 'alamat_jalan'
+                            data: 'alamat_jalan',
+                            searchable: false
                         },
                         {
                             render: (data, type, row) => `<a href="/panel/sekolah/${row.id}/${row.satuan_pendidikan}/info-sekolah" class="btn btn-primary">Lihat Detail</a>`
@@ -108,10 +134,14 @@
                         },
                         {
                             targets: [2],
+                            className: 'text-center'
+                        },
+                        {
+                            targets: [3],
                             className: 'text-center satuan-pendidikan'
                         },
                         {
-                            targets: [4],
+                            targets: [5],
                             className: 'text-center detail'
                         },
                     ],
@@ -145,6 +175,42 @@
                         });
                     }
                 });
+
+                function setStatus(school_status) {
+                    var status = {
+                        label: '',
+                        color: '',
+                    };
+                    switch (school_status) {
+                        case 'belum_simpan':
+                            status = {
+                                label: 'Belum Simpan',
+                                color: 'danger'
+                            }
+                            break;
+                        case 'simpan':
+                            status = {
+                                label: 'Sudah Simpan',
+                                color: 'warning'
+                            }
+                            break;
+                        case 'verifikasi':
+                            status = {
+                                label: 'Terverifikasi',
+                                color: 'success'
+                            }
+                            break;
+
+                        default:
+                            status = {
+                                label: 'Unknown',
+                                color: 'danger'
+                            }
+                            break;
+                    }
+
+                    return status;
+                }
 
                 $("div.add-button, div.add-button-sm").html('<a href="/panel/sekolah/create" class="btn btn-success">+ Tambah Sekolah</a>');
                 $("div.add-button").addClass('h-100 d-flex align-items-center justify-content-end me-1');

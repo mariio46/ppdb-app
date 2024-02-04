@@ -18,13 +18,23 @@ class OperatorRepositoryImpl implements OperatorRepository
         return $this->operator->getOperators(key: $key, param: $param);
     }
 
-    public function show(string $param): array
+    public function show(string $operator_id): array
     {
-        return $this->operator->getSingleOperator(param: $param);
+        return $this->operator->getSingleOperator(operator_id: $operator_id);
     }
 
     public function store(Request $request, string $param): array
     {
         return $this->operator->createOperator(request: $request, param: $param);
+    }
+
+    public function verify(string $operator_id): array
+    {
+        return $this->operator->verifyOperator(operator_id: $operator_id);
+    }
+
+    public function status(Request $request, string $operator_id): array
+    {
+        return $this->operator->updateOperatorStatus(request: $request, operator_id: $operator_id);
     }
 }

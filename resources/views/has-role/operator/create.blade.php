@@ -16,20 +16,20 @@
 
         <div class="card">
             <div class="card-header">
-                <h6 class="card-title">Downlaod Pakta Integritas</h6>
+                <h6 class="card-title fw-bolder text-primary">Downlaod Pakta Integritas</h6>
             </div>
             <div class="card-body">
-                <x-button style="display: inline-flex; align-items: center">
+                <x-link style="display: inline-flex; align-items: center" :href="route('operators.pdf')" target="_blank" rel="noopener noreferrer">
                     <x-tabler-download style="margin-right: 0.25rem;" />
                     Download Pakta Integritas
-                </x-button>
+                </x-link>
                 <x-alert variant="warning">Sebelum mendaftarkan operator, silahkan unduh pakta integritas terlebih dahulu.</x-alert>
             </div>
         </div>
 
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Tambah Operator</h4>
+                <h4 class="card-title fw-bolder text-primary">Tambah Operator</h4>
             </div>
             <div class="card-body">
 
@@ -65,7 +65,7 @@
                     <x-separator marginY="2" />
 
                     <div class="w-100">
-                        <h4 class="card-title"> Dokumen </h4>
+                        <h4 class="card-title fw-bolder text-primary"> Dokumen </h4>
                         <div class="w-100">
                             <x-label class="btn btn-primary cursor-pointer" for="dokumen">
                                 <span style="display: inline-flex; align-items: center">

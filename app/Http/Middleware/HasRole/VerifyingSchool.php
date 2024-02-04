@@ -29,7 +29,16 @@ class VerifyingSchool
             ]);
         }
 
-        $schoolStatus = $this->school->show(school_id: $request->id)['data']['terverifikasi'];
+        $ifSchoolExists = (bool) $this->school->exists(school_id: $request->id, school_unit: $request->unit)['data']['exists'] == 'yes';
+
+        if (! $ifSchoolExists) {
+            return to_route('sekolah.detail', ['id' => $request->id, 'unit' => $request->unit])->with([
+                'stat' => 'error',
+                'msg' => 'Sekolah tidak dapat ditemukan',
+            ]);
+        }
+
+        $schoolStatus = $this->school->check(school_id: $request->id)['data']['terverifikasi'];
 
         if ($schoolStatus != 'simpan') {
             $message = $schoolStatus == 'belum_simpan'

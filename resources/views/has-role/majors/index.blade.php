@@ -82,7 +82,7 @@
                     ajax: {
                         url: '/panel/jurusan/json/majors',
                         dataSrc: (response) => {
-                            // console.log('List Jurusan : ', response);
+                            console.log('List Jurusan : ', response);
                             return response.status === 'success' && response.statusCode === 200 ? response.data : [];
                         },
                     },

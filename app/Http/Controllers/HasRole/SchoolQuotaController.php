@@ -46,7 +46,7 @@ class SchoolQuotaController extends Controller
 
     public function index(): View
     {
-        return view($this->schoolUnit == 'smk' ? 'has-role.school-data.quota-smk' : 'has-role.school-data.quota', [
+        return view($this->schoolUnit == 'smk' ? 'has-role.school-data.quota.smk' : 'has-role.school-data.quota.sma', [
             'sekolah_id' => $this->schoolId,
             'satuan_pendidikan' => $this->schoolUnit,
         ]);
@@ -54,7 +54,7 @@ class SchoolQuotaController extends Controller
 
     public function create(): View
     {
-        return view($this->schoolUnit == 'smk' ? 'has-role.school-data.add-quota-smk' : 'has-role.school-data.add-quota', [
+        return view($this->schoolUnit == 'smk' ? 'has-role.school-data.quota.create.quota-smk' : 'has-role.school-data.quota.create.quota-sma', [
             'sekolah_id' => $this->schoolId,
             'satuan_pendidikan' => $this->schoolUnit,
             'percentage' => $this->percentage,
@@ -86,7 +86,7 @@ class SchoolQuotaController extends Controller
             default => null
         };
 
-        return view($unit == 'smk' ? 'has-role.school-data.edit-quota-smk' : 'has-role.school-data.edit-quota-sma', [
+        return view($unit == 'smk' ? 'has-role.school-data.quota.edit.quota-smk' : 'has-role.school-data.quota.edit.quota-sma', [
             'quota_id' => $id,
             'sekolah_id' => $this->schoolId,
             'satuan_pendidikan' => $this->schoolUnit,

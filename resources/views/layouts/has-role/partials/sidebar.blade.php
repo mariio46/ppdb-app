@@ -54,7 +54,7 @@
             <li class="nav-item {{ request()->routeIs('operators.*') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('operators.index') }}">
                     <x-tabler-user-plus />
-                    <span class="menu-title text-truncate">Pengajuan Operator</span>
+                    <span class="menu-title text-truncate">Operator</span>
                 </a>
             </li>
             <li class="nav-item {{ request()->routeIs('verifikasi.manual*') ? 'active' : '' }}">

@@ -12,43 +12,66 @@
 
 @section('content')
     <div class="content-body">
-        <div class="card">
-            <form action="#" method="POST">
-                <div class="card-header">
-                    <h4 class="card-title">Detail User</h4>
-                </div>
-                <div class="card-body pb-1">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <table class="table table-borderless">
-                                <x-three-row-info identifier="nama" label="Nama" />
-                                <x-three-row-info identifier="nama_pengguna" label="Username" />
-                                <x-three-row-info identifier="role" label="Role" />
-                            </table>
-                        </div>
-                        <div class="col-sm-6">
-                            <table class="table table-borderless">
-                                <x-three-row-info identifier="badge-dokumen" label="Dokumen" />
-                                <x-three-row-info identifier="badge-status" label="Status" />
-                            </table>
 
+        <div class="row match-height">
+            <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="user-avatar-section">
+                            <div class="d-flex align-items-center flex-column placeholder-glow" id="heading-info">
+                                <img class="img-fluid rounded mt-3 mb-2 placeholder" id="heading-picture" src="{{ Storage::url('images/static/default-upload.png') }}" alt="User avatar" height="110"
+                                    width="110" />
+                                <div class="d-flex flex-column user-info align-items-center w-100">
+                                    <h4 class="fw-bolder text-primary placeholder col-8" id="heading-name"></h4>
+                                    <span class="placeholder col-4" id="heading-role"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="fw-bolder border-bottom pb-50 mb-1 mt-2">Details</h4>
+                        <div class="info-container">
+                            <ul class="list-unstyled  placeholder-glow" id="detail-info">
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">Nama :</span>
+                                    <span class="placeholder col-7 placeholder-sm" id="name"></span>
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">Username :</span>
+                                    <span class="placeholder col-6 placeholder-sm" id="username"></span>
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">Nama Sekolah :</span>
+                                    <span class="placeholder col-5 placeholder-sm" id="school-name"></span>
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">Role :</span>
+                                    <span class="placeholder col-7 placeholder-sm" id="role"></span>
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">Status :</span>
+                                    <span class="placeholder col-7 placeholder-sm" id="status"></span>
+                                </li>
+                                <li class="mb-75">
+                                    <span class="fw-bolder me-25">Status Dokumen :</span>
+                                    <span class="placeholder col-4 placeholder-sm" id="document-status"></span>
+                                </li>
+                            </ul>
+                            <div class="d-flex justify-content-center gap-2 pt-2 placeholder-glow" id="footer-info">
+                                <x-link class="placeholder col-4" id="back-button" :href="route('operators.index')" color="secondary"></x-link>
+                                <div id="operator-actions" style="display: none;"></div>
+                            </div>
                         </div>
                     </div>
-
-                    <x-separator id="separator-id" style="display: none" marginY="2" />
-
-                    <div id="update-status" style="display: none !important;"></div>
                 </div>
-            </form>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Dokumen</h4>
             </div>
-            <div class="card-body">
-                <div class="w-75" id="pdf-container">
-                    {{-- <iframe id="dokumen" src="https://api-ppdb.labkraf.id/storage/dokumen/admin/verifikasi/dok-verif20240117-174832.pdf"></iframe> --}}
-                    <embed src="https://api-ppdb.labkraf.id/storage/dokumen/admin/verifikasi/dok-verif20240117-174832.pdf" type="application/pdf" width="100%" height="100%">
+            <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="h-100 placeholder-glow" id="pdf-container">
+                            <div class="d-flex h-100 placeholder justify-content-center align-items-center">
+                                <h5 class="text-white">Memuat Dokumen</h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,68 +80,204 @@
 
 @push('scripts')
     <script>
-        var param = '{{ $param }}';
+        var id = '{{ $id }}';
+        var key = '{{ $key }}';
     </script>
     <script>
-        $(function() {
+        $(() => {
             'use strict';
 
+            var operator_actions = $('#operator-actions')
+
             $.ajax({
-                url: `/panel/operators/json/operator/${param}`,
+                url: `/panel/operators/json/operator/${id}`,
                 method: 'get',
                 dataType: 'json',
-                success: function(operator) {
-                    console.log(operator);
-                    $('#nama').text(operator.nama);
-                    $('#nama_pengguna').text(operator.nama_pengguna);
-                    $('#role').text('Operator');
-                    // $('#dokumen').attr('src', operator.dokumen);
-                    renderDokumenBadge(operator.dokumen);
-                    renderStatusBadge(operator.status_aktif);
-                    // if (operator.status_aktif !== 1) {
-                    //     $('#update-status').show()
-                    //     $('#separator-id').show()
-                    //     renderUpdateStatusButton(operator.status_aktif)
-                    // }
+                beforeSend: () => {
+                    placeholderActionOnOperatorDetail('onLoad');
                 },
-                error: function(xhr, status, error) {
-                    console.error("Failed to get data single operator.", status, error);
+                success: (operator) => {
+                    console.log(operator);
+
+                    placeholderActionOnOperatorDetail('onSuccess');
+                    showOperatorDetail(operator);
+                    showOperatorAction(key, operator);
+                },
+                error: (xhr, status, error) => {
+                    console.error("Failed to get data single operator.", xhr.status, error);
                 }
             });
 
-            function renderDokumenBadge(value) {
-                let badge = '';
-                if (value !== null) {
-                    badge = ` <x-badge class="" variant="light" color="success">Ada</x-badge>`;
-                } else {
-                    badge = ` <x-badge class="" variant="light" color="danger">Tidak Ada</x-badge>`;
+            function showOperatorDetail(operator) {
+                $('#heading-name,#name').text(operator.nama);
+                $('#heading-role').text('Operator').addClass('badge bg-light-secondary');
+                $('#heading-picture').attr('src', 'http://ppdb.test/storage/images/static/operator-avatar.jpg');
+
+                $('#username').text(operator.nama_pengguna);
+                $('#role').text('Operator');
+                $('#school-name').text(() => {
+                    if (operator.nama_sekolah === null) {
+                        return 'Sekolah tidak ditemukan!'
+                    }
+                    return operator.nama_sekolah
+                }).addClass(() => {
+                    if (operator.nama_sekolah === null) {
+                        return 'fw-bold text-danger'
+                    }
+                    return ''
+                })
+                $('#status').text(() => {
+                    if (operator.status_aktif === 'a') {
+                        return 'Aktif'
+                    }
+                    if (operator.status_aktif === 'v') {
+                        return 'Menunggu Verifikasi'
+                    }
+                    if (operator.status_aktif === 'n') {
+                        return 'Tidak Aktif'
+                    }
+                    return 'Unknown'
+                }).addClass(() => {
+                    if (operator.status_aktif === 'a') {
+                        return 'badge bg-light-success'
+                    }
+                    if (operator.status_aktif === 'v') {
+                        return 'badge bg-light-warning'
+                    }
+                    if (operator.status_aktif === 'n') {
+                        return 'badge bg-light-danger'
+                    }
+                    return 'badge bg-light-danger'
+                })
+                $('#document-status').text(() => {
+                    if (operator.dokumen === null || operator.dokumen === '') {
+                        return 'Belum Upload Dokumen';
+                    }
+                    return 'Dokumen sudah terupload';
+                }).addClass(() => {
+                    if (operator.dokumen === null || operator.dokumen === '') {
+                        return 'badge bg-light-warning';
+                    }
+                    return 'badge bg-light-success';
+
+                })
+
+                $('#back-button').text('Kembali')
+                if (operator.dokumen) {
+                    $('#pdf-container').html(() => {
+                        return `<embed class="h-100 w-100" src="${operator.dokumen}" type="application/pdf">`
+                    })
                 }
-                return $('#badge-dokumen').html(badge);
             }
 
-            function renderStatusBadge(status) {
-                let badge = '';
-                if (status === 'v') {
-                    badge = ` <x-badge class="" variant="light" color="warning">Menunggu Verifikasi</x-badge>`;
-                } else if (status === 'a') {
-                    badge = ` <x-badge class="" variant="light" color="success">Aktif</x-badge>`;
-                } else {
-                    badge = ` <x-badge class="" variant="light" color="danger">Tidak Aktif</x-badge>`;
+            function placeholderActionOnOperatorDetail(type) {
+                switch (type) {
+                    case 'onLoad':
+                        $('#heading-info,#detail-info,#footer-info,#pdf-container').addClass('placeholder-glow');
+                        $('#heading-picture').addClass('placeholder');
+                        $('#heading-name').addClass('placeholder col-8');
+                        $('#heading-role').addClass('placeholder col-4');
+
+                        $('#name').addClass('placeholder placeholder-sm col-7');
+                        $('#username').addClass('placeholder placeholder-sm col-6');
+                        $('#school-name').addClass('placeholder placeholder-sm col-5');
+                        $('#role').addClass('placeholder placeholder-sm col-7');
+                        $('#status').addClass('placeholder placeholder-sm col-7');
+                        $('#document-status').addClass('placeholder placeholder-sm col-4');
+
+                        $('#back-button').addClass('placeholder col-4');
+                        break;
+
+                    case 'onSuccess':
+                        $('#heading-info,#detail-info,#footer-info,#pdf-container').removeClass('placeholder-glow');
+                        $('#heading-picture').removeClass('placeholder');
+                        $('#heading-name').removeClass('placeholder col-8');
+                        $('#heading-role').removeClass('placeholder col-4');
+
+                        $('#name').removeClass('placeholder placeholder-sm col-7');
+                        $('#username').removeClass('placeholder placeholder-sm col-6');
+                        $('#school-name').removeClass('placeholder placeholder-sm col-5');
+                        $('#role').removeClass('placeholder placeholder-sm col-7');
+                        $('#status').removeClass('placeholder placeholder-sm col-7');
+                        $('#document-status').removeClass('placeholder placeholder-sm col-4');
+
+                        $('#back-button').removeClass('placeholder col-4');
+                        break;
+
+                    default:
+                        $('#heading-info,#detail-info,#footer-info,#pdf-container').addClass('placeholder-glow');
+                        $('#heading-picture').addClass('placeholder');
+                        $('#heading-name').addClass('placeholder col-8');
+                        $('#heading-role').addClass('placeholder col-4');
+
+                        $('#name').addClass('placeholder placeholder-sm col-7');
+                        $('#username').addClass('placeholder placeholder-sm col-6');
+                        $('#school-name').addClass('placeholder placeholder-sm col-5');
+                        $('#role').addClass('placeholder placeholder-sm col-7');
+                        $('#status').addClass('placeholder placeholder-sm col-7');
+                        $('#document-status').addClass('placeholder placeholder-sm col-4');
+
+                        $('#back-button').addClass('placeholder col-4');
+                        break;
                 }
-                return $('#badge-status').html(badge);
             }
 
-            function renderUpdateStatusButton(status) {
-                let button = ''
-
-                if (status === 2) {
-                    button = `<button class="btn btn-danger" >Nonaktifkan</button>`;
-                } else {
-                    button = `<button class="btn btn-success">Aktifkan</button>`;
+            function showOperatorAction(keyType, operator) {
+                if (keyType === 'cabdin_id') {
+                    operatorActionForAgencyAdmin(operator)
                 }
 
-                return $('#update-status').html(button)
+                if (keyType === 'sekolah_id') {
+                    operatorActionForSchoolAdmin(operator)
+                }
+
+                return '';
             }
+
+            function operatorActionForAgencyAdmin(operator) {
+                if (operator.status_aktif === 'v') {
+                    operator_actions.show().html(() => {
+                        return `
+                        <form action="/panel/operators/${id}/verify" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-info">Verifikasi</button>
+                        </form>
+                        `;
+                    })
+                }
+
+                return false;
+            }
+
+            function operatorActionForSchoolAdmin(operator) {
+
+                if (operator.status_aktif === 'a') {
+                    operator_actions.show().html(() => {
+                        return `
+                        <form action="/panel/operators/${id}/update" method="post">
+                            @csrf
+                            <input type="hidden" name="status" value="n">
+                            <button type="submit" class="btn btn-danger">Nonaktifkan</button>
+                        </form>
+                        `;
+                    })
+                }
+
+                if (operator.status_aktif === 'n') {
+                    operator_actions.show().html(() => {
+                        return `
+                        <form action="/panel/operators/${id}/update" method="post">
+                            @csrf
+                            <input type="hidden" name="status" value="a">
+                            <button type="submit" class="btn btn-success">Aktifkan</button>
+                        </form>
+                        `;
+                    })
+                }
+
+                return false;
+            }
+
         })
     </script>
 @endpush

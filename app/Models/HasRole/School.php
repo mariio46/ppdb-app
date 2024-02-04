@@ -27,6 +27,20 @@ class School extends Base
         return $this->serverResponseWithGetMethod(response: $school);
     }
 
+    public function checkSchoolStatus(string $school_id): array
+    {
+        $response = $this->getWithToken(endpoint: "sekolah/status?id={$school_id}");
+
+        return $this->serverResponseWithGetMethod(response: $response);
+    }
+
+    public function checkIfSchoolExists(string $school_id, string $school_unit): array
+    {
+        $response = $this->getWithToken(endpoint: "sekolah/eksis?id={$school_id}&satuan_pendidikan={$school_unit}");
+
+        return $this->serverResponseWithGetMethod(response: $response);
+    }
+
     public function createSchool(Request $request, string $cabdin_id): array
     {
         $kabupaten = explode('|', $request->kabupaten);
@@ -48,7 +62,7 @@ class School extends Base
         return $this->serverResponseWithPostMethod(data: $data);
     }
 
-    public function updateSchool(Request $request, string $user_id, string $cabdin_id): array
+    public function updateSchool(Request $request, string $school_id, string $cabdin_id): array
     {
         $kabupaten = explode('|', $request->kabupaten);
 
@@ -59,7 +73,7 @@ class School extends Base
             'kode_kabupaten' => $kabupaten[0],
             'kabupaten' => $kabupaten[1],
             'satuan_pendidikan' => $request->satuan_pendidikan,
-            'id' => $user_id,
+            'id' => $school_id,
 
             'kode_provinsi' => '73',
             'provinsi' => Str::upper('Sulawesi Selatan'),
@@ -68,6 +82,13 @@ class School extends Base
         $data = $this->postWithToken(endpoint: 'sekolah/create/update', data: $body);
 
         return $this->serverResponseWithPostMethod(data: $data);
+    }
+
+    public function deleteSchool(string $school_id): array
+    {
+        $response = $this->postWithToken(endpoint: 'sekolah/hapus', data: ['id' => $school_id]);
+
+        return $this->serverResponseWithPostMethod(data: $response);
     }
 
     public function getSchoolQuota(string $school_unit, string $school_id): array

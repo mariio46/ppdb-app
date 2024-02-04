@@ -4,9 +4,11 @@ namespace App\Http\Controllers\HasRole;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\HasRole\OperatorRepository as Operator;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class OperatorController extends Controller
@@ -16,30 +18,11 @@ class OperatorController extends Controller
         //
     }
 
-    protected function authenticatedUserRoleId(): int
+    public function index(Request $request): View
     {
-        return session()->get('role_id');
-    }
-
-    public function index(): View
-    {
-
-        $key = match ($this->authenticatedUserRoleId()) {
-            1 => 'id',
-            3 => 'cabdin_id',
-            4 => 'sekolah_id',
-            default => null,
-        };
-        $param = match ($this->authenticatedUserRoleId()) {
-            1 => session()->get('id'),
-            3 => session()->get('cabdin_id'),
-            4 => session()->get('sekolah_id'),
-            default => null,
-        };
-
         return view('has-role.operator.index', [
-            'key' => $key,
-            'param' => $param,
+            'key' => $request->attributes->get('key'),
+            'param' => $request->attributes->get('param'),
         ]);
     }
 
@@ -48,28 +31,38 @@ class OperatorController extends Controller
         return view('has-role.operator.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function pdf(): Response
     {
-        $sekolah_id = session()->get('sekolah_id');
-
-        $response = $this->operator->store(request: $request, param: $sekolah_id);
-
-        if ($response['statusCode'] == 201) {
-            return to_route('operators.index')->with([
-                'stat' => 'success',
-                'msg' => $response['messages'],
-            ]);
-        } else {
-            return to_route('operators.index')->with([
-                'stat' => 'error',
-                'msg' => $response['messages'],
-            ]);
-        }
+        return Pdf::loadView('has-role.operator.pdf')->stream(now()->addMinute().mt_rand(9999, 99999).'.pdf');
     }
 
-    public function show(string $param): View
+    public function store(Request $request): RedirectResponse
     {
-        return view('has-role.operator.show', compact('param'));
+        $response = $this->operator->store(request: $request, param: $request->attributes->get('param'));
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'operators.index');
+    }
+
+    public function show(Request $request, string $id): View
+    {
+        return view('has-role.operator.show', [
+            'id' => $id,
+            'key' => $request->attributes->get('key'),
+        ]);
+    }
+
+    public function verify(string $id): RedirectResponse
+    {
+        $response = $this->operator->verify(operator_id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'operators.show', params: $id);
+    }
+
+    public function update(Request $request, string $id): RedirectResponse
+    {
+        $response = $this->operator->status(request: $request, operator_id: $id);
+
+        return $this->repositoryResponseWithPostMethod(response: $response, route: 'operators.show', params: $id);
     }
 
     // --------------------------------------------------DATA API JSON--------------------------------------------------
@@ -77,12 +70,12 @@ class OperatorController extends Controller
     {
         $operators = $this->operator->index(key: $key, param: $param);
 
-        return response()->json($operators['data']);
+        return response()->json($operators);
     }
 
-    public function operator(string $param): JsonResponse
+    public function operator(string $id): JsonResponse
     {
-        $operator = $this->operator->show(param: $param);
+        $operator = $this->operator->show(operator_id: $id);
 
         return response()->json($operator['data']);
     }

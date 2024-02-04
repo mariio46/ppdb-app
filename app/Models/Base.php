@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\ServerResponseTrait;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class Base
@@ -108,5 +109,13 @@ class Base
             'value' => $item[$value],
             'label' => $item[$label],
         ]);
+    }
+
+    // -------------------------HELPERS-------------------------
+    protected function revalidate(string ...$key): void
+    {
+        foreach ($key as $value) {
+            Cache::forget($value);
+        }
     }
 }

@@ -71,5 +71,11 @@ class Kernel extends HttpKernel
         'HasRole.isAdminSekolah' => \App\Http\Middleware\HasRole\IsAdminSekolah::class,
         'HasRole.isSchoolHasLock' => \App\Http\Middleware\HasRole\IsSchoolHasLock::class,
         'HasRole.verifySchool' => \App\Http\Middleware\HasRole\VerifyingSchool::class,
+        'HasRole.isSuperAdmin' => \App\Http\Middleware\HasRole\EnsureSuperAdmin::class,
+
+        'HasRole.accessOperator' => \App\Http\Middleware\HasRole\AccessOperator::class,
+        'HasRole.storeOperator' => \App\Http\Middleware\HasRole\StoreOperator::class,
+        'HasRole.verifyOperator' => \App\Http\Middleware\HasRole\VerifyOperator::class,
+        'HasRole.updateStatusOperator' => \App\Http\Middleware\HasRole\UpdateStatusOperator::class,
     ];
 }

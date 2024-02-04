@@ -67,11 +67,6 @@
 
 @push('scripts')
     <script>
-        var role_id = '{{ $roleId }}',
-            role_name = '{{ $roleName }}';
-        // console.info(role_id === '1');
-    </script>
-    <script>
         $(function() {
             'use strict';
 
@@ -168,21 +163,6 @@
                     console.error('Failed to get data units.', status, error);
                 }
             });
-
-            // Get List Admin Cabang Dinas if $roleId == 1 or $roleName == SuperAdmin
-            if (role_id === '1' && role_name === 'SuperAdmin') {
-                $.ajax({
-                    url: '/panel/sekolah/json/admin-cabang-dinas',
-                    method: 'GET',
-                    dataType: 'JSON',
-                    success: (users) => {
-                        user.empty().append('<option value=""></option>');
-
-                        users.forEach(item => user.append(`<option value="${item.value}">${item.label}</option>`))
-                    },
-                    error: (xhr, status, error) => console.error('Failed to get data users with role admin cabang dinas.', status),
-                })
-            }
         })
     </script>
 @endpush
