@@ -202,6 +202,8 @@ return [
         App\Providers\Student\RegistrationServiceProvider::class,
         App\Providers\Student\StatusServiceProvider::class,
         App\Providers\Student\FaqServiceProvider::class,
+
+        \Barryvdh\DomPDF\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -217,6 +219,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        // 'PDF' => \Barryvdh\DomPDF\Facade\Pdf::class
     ])->toArray(),
 
 ];

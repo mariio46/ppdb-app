@@ -14,7 +14,7 @@
             <div class="content-body">
                 <div class="auth-wrapper auth-cover">
                     <div class="auth-inner row m-0">
-                        <a class="brand-logo" href="{{ route('student.login') }}">
+                        <a class="brand-logo" href="{{ route('home') }}">
                             <img class="img-fluid" src="/img/logo-ppdb-sulsel-full.png" alt="logo" width="200">
                         </a>
                         {{-- Left section --}}
